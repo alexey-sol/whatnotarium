@@ -1,0 +1,17 @@
+@import "styles/style.scss";
+
+.container {
+    grid-area: menu;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 40px;
+
+    .list {
+        position: fixed;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+}

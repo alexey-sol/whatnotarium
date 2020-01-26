@@ -1,0 +1,11 @@
+@import "styles/style.scss";
+
+.container {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 0;
+  font-family: $font-family--normal;
+  font-size: $font-size--larger;
+}

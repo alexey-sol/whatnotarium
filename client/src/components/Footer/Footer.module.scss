@@ -1,0 +1,7 @@
+@import "styles/style.scss";
+
+.container {
+    grid-area: footer;
+    display: flex;
+    background-color: lightgrey;
+}
