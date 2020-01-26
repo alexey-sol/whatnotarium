@@ -3,5 +3,21 @@
 .container {
     grid-area: footer;
     display: flex;
-    background-color: lightgrey;
+    box-sizing: border-box;
+
+    .aside {
+        box-sizing: border-box;
+        width: $banner-width;
+        height: 100%;
+        background-color: $footer-aside-bg-color;
+    }
+
+    .content {
+        display: flex;
+        flex: 1;
+        box-sizing: border-box;
+        height: 100%;
+        padding-left: 50px;
+        background-color: $footer-content-bg-color;
+    }
 }

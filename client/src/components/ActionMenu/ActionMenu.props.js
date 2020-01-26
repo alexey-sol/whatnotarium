@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
 
-const { func, object } = PropTypes;
+const { object } = PropTypes;
 
 export const propTypes = {
-    checkUserSession: func,
     currentUser: object
 };

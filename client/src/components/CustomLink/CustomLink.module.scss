@@ -1,0 +1,10 @@
+@import "styles/style.scss";
+
+.container {
+    a {
+        color: $link-text-color;
+        background-color: $link-bg-color;
+        border-bottom: 1px solid $link-border-color;
+        transition: .1s ease;
+    }
+}

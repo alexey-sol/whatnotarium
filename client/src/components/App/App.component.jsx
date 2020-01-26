@@ -1,24 +1,26 @@
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
+import Banner from "components/Banner";
 import Footer from "components/Footer";
 import Main from "components/Main";
 import ErrorBoundary from "components/ErrorBoundary";
-import Logo from "components/Logo";
 import Menu from "components/Menu";
 import Spinner from "components/Spinner";
-import { defaultProps, propTypes } from "./App.props";
+import { propTypes } from "./App.props";
+import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./App.module.scss";
 
 const Home = lazy(() => import("pages/Home"));
 
 App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
 function App ({ checkUserSession, currentUser }) {
     return (
         <div className={styles.container}>
-            <Logo />
+            <Banner />
 
             <Main>
                 <Switch>
@@ -40,4 +42,12 @@ function App ({ checkUserSession, currentUser }) {
     );
 }
 
-export default App;
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
+});
+
+const ConnectedApp = connect(
+    mapStateToProps
+)(App);
+
+export default ConnectedApp;

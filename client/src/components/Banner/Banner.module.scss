@@ -1,0 +1,33 @@
+@import "styles/style.scss";
+
+.container {
+    grid-area: banner;
+    display: flex;
+    box-sizing: border-box;
+    width: 120px;
+    height: 100%;
+    background-color: $banner-bg-color;
+
+    .logo {
+        display: flex;
+        width: $banner-width;
+        height: $banner-width;
+        background-color: $logo-bg-color;
+
+        a {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            color: $logo-text-color;
+            font-size: $font-size--largest;
+            text-align: center;
+            transition: .1s ease;
+            user-select: none;
+
+            &:hover {
+                background-color: $logo-bg-color--hover;
+            }
+        }
+    }
+}

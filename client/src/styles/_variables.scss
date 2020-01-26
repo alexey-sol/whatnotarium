@@ -6,7 +6,7 @@ $font-size--small: 1.6rem;
 $font-size--medium: 1.8rem;
 $font-size--large: 2rem;
 $font-size--larger: 2.2rem;
-$font-size--largest: 3.6rem;
+$font-size--largest: 3.2rem;
 
 $gray--darkest: #141414;
 $gray--darken: #6c6c6c;
@@ -16,6 +16,39 @@ $gray--light: #e1e1e1;
 $gray--lighten: #efeeea;
 $gray--lightest: #fcfafa;
 
-$footer-height: 200px;
-$logo-width: 120px;
+$color-primary: #ffd275;
+$color-secondary: #87666c;
+$color-tertiary: #be6361;
+$color-quaternary: #663939;
+
+$selection-bg-color: $color-primary;
+$text-color--normal: $gray--darkest;
+
+$banner-bg-color: $color-primary;
+
+$base-dialog-bg-color: white;
+
+$footer-aside-bg-color: $color-quaternary;
+$footer-content-bg-color: $color-secondary;
+
+$icon-color: $color-quaternary;
+$icon-color--hover: $color-tertiary;
+
+$link-bg-color: $color-quaternary;
+$link-border-color: $color-secondary;
+$link-text-color: #ffd275;
+
+$logo-bg-color: $color-tertiary;
+$logo-bg-color--hover: $color-quaternary;
+$logo-text-color: white;
+
+$menu-item-bg-color: $color-secondary;
+$menu-item-bg-color--hover: $color-tertiary;
+$menu-item-color: white;
+
+$banner-width: 120px;
+$footer-height: 120px;
+$headline-height: 120px;
 $main-width: 800px;
+
+// Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361

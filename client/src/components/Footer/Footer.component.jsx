@@ -2,12 +2,16 @@ import React from "react";
 
 import styles from "./Footer.module.scss";
 
-function Logo () {
+function Footer () {
     return (
         <div className={styles.container}>
-            Footer
+            <div className={styles.aside} />
+
+            <div className={styles.content}>
+                Footer
+            </div>
         </div>
     );
 }
 
-export default Logo;
+export default Footer;
