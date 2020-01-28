@@ -2,6 +2,7 @@ import React, { memo, useEffect } from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 
+import { CloseIconButton } from "components/common/IconButton";
 import { defaultProps, propTypes } from "./BaseDialog.props";
 import styles from "./BaseDialog.module.scss";
 
@@ -20,7 +21,14 @@ function BaseDialog ({ children, className, onClose }) {
                 className={classnames(styles.container, className)}
                 onClick={event => event.stopPropagation()}
             >
-                { children }
+                <CloseIconButton
+                    className={styles.closeIconButton}
+                    onClick={onClose}
+                />
+
+                <div className={styles.content}>
+                    { children }
+                </div>
             </div>
         </div>
     );

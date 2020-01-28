@@ -12,11 +12,24 @@
     background-color: rgba(0, 0, 0, 0.2);
 
     .container {
+        position: relative;
         display: flex;
-        align-items: center;
         justify-content: center;
+        box-sizing: border-box;
         width: 600px;
         height: 500px;
+        padding: 50px;
+        border-radius: 0 0 0 7px;
         background-color: $base-dialog-bg-color;
+
+        .closeIconButton {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+
+        .content {
+            display: flex;
+        }
     }
 }

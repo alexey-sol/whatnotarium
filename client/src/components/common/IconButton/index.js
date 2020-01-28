@@ -1,3 +1,9 @@
-import IconButton from "./IconButton.component";
+import CloseIconButton from "./CloseIconButton.component";
+import SearchIconButton from "./SearchIconButton.component";
+import UserIconButton from "./UserIconButton.component";
 
-export default IconButton;
+export {
+    CloseIconButton,
+    SearchIconButton,
+    UserIconButton
+};

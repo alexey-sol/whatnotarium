@@ -7,10 +7,10 @@ import styles from "./CustomLink.module.scss";
 CustomLink.propTypes = propTypes;
 CustomLink.defaultProps = defaultProps;
 
-function CustomLink ({ children, ...restProps }) {
+function CustomLink ({ children, ...rest }) {
     return (
         <span className={styles.container}>
-            <Link {...restProps}>
+            <Link {...rest}>
                 {children}
             </Link>
         </span>

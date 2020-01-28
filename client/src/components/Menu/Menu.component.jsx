@@ -1,13 +1,13 @@
 import React from "react";
 
-import ActionMenu from "components/ActionMenu";
+import ActionsMenu from "components/ActionsMenu";
 import Navbar from "components/Navbar";
 import styles from "./Menu.module.scss";
 
 function Menu () {
     return (
         <div className={styles.container}>
-            <ActionMenu />
+            <ActionsMenu />
             <Navbar />
         </div>
     );

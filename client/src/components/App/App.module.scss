@@ -42,7 +42,7 @@ p {
 .container {
     display: grid;
     grid-template-columns: $banner-width $main-width auto;
-    grid-template-rows: auto $footer-height; // $headline-height
+    grid-template-rows: auto $footer-height;
     grid-template-areas:
         "banner main menu"
         "footer footer footer";

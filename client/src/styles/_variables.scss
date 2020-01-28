@@ -34,6 +34,13 @@ $footer-content-bg-color: $color-secondary;
 $icon-color: $color-quaternary;
 $icon-color--hover: $color-tertiary;
 
+$input-bg-color: white;
+$input-border-color: $gray--darken;
+$input-text-color: $gray--darkest;
+
+$input-label-color: $gray--dark;
+$input-label-color--shrink: $gray--darken;
+
 $link-bg-color: $color-quaternary;
 $link-border-color: $color-secondary;
 $link-text-color: #ffd275;
@@ -48,7 +55,6 @@ $menu-item-color: white;
 
 $banner-width: 120px;
 $footer-height: 120px;
-$headline-height: 120px;
 $main-width: 800px;
 
 // Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361
