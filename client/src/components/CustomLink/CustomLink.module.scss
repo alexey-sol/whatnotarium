@@ -2,9 +2,14 @@
 
 .container {
     a {
-        color: $link-text-color;
-        background-color: $link-bg-color;
-        border-bottom: 1px solid $link-border-color;
+        border-bottom: 1px solid $custom-link-border-color;
+        padding: 0 0.1rem;
+        color: $custom-link-text-color;
         transition: .1s ease;
+
+        &:hover {
+            border-bottom: 1px solid $custom-link-border-color--hover;
+            color: $custom-link-text-color--hover;
+        }
     }
 }

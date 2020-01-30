@@ -9,8 +9,16 @@ import styles from "./BaseDialog.module.scss";
 BaseDialog.propTypes = propTypes;
 BaseDialog.defaultProps = defaultProps;
 
-function BaseDialog ({ children, className, onClose }) {
+function BaseDialog ({ children, className, onClose, title, width }) {
     const rootElement = document.getElementById("root");
+
+    const containerClassName = classnames(
+        styles.container,
+        className,
+        width && styles[`${width}Width`]
+    );
+
+    // Add back button
 
     const dialogElement = (
         <div
@@ -18,7 +26,7 @@ function BaseDialog ({ children, className, onClose }) {
             onClick={onClose}
         >
             <div
-                className={classnames(styles.container, className)}
+                className={containerClassName}
                 onClick={event => event.stopPropagation()}
             >
                 <CloseIconButton
@@ -26,8 +34,12 @@ function BaseDialog ({ children, className, onClose }) {
                     onClick={onClose}
                 />
 
+                {title && <div className={styles.title}>
+                    {title}
+                </div>}
+
                 <div className={styles.content}>
-                    { children }
+                    {children}
                 </div>
             </div>
         </div>

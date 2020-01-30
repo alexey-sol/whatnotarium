@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 
-const { arrayOf, func, oneOfType, node, string } = PropTypes;
+const { arrayOf, func, oneOf, oneOfType, node, string } = PropTypes;
 
 export const defaultProps = {
     children: null,
-    className: ""
+    className: "",
+    title: "",
+    width: "auto"
 };
 
 export const propTypes = {
@@ -15,5 +17,9 @@ export const propTypes = {
 
     className: string,
 
-    onClose: func.isRequired
+    onClose: func.isRequired,
+
+    title: string,
+
+    width: oneOf(["auto", "fixed"])
 };

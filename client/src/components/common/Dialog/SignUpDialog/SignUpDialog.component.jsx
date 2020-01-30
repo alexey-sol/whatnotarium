@@ -1,8 +1,9 @@
 import React, { memo, useState } from "react";
 
+import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import Input from "components/Input";
-import { propTypes } from "./Dialog.props";
+import { propTypes } from "../Dialog.props";
 import styles from "./SignUpDialog.module.scss";
 
 SignUpDialog.propTypes = propTypes;
@@ -26,9 +27,21 @@ function SignUpDialog ({ onClose }) {
         });
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log("Sign up");
+    };
+
     return (
-        <BaseDialog onClose={onClose}>
-            <form className={styles.container}>
+        <BaseDialog
+            onClose={onClose}
+            title="Регистрация"
+            width="fixed"
+        >
+            <form
+                className={styles.container}
+                onSubmit={handleSubmit}
+            >
                 <Input
                     label="Имя"
                     name="name"
@@ -57,12 +70,18 @@ function SignUpDialog ({ onClose }) {
                 />
 
                 <Input
-                    label="Повторите пароль"
+                    label="Пароль еще раз"
                     name="confirmPassword"
                     onChange={handleInputChange}
                     rootClassName={styles.inputContainer}
                     type="password"
                     value={confirmPassword}
+                />
+
+                <BaseButton
+                    className={styles.signUpButton}
+                    theme="dark"
+                    title="Готово"
                 />
             </form>
         </BaseDialog>

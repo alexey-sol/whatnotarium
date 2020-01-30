@@ -1,0 +1,12 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 0 3rem;
+
+    .signUpButton {
+        margin-top: 4rem;
+    }
+}

@@ -26,7 +26,20 @@ $text-color--normal: $gray--darkest;
 
 $banner-bg-color: $color-primary;
 
+$base-button-bg-color-dark: $color-tertiary;
+$base-button-bg-color-light: $color-primary;
+$base-button-border-color-dark: $color-tertiary;
+$base-button-border-color-light: $color-quaternary;
+$base-button-text-color-dark: white;
+$base-button-text-color-light: $color-quaternary;
+
 $base-dialog-bg-color: white;
+$base-dialog-title-text-color: $gray--darken;
+
+$custom-link-border-color: $color-tertiary;
+$custom-link-border-color--hover: #f58d7f;
+$custom-link-text-color: $color-tertiary;
+$custom-link-text-color--hover: #f58d7f;
 
 $footer-aside-bg-color: $color-quaternary;
 $footer-content-bg-color: $color-secondary;
@@ -35,15 +48,11 @@ $icon-color: $color-quaternary;
 $icon-color--hover: $color-tertiary;
 
 $input-bg-color: white;
-$input-border-color: $gray--darken;
+$input-border-color: $gray--dark;
 $input-text-color: $gray--darkest;
 
 $input-label-color: $gray--dark;
 $input-label-color--shrink: $gray--darken;
-
-$link-bg-color: $color-quaternary;
-$link-border-color: $color-secondary;
-$link-text-color: #ffd275;
 
 $logo-bg-color: $color-tertiary;
 $logo-bg-color--hover: $color-quaternary;

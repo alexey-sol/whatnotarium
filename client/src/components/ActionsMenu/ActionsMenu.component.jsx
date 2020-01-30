@@ -7,7 +7,7 @@ import {
     UserIconButton
 } from "components/common/IconButton";
 
-import { SignUpDialog } from "components/common/Dialog";
+import { SignInDialog, SignUpDialog } from "components/common/Dialog";
 import { propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./ActionsMenu.module.scss";
@@ -15,11 +15,16 @@ import styles from "./ActionsMenu.module.scss";
 ActionsMenu.propTypes = propTypes;
 
 function ActionsMenu ({ currentUser }) {
+    const [signInDialogIsShown, setSignInDialogIsShown] = useState(false);
     const [signUpDialogIsShown, setSignUpDialogIsShown] = useState(false);
 
-    const showSignUpDialog = useCallback(() => {
-        setSignUpDialogIsShown(true);
+    const showSignInDialog = useCallback(() => {
+        setSignInDialogIsShown(true);
     }, [currentUser]);
+
+    const handleClickOnUserButton = (currentUser)
+        ? () => {}
+        : showSignInDialog;
 
     return (
         <div className={styles.container}>
@@ -31,9 +36,14 @@ function ActionsMenu ({ currentUser }) {
 
                 <UserIconButton
                     className={styles.iconButton}
-                    onClick={currentUser ? () => {} : showSignUpDialog}
+                    onClick={handleClickOnUserButton}
                 />
             </div>
+
+            {signInDialogIsShown && <SignInDialog
+                onClose={() => setSignInDialogIsShown(false)}
+                showSignUpDialog={() => setSignUpDialogIsShown(true)}
+            />}
 
             {signUpDialogIsShown && <SignUpDialog
                 onClose={() => setSignUpDialogIsShown(false)}

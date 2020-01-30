@@ -16,20 +16,36 @@
         display: flex;
         justify-content: center;
         box-sizing: border-box;
-        width: 600px;
-        height: 500px;
-        padding: 50px;
-        border-radius: 0 0 0 7px;
+        padding: 5rem;
         background-color: $base-dialog-bg-color;
+
+        &.autoWidth {
+            width: auto;
+        }
+
+        &.fixedWidth {
+            width: 40rem;
+        }
 
         .closeIconButton {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 2rem;
+            right: 2rem;
+        }
+
+        .title {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            color: $base-dialog-title-text-color;
+            font-size: $font-size--larger;
+            user-select: none;
         }
 
         .content {
-            display: flex;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
         }
     }
 }

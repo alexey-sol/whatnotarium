@@ -1,18 +1,20 @@
 @import "styles/style.scss";
 
 @mixin shrinkLabel {
-    top: -14px;
+    top: -1.4rem;
     color: $input-label-color--shrink;
     font-size: $font-size--smaller;
 }
 
 .container {
     position: relative;
+    margin-top: 2.5rem;
 
     .input {
         display: block;
+        box-sizing: border-box;
         width: 100%;
-        padding: 10px 10px 10px 5px;
+        padding: 1rem 1rem 1rem 0.5rem;
         border: none;
         border-bottom: 1px solid $input-border-color;
         outline: none;
@@ -27,13 +29,13 @@
     }
 
     input[type="password"] {
-        letter-spacing: 0.3em;
+        letter-spacing: 0.2em;
     }
 
     .label {
         position: absolute;
-        top: 10px;
-        left: 5px;
+        top: 1rem;
+        left: 0.5rem;
         pointer-events: none;
         color: $input-label-color;
         font-family: $font-family--normal;

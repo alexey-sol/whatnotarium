@@ -1,5 +1,7 @@
-import SignUpDialog from "./SignUpDialog.component";
+import SignInDialog from "./SignInDialog";
+import SignUpDialog from "./SignUpDialog";
 
 export {
+    SignInDialog,
     SignUpDialog
 };

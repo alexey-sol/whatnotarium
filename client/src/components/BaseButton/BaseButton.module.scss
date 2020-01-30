@@ -1,0 +1,39 @@
+@import "styles/style.scss";
+
+.button {
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 5rem;
+    padding: 0 3.5rem 0 3.5rem;
+    outline: none;
+    user-select: none;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
+    transition: .1s ease;
+    cursor: pointer;
+
+    &.disabled {
+        opacity: 0.5;
+    }
+
+    &.autoWidth {
+        width: auto;
+    }
+
+    &.fullWidth {
+        width: 100%;
+    }
+
+    &.lightTheme {
+        border: 1px solid $base-button-border-color-light;
+        background-color: $base-button-bg-color-light;
+        color: $base-button-text-color-light;
+    }
+
+    &.darkTheme {
+        border: 1px solid $base-button-border-color-dark;
+        background-color: $base-button-bg-color-dark;
+        color: $base-button-text-color-dark;
+    }
+}
