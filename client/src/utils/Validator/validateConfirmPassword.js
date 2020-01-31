@@ -8,6 +8,8 @@ function validateConfirmPassword (password = "", confirmPassword = "") {
         return CONFIRM_PASSWORD_EMPTY;
     } else if (password !== confirmPassword) {
         return CONFIRM_PASSWORD_NOT_MATCH;
+    } else {
+        return null;
     }
 }
 

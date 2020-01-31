@@ -2,8 +2,8 @@ import React, { memo, useEffect } from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 
-import { CloseIconButton } from "components/common/IconButton";
 import { defaultProps, propTypes } from "./BaseDialog.props";
+import { CloseIconButton } from "components/common/IconButton";
 import styles from "./BaseDialog.module.scss";
 
 BaseDialog.propTypes = propTypes;

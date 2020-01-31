@@ -1,19 +1,32 @@
 import React, { memo, useState } from "react";
 
+import { validateEmail, validatePassword } from "utils/Validator";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
+import discardFalsyValues from "utils/discardFalsyValues";
+import deriveNewErrorsState from "utils/deriveNewErrorsState";
+import isEmptyObject from "utils/isEmptyObject";
 import styles from "./SignInDialog.module.scss";
+import translateError from "utils/translateError";
 
 SignInDialog.propTypes = propTypes;
 
+const INITIAL_CREDENTIALS = {
+    email: "",
+    password: ""
+};
+
+const INITIAL_ERRORS = {
+    emailError: "",
+    passwordError: ""
+};
+
 function SignInDialog ({ onClose, showSignUpDialog }) {
-    const [credentials, setCredentials] = useState({
-        email: "",
-        password: ""
-    });
+    const [credentials, setCredentials] = useState(INITIAL_CREDENTIALS);
+    const [errors, setErrors] = useState(INITIAL_ERRORS);
 
     const { email, password } = credentials;
 
@@ -29,14 +42,36 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        //
+        const errors = validate(credentials);
+
+        if (errors) {
+            const newErrorsState = deriveNewErrorsState(errors);
+            return setErrors(newErrorsState);
+        }
+
+        // submit
+        setErrors(INITIAL_ERRORS);
     };
 
-    const handleSignUp = (event) => {
+    const handleClickOnSignUp = (event) => {
         event.preventDefault();
 
         onClose();
         showSignUpDialog();
+    };
+
+    const validate = ({ email, password }) => {
+        const emailError = validateEmail(email);
+        const passwordError = validatePassword(password);
+
+        const errors = discardFalsyValues({
+            emailError,
+            passwordError
+        });
+
+        return (isEmptyObject(errors))
+            ? null
+            : errors;
     };
 
     const signInUsingYandex = () => {
@@ -59,7 +94,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                         name="email"
                         onChange={handleInputChange}
                         rootClassName={styles.inputContainer}
-                        type="email"
+                        type="text"
                         value={email}
                     />
 
@@ -86,7 +121,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                         </span>
 
                         <CustomLink
-                            onClick={handleSignUp}
+                            onClick={handleClickOnSignUp}
                             to="/"
                         >
                             Зарегистрироваться!

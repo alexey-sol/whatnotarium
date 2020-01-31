@@ -33,6 +33,11 @@ module.exports = {
         "quotes": [2, "double"],
         "max-len": ["error", { "code": 80 }],
         "object-curly-spacing": [2, "always"],
-        "semi": [2, "always", { "omitLastInOneLineBlock": true }]
+        "semi": [2, "always", { "omitLastInOneLineBlock": true }],
+        "sort-imports": [2, {
+            "ignoreCase": false,
+            "ignoreMemberSort": false,
+            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+        }]
     }
 };

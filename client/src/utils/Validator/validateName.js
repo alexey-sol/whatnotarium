@@ -8,6 +8,8 @@ function validateName (name = "") {
         return NAME_EMPTY;
     } else if (name.length > 50) {
         return NAME_TOO_LONG;
+    } else {
+        return null;
     }
 }
 
