@@ -29,8 +29,7 @@ function translateError (error = "") {
         case PASSWORD_EMPTY:
             return "Пожалуйста, введите пароль";
         case PASSWORD_TOO_WEAK:
-            return "Пожалуйста, придумайте пароль посложнее - не менее 6 " +
-                "символов";
+            return "Пожалуйста, придумайте пароль посложнее (*)";
         default:
             return null;
     }

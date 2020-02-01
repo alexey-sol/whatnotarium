@@ -1,11 +1,12 @@
 import React, { memo, useState } from "react";
 
-import { validateEmail, validatePassword } from "utils/Validator";
+import { PASSWORD_TOO_WEAK } from "constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
+import { validateEmail, validatePassword } from "utils/Validator";
 import discardFalsyValues from "utils/discardFalsyValues";
 import deriveNewErrorsState from "utils/deriveNewErrorsState";
 import isEmptyObject from "utils/isEmptyObject";
@@ -100,6 +101,10 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
         console.log("signInUsingYandex");
     };
 
+    const weakPasswordHint = (passwordError === PASSWORD_TOO_WEAK)
+        ? "Не менее 6 символов"
+        : "";
+
     return (
         <BaseDialog
             onClose={onClose}
@@ -123,6 +128,8 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
 
                     <Input
                         error={passwordErrorTranslation}
+                        errorTooltip={weakPasswordHint}
+                        hasFixedTooltip
                         label="Пароль"
                         name="password"
                         onChange={handleInputChange}

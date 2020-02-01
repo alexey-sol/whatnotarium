@@ -10,12 +10,10 @@ BaseDialog.propTypes = propTypes;
 BaseDialog.defaultProps = defaultProps;
 
 function BaseDialog ({ children, className, onClose, title, width }) {
-    const rootElement = document.getElementById("root");
-
     const containerClassName = classnames(
         styles.container,
-        className,
-        width && styles[`${width}Width`]
+        styles[`${width}Width`],
+        className
     );
 
     // Add back button
@@ -58,7 +56,7 @@ function BaseDialog ({ children, className, onClose, title, width }) {
 
     return ReactDOM.createPortal(
         dialogElement,
-        rootElement
+        document.body
     );
 }
 

@@ -1,10 +1,12 @@
 import PropTypes from "prop-types";
 
-const { func, string } = PropTypes;
+const { bool, func, string } = PropTypes;
 
 export const defaultProps = {
     className: "",
     error: "",
+    errorTooltip: "",
+    hasFixedTooltip: false,
     label: "",
     rootClassName: "",
     value: ""
@@ -13,6 +15,8 @@ export const defaultProps = {
 export const propTypes = {
     className: string,
     error: string,
+    errorTooltip: string,
+    hasFixedTooltip: bool,
     label: string,
     name: string.isRequired,
     onChange: func.isRequired,

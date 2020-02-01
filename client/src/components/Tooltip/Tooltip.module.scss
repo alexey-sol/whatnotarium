@@ -1,0 +1,37 @@
+@import "styles/style.scss";
+
+.container {
+    position: absolute;
+    bottom: 0;
+    z-index: 10;
+    box-sizing: border-box;
+    height: max-content;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid $tooltip-border-color;
+    background-color: $tooltip-bg-color;
+    text-align: center;
+    pointer-events: none;
+
+    &.smallWidth {
+        width: 6rem;
+    }
+
+    &.mediumWidth {
+        width: 12rem;
+    }
+
+    &.largeWidth {
+        width: 18rem;
+    }
+
+    .text {
+        color: $tooltip-text-color;
+        font-family: $font-family--normal;
+        font-size: $font-size--smaller;
+        cursor: default;
+    }
+}
+
+.fixed {
+    position: fixed;
+}

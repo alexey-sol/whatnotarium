@@ -1,6 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useRef } from "react";
 import classnames from "classnames";
 
+import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./Input.props";
 import styles from "./Input.module.scss";
 
@@ -10,6 +11,8 @@ Input.defaultProps = defaultProps;
 function Input ({
     className,
     error,
+    errorTooltip,
+    hasFixedTooltip,
     label,
     name,
     onChange,
@@ -17,6 +20,8 @@ function Input ({
     value,
     ...rest
 }) {
+    const errorTooltipRef = useRef(null);
+
     const hasValue = value.length > 0;
 
     const inputClassName = classnames(
@@ -44,9 +49,18 @@ function Input ({
                 {label}
             </label>}
 
-            {error && <span className={styles.errorText}>
+            {error && <span
+                className={styles.errorText}
+                ref={errorTooltipRef}
+            >
                 {error}
             </span>}
+
+            {errorTooltip && <Tooltip
+                elementRef={errorTooltipRef}
+                isFixed={hasFixedTooltip}
+                text={errorTooltip}
+            />}
         </div>
     );
 }

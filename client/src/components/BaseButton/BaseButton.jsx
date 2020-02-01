@@ -18,8 +18,8 @@ function BaseButton ({
 }) {
     const buttonClassName = classnames(
         styles.button,
+        styles[`${width}Width`],
         className,
-        width && styles[`${width}Width`],
         theme && styles[`${theme}Theme`],
         (disabled) ? styles.disabled : ""
     );

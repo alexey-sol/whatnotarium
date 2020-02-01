@@ -58,6 +58,7 @@
 
     .errorText {
         position: absolute;
+        width: max-content;
         margin-top: 0.2rem;
         color: $input-text-color--error;
         font-size: $font-size--smaller;
