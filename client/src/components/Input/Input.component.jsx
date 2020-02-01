@@ -9,6 +9,7 @@ Input.defaultProps = defaultProps;
 
 function Input ({
     className,
+    error,
     label,
     name,
     onChange,
@@ -18,16 +19,23 @@ function Input ({
 }) {
     const hasValue = value.length > 0;
 
+    const inputClassName = classnames(
+        styles.input,
+        className,
+        (error) ? styles.error : ""
+    );
+
     const labelClassName = classnames(
         styles.label,
-        (hasValue) ? styles.shrink : ""
+        (hasValue) ? styles.shrink : "",
+        (error) ? styles.error : ""
     );
 
     return (
         <div className={classnames(styles.container, rootClassName)}>
             <input
                 {...rest}
-                className={classnames(styles.input, className)}
+                className={inputClassName}
                 name={name}
                 onChange={onChange}
             />
@@ -35,6 +43,10 @@ function Input ({
             {label && <label className={labelClassName}>
                 {label}
             </label>}
+
+            {error && <span className={styles.errorText}>
+                {error}
+            </span>}
         </div>
     );
 }

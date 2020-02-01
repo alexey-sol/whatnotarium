@@ -8,7 +8,7 @@
 
 .container {
     position: relative;
-    margin-top: 2.5rem;
+    margin-top: 4rem;
 
     .input {
         display: block;
@@ -25,6 +25,11 @@
     
         &:focus ~ .label {
             @include shrinkLabel();
+        }
+
+        &.error {
+            color: $input-text-color--error;
+            border-color: $input-border-color--error;
         }
     }
 
@@ -45,5 +50,20 @@
         &.shrink {
             @include shrinkLabel();
         }
+
+        &.error {
+            color: $input-label-color--error !important;
+        }
+    }
+
+    .errorText {
+        position: absolute;
+        margin-top: 0.2rem;
+        color: $input-text-color--error;
+        font-size: $font-size--smaller;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        user-select: none;
     }
 }

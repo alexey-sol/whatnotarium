@@ -10,10 +10,10 @@ import {
     PASSWORD_TOO_WEAK
 } from "constants/validationErrors";
 
-function translateError (error) {
+function translateError (error = "") {
     switch (error) {
         case CONFIRM_PASSWORD_EMPTY:
-            return "Пожалуйста, введите пароль";
+            return "Пожалуйста, введите пароль еще раз";
         case CONFIRM_PASSWORD_NOT_MATCH:
             return "Пароли не сопадают";
         case EMAIL_EMPTY:
@@ -27,12 +27,12 @@ function translateError (error) {
         case NAME_TOO_LONG:
             return "Имя слишком длинное";
         case PASSWORD_EMPTY:
-            return "Пожалуйста, укажите пароль";
+            return "Пожалуйста, введите пароль";
         case PASSWORD_TOO_WEAK:
             return "Пожалуйста, придумайте пароль посложнее - не менее 6 " +
                 "символов";
         default:
-            return "Что-то пошло не так";
+            return null;
     }
 }
 

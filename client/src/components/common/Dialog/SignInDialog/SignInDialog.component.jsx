@@ -29,28 +29,48 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     const [errors, setErrors] = useState(INITIAL_ERRORS);
 
     const { email, password } = credentials;
+    const { emailError, passwordError } = errors;
+
+    const emailErrorTranslation = translateError(emailError);
+    const passwordErrorTranslation = translateError(passwordError);
+
+    const setUpdatedErrors = (updatedErrors, callback) => {
+        if (updatedErrors) {
+            const newErrorsState = deriveNewErrorsState(updatedErrors);
+            setErrors(newErrorsState);
+        } else {
+            setErrors(INITIAL_ERRORS);
+            if (callback) callback();
+        }
+    };
+
+    const submit = () => {
+        console.log("Submit");
+    };
 
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
 
-        setCredentials({
+        const newCredentials = {
             ...credentials,
             [name]: value
-        });
+        };
+
+        setCredentials(newCredentials);
+
+        const hasValidationErrors = !isEmptyObject(discardFalsyValues(errors));
+
+        if (hasValidationErrors) {
+            const updatedErrors = validate(newCredentials);
+            setUpdatedErrors(updatedErrors);
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const errors = validate(credentials);
-
-        if (errors) {
-            const newErrorsState = deriveNewErrorsState(errors);
-            return setErrors(newErrorsState);
-        }
-
-        // submit
-        setErrors(INITIAL_ERRORS);
+        setUpdatedErrors(errors, submit);
     };
 
     const handleClickOnSignUp = (event) => {
@@ -69,9 +89,11 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
             passwordError
         });
 
-        return (isEmptyObject(errors))
-            ? null
-            : errors;
+        const hasErrors = !isEmptyObject(errors);
+
+        return (hasErrors)
+            ? errors
+            : null;
     };
 
     const signInUsingYandex = () => {
@@ -90,6 +112,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                     onSubmit={handleSubmit}
                 >
                     <Input
+                        error={emailErrorTranslation}
                         label="Email"
                         name="email"
                         onChange={handleInputChange}
@@ -99,6 +122,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                     />
 
                     <Input
+                        error={passwordErrorTranslation}
                         label="Пароль"
                         name="password"
                         onChange={handleInputChange}

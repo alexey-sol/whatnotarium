@@ -4,6 +4,7 @@ const { func, string } = PropTypes;
 
 export const defaultProps = {
     className: "",
+    error: "",
     label: "",
     rootClassName: "",
     value: ""
@@ -11,6 +12,7 @@ export const defaultProps = {
 
 export const propTypes = {
     className: string,
+    error: string,
     label: string,
     name: string.isRequired,
     onChange: func.isRequired,

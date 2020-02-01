@@ -49,9 +49,12 @@ $icon-color--hover: $color-tertiary;
 
 $input-bg-color: white;
 $input-border-color: $gray--dark;
+$input-border-color--error: red;
 $input-text-color: $gray--darkest;
+$input-text-color--error: red;
 
 $input-label-color: $gray--dark;
+$input-label-color--error: red;
 $input-label-color--shrink: $gray--darken;
 
 $logo-bg-color: $color-tertiary;
