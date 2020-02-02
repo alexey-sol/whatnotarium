@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonJS",
+        "allowSyntheticDefaultImports": true,
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "strict": true,
+        "alwaysStrict": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "outDir": "dist",
+        "baseUrl": "./",
+        "paths": {
+            "app/*": ["./src/app/*"],
+            "config/*": ["./src/config/*"],
+            "constants/*": ["./src/common/constants/*"],
+            "types/*": ["./src/common/types/*"],
+            "utils/*": ["./src/common/utils/*"]
+        }
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude" : [
+        "src/types/*",
+        "node_modules"
+    ]
+}
