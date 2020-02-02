@@ -1,16 +1,18 @@
 type Process = NodeJS.Process;
 
-type IGetEnv = (nodeProcess?: Process) => string;
+type IGetEnv = (
+    nodeProcess?: Process
+) => string;
 
 const getEnv: IGetEnv = function (
     nodeProcess: Process = process
 ): string {
-    const { NODE_ENV: nodeEnv } = nodeProcess.env;
+    const { NODE_ENV: env } = nodeProcess.env;
 
-    const envIsString = typeof nodeEnv === "string";
+    const envIsString = typeof env === "string";
 
-    return (nodeEnv && envIsString)
-        ? nodeEnv.trim()
+    return (env && envIsString)
+        ? env.trim()
         : "";
 };
 

@@ -2,11 +2,11 @@ import Joi, { ObjectSchema, SchemaMap, ValidationResult } from "@hapi/joi";
 
 import IIndexer from "types/IIndexer";
 import IJoiPresets from "./types/IJoiPresets";
-import IJoiValidator from "./types/IJoiValidator";
+import IValidator from "./types/IValidator";
 import IPropName from "./types/IPropName";
 import defaultPresets from "./defaultPresets";
 
-class JoiValidator implements IJoiValidator {
+class Validator implements IValidator {
     private presets: IJoiPresets;
 
     constructor (
@@ -18,7 +18,7 @@ class JoiValidator implements IJoiValidator {
         };
     }
 
-    private createSchemaMap (
+    private createSchema (
         propNames: IPropName[]
     ): ObjectSchema {
         const schemaMap: SchemaMap = {};
@@ -34,7 +34,7 @@ class JoiValidator implements IJoiValidator {
         objectToCheck: IIndexer<any>,
         ...propNames: IPropName[]
     ): ValidationResult {
-        const schema: ObjectSchema = this.createSchemaMap(propNames);
+        const schema: ObjectSchema = this.createSchema(propNames);
   
         const validationResult = schema.validate(
             objectToCheck,
@@ -45,4 +45,4 @@ class JoiValidator implements IJoiValidator {
     }
 }
 
-export default JoiValidator;
+export default Validator;

@@ -1,6 +1,3 @@
-import "module-alias/register";
-import dotenv from "dotenv";
-
 import Validator from "utils/Validator";
 import terminateProcess from "utils/terminateProcess";
 
@@ -8,7 +5,9 @@ const validator = new Validator();
 
 const { error, value } = validator.validateObject(
     process.env,
-    "NODE_ENV"
+    "HOST",
+    "PORT",
+    "URL"
 );
 
 if (error) {
@@ -16,10 +15,8 @@ if (error) {
     terminateProcess();
 }
 
-const nodeEnv = value.NODE_ENV;
+const { HOST, PORT, URL } = value;
 
-if (nodeEnv === "development") {
-    dotenv.config();
-}
-
-export default require("./app");
+export const host = HOST;
+export const port = PORT;
+export const url = URL;
