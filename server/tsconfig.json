@@ -13,9 +13,11 @@
         "outDir": "dist",
         "baseUrl": "./",
         "paths": {
+            "api/*": ["./src/api/*"],
             "app/*": ["./src/app/*"],
             "config/*": ["./src/config/*"],
             "constants/*": ["./src/common/constants/*"],
+            "root/*": ["./*"],
             "types/*": ["./src/common/types/*"],
             "utils/*": ["./src/common/utils/*"]
         }

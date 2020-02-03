@@ -1,6 +1,6 @@
 import Joi, { ObjectSchema, SchemaMap, ValidationResult } from "@hapi/joi";
 
-import IIndexer from "types/IIndexer";
+import IObjectIndexer from "types/IObjectIndexer";
 import IJoiPresets from "./types/IJoiPresets";
 import IValidator from "./types/IValidator";
 import IPropName from "./types/IPropName";
@@ -31,7 +31,7 @@ class Validator implements IValidator {
     }
 
     validateObject (
-        objectToCheck: IIndexer<any>,
+        objectToCheck: IObjectIndexer<any>,
         ...propNames: IPropName[]
     ): ValidationResult {
         const schema: ObjectSchema = this.createSchema(propNames);

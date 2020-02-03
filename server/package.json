@@ -10,9 +10,11 @@
   "author": "Alexey Soloviev",
   "license": "ISC",
   "_moduleAliases": {
+    "api": "src/api/",
     "app": "src/app/",
     "config": "src/config/",
     "constants": "src/common/constants/",
+    "root": ".",
     "types": "src/common/types/",
     "utils": "src/common/utils/"
   },

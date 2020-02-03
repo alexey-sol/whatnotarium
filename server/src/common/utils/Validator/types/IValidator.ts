@@ -1,11 +1,11 @@
 import { ValidationResult } from "@hapi/joi";
 
-import IIndexer from "types/IIndexer";
+import IObjectIndexer from "types/IObjectIndexer";
 import IPropName from "./IPropName";
 
 interface IValidator {
     validateObject (
-        objectToCheck: IIndexer<any>,
+        objectToCheck: IObjectIndexer<any>,
         ...propNames: IPropName[]
     ): ValidationResult;
 }
