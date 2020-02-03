@@ -1,8 +1,8 @@
 import Joi from "@hapi/joi";
 
-import IJoiPresets from "./types/IJoiPresets";
+import JoiPresets from "./types/JoiPresets";
 
-const DEFAULT_PRESETS: IJoiPresets = {
+const DEFAULT_PRESETS: JoiPresets = {
     HOST: Joi.string().min(1).required().trim(),
 
     NODE_ENV: Joi.string().required().trim().valid(

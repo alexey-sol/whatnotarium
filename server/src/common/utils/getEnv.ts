@@ -1,10 +1,10 @@
 type Process = NodeJS.Process;
 
-type IGetEnv = (
+type GetEnv = (
     nodeProcess?: Process
 ) => string;
 
-const getEnv: IGetEnv = function (
+const getEnv: GetEnv = function (
     nodeProcess: Process = process
 ): string {
     const { NODE_ENV: env } = nodeProcess.env;

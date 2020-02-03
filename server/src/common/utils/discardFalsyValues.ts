@@ -1,22 +1,22 @@
-import IArrayIndexer from "types/IArrayIndexer";
-import IObjectIndexer from "types/IObjectIndexer";
+import ArrayIndexer from "types/ArrayIndexer";
+import ObjectIndexer from "types/ObjectIndexer";
 
-interface IDiscardFalsyValues {
-    (object: IArrayIndexer<any>[]): IArrayIndexer<any>[];
-    (object: IObjectIndexer<any>): IObjectIndexer<any>;
+interface DiscardFalsyValues {
+    (object: ArrayIndexer<any>[]): ArrayIndexer<any>[];
+    (object: ObjectIndexer<any>): ObjectIndexer<any>;
 }
 
 function discardFalsyValues (
-    object: IArrayIndexer<any>[]
-): IArrayIndexer<any>[];
+    object: ArrayIndexer<any>[]
+): ArrayIndexer<any>[];
 
 function discardFalsyValues (
-    object: IObjectIndexer<any>
-): IObjectIndexer<any>;
+    object: ObjectIndexer<any>
+): ObjectIndexer<any>;
 
 function discardFalsyValues (
     object: any
-): IArrayIndexer<any>[] | IObjectIndexer<any> {
+): ArrayIndexer<any>[] | ObjectIndexer<any> {
     const isArray = Array.isArray(object);
 
     if (isArray) {
@@ -27,15 +27,15 @@ function discardFalsyValues (
 }
 
 function filterOutArray (
-    array: IArrayIndexer<any>[]
-): IArrayIndexer<any>[] {
+    array: ArrayIndexer<any>[]
+): ArrayIndexer<any>[] {
     return array.filter((element: any) => Boolean(element));
 }
 
 function filterOutObject (
-    object: IObjectIndexer<any>
-): IObjectIndexer<any> {
-    const result: IObjectIndexer<any> = {};
+    object: ObjectIndexer<any>
+): ObjectIndexer<any> {
+    const result: ObjectIndexer<any> = {};
 
     for (const [key, value] of Object.entries(object)) {
         if (value) {
@@ -46,6 +46,6 @@ function filterOutObject (
     return result;
 }
 
-const typedDiscardFalsyValues: IDiscardFalsyValues = discardFalsyValues;
+const typedDiscardFalsyValues: DiscardFalsyValues = discardFalsyValues;
 
 export default typedDiscardFalsyValues;

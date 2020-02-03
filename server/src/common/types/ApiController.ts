@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 
-type IController = (
+type ApiController = (
     request: Request,
     response: Response,
     next: NextFunction
 ) => void | never;
 
-export default IController;
+export default ApiController;

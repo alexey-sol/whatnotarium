@@ -6,11 +6,11 @@ import {
     URL
 } from "constants/env";
 
-type IPropName =
+type PropName =
     typeof HOST |
     typeof NODE_ENV |
     typeof PORT |
     typeof SESSION_SECRET |
     typeof URL;
 
-export default IPropName;
+export default PropName;

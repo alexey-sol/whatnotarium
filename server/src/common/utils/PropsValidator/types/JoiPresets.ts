@@ -1,8 +1,8 @@
 import { NumberSchema, StringSchema } from "@hapi/joi";
 
-import IObjectIndexer from "types/IObjectIndexer";
+import ObjectIndexer from "types/ObjectIndexer";
 
-export default interface IJoiPresets extends IObjectIndexer<
+export default interface JoiPresets extends ObjectIndexer<
     NumberSchema |
     StringSchema |
     undefined

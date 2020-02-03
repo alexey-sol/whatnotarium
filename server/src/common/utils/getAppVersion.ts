@@ -1,15 +1,15 @@
 import packageJson from "root/package.json";
 
-type IGetAppVersion = (
+type GetAppVersion = (
     getMajorVersion?: boolean
 ) => string | void;
 
-const getAppVersion: IGetAppVersion = function (
+const getAppVersion: GetAppVersion = function (
     getMajorVersion?: boolean
 ): string | void {
     const fullVersion = packageJson.version;
     const majorVersion = fullVersion
-        .split('.')
+        .split(".")
         .shift();
 
     return (getMajorVersion)

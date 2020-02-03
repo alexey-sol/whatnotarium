@@ -5,12 +5,12 @@ import { SIGTERM } from "constants/signals";
 type Process = NodeJS.Process;
 type Server = http.Server;
 
-type ITerminateProcess = (
+type TerminateProcess = (
     server?: Server,
     nodeProcess?: Process
 ) => void;
 
-const terminateProcess: ITerminateProcess = function (
+const terminateProcess: TerminateProcess = function (
     server?: Server,
     nodeProcess: Process = process
 ): void {

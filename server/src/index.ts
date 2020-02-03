@@ -1,12 +1,12 @@
 import "module-alias/register";
 import dotenv from "dotenv";
 
-import Validator from "utils/Validator";
+import PropsValidator from "utils/PropsValidator";
 import terminateProcess from "utils/terminateProcess";
 
-const validator = new Validator();
+const propsValidator = new PropsValidator();
 
-const { error, value } = validator.validateObject(
+const { error, value } = propsValidator.validateObject(
     process.env,
     "NODE_ENV"
 );

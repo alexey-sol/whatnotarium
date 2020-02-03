@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
-import IController from "types/IController";
+import ApiController from "types/ApiController";
 
-const createUser: IController = function (
+const createUser: ApiController = function (
     request: Request,
     response: Response,
     next: NextFunction
@@ -10,7 +10,7 @@ const createUser: IController = function (
     console.log("createUser");
 };
 
-const getUser: IController = function (
+const getUser: ApiController = function (
     request: Request,
     response: Response,
     next: NextFunction
@@ -19,7 +19,7 @@ const getUser: IController = function (
     console.log("getUser");
 };
 
-const updateUser: IController = function (
+const updateUser: ApiController = function (
     request: Request,
     response: Response,
     next: NextFunction
