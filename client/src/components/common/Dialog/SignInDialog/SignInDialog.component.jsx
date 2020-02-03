@@ -1,17 +1,17 @@
 import React, { memo, useState } from "react";
 
-import { PASSWORD_TOO_WEAK } from "constants/validationErrors";
+import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
-import { validateEmail, validatePassword } from "utils/Validator";
-import discardFalsyValues from "utils/discardFalsyValues";
-import deriveNewErrorsState from "utils/deriveNewErrorsState";
-import isEmptyObject from "utils/isEmptyObject";
+import { validateEmail, validatePassword } from "common/utils/Validator";
+import discardFalsyValues from "common/utils/discardFalsyValues";
+import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
+import isEmptyObject from "common/utils/isEmptyObject";
 import styles from "./SignInDialog.module.scss";
-import translateError from "utils/translateError";
+import translateError from "common/utils/translateError";
 
 SignInDialog.propTypes = propTypes;
 

@@ -1,7 +1,7 @@
 import {
     PASSWORD_EMPTY,
     PASSWORD_TOO_WEAK
-} from "constants/validationErrors";
+} from "common/constants/validationErrors";
 
 function validatePassword (password = "") {
     if (password.length === 0) {

@@ -1,25 +1,35 @@
-import Joi, { ObjectSchema, SchemaMap, ValidationResult } from "@hapi/joi";
+import Joi, {
+    AnySchema,
+    ObjectSchema,
+    SchemaMap,
+    ValidationResult
+} from "@hapi/joi";
 
 import ObjectIndexer from "types/ObjectIndexer";
-import JoiPresets from "./types/JoiPresets";
-import Validator from "./types/Validator";
-import PropName from "./types/PropName";
 import defaultPresets from "./defaultPresets";
 
+interface Validator {
+    validate (
+        ...propNames: string[]
+    ): ValidationResult;
+}
+
 class PropsValidator implements Validator {
-    private presets: JoiPresets;
+    private objectToCheck: ObjectIndexer<any>;
+    private presets: ObjectIndexer<AnySchema>;
 
     constructor (
-        customPresets: JoiPresets = {}
+        objectToCheck: ObjectIndexer<any>,
+        customPresets?: ObjectIndexer<AnySchema>
     ) {
-        this.presets = {
-            ...defaultPresets,
-            ...customPresets
-        };
+        this.objectToCheck = objectToCheck;
+        this.presets = (customPresets)
+            ? customPresets
+            : defaultPresets;
     }
 
     private createSchema (
-        propNames: PropName[]
+        propNames: string[]
     ): ObjectSchema {
         const schemaMap: SchemaMap = {};
 
@@ -30,14 +40,17 @@ class PropsValidator implements Validator {
         return Joi.object(schemaMap);
     }
 
-    validateObject (
-        objectToCheck: ObjectIndexer<any>,
-        ...propNames: PropName[]
+    validate (
+        ...propNames: string[]
     ): ValidationResult {
+        if (propNames.length === 0) {
+            propNames = Object.keys(this.presets);
+        }
+
         const schema: ObjectSchema = this.createSchema(propNames);
   
         const validationResult = schema.validate(
-            objectToCheck,
+            this.objectToCheck,
             { stripUnknown: true }
         );
 

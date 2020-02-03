@@ -7,3 +7,4 @@ export const PASSWORD_EMPTY = "PASSWORD_EMPTY";
 export const PASSWORD_TOO_WEAK = "PASSWORD_TOO_WEAK";
 export const NAME_EMPTY = "NAME_EMPTY";
 export const NAME_TOO_LONG = "NAME_TOO_LONG";
+export const NAME_TOO_SHORT = "NAME_TOO_SHORT";

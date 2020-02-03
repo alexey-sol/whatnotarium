@@ -4,10 +4,9 @@ import dotenv from "dotenv";
 import PropsValidator from "utils/PropsValidator";
 import terminateProcess from "utils/terminateProcess";
 
-const propsValidator = new PropsValidator();
+const environmentValidator = new PropsValidator(process.env);
 
-const { error, value } = propsValidator.validateObject(
-    process.env,
+const { error, value } = environmentValidator.validate(
     "NODE_ENV"
 );
 

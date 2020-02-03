@@ -29,7 +29,17 @@ function SignUpDialog ({ onClose }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("Sign up");
+        // validate
+
+        fetch("/api/v0/user", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email,
+                name,
+                password
+            })
+        });
     };
 
     return (

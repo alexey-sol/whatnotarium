@@ -1,7 +1,7 @@
 import {
     CONFIRM_PASSWORD_EMPTY,
     CONFIRM_PASSWORD_NOT_MATCH
-} from "constants/validationErrors";
+} from "common/constants/validationErrors";
 
 function validateConfirmPassword (password = "", confirmPassword = "") {
     if (confirmPassword.length === 0) {

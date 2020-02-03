@@ -6,9 +6,10 @@ import {
     EMAIL_OCCUPIED,
     NAME_EMPTY,
     NAME_TOO_LONG,
+    NAME_TOO_SHORT,
     PASSWORD_EMPTY,
     PASSWORD_TOO_WEAK
-} from "constants/validationErrors";
+} from "common/constants/validationErrors";
 
 function translateError (error = "") {
     switch (error) {
@@ -26,6 +27,8 @@ function translateError (error = "") {
             return "Пожалуйста, укажите имя";
         case NAME_TOO_LONG:
             return "Имя слишком длинное";
+        case NAME_TOO_SHORT:
+            return "Имя слишком короткое";
         case PASSWORD_EMPTY:
             return "Пожалуйста, введите пароль";
         case PASSWORD_TOO_WEAK:
