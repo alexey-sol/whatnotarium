@@ -8,9 +8,9 @@ type ComponentName =
     typeof SERVER;
 
 class ConfigFactory<Type> implements Factory<Type> {
-    private componentName: ComponentName;
-
-    constructor (componentName: ComponentName) {
+    constructor (
+        private componentName: ComponentName
+    ) {
         this.componentName = componentName;
     }
 

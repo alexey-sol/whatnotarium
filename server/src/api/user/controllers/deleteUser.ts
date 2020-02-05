@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import ApiController from "types/ApiController";
-import queryText from "./deleteUser.query";
-import makeDbQuery from "utils/makeDbQuery";
+import User from "api/user/model";
 
 const deleteUser: ApiController = async function (
     request: Request,
@@ -12,12 +11,7 @@ const deleteUser: ApiController = async function (
     const { id } = request.params;
 
     try {
-        await makeDbQuery(
-            "delete-user",
-            queryText,
-            [id]
-        );
-
+        await User.destroyById(id);
         response.status(200).send({ id });
     } catch (error) {
         // return next(error);

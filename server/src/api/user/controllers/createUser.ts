@@ -3,9 +3,7 @@ import Joi from "@hapi/joi";
 
 import ApiController from "types/ApiController";
 import PropsValidator from "utils/PropsValidator";
-import hashPassword from "utils/hashPassword";
-import queryText from "./createUser.query";
-import makeDbQuery from "utils/makeDbQuery";
+import User from "api/user/model";
 
 const validatorPresets = {
     email: Joi.string().email({
@@ -25,33 +23,18 @@ const createUser: ApiController = async function (
         validatorPresets
     );
 
-    const { error, value } = bodyValidator.validate();
+    const {
+        error,
+        value: userData
+    } = bodyValidator.validate();
     
     if (error) {
         // return next(error);
     }
 
-    const {
-        email,
-        name,
-        password
-    } = value;
-
-    const hashPasswordResult = hashPassword(password);
-    const { hash } = hashPasswordResult;
-    // hashing password: https://stackoverflow.com/a/17201493
-
     try {
-        const queryValues = [email, hash, name];
-
-        const result = await makeDbQuery(
-            "create-user",
-            queryText,
-            queryValues
-        );
-
-        const { id } = result.rows[0];
-        response.status(201).send({ id });
+        const user = await User.create(userData);
+        response.status(201).send(user);
     } catch (error) {
         // return next(error);
     }

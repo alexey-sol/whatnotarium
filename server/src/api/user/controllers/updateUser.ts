@@ -3,8 +3,7 @@ import Joi from "@hapi/joi";
 
 import ApiController from "types/ApiController";
 import PropsValidator from "utils/PropsValidator";
-import queryText from "./updateUser.query";
-import makeDbQuery from "utils/makeDbQuery";
+import User from "api/user/model";
 
 const validatorPresets = {
     email: Joi.string().email({
@@ -25,30 +24,17 @@ const updateUser: ApiController = async function (
     );
 
     const { id } = request.params;
-    const { error, value } = bodyValidator.validate();
+    const { error, value: userData } = bodyValidator.validate();
     
     if (error) {
-        console.log(error)
         // return next(error);
     }
 
-    const {
-        email,
-        name,
-        password
-    } = value;
-
     try {
-        const result = await makeDbQuery(
-            "update-user",
-            queryText,
-            [email, password, name, id]
-        );
-
-        const updatedUser = result.rows[0];
+        const user = await User.findById(id);
+        const updatedUser = await user.updateAttributes(userData);
         response.status(200).send(updatedUser);
     } catch (error) {
-        console.log(error)
         // return next(error);
     }
 };

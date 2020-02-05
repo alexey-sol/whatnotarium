@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import ApiController from "types/ApiController";
-import queryText from "./getUsers.query";
-import makeDbQuery from "utils/makeDbQuery";
+import User from "api/user/model";
 
 const getUsers: ApiController = async function (
     request: Request,
@@ -10,12 +9,7 @@ const getUsers: ApiController = async function (
     next: NextFunction
 ): Promise<void> {
     try {
-        const result = await makeDbQuery(
-            "get-users",
-            queryText
-        );
-
-        const users = result.rows;
+        const users = await User.find();
         response.status(200).send(users);
     } catch (error) {
         // return next(error);
