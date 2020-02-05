@@ -1,6 +1,6 @@
 export default interface HashPasswordResult {
-    iterations: number;
     hash: Buffer;
+    iterations: number;
     keyLength: number;
     salt: string;
 }

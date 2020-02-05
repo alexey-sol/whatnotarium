@@ -4,6 +4,6 @@ type ApiController = (
     request: Request,
     response: Response,
     next: NextFunction
-) => void | never;
+) => Promise<void>;
 
 export default ApiController;

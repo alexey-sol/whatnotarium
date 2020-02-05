@@ -25,8 +25,8 @@ const hashPassword: HashPassword = function (
     );
 
     return {
-        iterations,
         hash,
+        iterations,
         keyLength,
         salt
     };

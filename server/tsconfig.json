@@ -14,7 +14,7 @@
         "baseUrl": "./",
         "paths": {
             "api/*": ["./src/api/*"],
-            "app/*": ["./src/app/*"],
+            "app": ["./src/app"],
             "config/*": ["./src/config/*"],
             "constants/*": ["./src/common/constants/*"],
             "root/*": ["./*"],

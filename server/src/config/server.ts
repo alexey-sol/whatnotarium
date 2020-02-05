@@ -1,21 +1,37 @@
+import { ValidationResult } from "@hapi/joi";
+
+import {
+    HOST,
+    PORT,
+    URL
+} from "constants/env";
+
+import { SERVER } from "constants/componentNames";
+import ConfigFactory from "utils/ConfigFactory";
 import PropsValidator from "utils/PropsValidator";
+import ServerConfig from "types/ServerConfig";
+import Validator from "types/Validator";
 import terminateProcess from "utils/terminateProcess";
 
 const environmentValidator = new PropsValidator(process.env);
-
-const { error, value } = environmentValidator.validate(
-    "HOST",
-    "PORT",
-    "URL"
-);
+const { error, value } = getValidationResult(environmentValidator);
 
 if (error) {
     console.error(error);
     terminateProcess();
 }
 
-const { HOST, PORT, URL } = value;
+const serverConfigFactory = new ConfigFactory<ServerConfig>(SERVER);
+const config = serverConfigFactory.create(value);
 
-export const host = HOST;
-export const port = PORT;
-export const url = URL;
+export default config;
+
+function getValidationResult (
+    validator: Validator
+): ValidationResult {
+    return validator.validate(
+        HOST,
+        PORT,
+        URL
+    );
+}

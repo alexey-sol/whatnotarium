@@ -2,10 +2,11 @@ import { applyMiddleware, createStore } from "redux";
 import { persistStore } from "redux-persist";
 import logger from "redux-logger";
 
+import { DEVELOPMENT } from "common/constants/nodeEnv";
 import rootReducer from "./rootReducer";
 
 const middlewares = [];
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === DEVELOPMENT;
 
 if (isDevelopment) {
     middlewares.push(logger);

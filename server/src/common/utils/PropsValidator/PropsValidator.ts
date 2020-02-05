@@ -6,13 +6,8 @@ import Joi, {
 } from "@hapi/joi";
 
 import ObjectIndexer from "types/ObjectIndexer";
+import Validator from "types/Validator";
 import defaultPresets from "./defaultPresets";
-
-interface Validator {
-    validate (
-        ...propNames: string[]
-    ): ValidationResult;
-}
 
 class PropsValidator implements Validator {
     private objectToCheck: ObjectIndexer<any>;

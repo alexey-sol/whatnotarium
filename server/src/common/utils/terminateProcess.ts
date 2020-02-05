@@ -1,3 +1,4 @@
+import { Client, Pool } from "pg";
 import http from "http";
 
 import { SIGTERM } from "constants/signals";
@@ -7,13 +8,19 @@ type Server = http.Server;
 
 type TerminateProcess = (
     server?: Server,
+    pg?: Client | Pool,
     nodeProcess?: Process
-) => void;
+) => Promise<void>;
 
-const terminateProcess: TerminateProcess = function (
+const terminateProcess: TerminateProcess = async function (
     server?: Server,
+    pg?: Client | Pool,
     nodeProcess: Process = process
-): void {
+): Promise<void> {
+    if (pg) {
+        await pg.end();
+    }
+
     if (server) {
         nodeProcess.kill(nodeProcess.pid, SIGTERM);
     } else {

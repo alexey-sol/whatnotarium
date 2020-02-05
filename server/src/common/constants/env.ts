@@ -1,5 +1,11 @@
 export const HOST = "HOST";
 export const NODE_ENV = "NODE_ENV";
+export const PG_DATABASE_DEV = "PG_DATABASE_DEV";
+export const PG_DATABASE_PROD = "PG_DATABASE_PROD";
+export const PG_HOST = "PG_HOST";
+export const PG_PORT = "PG_PORT";
+export const PG_USER = "PG_USER";
+export const PG_PASSWORD = "PG_PASSWORD";
 export const PORT = "PORT";
 export const SESSION_SECRET = "SESSION_SECRET";
 export const URL = "URL";
