@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 
 import ApiController from "types/ApiController";
-import queryText from "./getUser.query";
+import queryText from "./deleteUser.query";
 import makeDbQuery from "utils/makeDbQuery";
 
-const getUser: ApiController = async function (
+const deleteUser: ApiController = async function (
     request: Request,
     response: Response,
     next: NextFunction
@@ -12,17 +12,16 @@ const getUser: ApiController = async function (
     const { id } = request.params;
 
     try {
-        const result = await makeDbQuery(
-            "get-user",
+        await makeDbQuery(
+            "delete-user",
             queryText,
             [id]
         );
 
-        const user = result.rows[0];
-        response.status(200).send(user);
+        response.status(200).send({ id });
     } catch (error) {
         // return next(error);
     }
 };
 
-export default getUser;
+export default deleteUser;

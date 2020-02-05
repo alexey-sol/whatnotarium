@@ -18,8 +18,8 @@ import Validator from "types/Validator";
 import getEnv from "utils/getEnv";
 import terminateProcess from "utils/terminateProcess";
 
-const environmentValidator = new PropsValidator(process.env);
-const { error, value } = getValidationResult(environmentValidator);
+const envValidator = new PropsValidator(process.env);
+const { error, value } = validateEnv(envValidator);
 
 if (error) {
     console.error(error);
@@ -31,7 +31,7 @@ const config = dbConfigFactory.create(value);
 
 export default config;
 
-function getValidationResult (
+function validateEnv (
     validator: Validator
 ): ValidationResult {
     const isProduction = getEnv() === PRODUCTION;
