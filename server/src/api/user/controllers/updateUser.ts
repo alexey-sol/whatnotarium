@@ -3,7 +3,7 @@ import Joi from "@hapi/joi";
 
 import ApiController from "types/ApiController";
 import PropsValidator from "utils/PropsValidator";
-import User from "api/user/model";
+import User from "api/user/user.model";
 
 const validatorPresets = {
     email: Joi.string().email({
@@ -24,7 +24,11 @@ const updateUser: ApiController = async function (
     );
 
     const { id } = request.params;
-    const { error, value: userData } = bodyValidator.validate();
+
+    const {
+        error,
+        value: userData
+    } = bodyValidator.validate();
 
     if (error) {
         // return next(error);
@@ -33,6 +37,7 @@ const updateUser: ApiController = async function (
     try {
         const user = await User.findById(id);
         const updatedUser = await user.updateAttributes(userData);
+
         response.status(200).send(updatedUser);
     } catch (error) {
         // return next(error);

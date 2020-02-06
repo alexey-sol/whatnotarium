@@ -1,8 +1,8 @@
-import { QueryResult } from "pg";
+import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
 import ModelProps from "types/ModelProps";
 import PgQuery from "./PgQuery";
 
-class UpdateAttributesQuery extends PgQuery {
+class UpdateAttributesQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
         recordId: string
@@ -13,70 +13,41 @@ class UpdateAttributesQuery extends PgQuery {
     private getText (
         props: ModelProps
     ): string {
-        const setClause = this.createSetClause(props);
-        const andClause = this.createAndClause(props);
+        const { setClause, andClause } = this.createClauses(props);
 
         return `
-            UPDATE
-                ${this.tableName}
-            SET
-                ${setClause}
-            WHERE
-                id = $1
-            AND (
-                ${andClause}
-            )
-            RETURNING
-                *;
+            UPDATE ${this.tableName}
+            SET ${setClause}
+            WHERE id = $1
+            AND (${andClause})
+            RETURNING *;
         `;
     }
 
-    private createSetClause (
-        props: ModelProps
-    ): string {
+    private createClauses (props: ModelProps) {
         let count = this.offset;
-        let clause = "";
 
-        for (const key of Object.keys(props)) {
+        const setClauseRows: string[] = [];
+        const andClauseRows: string[] = [];
+
+        for (const key in props) {
             count++;
-            clause += `${key} = COALESCE($${count}, ${key})`;
-
-            const isLastIteration = this.isLastIteration(props, count);
-
-            if (!isLastIteration) {
-                clause += ", ";
-            }
+            setClauseRows.push(`${key} = COALESCE($${count}, ${key})`);
+            andClauseRows.push(`$${count} IS DISTINCT FROM ${key}`);
         }
 
-        return clause;
-    }
-
-    private createAndClause (
-        props: ModelProps
-    ): string {
-        let count = this.offset;
-        let clause = "";
-
-        for (const key of Object.keys(props)) {
-            count++;
-            clause += `$${count} IS DISTINCT FROM ${key}`;
-
-            const isLastIteration = this.isLastIteration(props, count);
-
-            if (!isLastIteration) {
-                clause += " OR ";
-            }
-        }
-
-        return clause;
+        return {
+            setClause: setClauseRows.join(", "),
+            andClause: andClauseRows.join(" OR ")
+        };
     }
 
     async query (
         queryName: string,
         props: ModelProps
-    ): Promise<QueryResult> | never {
+    ): DbAsyncQueryPayload<Type> | never {
         try {
-            return await this.sendQuery({
+            return await this.sendQueryAndGetPayload({
                 name: queryName,
                 text: this.getText(props),
                 values: this.getValues(props)

@@ -1,15 +1,15 @@
 import {
     CreateQuery,
+    DestroyByIdQuery,
+    FindQuery,
+    FindByIdQuery,
     UpdateAttributesQuery
 } from "utils/DbQuery";
 
+import { USERS } from "constants/dbTableNames";
 import Model from "types/Model";
 import ModelProps from "types/ModelProps";
-import deleteUserQuery from "./deleteUser.query";
-import getUserQuery from "./getUser.query";
-import getUsersQuery from "./getUsers.query";
 import hashPassword from "utils/hashPassword";
-import makeDbQuery from "utils/makeDbQuery";
 
 class User implements Model<User> {
     private constructor (props: ModelProps) {
@@ -20,19 +20,17 @@ class User implements Model<User> {
         props: ModelProps
     ): Promise<User> | never {
         const { password } = props;
-        const hashPasswordResult = hashPassword(password);
-        const { hash } = hashPasswordResult;
+        const { hash } = hashPassword(password);
 
         const updatedProps = {
             ...props,
             password: hash
         };
 
-        const query = new CreateQuery("users");
+        const query = new CreateQuery<User>(USERS);
 
         try {
-            const queryResult = await query.query("create", updatedProps);
-            const userProps = queryResult.rows[0];
+            const userProps = await query.query("create", updatedProps);
             const user = new User(userProps);
 
             return user;
@@ -42,13 +40,10 @@ class User implements Model<User> {
     }
 
     static async find (): Promise<User[]> | never {
+        const query = new FindQuery<User>(USERS);
+
         try {
-            const result = await makeDbQuery(
-                "get-users",
-                getUsersQuery
-            );
-    
-            const users = result.rows;
+            const users = await query.query("find");
             return users;
         } catch (error) {
             throw error;
@@ -58,14 +53,10 @@ class User implements Model<User> {
     static async findById (
         id: string
     ): Promise<User> | never {
+        const query = new FindByIdQuery<User>(USERS, id);
+
         try {
-            const result = await makeDbQuery(
-                "get-user",
-                getUserQuery,
-                [id]
-            );
-    
-            const userProps: ModelProps = result.rows[0];
+            const userProps = await query.query("find-by-id");
             const user = new User(userProps);
 
             return user;
@@ -76,33 +67,20 @@ class User implements Model<User> {
 
     static async destroyById (
         id: string
-    ): Promise<string | never> {
-        try {
-            await makeDbQuery(
-                "delete-user",
-                deleteUserQuery,
-                [id]
-            );
+    ): Promise<User> | never {
+        const query = new DestroyByIdQuery<User>(USERS, id);
 
-            return id;
+        try {
+            const deletedUser = await query.query("destroy-by-id");
+            return deletedUser;
         } catch (error) {
             throw error;
         }
     }
 
     async save (): Promise<User> | never {
-        // dynamic values?
-        const { email, id, name, password } = this as ModelProps;
-
-        const userProps: ModelProps = {
-            email,
-            id,
-            name,
-            password
-        };
-
         try {
-            return await this.updateAttributes(userProps);
+            return await this.updateAttributes({...this});
         } catch (error) {
             throw error;
         }
@@ -112,11 +90,10 @@ class User implements Model<User> {
         props: ModelProps
     ): Promise<User> | never {
         const { id } = this as ModelProps;
-        const query = new UpdateAttributesQuery("users", id);
+        const query = new UpdateAttributesQuery<User>(USERS, id);
 
         try {
-            const queryResult = await query.query("update-attributes", props);
-            const userProps = queryResult.rows[0];
+            const userProps = await query.query("update-attributes", props);
             const user = new User(userProps);
 
             return user;

@@ -1,10 +1,13 @@
 import { QueryResult } from "pg";
+import ArrayIndexer from "types/ArrayIndexer";
 import DbQuery from "types/DbQuery";
 import ModelProps from "types/ModelProps";
+import ObjectIndexer from "types/ObjectIndexer";
+import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
 import PgQueryOptions from "types/PgQueryOptions";
 import app from "app";
 
-abstract class PgQuery implements DbQuery {
+abstract class PgQuery<Type> implements DbQuery<Type> {
     protected offset = 0;
 
     constructor (
@@ -15,15 +18,8 @@ abstract class PgQuery implements DbQuery {
         this.offset = (recordId) ? 1 : 0;
     }
 
-    protected isLastIteration (
-        props: ModelProps,
-        count: number
-    ): boolean {
-        return count === Object.keys(props).length + this.offset;
-    }
-
     protected getValues (
-        props: ModelProps
+        props: ModelProps = []
     ): string[] {
         const id = this.recordId;
         const values = Object.values(props);
@@ -33,20 +29,25 @@ abstract class PgQuery implements DbQuery {
             : values;
     }
 
-    protected async sendQuery (
+    protected getPayload (
+        queryResult: QueryResult
+    ): Type & Type[] {
+        const { rows } = queryResult;
+        const hasSingleItem = rows.length === 1;
+
+        return (hasSingleItem)
+            ? rows[0]
+            : rows;
+    }
+
+    protected async sendQueryAndGetPayload (
         queryOptions: PgQueryOptions
-    ): Promise<QueryResult> | never {
-        const { name, text, values } = queryOptions;
+    ): DbAsyncQueryPayload<Type> | never {
         const pgPool = app.get("pgPool");
 
         try {
-            const queryResult = await pgPool.query({
-                name,
-                text,
-                values
-            });
-
-            return queryResult;
+            const queryResult = await pgPool.query(queryOptions);
+            return this.getPayload(queryResult);
         } catch (error) {
             throw error;
         }
@@ -54,8 +55,8 @@ abstract class PgQuery implements DbQuery {
 
     abstract async query (
         queryName: string,
-        props: ModelProps
-    ): Promise<QueryResult> | never;
+        props?: ModelProps
+    ): DbAsyncQueryPayload<Type> | never;
 }
 
 export default PgQuery;

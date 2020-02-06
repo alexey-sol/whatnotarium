@@ -3,7 +3,7 @@ import Joi from "@hapi/joi";
 
 import ApiController from "types/ApiController";
 import PropsValidator from "utils/PropsValidator";
-import User from "api/user/model";
+import User from "api/user/user.model";
 
 const validatorPresets = {
     email: Joi.string().email({

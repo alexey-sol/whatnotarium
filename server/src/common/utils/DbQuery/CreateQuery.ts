@@ -1,8 +1,8 @@
-import { QueryResult } from "pg";
+import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
 import ModelProps from "types/ModelProps";
 import PgQuery from "./PgQuery";
 
-class CreateQuery extends PgQuery {
+class CreateQuery<Type> extends PgQuery<Type> {
     constructor (tableName: string) {
         super(tableName);
     }
@@ -20,8 +20,7 @@ class CreateQuery extends PgQuery {
             VALUES (
                 ${valuesClause}
             )
-            RETURNING
-                *;
+            RETURNING *;
         `;
     }
 
@@ -50,9 +49,9 @@ class CreateQuery extends PgQuery {
     async query (
         queryName: string,
         props: ModelProps
-    ): Promise<QueryResult> | never {
+    ): DbAsyncQueryPayload<Type> | never {
         try {
-            return await this.sendQuery({
+            return await this.sendQueryAndGetPayload({
                 name: queryName,
                 text: this.getText(props),
                 values: this.getValues(props)
