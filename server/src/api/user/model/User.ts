@@ -1,7 +1,10 @@
+import {
+    CreateQuery,
+    UpdateAttributesQuery
+} from "utils/DbQuery";
+
 import Model from "types/Model";
 import ModelProps from "types/ModelProps";
-import UpdateAttributesQuery from "utils/UpdateAttributesQuery";
-import createUserQuery from "./createUser.query";
 import deleteUserQuery from "./deleteUser.query";
 import getUserQuery from "./getUser.query";
 import getUsersQuery from "./getUsers.query";
@@ -16,24 +19,20 @@ class User implements Model<User> {
     static async create (
         props: ModelProps
     ): Promise<User> | never {
-        const {
-            email,
-            name,
-            password
-        } = props;
-
+        const { password } = props;
         const hashPasswordResult = hashPassword(password);
         const { hash } = hashPasswordResult;
-        const queryValues = [email, hash, name];
+
+        const updatedProps = {
+            ...props,
+            password: hash
+        };
+
+        const query = new CreateQuery("users");
 
         try {
-            const result = await makeDbQuery(
-                "create-user",
-                createUserQuery,
-                queryValues
-            );
-    
-            const userProps: ModelProps = result.rows[0];
+            const queryResult = await query.query("create", updatedProps);
+            const userProps = queryResult.rows[0];
             const user = new User(userProps);
 
             return user;
@@ -92,6 +91,7 @@ class User implements Model<User> {
     }
 
     async save (): Promise<User> | never {
+        // dynamic values?
         const { email, id, name, password } = this as ModelProps;
 
         const userProps: ModelProps = {
@@ -112,16 +112,15 @@ class User implements Model<User> {
         props: ModelProps
     ): Promise<User> | never {
         const { id } = this as ModelProps;
-        const query = new UpdateAttributesQuery();
+        const query = new UpdateAttributesQuery("users", id);
 
         try {
-            const queryResult = await query.query(id, props);
+            const queryResult = await query.query("update-attributes", props);
             const userProps = queryResult.rows[0];
             const user = new User(userProps);
 
             return user;
         } catch (error) {
-            console.error(error)
             throw error;
         }
     }

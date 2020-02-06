@@ -3,7 +3,7 @@ import ModelProps from "types/ModelProps";
 
 export default interface DbQuery {
     query (
-        id: string,
+        queryName: string,
         props: ModelProps
     ): Promise<QueryResult> | never;
 }
