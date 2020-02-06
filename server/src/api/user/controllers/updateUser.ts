@@ -25,7 +25,7 @@ const updateUser: ApiController = async function (
 
     const { id } = request.params;
     const { error, value: userData } = bodyValidator.validate();
-    
+
     if (error) {
         // return next(error);
     }

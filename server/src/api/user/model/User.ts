@@ -1,56 +1,40 @@
 import Model from "types/Model";
-import ObjectIndexer from "types/ObjectIndexer";
+import ModelProps from "types/ModelProps";
+import UpdateAttributesQuery from "utils/UpdateAttributesQuery";
 import createUserQuery from "./createUser.query";
 import deleteUserQuery from "./deleteUser.query";
 import getUserQuery from "./getUser.query";
 import getUsersQuery from "./getUsers.query";
 import hashPassword from "utils/hashPassword";
 import makeDbQuery from "utils/makeDbQuery";
-import updateUserQuery from "./updateUser.query";
-
-interface UserData {
-    email?: string;
-    id?: string;
-    name?: string;
-    password?: string;
-}
 
 class User implements Model<User> {
-    email: string;
-    id: string;
-    name: string;
-    password: string;
-
-    private constructor (data: ObjectIndexer<any>) {
-        this.email = data.email;
-        this.id = data.id;
-        this.name = data.name;
-        this.password = data.password;
+    private constructor (props: ModelProps) {
+        Object.assign(this, props);
     }
 
     static async create (
-        data: ObjectIndexer<any>
+        props: ModelProps
     ): Promise<User> | never {
+        const {
+            email,
+            name,
+            password
+        } = props;
+
+        const hashPasswordResult = hashPassword(password);
+        const { hash } = hashPasswordResult;
+        const queryValues = [email, hash, name];
+
         try {
-            const {
-                email,
-                name,
-                password
-            } = data;
-
-            const hashPasswordResult = hashPassword(password);
-            const { hash } = hashPasswordResult;
-
-            const queryValues = [email, hash, name];
-    
             const result = await makeDbQuery(
                 "create-user",
                 createUserQuery,
                 queryValues
             );
     
-            const userData: UserData = result.rows[0];
-            const user = new User(userData);
+            const userProps: ModelProps = result.rows[0];
+            const user = new User(userProps);
 
             return user;
         } catch (error) {
@@ -82,8 +66,8 @@ class User implements Model<User> {
                 [id]
             );
     
-            const userData: UserData = result.rows[0];
-            const user = new User(userData);
+            const userProps: ModelProps = result.rows[0];
+            const user = new User(userProps);
 
             return user;
         } catch (error) {
@@ -108,9 +92,9 @@ class User implements Model<User> {
     }
 
     async save (): Promise<User> | never {
-        const { email, id, name, password } = this;
+        const { email, id, name, password } = this as ModelProps;
 
-        const userData: UserData = {
+        const userProps: ModelProps = {
             email,
             id,
             name,
@@ -118,40 +102,26 @@ class User implements Model<User> {
         };
 
         try {
-            return await this.updateAttributes(userData);
+            return await this.updateAttributes(userProps);
         } catch (error) {
             throw error;
         }
     }
 
     async updateAttributes (
-        data: ObjectIndexer<any>
+        props: ModelProps
     ): Promise<User> | never {
-        const {
-            email,
-            name,
-            password
-        } = data;
-    
+        const { id } = this as ModelProps;
+        const query = new UpdateAttributesQuery();
+
         try {
-            const { id } = this;
-            const queryValues = [email, password, name, id];
-
-            const result = await makeDbQuery(
-                "update-user",
-                updateUserQuery,
-                queryValues
-            );
-
-            const partialUserData: UserData = result.rows[0];
-
-            const user = new User({
-                ...this,
-                ...partialUserData
-            });
+            const queryResult = await query.query(id, props);
+            const userProps = queryResult.rows[0];
+            const user = new User(userProps);
 
             return user;
         } catch (error) {
+            console.error(error)
             throw error;
         }
     }
