@@ -31,7 +31,7 @@ function createWinstonTransports () {
     ];
 }
 
-function getFileOptionsForLevel(
+function getFileOptionsForLevel (
     level: typeof ERROR | typeof DEBUG
 ) {
     const root = process.cwd();
@@ -42,7 +42,7 @@ function getFileOptionsForLevel(
         filename: join(logsDirPath, `${level}.log`),
         handleExceptions: true,
         json: true,
-        level: `${level}`,
+        level,
         maxsize: convertMbToBytes(5),
         maxFiles: 5
     };
@@ -52,7 +52,7 @@ function convertMbToBytes (mb: number) {
     return mb * 1024 ** 2;
 }
 
-function getConsoleOptions() {
+function getConsoleOptions () {
     return {
         colorize: true,
         format: getConsoleFormat(),
@@ -62,7 +62,7 @@ function getConsoleOptions() {
     };
 }
 
-function getConsoleFormat() {
+function getConsoleFormat () {
     const printToConsole = format.printf(formatConsoleLog);
 
     return format.combine(
@@ -71,9 +71,13 @@ function getConsoleFormat() {
     );
 }
 
-function formatConsoleLog(info: any) {
+function formatConsoleLog (info: any) {
     const date = new DateFormatter()
         .formatByPattern(dateTimeFormatPattern);
 
-    return `${date} ${info.level}: ${info.message}\n`
+    const infoContent = (info.stack)
+        ? `${info.stack}\n`
+        : `${info.message}\n`;
+
+    return `${date} ${info.level}: ${infoContent}`;
 }

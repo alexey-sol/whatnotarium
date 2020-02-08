@@ -9,10 +9,11 @@ import ObjectIndexer from "types/ObjectIndexer";
 import Validator from "types/Validator";
 import defaultPresets from "./defaultPresets";
 
-interface ObjectOptions {
-    max?: number;
-    min?: number;
-}
+type ObjectOptionKey = "max" | "min";
+
+type ObjectOptions = {
+    [Type in ObjectOptionKey]?: any;
+};
 
 class PropsValidator implements Validator {
     private presets: ObjectIndexer<AnySchema>;
@@ -36,7 +37,7 @@ class PropsValidator implements Validator {
             propNames = Object.keys(this.presets);
         }
 
-        const schema: ObjectSchema = this.generateSchema(propNames);
+        const schema = this.generateSchema(propNames);
   
         const validationResult = schema.validate(
             this.objectToCheck,
@@ -68,12 +69,6 @@ class PropsValidator implements Validator {
         return schemaMap;
     }
 
-    private createSchema (
-        schemaMap: SchemaMap
-    ): ObjectSchema {
-        return Joi.object(schemaMap);
-    }
-
     private createSchemaWithOptions (
         schemaMap: SchemaMap,
         objectOptions: ObjectOptions
@@ -81,10 +76,30 @@ class PropsValidator implements Validator {
         let objectSchema = this.createSchema(schemaMap);
 
         for (const [key, value] of Object.entries(objectOptions)) {
-            objectSchema = (objectSchema as any)[key](value);
+            objectSchema = this.updateSchemaByCallingOwnMethod(
+                objectSchema,
+                key as ObjectOptionKey,
+                value
+            );
         }
 
         return objectSchema;
+    }
+
+    private createSchema (
+        schemaMap: SchemaMap
+    ): ObjectSchema {
+        return Joi.object(schemaMap);
+    }
+
+    private updateSchemaByCallingOwnMethod (
+        objectSchema: ObjectSchema,
+        methodName: ObjectOptionKey,
+        methodArgument: any
+    ): ObjectSchema {
+        return objectSchema
+            [methodName]
+            (methodArgument);
     }
 }
 
