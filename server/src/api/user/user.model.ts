@@ -10,6 +10,7 @@ import { USERS } from "constants/dbTableNames";
 import Model from "types/Model";
 import ModelProps from "types/ModelProps";
 import hashPassword from "utils/hashPassword";
+import isEmptyObject from "utils/isEmptyObject";
 
 class User implements Model<User> {
     private constructor (props: ModelProps) {
@@ -51,13 +52,16 @@ class User implements Model<User> {
 
     static async findById (
         id: string
-    ): Promise<User> | never {
+    ): Promise<User | null> | never {
         const query = new FindByIdQuery<User>(USERS, id);
 
         try {
             const userProps = await query.query();
             const user = new User(userProps);
-            return user;
+
+            return (isEmptyObject(user))
+                ? null
+                : user;
         } catch (error) {
             throw error;
         }

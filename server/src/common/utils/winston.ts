@@ -75,5 +75,5 @@ function formatConsoleLog(info: any) {
     const date = new DateFormatter()
         .formatByPattern(dateTimeFormatPattern);
 
-    return `${date} ${info.level}: "${info.message}"\n`
+    return `${date} ${info.level}: ${info.message}\n`
 }

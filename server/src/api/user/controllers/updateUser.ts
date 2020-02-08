@@ -13,7 +13,8 @@ const updateUser: ApiController = async function (
 ): Promise<void> {
     const bodyValidator = new PropsValidator(
         request.body,
-        validationPresets
+        validationPresets,
+        { min: 1 }
     );
 
     const { id } = request.params;
@@ -24,11 +25,16 @@ const updateUser: ApiController = async function (
     }
 
     updateUserAndSendResponse()
-        .catch(next); // TODO test if it works as expected
+        .catch(next);
 
     async function updateUserAndSendResponse () {
         const user = await User.findById(id);
-        const updatedUser = await user.updateAttributes(value);
+        let updatedUser = null;
+
+        if (user) {
+            updatedUser = await user.updateAttributes(value);
+        }
+
         return sendResponse(response, updatedUser);
     }
 };
