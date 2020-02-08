@@ -3,8 +3,25 @@ import ModelProps from "types/ModelProps";
 import PgQuery from "./PgQuery";
 
 class CreateQuery<Type> extends PgQuery<Type> {
-    constructor (tableName: string) {
-        super(tableName);
+    constructor (
+        tableName: string,
+        queryName: string = "create"
+    ) {
+        super(tableName, undefined, queryName);
+    }
+
+    async query (
+        props: ModelProps
+    ): DbAsyncQueryPayload<Type> | never {
+        try {
+            return await this.sendQueryAndGetPayload({
+                name: this.queryName,
+                text: this.getText(props),
+                values: this.getValues(props)
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 
     private getText (
@@ -44,21 +61,6 @@ class CreateQuery<Type> extends PgQuery<Type> {
         }
 
         return values.join(", ");
-    }
-
-    async query (
-        queryName: string,
-        props: ModelProps
-    ): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: queryName,
-                text: this.getText(props),
-                values: this.getValues(props)
-            });
-        } catch (error) {
-            throw error;
-        }
     }
 }
 

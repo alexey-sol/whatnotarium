@@ -5,9 +5,24 @@ import PgQuery from "./PgQuery";
 class UpdateAttributesQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
-        recordId: string
+        recordId: string,
+        queryName: string = "update-attributes"
     ) {
-        super(tableName, recordId);
+        super(tableName, recordId, queryName);
+    }
+
+    async query (
+        props: ModelProps
+    ): DbAsyncQueryPayload<Type> | never {
+        try {
+            return await this.sendQueryAndGetPayload({
+                name: this.queryName,
+                text: this.getText(props),
+                values: this.getValues(props)
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 
     private getText (
@@ -40,21 +55,6 @@ class UpdateAttributesQuery<Type> extends PgQuery<Type> {
             setClause: setClauseRows.join(", "),
             andClause: andClauseRows.join(" OR ")
         };
-    }
-
-    async query (
-        queryName: string,
-        props: ModelProps
-    ): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: queryName,
-                text: this.getText(props),
-                values: this.getValues(props)
-            });
-        } catch (error) {
-            throw error;
-        }
     }
 }
 

@@ -7,12 +7,11 @@ type GetEnv = (
 const getEnv: GetEnv = function (
     nodeProcess: Process = process
 ): string {
-    const { NODE_ENV: env } = nodeProcess.env;
+    const { NODE_ENV } = nodeProcess.env;
+    const isString = typeof NODE_ENV === "string";
 
-    const envIsString = typeof env === "string";
-
-    return (env && envIsString)
-        ? env.trim()
+    return (isString)
+        ? NODE_ENV!.trim()
         : "";
 };
 

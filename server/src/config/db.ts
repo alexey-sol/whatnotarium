@@ -16,13 +16,14 @@ import DbConfig from "types/DbConfig";
 import PropsValidator from "utils/PropsValidator";
 import Validator from "types/Validator";
 import getEnv from "utils/getEnv";
+import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 
 const envValidator = new PropsValidator(process.env);
 const { error, value } = validateEnv(envValidator);
 
 if (error) {
-    console.error(error);
+    logger.error(error);
     terminateProcess();
 }
 

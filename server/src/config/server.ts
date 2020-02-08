@@ -1,23 +1,19 @@
 import { ValidationResult } from "@hapi/joi";
 
-import {
-    HOST,
-    PORT,
-    URL
-} from "constants/env";
-
+import { HOST, PORT, URL } from "constants/env";
 import { SERVER } from "constants/componentNames";
 import ConfigFactory from "utils/ConfigFactory";
 import PropsValidator from "utils/PropsValidator";
 import ServerConfig from "types/ServerConfig";
 import Validator from "types/Validator";
+import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 
 const envValidator = new PropsValidator(process.env);
 const { error, value } = validateEnv(envValidator);
 
 if (error) {
-    console.error(error);
+    logger.error(error);
     terminateProcess();
 }
 

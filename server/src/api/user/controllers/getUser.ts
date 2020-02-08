@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 
 import ApiController from "types/ApiController";
 import User from "api/user/user.model";
+import sendResponse from "utils/sendResponse";
 
 const getUser: ApiController = async function (
     request: Request,
@@ -10,12 +11,9 @@ const getUser: ApiController = async function (
 ): Promise<void> {
     const { id } = request.params;
 
-    try {
-        const user = await User.findById(id);
-        response.status(200).send(user);
-    } catch (error) {
-        // return next(error);
-    }
+    User.findById(id)
+        .then(user => sendResponse(response, user))
+        .catch(next);
 };
 
 export default getUser;

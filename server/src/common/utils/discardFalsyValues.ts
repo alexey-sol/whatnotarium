@@ -26,6 +26,10 @@ function discardFalsyValues (
     }
 }
 
+const typedDiscardFalsyValues: DiscardFalsyValues = discardFalsyValues;
+
+export default typedDiscardFalsyValues;
+
 function filterOutArray (
     array: ArrayIndexer<any>[]
 ): ArrayIndexer<any>[] {
@@ -45,7 +49,3 @@ function filterOutObject (
 
     return result;
 }
-
-const typedDiscardFalsyValues: DiscardFalsyValues = discardFalsyValues;
-
-export default typedDiscardFalsyValues;

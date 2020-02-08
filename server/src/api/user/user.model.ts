@@ -4,7 +4,7 @@ import {
     FindQuery,
     FindByIdQuery,
     UpdateAttributesQuery
-} from "utils/DbQuery";
+} from "utils/PgQuery";
 
 import { USERS } from "constants/dbTableNames";
 import Model from "types/Model";
@@ -22,7 +22,7 @@ class User implements Model<User> {
         const { password } = props;
         const { hash } = hashPassword(password);
 
-        const updatedProps = {
+        const propsWithHashedPassword = {
             ...props,
             password: hash
         };
@@ -30,9 +30,8 @@ class User implements Model<User> {
         const query = new CreateQuery<User>(USERS);
 
         try {
-            const userProps = await query.query("create", updatedProps);
+            const userProps = await query.query(propsWithHashedPassword);
             const user = new User(userProps);
-
             return user;
         } catch (error) {
             throw error;
@@ -43,7 +42,7 @@ class User implements Model<User> {
         const query = new FindQuery<User>(USERS);
 
         try {
-            const users = await query.query("find");
+            const users = await query.query();
             return users;
         } catch (error) {
             throw error;
@@ -56,9 +55,8 @@ class User implements Model<User> {
         const query = new FindByIdQuery<User>(USERS, id);
 
         try {
-            const userProps = await query.query("find-by-id");
+            const userProps = await query.query();
             const user = new User(userProps);
-
             return user;
         } catch (error) {
             throw error;
@@ -71,7 +69,7 @@ class User implements Model<User> {
         const query = new DestroyByIdQuery<User>(USERS, id);
 
         try {
-            const deletedUser = await query.query("destroy-by-id");
+            const deletedUser = await query.query();
             return deletedUser;
         } catch (error) {
             throw error;
@@ -93,9 +91,8 @@ class User implements Model<User> {
         const query = new UpdateAttributesQuery<User>(USERS, id);
 
         try {
-            const userProps = await query.query("update-attributes", props);
+            const userProps = await query.query(props);
             const user = new User(userProps);
-
             return user;
         } catch (error) {
             throw error;

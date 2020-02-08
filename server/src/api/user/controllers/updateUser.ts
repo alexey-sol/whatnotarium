@@ -1,17 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import Joi from "@hapi/joi";
 
 import ApiController from "types/ApiController";
 import PropsValidator from "utils/PropsValidator";
 import User from "api/user/user.model";
-
-const validatorPresets = {
-    email: Joi.string().email({
-        minDomainSegments: 2
-    }),
-    name: Joi.string().alphanum().min(3).max(30),
-    password: Joi.string().min(6)
-};
+import sendResponse from "utils/sendResponse";
+import validationPresets from "./updateUser.validation";
 
 const updateUser: ApiController = async function (
     request: Request,
@@ -20,27 +13,23 @@ const updateUser: ApiController = async function (
 ): Promise<void> {
     const bodyValidator = new PropsValidator(
         request.body,
-        validatorPresets
+        validationPresets
     );
 
     const { id } = request.params;
-
-    const {
-        error,
-        value: userData
-    } = bodyValidator.validate();
+    const { error, value } = bodyValidator.validate();
 
     if (error) {
-        // return next(error);
+        return next(error);
     }
 
-    try {
-        const user = await User.findById(id);
-        const updatedUser = await user.updateAttributes(userData);
+    updateUserAndSendResponse()
+        .catch(next); // TODO test if it works as expected
 
-        response.status(200).send(updatedUser);
-    } catch (error) {
-        // return next(error);
+    async function updateUserAndSendResponse () {
+        const user = await User.findById(id);
+        const updatedUser = await user.updateAttributes(value);
+        return sendResponse(response, updatedUser);
     }
 };
 

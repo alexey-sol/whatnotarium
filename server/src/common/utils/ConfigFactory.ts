@@ -8,35 +8,41 @@ type ComponentName =
     typeof SERVER;
 
 class ConfigFactory<Type> implements Factory<Type> {
-    constructor (
-        private componentName: ComponentName
-    ) {
+    constructor (private componentName: ComponentName) {
         this.componentName = componentName;
     }
 
     create (env: ObjectIndexer<any>): Type {
-        const database = getAppropriateDatabase(env);
         const isServer = this.componentName === SERVER;
-
         let config = {};
 
         if (isServer) {
-            config = {
-                host: env.HOST,
-                port: env.PORT,
-                url: env.URL
-            };
+            config = this.createServerConfig(env);
         } else {
-            config = {
-                database,
-                host: env.PG_HOST,
-                port: env.PG_PORT,
-                user: env.PG_USER,
-                password: env.PG_PASSWORD
-            };
+            config = this.createDatabaseConfig(env);
         }
 
         return config as Type;
+    }
+
+    private createServerConfig (env: ObjectIndexer<any>) {
+        return {
+            host: env.HOST,
+            port: env.PORT,
+            url: env.URL
+        };
+    }
+
+    private createDatabaseConfig (env: ObjectIndexer<any>) {
+        const database = getAppropriateDatabase(env);
+    
+        return {
+            database,
+            host: env.PG_HOST,
+            port: env.PG_PORT,
+            user: env.PG_USER,
+            password: env.PG_PASSWORD
+        };
     }
 }
 

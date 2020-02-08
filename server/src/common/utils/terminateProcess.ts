@@ -17,15 +17,19 @@ const terminateProcess: TerminateProcess = async function (
     pg?: Client | Pool,
     nodeProcess: Process = process
 ): Promise<void> {
-    if (pg) {
-        await pg.end();
-    }
-
     if (server) {
-        nodeProcess.kill(nodeProcess.pid, SIGTERM);
+        killProcessAndCloseDb(nodeProcess, pg);
     } else {
         nodeProcess.exit(1);
     }
 };
 
 export default terminateProcess;
+
+async function killProcessAndCloseDb (
+    nodeProcess: Process,
+    pg?: Client | Pool
+) {
+    if (pg) await pg.end();
+    nodeProcess.kill(nodeProcess.pid, SIGTERM);
+}

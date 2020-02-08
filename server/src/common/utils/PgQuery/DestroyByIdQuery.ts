@@ -4,9 +4,22 @@ import PgQuery from "./PgQuery";
 class DestroyByIdQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
-        recordId: string
+        recordId: string,
+        queryName: string = "destroy-by-id"
     ) {
-        super(tableName, recordId);
+        super(tableName, recordId, queryName);
+    }
+
+    async query (): DbAsyncQueryPayload<Type> | never {
+        try {
+            return await this.sendQueryAndGetPayload({
+                name: this.queryName,
+                text: this.getText(),
+                values: this.getValues()
+            });
+        } catch (error) {
+            throw error;
+        }
     }
 
     private getText (): string {
@@ -15,20 +28,6 @@ class DestroyByIdQuery<Type> extends PgQuery<Type> {
             WHERE id = $1
             RETURNING *;
         `;
-    }
-
-    async query (
-        queryName: string
-    ): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: queryName,
-                text: this.getText(),
-                values: this.getValues()
-            });
-        } catch (error) {
-            throw error;
-        }
     }
 }
 
