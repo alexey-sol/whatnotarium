@@ -10,7 +10,7 @@ type HashPassword = (
 
 const hashPassword: HashPassword = function (
     password: string | Buffer,
-    digest: string = "sha512"
+    digest = "sha512"
 ): HashPasswordResult {
     const salt = crypto.randomBytes(128).toString("base64");
     const iterations = 10000;

@@ -37,7 +37,9 @@ export default app;
 function getMorganOptions (): morgan.Options {
     return {
         stream: {
-            write: (message) => logger.info(message)
+            write: (message): void => {
+                logger.info(message);
+            }
         }
     };
 }

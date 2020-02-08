@@ -26,12 +26,8 @@ abstract class PgQuery<Type> implements DbQuery<Type> {
     ): DbAsyncQueryPayload<Type> | never {
         const pgPool = app.get("pgPool");
 
-        try {
-            const queryResult = await pgPool.query(queryOptions);
-            return this.getPayload(queryResult);
-        } catch (error) {
-            throw error;
-        }
+        const queryResult = await pgPool.query(queryOptions);
+        return this.getPayload(queryResult);
     }
 
     protected getPayload (

@@ -1,5 +1,5 @@
 type ObjectIndexer<Type> = {
-    [ key: string ]: Type
+    [ key: string ]: Type;
 };
 
 export default ObjectIndexer;

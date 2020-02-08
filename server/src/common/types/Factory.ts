@@ -1,5 +1,7 @@
 import ObjectIndexer from "./ObjectIndexer";
 
-export default interface Factory<Type> {
-    create (donorObject?: ObjectIndexer<any>): Type
+interface Factory<Type> {
+    create (donorObject?: ObjectIndexer<any>): Type;
 }
+
+export default Factory;

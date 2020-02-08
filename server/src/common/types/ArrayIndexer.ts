@@ -1,5 +1,5 @@
 type ArrayIndexer<Type> = {
-    [ index: number ]: Type
+    [ index: number ]: Type;
 };
 
 export default ArrayIndexer;

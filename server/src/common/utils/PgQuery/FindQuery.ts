@@ -4,20 +4,16 @@ import PgQuery from "./PgQuery";
 class FindQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
-        queryName: string = "find"
+        queryName = "find"
     ) {
         super(tableName, undefined, queryName);
     }
 
     async query (): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: this.queryName,
-                text: this.getText()
-            });
-        } catch (error) {
-            throw error;
-        }
+        return this.sendQueryAndGetPayload({
+            name: this.queryName,
+            text: this.getText()
+        });
     }
 
     private getText (): string {

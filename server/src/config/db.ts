@@ -14,7 +14,7 @@ import { PRODUCTION } from "constants/nodeEnv";
 import ConfigFactory from "utils/ConfigFactory";
 import DbConfig from "types/DbConfig";
 import PropsValidator from "utils/PropsValidator";
-import Validator from "types/Validator";
+import Validator from "types/JoiValidator";
 import getEnv from "utils/getEnv";
 import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
@@ -36,6 +36,7 @@ function validateEnv (
     validator: Validator
 ): ValidationResult {
     const isProduction = getEnv() === PRODUCTION;
+
     const appropriateDatabase = (isProduction)
         ? PG_DATABASE_PROD
         : PG_DATABASE_DEV;

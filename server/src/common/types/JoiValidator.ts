@@ -1,7 +1,9 @@
 import { ValidationResult } from "@hapi/joi";
 
-export default interface Validator {
+interface JoiValidator {
     validate (
         ...propNames: string[]
     ): ValidationResult;
 }
+
+export default JoiValidator;

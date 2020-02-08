@@ -12,6 +12,6 @@ const getErrorMessage: GetErrorMessage = function (
     return (isJoiValidationError(error))
         ? error.details[0].message
         : error.message;
-}
+};
 
 export default getErrorMessage;

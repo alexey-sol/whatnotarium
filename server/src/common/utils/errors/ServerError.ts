@@ -1,5 +1,5 @@
 abstract class ServerError extends Error {
-    constructor(
+    constructor (
         message: string,
         private statusCode: number,
         private ip?: string

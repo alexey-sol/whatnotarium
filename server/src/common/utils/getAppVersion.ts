@@ -15,6 +15,6 @@ const getAppVersion: GetAppVersion = function (
     return (getMajorVersion)
         ? majorVersion
         : fullVersion;
-}
+};
 
 export default getAppVersion;

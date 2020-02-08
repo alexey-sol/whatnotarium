@@ -6,7 +6,7 @@ import Joi, {
 } from "@hapi/joi";
 
 import ObjectIndexer from "types/ObjectIndexer";
-import Validator from "types/Validator";
+import Validator from "types/JoiValidator";
 import defaultPresets from "./defaultPresets";
 
 type ObjectOptionKey = "max" | "min";
@@ -20,13 +20,11 @@ class PropsValidator implements Validator {
 
     constructor (
         private objectToCheck: ObjectIndexer<any>,
-        customPresets?: ObjectIndexer<AnySchema>,
+        customPresets = defaultPresets,
         private objectOptions?: ObjectOptions
     ) {
         this.objectToCheck = objectToCheck;
-        this.presets = (customPresets)
-            ? customPresets
-            : defaultPresets;
+        this.presets = customPresets;
         this.objectOptions = objectOptions;
     }
 
@@ -38,7 +36,7 @@ class PropsValidator implements Validator {
         }
 
         const schema = this.generateSchema(propNames);
-  
+
         const validationResult = schema.validate(
             this.objectToCheck,
             { stripUnknown: true }
@@ -97,9 +95,7 @@ class PropsValidator implements Validator {
         methodName: ObjectOptionKey,
         methodArgument: any
     ): ObjectSchema {
-        return objectSchema
-            [methodName]
-            (methodArgument);
+        return objectSchema[methodName](methodArgument);
     }
 }
 

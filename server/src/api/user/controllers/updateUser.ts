@@ -27,7 +27,7 @@ const updateUser: ApiController = async function (
     updateUserAndSendResponse()
         .catch(next);
 
-    async function updateUserAndSendResponse () {
+    async function updateUserAndSendResponse (): Promise<Response> {
         const user = await User.findById(id);
         let updatedUser = null;
 

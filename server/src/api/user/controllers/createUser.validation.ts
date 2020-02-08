@@ -1,11 +1,11 @@
-import Joi from "@hapi/joi";
+import { string } from "@hapi/joi";
 
 export default {
-    email: Joi.string().email({
+    email: string().email({
         minDomainSegments: 2
     }).required(),
 
-    name: Joi.string().min(3).max(30).required(),
+    name: string().min(3).max(30).required(),
 
-    password: Joi.string().min(6).required()
+    password: string().min(6).required()
 };

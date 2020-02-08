@@ -6,7 +6,7 @@ class DateFormatter {
     }
 
     formatByPattern (
-        pattern: string = "YYYY-MM-DD"
+        pattern = "YYYY-MM-DD"
     ): string {
         return moment(this.date).format(pattern);
     }

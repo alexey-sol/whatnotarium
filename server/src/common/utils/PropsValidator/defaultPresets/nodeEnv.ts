@@ -1,29 +1,29 @@
-import Joi from "@hapi/joi";
+import { number, string } from "@hapi/joi";
 
 export default {
-    HOST: Joi.string().min(3).required().trim(),
+    HOST: string().min(3).required().trim(),
 
-    NODE_ENV: Joi.string().required().trim().valid(
+    NODE_ENV: string().required().trim().valid(
         "development",
         "production",
         "test"
     ),
 
-    PG_DATABASE_DEV: Joi.string().min(3).required().trim(),
+    PG_DATABASE_DEV: string().min(3).required().trim(),
 
-    PG_DATABASE_PROD: Joi.string().min(3).required().trim(),
+    PG_DATABASE_PROD: string().min(3).required().trim(),
 
-    PG_HOST: Joi.string().min(3).required().trim(),
+    PG_HOST: string().min(3).required().trim(),
 
-    PG_PASSWORD: Joi.string().min(6).required().trim(),
+    PG_PASSWORD: string().min(6).required().trim(),
 
-    PG_PORT: Joi.number().required(),
+    PG_PORT: number().required(),
 
-    PG_USER: Joi.string().alphanum().min(3).max(30).required(),
+    PG_USER: string().alphanum().min(3).max(30).required(),
 
-    PORT: Joi.number().required(),
+    PORT: number().required(),
 
-    SESSION_SECRET: Joi.string().min(3).required().trim(),
+    SESSION_SECRET: string().min(3).required().trim(),
 
-    URL: Joi.string().min(8).required().trim()
+    URL: string().min(8).required().trim()
 };

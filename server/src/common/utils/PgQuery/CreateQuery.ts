@@ -5,7 +5,7 @@ import PgQuery from "./PgQuery";
 class CreateQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
-        queryName: string = "create"
+        queryName = "create"
     ) {
         super(tableName, undefined, queryName);
     }
@@ -13,15 +13,11 @@ class CreateQuery<Type> extends PgQuery<Type> {
     async query (
         props: ModelProps
     ): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: this.queryName,
-                text: this.getText(props),
-                values: this.getValues(props)
-            });
-        } catch (error) {
-            throw error;
-        }
+        return this.sendQueryAndGetPayload({
+            name: this.queryName,
+            text: this.getText(props),
+            values: this.getValues(props)
+        });
     }
 
     private getText (
@@ -55,7 +51,7 @@ class CreateQuery<Type> extends PgQuery<Type> {
         let count = this.offset;
         const values = [];
 
-        for (const key in props) {
+        for (const _key in props) {
             count++;
             values.push(`$${count}`);
         }

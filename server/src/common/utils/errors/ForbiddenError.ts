@@ -1,8 +1,8 @@
 import ServerError from "./ServerError";
 
 class ForbiddenError extends ServerError {
-    constructor(
-        message: string = "Forbidden",
+    constructor (
+        message = "Forbidden",
         ip?: string
     ) {
         super(message, 403, ip);

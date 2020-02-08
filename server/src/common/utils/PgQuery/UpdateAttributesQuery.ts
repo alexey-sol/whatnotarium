@@ -6,7 +6,7 @@ class UpdateAttributesQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
         recordId: string,
-        queryName: string = "update-attributes"
+        queryName = "update-attributes"
     ) {
         super(tableName, recordId, queryName);
     }
@@ -14,15 +14,11 @@ class UpdateAttributesQuery<Type> extends PgQuery<Type> {
     async query (
         props: ModelProps
     ): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: this.queryName,
-                text: this.getText(props),
-                values: this.getValues(props)
-            });
-        } catch (error) {
-            throw error;
-        }
+        return this.sendQueryAndGetPayload({
+            name: this.queryName,
+            text: this.getText(props),
+            values: this.getValues(props)
+        });
     }
 
     private getText (
@@ -39,7 +35,10 @@ class UpdateAttributesQuery<Type> extends PgQuery<Type> {
         `;
     }
 
-    private createClauses (props: ModelProps) {
+    private createClauses (props: ModelProps): {
+        setClause: string;
+        andClause: string;
+    } {
         let count = this.offset;
 
         const setClauseRows: string[] = [];

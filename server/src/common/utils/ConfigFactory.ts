@@ -1,6 +1,8 @@
 import { DATABASE, SERVER } from "constants/componentNames";
+import DbConfig from "types/DbConfig";
 import Factory from "types/Factory";
 import ObjectIndexer from "types/ObjectIndexer";
+import ServerConfig from "types/ServerConfig";
 import getAppropriateDatabase from "utils/getAppropriateDatabase";
 
 type ComponentName =
@@ -25,7 +27,9 @@ class ConfigFactory<Type> implements Factory<Type> {
         return config as Type;
     }
 
-    private createServerConfig (env: ObjectIndexer<any>) {
+    private createServerConfig (
+        env: ObjectIndexer<any>
+    ): ServerConfig {
         return {
             host: env.HOST,
             port: env.PORT,
@@ -33,9 +37,11 @@ class ConfigFactory<Type> implements Factory<Type> {
         };
     }
 
-    private createDatabaseConfig (env: ObjectIndexer<any>) {
+    private createDatabaseConfig (
+        env: ObjectIndexer<any>
+    ): DbConfig {
         const database = getAppropriateDatabase(env);
-    
+
         return {
             database,
             host: env.PG_HOST,

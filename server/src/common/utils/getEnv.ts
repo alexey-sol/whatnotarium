@@ -10,8 +10,8 @@ const getEnv: GetEnv = function (
     const { NODE_ENV } = nodeProcess.env;
     const isString = typeof NODE_ENV === "string";
 
-    return (isString)
-        ? NODE_ENV!.trim()
+    return (NODE_ENV && isString)
+        ? NODE_ENV.trim()
         : "";
 };
 

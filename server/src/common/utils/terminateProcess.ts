@@ -29,7 +29,7 @@ export default terminateProcess;
 async function killProcessAndCloseDb (
     nodeProcess: Process,
     pg?: Client | Pool
-) {
+): Promise<void> {
     if (pg) await pg.end();
     nodeProcess.kill(nodeProcess.pid, SIGTERM);
 }

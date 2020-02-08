@@ -5,7 +5,7 @@ import { SERVER } from "constants/componentNames";
 import ConfigFactory from "utils/ConfigFactory";
 import PropsValidator from "utils/PropsValidator";
 import ServerConfig from "types/ServerConfig";
-import Validator from "types/Validator";
+import Validator from "types/JoiValidator";
 import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 

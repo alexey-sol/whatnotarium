@@ -1,5 +1,6 @@
-import { join } from "path";
+import { Format } from "logform";
 import { createLogger, format, transports } from "winston";
+import { join } from "path";
 
 import { DEBUG, ERROR } from "constants/loggingLevels";
 import DateFormatter from "utils/DateFormatter";
@@ -15,7 +16,7 @@ const logger = createLogger({
 
 export default logger;
 
-function getCombinedFormat () {
+function getCombinedFormat (): Format {
     return combine(
         errors({ stack: true }),
         timestamp({ format: dateTimeFormatPattern }),
@@ -23,7 +24,10 @@ function getCombinedFormat () {
     );
 }
 
-function createWinstonTransports () {
+function createWinstonTransports (): (
+    transports.FileTransportInstance |
+    transports.ConsoleTransportInstance
+)[] {
     return [
         new transports.File(getFileOptionsForLevel(ERROR)),
         new transports.File(getFileOptionsForLevel(DEBUG)),
@@ -33,36 +37,32 @@ function createWinstonTransports () {
 
 function getFileOptionsForLevel (
     level: typeof ERROR | typeof DEBUG
-) {
+): transports.FileTransportOptions {
     const root = process.cwd();
-    const logsDirPath = join(root, "logs")
+    const logsDirPath = join(root, "logs");
 
     return {
-        colorize: false,
         filename: join(logsDirPath, `${level}.log`),
         handleExceptions: true,
-        json: true,
         level,
         maxsize: convertMbToBytes(5),
         maxFiles: 5
     };
 }
 
-function convertMbToBytes (mb: number) {
+function convertMbToBytes (mb: number): number {
     return mb * 1024 ** 2;
 }
 
-function getConsoleOptions () {
+function getConsoleOptions (): transports.ConsoleTransportOptions {
     return {
-        colorize: true,
         format: getConsoleFormat(),
         handleExceptions: true,
-        json: false,
         level: DEBUG
     };
 }
 
-function getConsoleFormat () {
+function getConsoleFormat (): Format {
     const printToConsole = format.printf(formatConsoleLog);
 
     return format.combine(
@@ -71,7 +71,7 @@ function getConsoleFormat () {
     );
 }
 
-function formatConsoleLog (info: any) {
+function formatConsoleLog (info: any): string {
     const date = new DateFormatter()
         .formatByPattern(dateTimeFormatPattern);
 

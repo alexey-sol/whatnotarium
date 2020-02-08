@@ -30,24 +30,16 @@ class User implements Model<User> {
 
         const query = new CreateQuery<User>(USERS);
 
-        try {
-            const userProps = await query.query(propsWithHashedPassword);
-            const user = new User(userProps);
-            return user;
-        } catch (error) {
-            throw error;
-        }
+        const userProps = await query.query(propsWithHashedPassword);
+        const user = new User(userProps);
+        return user;
     }
 
     static async find (): Promise<User[]> | never {
         const query = new FindQuery<User>(USERS);
 
-        try {
-            const users = await query.query();
-            return users;
-        } catch (error) {
-            throw error;
-        }
+        const users = await query.query();
+        return users;
     }
 
     static async findById (
@@ -55,16 +47,12 @@ class User implements Model<User> {
     ): Promise<User | null> | never {
         const query = new FindByIdQuery<User>(USERS, id);
 
-        try {
-            const userProps = await query.query();
-            const user = new User(userProps);
+        const userProps = await query.query();
+        const user = new User(userProps);
 
-            return (isEmptyObject(user))
-                ? null
-                : user;
-        } catch (error) {
-            throw error;
-        }
+        return (isEmptyObject(user))
+            ? null
+            : user;
     }
 
     static async destroyById (
@@ -72,20 +60,12 @@ class User implements Model<User> {
     ): Promise<User> | never {
         const query = new DestroyByIdQuery<User>(USERS, id);
 
-        try {
-            const deletedUser = await query.query();
-            return deletedUser;
-        } catch (error) {
-            throw error;
-        }
+        const deletedUser = await query.query();
+        return deletedUser;
     }
 
     async save (): Promise<User> | never {
-        try {
-            return await this.updateAttributes({...this});
-        } catch (error) {
-            throw error;
-        }
+        return this.updateAttributes({ ...this });
     }
 
     async updateAttributes (
@@ -94,13 +74,9 @@ class User implements Model<User> {
         const { id } = this as ModelProps;
         const query = new UpdateAttributesQuery<User>(USERS, id);
 
-        try {
-            const userProps = await query.query(props);
-            const user = new User(userProps);
-            return user;
-        } catch (error) {
-            throw error;
-        }
+        const userProps = await query.query(props);
+        const user = new User(userProps);
+        return user;
     }
 }
 

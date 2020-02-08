@@ -5,21 +5,17 @@ class FindByIdQuery<Type> extends PgQuery<Type> {
     constructor (
         tableName: string,
         recordId: string,
-        queryName: string = "find-by-id"
+        queryName = "find-by-id"
     ) {
         super(tableName, recordId, queryName);
     }
 
     async query (): DbAsyncQueryPayload<Type> | never {
-        try {
-            return await this.sendQueryAndGetPayload({
-                name: this.queryName,
-                text: this.getText(),
-                values: this.getValues()
-            });
-        } catch (error) {
-            throw error;
-        }
+        return this.sendQueryAndGetPayload({
+            name: this.queryName,
+            text: this.getText(),
+            values: this.getValues()
+        });
     }
 
     private getText (): string {

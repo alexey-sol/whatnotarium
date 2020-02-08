@@ -10,6 +10,6 @@ const isJoiValidationError: IsJoiValidationError = function (
     error: Error & ValidationError
 ): boolean {
     return error.isJoi && error.name === VALIDATION_ERROR;
-}
+};
 
 export default isJoiValidationError;
