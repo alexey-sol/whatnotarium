@@ -1,33 +1,38 @@
-import { ValidationResult } from "@hapi/joi";
-
 import { HOST, PORT, URL } from "constants/env";
-import { SERVER } from "constants/componentNames";
-import ConfigFactory from "utils/ConfigFactory";
+import EnvForServerConfig from "types/config/EnvForServerConfig";
 import PropsValidator from "utils/PropsValidator";
-import ServerConfig from "types/ServerConfig";
-import Validator from "types/JoiValidator";
+import ServerConfig from "types/config/ServerConfig";
 import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 
-const envValidator = new PropsValidator(process.env);
-const { error, value } = validateEnv(envValidator);
+const envForServerConfig = validateEnv();
+const serverConfig = createServerConfig(envForServerConfig);
 
-if (error) {
-    logger.error(error);
-    terminateProcess();
-}
+export default serverConfig;
 
-const serverConfigFactory = new ConfigFactory<ServerConfig>(SERVER);
-const config = serverConfigFactory.create(value);
+function validateEnv (): EnvForServerConfig {
+    const envValidator = new PropsValidator(process.env);
 
-export default config;
-
-function validateEnv (
-    validator: Validator
-): ValidationResult {
-    return validator.validate(
+    const { error, value } = envValidator.validate(
         HOST,
         PORT,
         URL
     );
+
+    if (error) {
+        logger.error(error);
+        terminateProcess();
+    }
+
+    return value as EnvForServerConfig;
+}
+
+function createServerConfig (
+    env: EnvForServerConfig
+): ServerConfig {
+    return {
+        host: env.HOST,
+        port: env.PORT,
+        url: env.URL
+    };
 }

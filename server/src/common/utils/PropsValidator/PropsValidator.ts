@@ -6,7 +6,7 @@ import Joi, {
 } from "@hapi/joi";
 
 import ObjectIndexer from "types/ObjectIndexer";
-import Validator from "types/JoiValidator";
+import JoiValidator from "types/JoiValidator";
 import defaultPresets from "./defaultPresets";
 
 type ObjectOptionKey = "max" | "min";
@@ -15,7 +15,7 @@ type ObjectOptions = {
     [Type in ObjectOptionKey]?: any;
 };
 
-class PropsValidator implements Validator {
+class PropsValidator implements JoiValidator {
     private presets: ObjectIndexer<AnySchema>;
 
     constructor (

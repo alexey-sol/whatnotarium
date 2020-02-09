@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 
-import dbConfig from "config/db";
+import dbConfig from "config/database";
 
 type CreatePgPool = () => Pool;
 

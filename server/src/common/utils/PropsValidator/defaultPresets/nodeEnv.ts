@@ -9,9 +9,9 @@ export default {
         "test"
     ),
 
-    PG_DATABASE_DEV: string().min(3).required().trim(),
+    PG_DATABASE: string().min(3).required().trim(),
 
-    PG_DATABASE_PROD: string().min(3).required().trim(),
+    PG_DATABASE_DEV: string().min(3).required().trim(),
 
     PG_HOST: string().min(3).required().trim(),
 
