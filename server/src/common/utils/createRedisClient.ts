@@ -1,6 +1,8 @@
 import connectRedis from "connect-redis";
-import logger from "utils/winston";
 import redis from "redis";
+
+import logger from "utils/winston";
+import redisConfig from "config/redis";
 
 type CreateRedisClient = (
     session: any
@@ -9,8 +11,10 @@ type CreateRedisClient = (
 const createRedisClient: CreateRedisClient = function (
     session: any
 ): connectRedis.RedisStore {
+    const { host, port } = redisConfig;
+
     const RedisStore = connectRedis(session);
-    const client = redis.createClient();
+    const client = redis.createClient(port, host);
 
     client.on("error", (error) => logger.error(error));
 

@@ -11,14 +11,14 @@ import {
 
 import { PRODUCTION } from "constants/nodeEnv";
 import ConfigError from "utils/errors/ConfigError";
-import DatabaseConfig from "types/DatabaseConfig";
+import DatabaseConfig from "types/config/DatabaseConfig";
 import EnvForDatabase from "types/env/EnvForDatabase";
 import PropsValidator from "utils/PropsValidator";
 import getEnv from "utils/getEnv";
 import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 
-const { error, value } = validateEnvForDatabaseVars();
+const { error, value } = validateEnvForDatabase();
 
 if (error) {
     logErrorAndTerminateProcess(error);
@@ -26,7 +26,7 @@ if (error) {
 
 export default createDatabaseConfig(value);
 
-function validateEnvForDatabaseVars (): ValidationResult {
+function validateEnvForDatabase (): ValidationResult {
     const envValidator = new PropsValidator(process.env);
     const isProduction = getEnv() === PRODUCTION;
 

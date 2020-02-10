@@ -23,6 +23,10 @@ export default {
 
     PORT: number().required(),
 
+    REDIS_HOST: string().min(3).required().trim(),
+
+    REDIS_PORT: number().required(),
+
     SESSION_SECRET: string().min(3).required().trim(),
 
     URL: string().min(8).required().trim()

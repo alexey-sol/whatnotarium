@@ -3,14 +3,13 @@ import bodyParser from "body-parser";
 import compression from "compression";
 import cors from "cors";
 import express from "express";
-import morgan from "morgan";
 
+import createMorgan from "utils/createMorgan";
 import createPgPool from "utils/createPgPool";
 import createSession from "utils/createSession";
 import getAppVersion from "utils/getAppVersion";
 import handleError from "utils/middlewares/handleError";
 import logErrors from "utils/middlewares/logErrors";
-import logger from "utils/winston";
 import userRouter from "api/user";
 
 const app = express();
@@ -22,7 +21,7 @@ const appMajorVersion = getAppVersion(true);
 const apiRoute = `/api/v${appMajorVersion}`;
 
 app.set("pgPool", pgPool);
-app.use(morgan("combined", getMorganOptions()));
+app.use(createMorgan());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(createSession());
@@ -33,13 +32,3 @@ app.use(logErrors);
 app.use(handleError);
 
 export default app;
-
-function getMorganOptions (): morgan.Options {
-    return {
-        stream: {
-            write: (message): void => {
-                logger.info(message);
-            }
-        }
-    };
-}

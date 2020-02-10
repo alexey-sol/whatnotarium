@@ -1,0 +1,54 @@
+version: "3"
+services:
+    client:
+        build: ./client
+        command: npm start
+        volumes:
+            - ./client:/usr/app
+            - /usr/app/node_modules
+        ports:
+            - 10000:3000
+        depends_on:
+            - server
+            - postgres
+            - redis
+        links:
+            - server
+    server:
+        build: ./server
+        command: npm start
+        volumes:
+            - ./server:/usr/app
+            - /usr/app/node_modules
+        expose:
+            - 8000
+        ports:
+            - 10005:8000
+        depends_on:
+            - postgres
+            - redis
+        environment:
+            - PG_DATABASE
+            - PG_DATABASE_DEV
+            - PG_HOST
+            - PG_PASSWORD
+            - PG_PORT
+            - PG_USER
+            - HOST
+            - PORT
+            - REDIS_HOST
+            - REDIS_PORT
+            - SESSION_SECRET
+            - URL
+    postgres:
+        image: postgres:12.1-alpine
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_USER: admin
+            POSTGRES_DB: geek-regime
+    redis:
+        image: redis:5.0.7-alpine
+        ports:
+            - 6379:6379
+        command: ["redis-server", "--appendonly", "yes"]

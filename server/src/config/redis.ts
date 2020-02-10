@@ -1,27 +1,26 @@
 import { ValidationError, ValidationResult } from "@hapi/joi";
 
-import { HOST, PORT, URL } from "constants/env";
-import EnvForServer from "types/env/EnvForServer";
+import { REDIS_HOST, REDIS_PORT } from "constants/env";
+import EnvForRedis from "types/env/EnvForRedis";
 import PropsValidator from "utils/PropsValidator";
-import ServerConfig from "types/config/ServerConfig";
+import RedisConfig from "types/config/RedisConfig";
 import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 
-const { error, value } = validateEnvForServer();
+const { error, value } = validateEnvForRedis();
 
 if (error) {
     logErrorAndTerminateProcess(error);
 }
 
-export default createServerConfig(value);
+export default createRedisConfig(value);
 
-function validateEnvForServer (): ValidationResult {
+function validateEnvForRedis (): ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
-        HOST,
-        PORT,
-        URL
+        REDIS_HOST,
+        REDIS_PORT
     );
 }
 
@@ -32,12 +31,11 @@ function logErrorAndTerminateProcess (
     terminateProcess();
 }
 
-function createServerConfig (
-    env: EnvForServer
-): ServerConfig {
+function createRedisConfig (
+    env: EnvForRedis
+): RedisConfig {
     return {
-        host: env.HOST,
-        port: env.PORT,
-        url: env.URL
+        host: env.REDIS_HOST,
+        port: env.REDIS_PORT
     };
 }
