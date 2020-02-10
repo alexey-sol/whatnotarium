@@ -23,8 +23,8 @@ module.exports = {
     ],
 
     rules: {
-        "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_" }],
         "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-unused-vars": ["error", { "varsIgnorePattern": "^_" }],
         "@typescript-eslint/no-extra-non-null-assertion": 0,
         "@typescript-eslint/no-use-before-define": ["error", { "functions": false, "classes": true }],
         "indent": ["error", 4, { "SwitchCase": 1 }],

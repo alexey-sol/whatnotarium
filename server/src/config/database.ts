@@ -1,3 +1,5 @@
+import { ValidationError, ValidationResult } from "@hapi/joi";
+
 import {
     PG_DATABASE,
     PG_DATABASE_DEV,
@@ -9,19 +11,22 @@ import {
 
 import { PRODUCTION } from "constants/nodeEnv";
 import ConfigError from "utils/errors/ConfigError";
-import DatabaseConfig from "types/config/DatabaseConfig";
-import EnvForDatabaseConfig from "types/config/EnvForDatabaseConfig";
+import DatabaseConfig from "types/DatabaseConfig";
+import EnvForDatabase from "types/env/EnvForDatabase";
 import PropsValidator from "utils/PropsValidator";
 import getEnv from "utils/getEnv";
 import logger from "utils/winston";
 import terminateProcess from "utils/terminateProcess";
 
-const envForDatabaseConfig = validateEnv();
-const databaseConfig = createDatabaseConfig(envForDatabaseConfig);
+const { error, value } = validateEnvForDatabaseVars();
 
-export default databaseConfig;
+if (error) {
+    logErrorAndTerminateProcess(error);
+}
 
-function validateEnv (): EnvForDatabaseConfig {
+export default createDatabaseConfig(value);
+
+function validateEnvForDatabaseVars (): ValidationResult {
     const envValidator = new PropsValidator(process.env);
     const isProduction = getEnv() === PRODUCTION;
 
@@ -29,24 +34,24 @@ function validateEnv (): EnvForDatabaseConfig {
         ? PG_DATABASE
         : PG_DATABASE_DEV;
 
-    const { error, value } = envValidator.validate(
+    return envValidator.validate(
         appropriateDatabaseEnv,
         PG_HOST,
         PG_PORT,
         PG_USER,
         PG_PASSWORD
     );
+}
 
-    if (error) {
-        logger.error(error);
-        terminateProcess();
-    }
-
-    return value as EnvForDatabaseConfig;
+function logErrorAndTerminateProcess (
+    error: ValidationError
+): void {
+    logger.error(error);
+    terminateProcess();
 }
 
 function createDatabaseConfig (
-    env: EnvForDatabaseConfig
+    env: EnvForDatabase
 ): DatabaseConfig | never {
     const isProduction = getEnv() === PRODUCTION;
 

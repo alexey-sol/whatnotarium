@@ -1,25 +1,25 @@
 import Joi, {
     AnySchema,
     ObjectSchema,
+    Reference,
     SchemaMap,
     ValidationResult
 } from "@hapi/joi";
 
 import ObjectIndexer from "types/ObjectIndexer";
-import JoiValidator from "types/JoiValidator";
 import defaultPresets from "./defaultPresets";
 
 type ObjectOptionKey = "max" | "min";
-
+type ObjectOptionValue = number | Reference;
 type ObjectOptions = {
-    [Type in ObjectOptionKey]?: any;
+    [Type in ObjectOptionKey]?: ObjectOptionValue;
 };
 
-class PropsValidator implements JoiValidator {
+class PropsValidator {
     private presets: ObjectIndexer<AnySchema>;
 
     constructor (
-        private objectToCheck: ObjectIndexer<any>,
+        private objectToCheck: ObjectIndexer<unknown>,
         customPresets = defaultPresets,
         private objectOptions?: ObjectOptions
     ) {
@@ -77,7 +77,9 @@ class PropsValidator implements JoiValidator {
             objectSchema = this.updateSchemaByCallingOwnMethod(
                 objectSchema,
                 key as ObjectOptionKey,
-                value
+                value as ObjectOptionValue
+                // We know that if there was no entry (and therefore no value),
+                // this iteration wouldn't come.
             );
         }
 
@@ -93,7 +95,7 @@ class PropsValidator implements JoiValidator {
     private updateSchemaByCallingOwnMethod (
         objectSchema: ObjectSchema,
         methodName: ObjectOptionKey,
-        methodArgument: any
+        methodArgument: ObjectOptionValue
     ): ObjectSchema {
         return objectSchema[methodName](methodArgument);
     }

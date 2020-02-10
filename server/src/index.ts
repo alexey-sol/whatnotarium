@@ -1,4 +1,5 @@
 import "module-alias/register";
+import { ValidationError } from "@hapi/joi";
 import dotenv from "dotenv";
 
 import { DEVELOPMENT } from "constants/nodeEnv";
@@ -11,14 +12,20 @@ const envValidator = new PropsValidator(process.env);
 const { error, value } = envValidator.validate(NODE_ENV);
 
 if (error) {
-    logger.error(error);
-    terminateProcess();
+    logErrorAndTerminateProcess(error);
 }
 
-const nodeEnv = value.NODE_ENV;
+const isDevelopment = value.NODE_ENV === DEVELOPMENT;
 
-if (nodeEnv === DEVELOPMENT) {
+if (isDevelopment) {
     dotenv.config();
 }
 
 export default require("./app");
+
+function logErrorAndTerminateProcess (
+    error: ValidationError
+): void {
+    logger.error(error);
+    terminateProcess();
+}

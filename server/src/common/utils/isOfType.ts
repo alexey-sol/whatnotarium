@@ -1,5 +1,5 @@
 const isOfType = function <Type> (
-    objectToCheck: any,
+    objectToCheck: unknown,
     propertyToCheckFor: keyof Type
 ): objectToCheck is Type {
     return (objectToCheck as Type)[propertyToCheckFor] !== undefined;

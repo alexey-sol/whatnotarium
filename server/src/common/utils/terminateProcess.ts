@@ -10,13 +10,13 @@ type TerminateProcess = (
     server?: Server,
     pg?: Client | Pool,
     nodeProcess?: Process
-) => Promise<void>;
+) => void;
 
-const terminateProcess: TerminateProcess = async function (
+const terminateProcess: TerminateProcess = function (
     server?: Server,
     pg?: Client | Pool,
     nodeProcess: Process = process
-): Promise<void> {
+): void {
     if (server) {
         killProcessAndCloseDb(nodeProcess, pg);
     } else {

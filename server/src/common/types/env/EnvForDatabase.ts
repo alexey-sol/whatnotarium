@@ -1,4 +1,4 @@
-interface EnvForDatabaseConfig {
+interface EnvForDatabase {
     PG_DATABASE: string;
     PG_DATABASE_DEV?: string;
     PG_HOST: string;
@@ -7,4 +7,4 @@ interface EnvForDatabaseConfig {
     PG_USER: string;
 }
 
-export default EnvForDatabaseConfig;
+export default EnvForDatabase;
