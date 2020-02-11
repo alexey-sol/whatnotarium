@@ -1,29 +1,31 @@
-version: "3"
+version: "3.7"
 services:
     client:
-        build: ./client
+        image: node:12.8.1-alpine
+        working_dir: /app
         command: npm start
         volumes:
-            - ./client:/usr/app
-            - /usr/app/node_modules
+            - ./client:/app
+            - /app/node_modules
+        networks:
+            - geek-regime
         ports:
             - 10000:3000
         depends_on:
             - server
             - postgres
             - redis
-        links:
-            - server
     server:
-        build: ./server
+        image: node:12.8.1-alpine
+        working_dir: /app
         command: npm start
         volumes:
-            - ./server:/usr/app
-            - /usr/app/node_modules
+            - ./server:/app
+            - /app/node_modules
+        networks:
+            - geek-regime
         expose:
             - 8000
-        ports:
-            - 10005:8000
         depends_on:
             - postgres
             - redis
@@ -42,13 +44,20 @@ services:
             - URL
     postgres:
         image: postgres:12.1-alpine
-        ports:
-            - 5432:5432
+        networks:
+            - geek-regime
+        expose:
+            - 5432
         environment:
             POSTGRES_USER: admin
             POSTGRES_DB: geek-regime
     redis:
         image: redis:5.0.7-alpine
-        ports:
-            - 6379:6379
+        networks:
+            - geek-regime
+        expose:
+            - 6379
         command: ["redis-server", "--appendonly", "yes"]
+networks:
+    geek-regime:
+        driver: bridge
