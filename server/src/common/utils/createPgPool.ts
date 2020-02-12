@@ -1,11 +1,13 @@
 import { Pool } from "pg";
 
-import dbConfig from "config/database";
+import connectionString from "config/database";
 
 type CreatePgPool = () => Pool;
 
 const createPgPool: CreatePgPool = function (): Pool {
-    return new Pool(dbConfig);
+    return new Pool({
+        connectionString
+    });
 };
 
 export default createPgPool;

@@ -2,15 +2,14 @@ import { ValidationError, ValidationResult } from "@hapi/joi";
 
 import { REDIS_HOST, REDIS_PORT } from "constants/env";
 import EnvForRedis from "types/env/EnvForRedis";
+import ProcessManager from "utils/ProcessManager";
 import PropsValidator from "utils/PropsValidator";
 import RedisConfig from "types/config/RedisConfig";
-import logger from "utils/winston";
-import terminateProcess from "utils/terminateProcess";
 
 const { error, value } = validateEnvForRedis();
 
 if (error) {
-    logErrorAndTerminateProcess(error);
+    logErrorAndExit(error);
 }
 
 export default createRedisConfig(value);
@@ -24,11 +23,10 @@ function validateEnvForRedis (): ValidationResult {
     );
 }
 
-function logErrorAndTerminateProcess (
+function logErrorAndExit (
     error: ValidationError
 ): void {
-    logger.error(error);
-    terminateProcess();
+    new ProcessManager().exit(error);
 }
 
 function createRedisConfig (

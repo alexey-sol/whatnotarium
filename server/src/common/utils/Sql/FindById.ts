@@ -1,7 +1,7 @@
-import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
-import PgQuery from "./PgQuery";
+import Sql from "./Sql";
+import SqlQueryPayload from "types/SqlQueryPayload";
 
-class FindByIdQuery<Type> extends PgQuery<Type> {
+class FindById extends Sql {
     constructor (
         tableName: string,
         recordId: string,
@@ -10,12 +10,12 @@ class FindByIdQuery<Type> extends PgQuery<Type> {
         super(tableName, recordId, queryName);
     }
 
-    async query (): DbAsyncQueryPayload<Type> | never {
-        return this.sendQueryAndGetPayload({
+    generate (): SqlQueryPayload {
+        return {
             name: this.queryName,
             text: this.getText(),
             values: this.getValues()
-        });
+        };
     }
 
     private getText (): string {
@@ -27,4 +27,4 @@ class FindByIdQuery<Type> extends PgQuery<Type> {
     }
 }
 
-export default FindByIdQuery;
+export default FindById;

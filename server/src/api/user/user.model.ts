@@ -1,14 +1,16 @@
 import {
-    CreateQuery,
-    DestroyByIdQuery,
-    FindQuery,
-    FindByIdQuery,
-    UpdateAttributesQuery
-} from "utils/PgQuery";
+    Create,
+    DestroyById,
+    Find,
+    FindById,
+    UpdateAttributes
+} from "utils/Sql";
 
 import { USERS } from "constants/dbTableNames";
+import DbQuery from "utils/DbQuery";
 import Model from "types/Model";
 import ModelProps from "types/ModelProps";
+import PropsError from "utils/errors/PropsError";
 import hashPassword from "utils/hashPassword";
 import isEmptyObject from "utils/isEmptyObject";
 
@@ -19,7 +21,11 @@ class User implements Model<User> {
 
     static async create (
         props: ModelProps
-    ): Promise<User> | never {
+    ): Promise<User | null> | never {
+        if (isEmptyObject(props)) {
+            throw new PropsError();
+        }
+
         const { password } = props;
         const { hash } = hashPassword(password);
 
@@ -28,40 +34,55 @@ class User implements Model<User> {
             password: hash
         };
 
-        const query = new CreateQuery<User>(USERS);
+        const sql = new Create(USERS)
+            .generate(propsWithHashedPassword);
+        const userProps = await new DbQuery<ModelProps>()
+            .query(sql);
 
-        const userProps = await query.query(propsWithHashedPassword);
         const user = new User(userProps);
         return user;
     }
 
     static async find (): Promise<User[]> | never {
-        const query = new FindQuery<User>(USERS);
+        const sql = new Find(USERS)
+            .generate();
+        const usersProps = await new DbQuery<ModelProps>()
+            .query(sql);
 
-        const users = await query.query();
+        if (usersProps.length === 0) {
+            return [];
+        }
+
+        const users = usersProps.map(props => new User(props));
         return users;
     }
 
     static async findById (
         id: string
     ): Promise<User | null> | never {
-        const query = new FindByIdQuery<User>(USERS, id);
+        const sql = new FindById(USERS, id)
+            .generate();
+        const userProps = await new DbQuery<ModelProps>()
+            .query(sql);
 
-        const userProps = await query.query();
+        if (userProps.length === 0) {
+            return null;
+        }
+
         const user = new User(userProps);
-
-        return (isEmptyObject(user))
-            ? null
-            : user;
+        return user;
     }
 
     static async destroyById (
         id: string
-    ): Promise<User> | never {
-        const query = new DestroyByIdQuery<User>(USERS, id);
+    ): Promise<boolean> | never {
+        const sql = new DestroyById(USERS, id)
+            .generate();
+        const deletedUserProps = await new DbQuery<ModelProps>()
+            .query(sql);
 
-        const deletedUser = await query.query();
-        return deletedUser;
+        const isSuccess = Boolean(deletedUserProps.id);
+        return isSuccess;
     }
 
     async save (): Promise<User> | never {
@@ -71,10 +92,16 @@ class User implements Model<User> {
     async updateAttributes (
         props: ModelProps
     ): Promise<User> | never {
-        const { id } = this as ModelProps;
-        const query = new UpdateAttributesQuery<User>(USERS, id);
+        if (isEmptyObject(props)) {
+            throw new PropsError();
+        }
 
-        const userProps = await query.query(props);
+        const { id } = this as ModelProps;
+        const sql = new UpdateAttributes(USERS, id)
+            .generate(props);
+        const userProps = await new DbQuery<ModelProps>()
+            .query(sql);
+
         const user = new User(userProps);
         return user;
     }

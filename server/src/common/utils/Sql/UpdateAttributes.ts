@@ -1,8 +1,8 @@
-import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
 import ModelProps from "types/ModelProps";
-import PgQuery from "./PgQuery";
+import Sql from "./Sql";
+import SqlQueryPayload from "types/SqlQueryPayload";
 
-class UpdateAttributesQuery<Type> extends PgQuery<Type> {
+class UpdateAttributes extends Sql {
     constructor (
         tableName: string,
         recordId: string,
@@ -11,14 +11,14 @@ class UpdateAttributesQuery<Type> extends PgQuery<Type> {
         super(tableName, recordId, queryName);
     }
 
-    async query (
+    generate (
         props: ModelProps
-    ): DbAsyncQueryPayload<Type> | never {
-        return this.sendQueryAndGetPayload({
+    ): SqlQueryPayload {
+        return {
             name: this.queryName,
             text: this.getText(props),
             values: this.getValues(props)
-        });
+        };
     }
 
     private getText (
@@ -57,4 +57,4 @@ class UpdateAttributesQuery<Type> extends PgQuery<Type> {
     }
 }
 
-export default UpdateAttributesQuery;
+export default UpdateAttributes;

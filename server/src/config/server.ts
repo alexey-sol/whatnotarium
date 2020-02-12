@@ -2,15 +2,14 @@ import { ValidationError, ValidationResult } from "@hapi/joi";
 
 import { HOST, PORT, URL } from "constants/env";
 import EnvForServer from "types/env/EnvForServer";
+import ProcessManager from "utils/ProcessManager";
 import PropsValidator from "utils/PropsValidator";
 import ServerConfig from "types/config/ServerConfig";
-import logger from "utils/winston";
-import terminateProcess from "utils/terminateProcess";
 
 const { error, value } = validateEnvForServer();
 
 if (error) {
-    logErrorAndTerminateProcess(error);
+    logErrorAndExit(error);
 }
 
 export default createServerConfig(value);
@@ -25,11 +24,10 @@ function validateEnvForServer (): ValidationResult {
     );
 }
 
-function logErrorAndTerminateProcess (
+function logErrorAndExit (
     error: ValidationError
 ): void {
-    logger.error(error);
-    terminateProcess();
+    new ProcessManager().exit(error);
 }
 
 function createServerConfig (

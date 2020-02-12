@@ -1,11 +1,7 @@
 export const HOST = "HOST";
 export const NODE_ENV = "NODE_ENV";
-export const PG_DATABASE = "PG_DATABASE";
-export const PG_DATABASE_DEV = "PG_DATABASE_DEV";
-export const PG_HOST = "PG_HOST";
-export const PG_PORT = "PG_PORT";
-export const PG_USER = "PG_USER";
-export const PG_PASSWORD = "PG_PASSWORD";
+export const PG_URL = "PG_URL";
+export const PG_URL_DEV = "PG_URL_DEV";
 export const PORT = "PORT";
 export const REDIS_HOST = "REDIS_HOST";
 export const REDIS_PORT = "REDIS_PORT";

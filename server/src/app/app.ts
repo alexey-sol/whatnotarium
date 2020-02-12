@@ -4,10 +4,10 @@ import compression from "compression";
 import cors from "cors";
 import express from "express";
 
+import Version from "utils/Version";
 import createMorgan from "utils/createMorgan";
 import createPgPool from "utils/createPgPool";
 import createSession from "utils/createSession";
-import getAppVersion from "utils/getAppVersion";
 import handleError from "utils/middlewares/handleError";
 import logErrors from "utils/middlewares/logErrors";
 import userRouter from "api/user";
@@ -17,7 +17,7 @@ const pgPool = createPgPool();
 
 const root = process.cwd();
 const publicDirPath = join(root, "public");
-const appMajorVersion = getAppVersion(true);
+const appMajorVersion = Version.getMajorVersion();
 const apiRoute = `/api/v${appMajorVersion}`;
 
 app.set("pgPool", pgPool);

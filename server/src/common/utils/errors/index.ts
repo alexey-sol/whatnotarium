@@ -1,9 +1,9 @@
-import ConfigError from "./ConfigError";
 import ForbiddenError from "./ForbiddenError";
 import NotFoundError from "./NotFoundError";
+import PropsError from "./PropsError";
 
 export {
-    ConfigError,
     ForbiddenError,
-    NotFoundError
+    NotFoundError,
+    PropsError
 };

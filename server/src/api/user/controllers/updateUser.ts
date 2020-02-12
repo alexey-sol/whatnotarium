@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
 import ApiController from "types/ApiController";
+import ModelProps from "types/ModelProps";
 import PropsValidator from "utils/PropsValidator";
 import User from "api/user/user.model";
 import sendResponse from "utils/sendResponse";
@@ -24,19 +25,23 @@ const updateUser: ApiController = async function (
         return next(error);
     }
 
-    updateUserAndSendResponse()
+    updateUserAndSendResponse(id, value, response)
         .catch(next);
-
-    async function updateUserAndSendResponse (): Promise<Response> {
-        const user = await User.findById(id);
-        let updatedUser = null;
-
-        if (user) {
-            updatedUser = await user.updateAttributes(value);
-        }
-
-        return sendResponse(response, updatedUser);
-    }
 };
 
 export default updateUser;
+
+async function updateUserAndSendResponse (
+    id: string,
+    props: ModelProps,
+    response: Response
+): Promise<Response> {
+    const user = await User.findById(id);
+    let updatedUser = null;
+
+    if (user) {
+        updatedUser = await user.updateAttributes(props);
+    }
+
+    return sendResponse(response, updatedUser);
+}

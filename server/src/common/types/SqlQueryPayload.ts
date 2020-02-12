@@ -1,7 +1,7 @@
-interface PgQueryOptions {
+interface SqlQueryPayload {
     name?: string;
     text: string;
     values?: any[];
 }
 
-export default PgQueryOptions;
+export default SqlQueryPayload;

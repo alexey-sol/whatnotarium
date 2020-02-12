@@ -1,7 +1,7 @@
-import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
-import PgQuery from "./PgQuery";
+import Sql from "./Sql";
+import SqlQueryPayload from "types/SqlQueryPayload";
 
-class FindQuery<Type> extends PgQuery<Type> {
+class Find extends Sql {
     constructor (
         tableName: string,
         queryName = "find"
@@ -9,11 +9,11 @@ class FindQuery<Type> extends PgQuery<Type> {
         super(tableName, undefined, queryName);
     }
 
-    async query (): DbAsyncQueryPayload<Type> | never {
-        return this.sendQueryAndGetPayload({
+    generate (): SqlQueryPayload {
+        return {
             name: this.queryName,
             text: this.getText()
-        });
+        };
     }
 
     private getText (): string {
@@ -25,4 +25,4 @@ class FindQuery<Type> extends PgQuery<Type> {
     }
 }
 
-export default FindQuery;
+export default Find;

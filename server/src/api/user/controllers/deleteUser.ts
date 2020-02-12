@@ -12,7 +12,7 @@ const deleteUser: ApiController = async function (
     const { id } = request.params;
 
     User.destroyById(id)
-        .then(() => sendResponse(response, true))
+        .then(result => sendResponse(response, result))
         .catch(next);
 };
 

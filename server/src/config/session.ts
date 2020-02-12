@@ -2,15 +2,14 @@ import { ValidationError, ValidationResult } from "@hapi/joi";
 
 import { SESSION_SECRET } from "constants/env";
 import EnvForSession from "types/env/EnvForSession";
+import ProcessManager from "utils/ProcessManager";
 import PropsValidator from "utils/PropsValidator";
 import SessionConfig from "types/config/SessionConfig";
-import logger from "utils/winston";
-import terminateProcess from "utils/terminateProcess";
 
 const { error, value } = validateEnvForSession();
 
 if (error) {
-    logErrorAndTerminateProcess(error);
+    logErrorAndExit(error);
 }
 
 export default createSessionConfig(value);
@@ -20,11 +19,10 @@ function validateEnvForSession (): ValidationResult {
     return envValidator.validate(SESSION_SECRET);
 }
 
-function logErrorAndTerminateProcess (
+function logErrorAndExit (
     error: ValidationError
 ): void {
-    logger.error(error);
-    terminateProcess();
+    new ProcessManager().exit(error);
 }
 
 function createSessionConfig (

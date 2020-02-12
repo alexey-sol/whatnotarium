@@ -1,8 +1,8 @@
-import DbAsyncQueryPayload from "types/DbAsyncQueryPayload";
 import ModelProps from "types/ModelProps";
-import PgQuery from "./PgQuery";
+import Sql from "./Sql";
+import SqlQueryPayload from "types/SqlQueryPayload";
 
-class CreateQuery<Type> extends PgQuery<Type> {
+class Create extends Sql {
     constructor (
         tableName: string,
         queryName = "create"
@@ -10,14 +10,14 @@ class CreateQuery<Type> extends PgQuery<Type> {
         super(tableName, undefined, queryName);
     }
 
-    async query (
+    generate (
         props: ModelProps
-    ): DbAsyncQueryPayload<Type> | never {
-        return this.sendQueryAndGetPayload({
+    ): SqlQueryPayload {
+        return {
             name: this.queryName,
             text: this.getText(props),
             values: this.getValues(props)
-        });
+        };
     }
 
     private getText (
@@ -60,4 +60,4 @@ class CreateQuery<Type> extends PgQuery<Type> {
     }
 }
 
-export default CreateQuery;
+export default Create;

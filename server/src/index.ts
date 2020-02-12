@@ -4,15 +4,14 @@ import dotenv from "dotenv";
 
 import { DEVELOPMENT } from "constants/nodeEnv";
 import { NODE_ENV } from "constants/env";
+import ProcessManager from "utils/ProcessManager";
 import PropsValidator from "utils/PropsValidator";
-import logger from "utils/winston";
-import terminateProcess from "utils/terminateProcess";
 
 const envValidator = new PropsValidator(process.env);
 const { error, value } = envValidator.validate(NODE_ENV);
 
 if (error) {
-    logErrorAndTerminateProcess(error);
+    logErrorAndExit(error);
 }
 
 const isDevelopment = value.NODE_ENV === DEVELOPMENT;
@@ -23,9 +22,8 @@ if (isDevelopment) {
 
 export default require("./app");
 
-function logErrorAndTerminateProcess (
+function logErrorAndExit (
     error: ValidationError
 ): void {
-    logger.error(error);
-    terminateProcess();
+    new ProcessManager().exit(error);
 }

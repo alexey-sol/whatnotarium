@@ -1,10 +1,6 @@
 interface EnvForDatabase {
-    PG_DATABASE: string;
-    PG_DATABASE_DEV?: string;
-    PG_HOST: string;
-    PG_PASSWORD: string;
-    PG_PORT: number;
-    PG_USER: string;
+    PG_URL: string;
+    PG_URL_DEV?: string;
 }
 
 export default EnvForDatabase;
