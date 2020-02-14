@@ -22,11 +22,13 @@ function validateEnvForDatabase (): ValidationResult {
     const envValidator = new PropsValidator(process.env);
     const isProduction = nodeEnv === PRODUCTION;
 
-    const appropriateDatabaseEnv = (isProduction)
+    const appropriateDatabaseUrl = (isProduction)
         ? PG_URL
         : PG_URL_DEV;
 
-    return envValidator.validate(appropriateDatabaseEnv);
+    return envValidator.validate(
+        [appropriateDatabaseUrl, true]
+    );
 }
 
 function logErrorAndExit (

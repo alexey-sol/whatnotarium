@@ -18,8 +18,8 @@ function validateEnvForRedis (): ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
-        REDIS_HOST,
-        REDIS_PORT
+        [REDIS_HOST, true],
+        [REDIS_PORT, true]
     );
 }
 

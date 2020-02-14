@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3.3"
 services:
     client:
         build: ./client
@@ -61,6 +61,3 @@ networks:
 volumes:
     postgres-data:
         driver: local
-
- # TODO: get rid of "postgres-data" and change postgres' "ports" to "expose"
- # after I migrate to Linux and be able to use host volume for sharing data.

@@ -35,18 +35,15 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     const emailErrorTranslation = translateError(emailError);
     const passwordErrorTranslation = translateError(passwordError);
 
-    const setUpdatedErrors = (updatedErrors, callback) => {
-        if (updatedErrors) {
-            const newErrorsState = deriveNewErrorsState(updatedErrors);
-            setErrors(newErrorsState);
-        } else {
-            setErrors(INITIAL_ERRORS);
-            if (callback) callback();
-        }
+    const signIn = () => {
+        console.log("Submit");
     };
 
-    const submit = () => {
-        console.log("Submit");
+    const handleClickOnSignUp = (event) => {
+        event.preventDefault();
+
+        onClose();
+        showSignUpDialog();
     };
 
     const handleInputChange = ({ target }) => {
@@ -71,14 +68,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
         event.preventDefault();
 
         const errors = validate(credentials);
-        setUpdatedErrors(errors, submit);
-    };
-
-    const handleClickOnSignUp = (event) => {
-        event.preventDefault();
-
-        onClose();
-        showSignUpDialog();
+        setUpdatedErrors(errors, signIn);
     };
 
     const validate = ({ email, password }) => {
@@ -95,6 +85,16 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
         return (hasErrors)
             ? errors
             : null;
+    };
+
+    const setUpdatedErrors = (updatedErrors, callback) => {
+        if (updatedErrors) {
+            const newErrorsState = deriveNewErrorsState(updatedErrors);
+            setErrors(newErrorsState);
+        } else {
+            setErrors(INITIAL_ERRORS);
+            if (callback) callback();
+        }
     };
 
     const signInUsingYandex = () => {

@@ -18,9 +18,9 @@ function validateEnvForServer (): ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
-        HOST,
-        PORT,
-        URL
+        [HOST, true],
+        [PORT, true],
+        [URL, true]
     );
 }
 

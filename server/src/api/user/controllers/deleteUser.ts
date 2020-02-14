@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from "express";
+import { ValidationResult } from "@hapi/joi";
 
+import { ID } from "constants/fieldNames";
 import ApiController from "types/ApiController";
+import ObjectIndexer from "types/ObjectIndexer";
+import PropsValidator from "utils/PropsValidator";
 import User from "api/user/user.model";
 import sendResponse from "utils/sendResponse";
 
@@ -9,11 +13,22 @@ const deleteUser: ApiController = async function (
     response: Response,
     next: NextFunction
 ): Promise<void> {
-    const { id } = request.params;
+    const { error, value } = validateParams(request.params);
 
-    User.destroyById(id)
+    if (error) {
+        return next(error);
+    }
+
+    User.destroyById(value.id)
         .then(result => sendResponse(response, result))
         .catch(next);
 };
 
 export default deleteUser;
+
+function validateParams (
+    params: ObjectIndexer<unknown>
+): ValidationResult {
+    const paramsValidator = new PropsValidator(params);
+    return paramsValidator.validate(ID);
+}

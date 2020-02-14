@@ -1,35 +1,64 @@
 import { Request, Response, NextFunction } from "express";
+import { ValidationResult } from "@hapi/joi";
 
+import { EMAIL, ID, NAME, PASSWORD } from "constants/fieldNames";
 import ApiController from "types/ApiController";
 import ModelProps from "types/ModelProps";
+import ObjectIndexer from "types/ObjectIndexer";
 import PropsValidator from "utils/PropsValidator";
 import User from "api/user/user.model";
 import sendResponse from "utils/sendResponse";
-import validationPresets from "./updateUser.validation";
 
 const updateUser: ApiController = async function (
     request: Request,
     response: Response,
     next: NextFunction
 ): Promise<void> {
-    const bodyValidator = new PropsValidator(
-        request.body,
-        validationPresets,
-        { min: 1 }
-    );
+    const {
+        error: paramsError,
+        value: params
+    } = validateParams(request.params);
 
-    const { id } = request.params;
-    const { error, value } = bodyValidator.validate();
-
-    if (error) {
-        return next(error);
+    if (paramsError) {
+        return next(paramsError);
     }
 
-    updateUserAndSendResponse(id, value, response)
+    const {
+        error: bodyError,
+        value: body
+    } = validateBody(request.body);
+
+    if (bodyError) {
+        return next(bodyError);
+    }
+
+    updateUserAndSendResponse(params.id, body, response)
         .catch(next);
 };
 
 export default updateUser;
+
+function validateParams (
+    params: ObjectIndexer<unknown>
+): ValidationResult {
+    const paramsValidator = new PropsValidator(params);
+    return paramsValidator.validate(ID);
+}
+
+function validateBody (
+    body: ObjectIndexer<unknown>
+): ValidationResult {
+    const bodyValidator = new PropsValidator(
+        body,
+        { min: 1 }
+    );
+
+    return bodyValidator.validate(
+        EMAIL,
+        NAME,
+        PASSWORD
+    );
+}
 
 async function updateUserAndSendResponse (
     id: string,

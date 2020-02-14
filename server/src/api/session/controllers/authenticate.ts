@@ -5,10 +5,9 @@ import { EMAIL, NAME, PASSWORD } from "constants/fieldNames";
 import ApiController from "types/ApiController";
 import ObjectIndexer from "types/ObjectIndexer";
 import PropsValidator from "utils/PropsValidator";
-import User from "api/user/user.model";
 import sendResponse from "utils/sendResponse";
 
-const createUser: ApiController = async function (
+const authenticate: ApiController = async function (
     request: Request,
     response: Response,
     next: NextFunction
@@ -19,12 +18,10 @@ const createUser: ApiController = async function (
         return next(error);
     }
 
-    User.create(value)
-        .then(user => sendResponse(response, user))
-        .catch(next);
+    //
 };
 
-export default createUser;
+export default authenticate;
 
 function validateBody (
     body: ObjectIndexer<unknown>
