@@ -1,18 +1,14 @@
-import React, { memo, useState } from "react";
+import React from "react";
 
-import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
+import { EMAIL, PASSWORD } from "common/constants/credentialProps";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
-import { validateEmail, validatePassword } from "common/utils/Validator";
-import discardFalsyValues from "common/utils/discardFalsyValues";
-import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
-import hints from "common/resources/text/hints";
-import isEmptyObject from "common/utils/isEmptyObject";
+import { signIn } from "common/utils/api";
 import styles from "./SignInDialog.module.scss";
-import translateError from "common/utils/translateError";
+import useAuthentication from "common/utils/customHooks/useAuthentication";
 
 SignInDialog.propTypes = propTypes;
 
@@ -27,15 +23,26 @@ const INITIAL_ERRORS = {
 };
 
 function SignInDialog ({ onClose, showSignUpDialog }) {
-    const [credentials, setCredentials] = useState(INITIAL_CREDENTIALS);
-    const [errors, setErrors] = useState(INITIAL_ERRORS);
+    const {
+        credentials,
+        errors,
+        handleInputChange,
+        handleSubmit
+    } = useAuthentication(
+        INITIAL_CREDENTIALS,
+        INITIAL_ERRORS,
+        signIn
+    );
 
-    const { email, password } = credentials;
-    const { emailError, passwordError } = errors;
+    const {
+        email,
+        password
+    } = credentials;
 
-    const signIn = () => {
-        console.log("Submit");
-    };
+    const {
+        email: emailError,
+        password: passwordError
+    } = errors;
 
     const handleClickOnSignUp = (event) => {
         event.preventDefault();
@@ -44,64 +51,9 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
         showSignUpDialog();
     };
 
-    const handleInputChange = ({ target }) => {
-        const { name, value } = target;
-
-        const newCredentials = {
-            ...credentials,
-            [name]: value
-        };
-
-        setCredentials(newCredentials);
-
-        const hasValidationErrors = !isEmptyObject(discardFalsyValues(errors));
-
-        if (hasValidationErrors) {
-            const updatedErrors = validate(newCredentials);
-            setUpdatedErrors(updatedErrors);
-        }
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const errors = validate(credentials);
-        setUpdatedErrors(errors, signIn);
-    };
-
-    const validate = ({ email, password }) => {
-        const emailError = translateError(validateEmail(email));
-        const passwordError = translateError(validatePassword(password));
-
-        const errors = discardFalsyValues({
-            emailError,
-            passwordError
-        });
-
-        const hasErrors = !isEmptyObject(errors);
-
-        return (hasErrors)
-            ? errors
-            : null;
-    };
-
-    const setUpdatedErrors = (updatedErrors, callback) => {
-        if (updatedErrors) {
-            const newErrorsState = deriveNewErrorsState(updatedErrors);
-            setErrors(newErrorsState);
-        } else {
-            setErrors(INITIAL_ERRORS);
-            if (callback) callback();
-        }
-    };
-
     const signInUsingYandex = () => {
         console.log("signInUsingYandex");
     };
-
-    const weakPasswordHint = (passwordError === PASSWORD_TOO_WEAK)
-        ? hints.weakPassword
-        : "";
 
     return (
         <BaseDialog
@@ -117,7 +69,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                     <Input
                         error={emailError}
                         label="Email"
-                        name="email"
+                        name={EMAIL}
                         onChange={handleInputChange}
                         rootClassName={styles.inputContainer}
                         type="text"
@@ -126,10 +78,9 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
 
                     <Input
                         error={passwordError}
-                        errorTooltip={weakPasswordHint}
                         hasFixedTooltip
                         label="Пароль"
-                        name="password"
+                        name={PASSWORD}
                         onChange={handleInputChange}
                         rootClassName={styles.inputContainer}
                         type="password"
@@ -178,4 +129,4 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     );
 }
 
-export default memo(SignInDialog);
+export default SignInDialog;

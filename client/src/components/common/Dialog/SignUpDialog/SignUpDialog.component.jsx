@@ -1,4 +1,11 @@
-import React, { memo, useState } from "react";
+import React from "react";
+
+import {
+    CONFIRM_PASSWORD,
+    EMAIL,
+    NAME,
+    PASSWORD
+} from "common/constants/credentialProps";
 
 import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
@@ -6,20 +13,9 @@ import BaseDialog from "components/BaseDialog";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
 import { signUp } from "common/utils/api";
-
-import {
-    validateEmail,
-    validateName,
-    validatePassword,
-    validateConfirmPassword
-} from "common/utils/Validator";
-
-import discardFalsyValues from "common/utils/discardFalsyValues";
-import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
 import hints from "common/resources/text/hints";
-import isEmptyObject from "common/utils/isEmptyObject";
 import styles from "./SignUpDialog.module.scss";
-import translateError from "common/utils/translateError";
+import useAuthentication from "common/utils/customHooks/useAuthentication";
 
 SignUpDialog.propTypes = propTypes;
 
@@ -38,8 +34,18 @@ const INITIAL_ERRORS = {
 };
 
 function SignUpDialog ({ onClose }) {
-    const [credentials, setCredentials] = useState(INITIAL_CREDENTIALS);
-    const [errors, setErrors] = useState(INITIAL_ERRORS);
+    const {
+        credentials,
+        errorCodes,
+        errors,
+        handleInputChange,
+        handleSubmit
+    } = useAuthentication(
+        INITIAL_CREDENTIALS,
+        INITIAL_ERRORS,
+        signUp,
+        true
+    );
 
     const {
         confirmPassword,
@@ -49,71 +55,17 @@ function SignUpDialog ({ onClose }) {
     } = credentials;
 
     const {
-        confirmPasswordError,
-        emailError,
-        nameError,
-        passwordError
+        password: passwordErrorCode
+    } = errorCodes;
+
+    const {
+        confirmPassword: confirmPasswordError,
+        email: emailError,
+        name: nameError,
+        password: passwordError
     } = errors;
 
-    const handleInputChange = ({ target }) => {
-        const { name, value } = target;
-
-        const newCredentials = {
-            ...credentials,
-            [name]: value
-        };
-
-        setCredentials(newCredentials);
-
-        const hasValidationErrors = !isEmptyObject(discardFalsyValues(errors));
-
-        if (hasValidationErrors) { // ok
-            const updatedErrors = validate(newCredentials);
-            setUpdatedErrors(updatedErrors);
-        }
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        const errors = validate(credentials);
-        setUpdatedErrors(errors, signUp);
-    };
-
-    const validate = ({ confirmPassword, email, name, password }) => {
-        const emailError = translateError(validateEmail(email));
-        const nameError = translateError(validateName(name));
-        const passwordError = translateError(validatePassword(password, true));
-        const confirmPasswordError = translateError(validateConfirmPassword(
-            password,
-            confirmPassword
-        ));
-
-        const errors = discardFalsyValues({
-            confirmPasswordError,
-            emailError,
-            nameError,
-            passwordError
-        });
-
-        const hasErrors = !isEmptyObject(errors);
-
-        return (hasErrors)
-            ? errors
-            : null;
-    };
-
-    const setUpdatedErrors = (updatedErrors, callback) => {
-        if (updatedErrors) {
-            const newErrorsState = deriveNewErrorsState(updatedErrors);
-            setErrors(newErrorsState);
-        } else {
-            setErrors(INITIAL_ERRORS);
-            if (callback) callback();
-        }
-    };
-
-    const weakPasswordHint = (passwordError === PASSWORD_TOO_WEAK)
+    const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
         ? hints.weakPassword
         : "";
 
@@ -130,7 +82,7 @@ function SignUpDialog ({ onClose }) {
                 <Input
                     error={nameError}
                     label="Имя"
-                    name="name"
+                    name={NAME}
                     onChange={handleInputChange}
                     rootClassName={styles.inputContainer}
                     type="text"
@@ -140,7 +92,7 @@ function SignUpDialog ({ onClose }) {
                 <Input
                     error={emailError}
                     label="Email"
-                    name="email"
+                    name={EMAIL}
                     onChange={handleInputChange}
                     rootClassName={styles.inputContainer}
                     type="email"
@@ -152,7 +104,7 @@ function SignUpDialog ({ onClose }) {
                     errorTooltip={weakPasswordHint}
                     hasFixedTooltip
                     label="Пароль"
-                    name="password"
+                    name={PASSWORD}
                     onChange={handleInputChange}
                     rootClassName={styles.inputContainer}
                     type="password"
@@ -162,7 +114,7 @@ function SignUpDialog ({ onClose }) {
                 <Input
                     error={confirmPasswordError}
                     label="Пароль еще раз"
-                    name="confirmPassword"
+                    name={CONFIRM_PASSWORD}
                     onChange={handleInputChange}
                     rootClassName={styles.inputContainer}
                     type="password"
@@ -179,4 +131,4 @@ function SignUpDialog ({ onClose }) {
     );
 }
 
-export default memo(SignUpDialog);
+export default SignUpDialog;
