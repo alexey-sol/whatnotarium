@@ -3,7 +3,7 @@ import { ValidationResult } from "@hapi/joi";
 
 import { ID } from "constants/fieldNames";
 import ApiController from "types/ApiController";
-import ObjectIndexer from "types/ObjectIndexer";
+import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
 import User from "api/user/user.model";
 import sendResponse from "utils/sendResponse";
@@ -27,7 +27,7 @@ const deleteUser: ApiController = async function (
 export default deleteUser;
 
 function validateParams (
-    params: ObjectIndexer<unknown>
+    params: Indexer<unknown>
 ): ValidationResult {
     const paramsValidator = new PropsValidator(params);
     return paramsValidator.validate(ID);

@@ -1,11 +1,11 @@
-import ObjectIndexer from "types/ObjectIndexer";
+import Indexer from "types/Indexer";
 
 type IsEmptyObject = (
-    object: ObjectIndexer<any>
+    object: Indexer<unknown>
 ) => boolean;
 
 const isEmptyObject: IsEmptyObject = function (
-    object: ObjectIndexer<any>
+    object: Indexer<unknown>
 ): boolean {
     return Object.entries(object).length === 0;
 };

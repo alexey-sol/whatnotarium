@@ -3,8 +3,8 @@ import { ValidationResult } from "@hapi/joi";
 
 import { EMAIL, ID, NAME, PASSWORD } from "constants/fieldNames";
 import ApiController from "types/ApiController";
+import Indexer from "types/Indexer";
 import ModelProps from "types/ModelProps";
-import ObjectIndexer from "types/ObjectIndexer";
 import PropsValidator from "utils/PropsValidator";
 import User from "api/user/user.model";
 import sendResponse from "utils/sendResponse";
@@ -39,14 +39,14 @@ const updateUser: ApiController = async function (
 export default updateUser;
 
 function validateParams (
-    params: ObjectIndexer<unknown>
+    params: Indexer<unknown>
 ): ValidationResult {
     const paramsValidator = new PropsValidator(params);
     return paramsValidator.validate(ID);
 }
 
 function validateBody (
-    body: ObjectIndexer<unknown>
+    body: Indexer<unknown>
 ): ValidationResult {
     const bodyValidator = new PropsValidator(
         body,

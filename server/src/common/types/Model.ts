@@ -1,10 +1,10 @@
-import ObjectIndexer from "./ObjectIndexer";
+import Indexer from "./Indexer";
 
-interface Model<Type> extends ObjectIndexer<any> {
+interface Model<Type> extends Indexer<any> {
     save (): Promise<Type> | never;
 
     updateAttributes (
-        data: ObjectIndexer<any>
+        data: Indexer<any>
     ): Promise<Type> | never;
 }
 

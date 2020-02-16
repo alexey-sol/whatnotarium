@@ -2,13 +2,13 @@ import { Response } from "express";
 
 type SendResponse = (
     response: Response,
-    data?: any,
+    data?: unknown,
     statusCode?: number
 ) => Response;
 
 const sendResponse: SendResponse = function (
     response: Response,
-    data?: any,
+    data?: unknown,
     statusCode = 200
 ): Response {
     return response

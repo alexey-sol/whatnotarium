@@ -11,7 +11,11 @@ import {
     PASSWORD_TOO_WEAK
 } from "common/constants/validationErrors";
 
-function translateError (error = "") {
+function translateError (error) {
+    if (!error) {
+        return null;
+    }
+
     switch (error) {
         case CONFIRM_PASSWORD_EMPTY:
             return "Пожалуйста, введите пароль еще раз";

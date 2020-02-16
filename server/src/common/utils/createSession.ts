@@ -1,9 +1,12 @@
+import { RequestHandler } from "express";
 import session from "express-session";
 
 import createRedisClient from "utils/createRedisClient";
 import sessionConfig from "config/session";
 
-const createSession = function (): any {
+type CreateSession = () => RequestHandler;
+
+const createSession: CreateSession = function (): RequestHandler {
     const { secret } = sessionConfig;
     return session(getSessionOptions(secret));
 };

@@ -1,10 +1,10 @@
 import { SchemaMap } from "@hapi/joi";
 
-import ObjectIndexer from "types/ObjectIndexer";
+import Indexer from "types/Indexer";
 import constraints from "./constraints";
 
 type IsRequired = boolean;
-type UnknownObject = ObjectIndexer<unknown>;
+type UnknownObject = Indexer<unknown>;
 
 class SchemaMapProvider {
     private schemaMap: SchemaMap = {};
@@ -45,7 +45,6 @@ class SchemaMapProvider {
         isRequired?: boolean
     ): UnknownObject | null {
         const constraint = this.findConstraint(propName);
-
         const isObject = constraint && typeof constraint === "object";
 
         return (isObject && isRequired)

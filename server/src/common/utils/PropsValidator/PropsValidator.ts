@@ -1,6 +1,6 @@
 import { ObjectSchema, Reference, ValidationResult } from "@hapi/joi";
 
-import ObjectIndexer from "types/ObjectIndexer";
+import Indexer from "types/Indexer";
 import SchemaProvider from "./SchemaProvider";
 
 type IsRequired = boolean;
@@ -12,7 +12,7 @@ type ObjectOptions = {
 
 class PropsValidator {
     constructor (
-        private objectToCheck: ObjectIndexer<unknown>,
+        private objectToCheck: Indexer<unknown>,
         private objectOptions?: ObjectOptions
     ) {
         this.objectToCheck = objectToCheck;

@@ -9,6 +9,7 @@ import { propTypes } from "../Dialog.props";
 import { validateEmail, validatePassword } from "common/utils/Validator";
 import discardFalsyValues from "common/utils/discardFalsyValues";
 import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
+import hints from "common/resources/text/hints";
 import isEmptyObject from "common/utils/isEmptyObject";
 import styles from "./SignInDialog.module.scss";
 import translateError from "common/utils/translateError";
@@ -31,9 +32,6 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
 
     const { email, password } = credentials;
     const { emailError, passwordError } = errors;
-
-    const emailErrorTranslation = translateError(emailError);
-    const passwordErrorTranslation = translateError(passwordError);
 
     const signIn = () => {
         console.log("Submit");
@@ -72,8 +70,8 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     };
 
     const validate = ({ email, password }) => {
-        const emailError = validateEmail(email);
-        const passwordError = validatePassword(password);
+        const emailError = translateError(validateEmail(email));
+        const passwordError = translateError(validatePassword(password));
 
         const errors = discardFalsyValues({
             emailError,
@@ -102,7 +100,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     };
 
     const weakPasswordHint = (passwordError === PASSWORD_TOO_WEAK)
-        ? "Не менее 6 символов"
+        ? hints.weakPassword
         : "";
 
     return (
@@ -117,7 +115,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                     onSubmit={handleSubmit}
                 >
                     <Input
-                        error={emailErrorTranslation}
+                        error={emailError}
                         label="Email"
                         name="email"
                         onChange={handleInputChange}
@@ -127,7 +125,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
                     />
 
                     <Input
-                        error={passwordErrorTranslation}
+                        error={passwordError}
                         errorTooltip={weakPasswordHint}
                         hasFixedTooltip
                         label="Пароль"

@@ -1,15 +1,25 @@
 import React, { memo, useState } from "react";
 
+import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
 import { signUp } from "common/utils/api";
-import { validateEmail, validatePassword } from "common/utils/Validator";
+
+import {
+    validateEmail,
+    validateName,
+    validatePassword,
+    validateConfirmPassword
+} from "common/utils/Validator";
+
 import discardFalsyValues from "common/utils/discardFalsyValues";
 import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
+import hints from "common/resources/text/hints";
 import isEmptyObject from "common/utils/isEmptyObject";
 import styles from "./SignUpDialog.module.scss";
+import translateError from "common/utils/translateError";
 
 SignUpDialog.propTypes = propTypes;
 
@@ -48,10 +58,19 @@ function SignUpDialog ({ onClose }) {
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
 
-        setCredentials({
+        const newCredentials = {
             ...credentials,
             [name]: value
-        });
+        };
+
+        setCredentials(newCredentials);
+
+        const hasValidationErrors = !isEmptyObject(discardFalsyValues(errors));
+
+        if (hasValidationErrors) { // ok
+            const updatedErrors = validate(newCredentials);
+            setUpdatedErrors(updatedErrors);
+        }
     };
 
     const handleSubmit = (event) => {
@@ -61,12 +80,19 @@ function SignUpDialog ({ onClose }) {
         setUpdatedErrors(errors, signUp);
     };
 
-    const validate = ({ email, password }) => {
-        const emailError = validateEmail(email);
-        const passwordError = validatePassword(password);
+    const validate = ({ confirmPassword, email, name, password }) => {
+        const emailError = translateError(validateEmail(email));
+        const nameError = translateError(validateName(name));
+        const passwordError = translateError(validatePassword(password, true));
+        const confirmPasswordError = translateError(validateConfirmPassword(
+            password,
+            confirmPassword
+        ));
 
         const errors = discardFalsyValues({
+            confirmPasswordError,
             emailError,
+            nameError,
             passwordError
         });
 
@@ -77,7 +103,7 @@ function SignUpDialog ({ onClose }) {
             : null;
     };
 
-    const setUpdatedErrors = (updatedErrors, callback) => { // duplicates
+    const setUpdatedErrors = (updatedErrors, callback) => {
         if (updatedErrors) {
             const newErrorsState = deriveNewErrorsState(updatedErrors);
             setErrors(newErrorsState);
@@ -86,6 +112,10 @@ function SignUpDialog ({ onClose }) {
             if (callback) callback();
         }
     };
+
+    const weakPasswordHint = (passwordError === PASSWORD_TOO_WEAK)
+        ? hints.weakPassword
+        : "";
 
     return (
         <BaseDialog
@@ -98,6 +128,7 @@ function SignUpDialog ({ onClose }) {
                 onSubmit={handleSubmit}
             >
                 <Input
+                    error={nameError}
                     label="Имя"
                     name="name"
                     onChange={handleInputChange}
@@ -107,6 +138,7 @@ function SignUpDialog ({ onClose }) {
                 />
 
                 <Input
+                    error={emailError}
                     label="Email"
                     name="email"
                     onChange={handleInputChange}
@@ -116,6 +148,9 @@ function SignUpDialog ({ onClose }) {
                 />
 
                 <Input
+                    error={passwordError}
+                    errorTooltip={weakPasswordHint}
+                    hasFixedTooltip
                     label="Пароль"
                     name="password"
                     onChange={handleInputChange}
@@ -125,6 +160,7 @@ function SignUpDialog ({ onClose }) {
                 />
 
                 <Input
+                    error={confirmPasswordError}
                     label="Пароль еще раз"
                     name="confirmPassword"
                     onChange={handleInputChange}

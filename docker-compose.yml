@@ -5,7 +5,7 @@ services:
         command: npm start
         volumes:
             - ./client:/app
-            - /app/node_modules
+            - client-dependencies:/app/node_modules
         networks:
             - geek-regime
         ports:
@@ -19,7 +19,7 @@ services:
         command: npm start
         volumes:
             - ./server:/app
-            - /app/node_modules
+            - server-dependencies:/app/node_modules
         networks:
             - geek-regime
         expose:
@@ -50,14 +50,23 @@ services:
             - POSTGRES_DB=${POSTGRES_DB}
     redis:
         image: redis:5.0.7-alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+            - redis-data:/data
         networks:
             - geek-regime
         expose:
             - 6379
-        command: ["redis-server", "--appendonly", "yes"]
+        
 networks:
     geek-regime:
         driver: bridge
 volumes:
+    client-dependencies:
+        driver: local
+    server-dependencies:
+        driver: local
     postgres-data:
+        driver: local
+    redis-data:
         driver: local

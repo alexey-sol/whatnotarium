@@ -1,5 +1,5 @@
-import ObjectIndexer from "./ObjectIndexer";
+import Indexer from "./Indexer";
 
-type ModelProps = ObjectIndexer<any>;
+type ModelProps = Indexer<any>;
 
 export default ModelProps;

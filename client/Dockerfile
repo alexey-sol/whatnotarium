@@ -3,4 +3,6 @@ FROM node:12.8.1-alpine
 WORKDIR /app
 
 COPY package.json .
+COPY package-lock.json .
+
 RUN npm install --quiet
