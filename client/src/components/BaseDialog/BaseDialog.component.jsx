@@ -1,27 +1,35 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import classnames from "classnames";
 
-import { defaultProps, propTypes } from "./BaseDialog.props";
 import { CloseIconButton } from "components/common/IconButton";
+import { defaultProps, propTypes } from "./BaseDialog.props";
 import styles from "./BaseDialog.module.scss";
 
 BaseDialog.propTypes = propTypes;
 BaseDialog.defaultProps = defaultProps;
 
 function BaseDialog ({ children, className, onClose, title, width }) {
+    const rootRef = useRef(null);
+
     const containerClassName = classnames(
         styles.container,
         styles[`${width}Width`],
         className
     );
 
-    // Add back button
+    const handleMouseDownOnRoot = (event) => {
+        const targetIsRoot = event.target === rootRef.current;
+        if (targetIsRoot) onClose();
+    };
+
+    // TODO: add back button
 
     const dialogElement = (
         <div
             className={styles.root}
-            onClick={onClose}
+            onMouseDown={handleMouseDownOnRoot}
+            ref={rootRef}
         >
             <div
                 className={containerClassName}
