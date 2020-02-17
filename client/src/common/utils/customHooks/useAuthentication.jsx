@@ -1,19 +1,5 @@
 import { useState } from "react";
 
-import {
-    CONFIRM_PASSWORD,
-    EMAIL,
-    NAME,
-    PASSWORD
-} from "common/constants/credentialProps";
-
-import {
-    validateConfirmPassword,
-    validateEmail,
-    validateName,
-    validatePassword
-} from "common/utils/Validator";
-
 import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
 import discardFalsyValues from "common/utils/discardFalsyValues";
 import isEmptyObject from "common/utils/isEmptyObject";
@@ -21,13 +7,12 @@ import translateError from "common/utils/translateError";
 
 function useAuthentication (
     initialCredentials,
-    initialErrors,
-    sendCredentials,
-    isSignUp
+    validateCredential,
+    sendCredentials
 ) {
     const [credentials, setCredentials] = useState(initialCredentials);
-    const [errors, setErrors] = useState(initialErrors);
-    const [errorCodes, setErrorCodes] = useState(initialErrors);
+    const [errors, setErrors] = useState(initialCredentials);
+    const [errorCodes, setErrorCodes] = useState(initialCredentials);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -58,33 +43,18 @@ function useAuthentication (
         const errorCodes = {};
 
         for (const stateName of Object.keys(credentials)) {
-            const errorCode = validateValue(stateName, credentials);
+            const errorCode = validateCredential(stateName, credentials);
 
             if (errorCode) {
                 errorCodes[stateName] = errorCode;
             }
         }
 
-        const hasErrors = !isEmptyObject(errors);
+        const hasErrors = !isEmptyObject(errorCodes);
 
         return (hasErrors)
             ? errorCodes
             : null;
-    };
-
-    const validateValue = (stateName, credentials) => {
-        const { confirmPassword, email, name, password } = credentials;
-
-        switch (stateName) {
-            case CONFIRM_PASSWORD:
-                return validateConfirmPassword(password, confirmPassword);
-            case EMAIL:
-                return validateEmail(email);
-            case NAME:
-                return validateName(name);
-            case PASSWORD:
-                return validatePassword(password, isSignUp);
-        }
     };
 
     const getTranslatedErrors = (errorCodes) => {
@@ -103,8 +73,8 @@ function useAuthentication (
             setErrorCodes(newErrorsState);
             setErrors(getTranslatedErrors(newErrorsState));
         } else {
-            setErrorCodes(initialErrors);
-            setErrors(initialErrors);
+            setErrorCodes(initialCredentials);
+            setErrors(initialCredentials);
             if (callback) callback();
         }
     };

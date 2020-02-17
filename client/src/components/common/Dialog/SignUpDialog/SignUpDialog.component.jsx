@@ -13,6 +13,14 @@ import BaseDialog from "components/BaseDialog";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
 import { signUp } from "common/utils/api";
+
+import {
+    validateConfirmPassword,
+    validateEmail,
+    validateName,
+    validatePassword
+} from "common/utils/Validator";
+
 import hints from "common/resources/text/hints";
 import styles from "./SignUpDialog.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
@@ -26,14 +34,22 @@ const INITIAL_CREDENTIALS = {
     password: ""
 };
 
-const INITIAL_ERRORS = {
-    confirmPasswordError: "",
-    emailError: "",
-    nameError: "",
-    passwordError: ""
-};
-
 function SignUpDialog ({ onClose }) {
+    const validateCredential = (stateName, credentials) => {
+        const { confirmPassword, email, name, password } = credentials;
+
+        switch (stateName) {
+            case CONFIRM_PASSWORD:
+                return validateConfirmPassword(password, confirmPassword);
+            case EMAIL:
+                return validateEmail(email);
+            case NAME:
+                return validateName(name);
+            case PASSWORD:
+                return validatePassword(password, true);
+        }
+    };
+
     const {
         credentials,
         errorCodes,
@@ -42,9 +58,8 @@ function SignUpDialog ({ onClose }) {
         handleSubmit
     } = useAuthentication(
         INITIAL_CREDENTIALS,
-        INITIAL_ERRORS,
-        signUp,
-        true
+        validateCredential,
+        signUp
     );
 
     const {

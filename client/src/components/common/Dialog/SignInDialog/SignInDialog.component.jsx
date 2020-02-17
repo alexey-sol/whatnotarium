@@ -7,6 +7,7 @@ import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { propTypes } from "../Dialog.props";
 import { signIn } from "common/utils/api";
+import { validateEmail, validatePassword } from "common/utils/Validator";
 import styles from "./SignInDialog.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
@@ -17,12 +18,18 @@ const INITIAL_CREDENTIALS = {
     password: ""
 };
 
-const INITIAL_ERRORS = {
-    emailError: "",
-    passwordError: ""
-};
-
 function SignInDialog ({ onClose, showSignUpDialog }) {
+    const validateCredential = (stateName, credentials) => {
+        const { email, password } = credentials;
+
+        switch (stateName) {
+            case EMAIL:
+                return validateEmail(email);
+            case PASSWORD:
+                return validatePassword(password);
+        }
+    };
+
     const {
         credentials,
         errors,
@@ -30,7 +37,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
         handleSubmit
     } = useAuthentication(
         INITIAL_CREDENTIALS,
-        INITIAL_ERRORS,
+        validateCredential,
         signIn
     );
 
