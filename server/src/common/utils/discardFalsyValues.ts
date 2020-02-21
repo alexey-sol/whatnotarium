@@ -1,10 +1,8 @@
 import Indexer from "types/Indexer";
 
-type UnknownObject = Indexer<unknown>;
-
 interface DiscardFalsyValues {
     (object: unknown[]): unknown[];
-    (object: UnknownObject): UnknownObject;
+    (object: Indexer<unknown>): Indexer<unknown>;
 }
 
 function discardFalsyValues (
@@ -12,16 +10,16 @@ function discardFalsyValues (
 ): unknown[];
 
 function discardFalsyValues (
-    object: UnknownObject
-): UnknownObject;
+    object: Indexer<unknown>
+): Indexer<unknown>;
 
 function discardFalsyValues (
     object: unknown
-): unknown[] | UnknownObject {
+): unknown[] | Indexer<unknown> {
     if (Array.isArray(object)) {
         return filterOutArray(object);
     } else {
-        return filterOutObject(object as UnknownObject);
+        return filterOutObject(object as Indexer<unknown>);
     }
 }
 
@@ -36,9 +34,9 @@ function filterOutArray (
 }
 
 function filterOutObject (
-    object: UnknownObject
-): UnknownObject {
-    const result: UnknownObject = {};
+    object: Indexer<unknown>
+): Indexer<unknown> {
+    const result: Indexer<unknown> = {};
 
     for (const [key, value] of Object.entries(object)) {
         if (value) {

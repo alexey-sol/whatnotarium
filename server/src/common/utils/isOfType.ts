@@ -2,7 +2,7 @@ const isOfType = function <Type> (
     objectToCheck: unknown,
     propertyToCheckFor: keyof Type
 ): objectToCheck is Type {
-    return (objectToCheck as Type)[propertyToCheckFor] !== undefined;
+    return Boolean((objectToCheck as Type)[propertyToCheckFor]);
 };
 
 export default isOfType;

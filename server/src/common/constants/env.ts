@@ -5,5 +5,6 @@ export const PG_URL_DEV = "PG_URL_DEV";
 export const PORT = "PORT";
 export const REDIS_HOST = "REDIS_HOST";
 export const REDIS_PORT = "REDIS_PORT";
+export const SESSION_NAME = "SESSION_NAME";
 export const SESSION_SECRET = "SESSION_SECRET";
 export const URL = "URL";

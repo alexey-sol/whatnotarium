@@ -1,5 +1,5 @@
 type Indexer<Type> = {
-    [ key: string ]: Type;
+    [key: string]: Type;
 };
 
 export default Indexer;

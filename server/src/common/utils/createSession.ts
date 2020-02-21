@@ -7,22 +7,21 @@ import sessionConfig from "config/session";
 type CreateSession = () => RequestHandler;
 
 const createSession: CreateSession = function (): RequestHandler {
-    const { secret } = sessionConfig;
-    return session(getSessionOptions(secret));
+    return session(getSessionOptions());
 };
 
 export default createSession;
 
-function getSessionOptions (
-    secret: string | string[]
-): session.SessionOptions {
+function getSessionOptions (): session.SessionOptions {
+    const { name, secret } = sessionConfig;
+
     return {
         cookie: {
             expires: getDateAfterMonthsPassedFromNow(1),
             maxAge: calculateMsInMonths(1),
             secure: "auto" // TODO: switch to "true" after enabling https
         },
-        name: "geek-regime.sid",
+        name,
         resave: false,
         saveUninitialized: true,
         secret,

@@ -28,6 +28,10 @@ export default {
 
     REDIS_PORT: number(),
 
+    SESSION_NAME: string()
+        .min(3)
+        .trim(),
+
     SESSION_SECRET: string()
         .min(3)
         .trim(),

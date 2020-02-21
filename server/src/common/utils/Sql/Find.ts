@@ -1,3 +1,4 @@
+import Indexer from "types/Indexer";
 import Sql from "./Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 
@@ -9,19 +10,63 @@ class Find extends Sql {
         super(tableName, undefined, queryName);
     }
 
-    generate (): SqlQueryPayload {
+    generate (filter?: Indexer<unknown>): SqlQueryPayload {
+        return (filter)
+            ? this.createQueryPayloadWithFilter(filter)
+            : this.createQueryPayloadWithoutFilter();
+    }
+
+    private createQueryPayloadWithFilter (
+        filter: Indexer<unknown>
+    ): SqlQueryPayload {
+        const fieldNames = Object.keys(filter);
+        const fieldValues = Object.values(filter);
+
+        return {
+            name: this.queryName,
+            text: this.getText(fieldNames),
+            values: this.getValues(fieldValues)
+        };
+    }
+
+    private createQueryPayloadWithoutFilter (): SqlQueryPayload {
         return {
             name: this.queryName,
             text: this.getText()
         };
     }
 
-    private getText (): string {
+    private getText (fieldNames?: string[]): string {
+        let whereElement = "";
+        let orderElement = "";
+
+        if (fieldNames) {
+            const whereClause = this.createWhereClause(fieldNames);
+            whereElement += `WHERE ${whereClause}`;
+        } else {
+            orderElement += "ORDER BY id ASC";
+        }
+
         return `
             SELECT *
             FROM ${this.tableName}
-            ORDER BY id ASC;
+            ${whereElement}
+            ${orderElement};
         `;
+    }
+
+    private createWhereClause (
+        fieldNames: string[]
+    ): string {
+        let count = this.offset;
+        const values = [];
+
+        for (const fieldName of fieldNames) {
+            count++;
+            values.push(`${fieldName} = $${count}`);
+        }
+
+        return values.join(", ");
     }
 }
 

@@ -8,52 +8,44 @@ import {
 
 import { USERS } from "constants/dbTableNames";
 import DbQuery from "utils/DbQuery";
+import Indexer from "types/Indexer";
 import Model from "types/Model";
-import ModelProps from "types/ModelProps";
 import PropsError from "utils/errors/PropsError";
-import hashPassword from "utils/hashPassword";
 import isEmptyObject from "utils/isEmptyObject";
 
 class User implements Model<User> {
-    private constructor (props: ModelProps) {
+    [key: string]: unknown;
+
+    private constructor (props: Indexer<unknown>) {
         Object.assign(this, props);
     }
 
     static async create (
-        props: ModelProps
+        props: Indexer<unknown>
     ): Promise<User | null> | never {
         if (isEmptyObject(props)) {
             throw new PropsError();
         }
 
-        const { password } = props;
-        const { hash } = hashPassword(password);
-
-        const propsWithHashedPassword = {
-            ...props,
-            password: hash
-        };
-
         const sql = new Create(USERS)
-            .generate(propsWithHashedPassword);
-        const userProps = await new DbQuery<ModelProps>()
+            .generate(props);
+        const queryPayload = await new DbQuery<Indexer<unknown>>()
             .query(sql);
 
+        const userProps = queryPayload[0];
         const user = new User(userProps);
         return user;
     }
 
-    static async find (): Promise<User[]> | never {
+    static async find (
+        filter?: Indexer<unknown>
+    ): Promise<User[]> | never {
         const sql = new Find(USERS)
-            .generate();
-        const usersProps = await new DbQuery<ModelProps>()
+            .generate(filter);
+        const queryPayload = await new DbQuery<Indexer<unknown>>()
             .query(sql);
 
-        if (usersProps.length === 0) {
-            return [];
-        }
-
-        const users = usersProps.map(props => new User(props));
+        const users = queryPayload.map(userProps => new User(userProps));
         return users;
     }
 
@@ -62,13 +54,14 @@ class User implements Model<User> {
     ): Promise<User | null> | never {
         const sql = new FindById(USERS, id)
             .generate();
-        const userProps = await new DbQuery<ModelProps>()
+        const queryPayload = await new DbQuery<Indexer<unknown>>()
             .query(sql);
 
-        if (userProps.length === 0) {
+        if (queryPayload.length === 0) {
             return null;
         }
 
+        const userProps = queryPayload[0];
         const user = new User(userProps);
         return user;
     }
@@ -78,9 +71,10 @@ class User implements Model<User> {
     ): Promise<boolean> | never {
         const sql = new DestroyById(USERS, id)
             .generate();
-        const deletedUserProps = await new DbQuery<ModelProps>()
+        const queryPayload = await new DbQuery<Indexer<unknown>>()
             .query(sql);
 
+        const deletedUserProps = queryPayload[0];
         const isSuccess = Boolean(deletedUserProps.id);
         return isSuccess;
     }
@@ -90,18 +84,18 @@ class User implements Model<User> {
     }
 
     async updateAttributes (
-        props: ModelProps
+        props: Indexer<unknown>
     ): Promise<User> | never {
-        if (isEmptyObject(props)) {
+        if (isEmptyObject(props) || !this.id) {
             throw new PropsError();
         }
 
-        const { id } = this as ModelProps;
-        const sql = new UpdateAttributes(USERS, id)
+        const sql = new UpdateAttributes(USERS, this.id as string)
             .generate(props);
-        const userProps = await new DbQuery<ModelProps>()
+        const queryPayload = await new DbQuery<Indexer<unknown>>()
             .query(sql);
 
+        const userProps = queryPayload[0];
         const user = new User(userProps);
         return user;
     }

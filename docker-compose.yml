@@ -34,6 +34,7 @@ services:
             - PORT
             - REDIS_HOST
             - REDIS_PORT
+            - SESSION_NAME
             - SESSION_SECRET
             - URL
     postgres:
@@ -57,7 +58,6 @@ services:
             - geek-regime
         expose:
             - 6379
-        
 networks:
     geek-regime:
         driver: bridge

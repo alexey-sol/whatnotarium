@@ -1,4 +1,5 @@
 interface SessionConfig {
+    name: string;
     secret: string;
 }
 

@@ -17,6 +17,7 @@
             "app": ["./src/app"],
             "config/*": ["./src/config/*"],
             "constants/*": ["./src/common/constants/*"],
+            "models/*": ["./src/common/models/*"],
             "root/*": ["./*"],
             "types/*": ["./src/common/types/*"],
             "utils/*": ["./src/common/utils/*"]

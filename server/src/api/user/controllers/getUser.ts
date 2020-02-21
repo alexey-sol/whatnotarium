@@ -5,7 +5,7 @@ import { ID } from "constants/fieldNames";
 import ApiController from "types/ApiController";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
-import User from "api/user/user.model";
+import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const getUser: ApiController = async function (

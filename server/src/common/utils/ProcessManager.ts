@@ -49,8 +49,8 @@ class ProcessManager {
         const { NODE_ENV } = this.nodeProcess.env;
         const isString = typeof NODE_ENV === "string";
 
-        return (NODE_ENV && isString)
-            ? NODE_ENV.trim()
+        return (isString)
+            ? NODE_ENV!.trim()
             : "";
     }
 }

@@ -75,7 +75,7 @@ function useAuthentication (
         } else {
             setErrorCodes(initialCredentials);
             setErrors(initialCredentials);
-            if (callback) callback();
+            if (callback) callback(credentials);
         }
     };
 

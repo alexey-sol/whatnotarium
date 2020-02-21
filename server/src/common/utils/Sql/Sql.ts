@@ -1,5 +1,6 @@
-import ModelProps from "types/ModelProps";
+import Indexer from "types/Indexer";
 import SqlQueryPayload from "types/SqlQueryPayload";
+import isObject from "utils/isObject";
 
 abstract class Sql {
     protected offset: number;
@@ -14,14 +15,20 @@ abstract class Sql {
     }
 
     abstract generate (
-        props?: ModelProps
+        props?: Indexer<unknown>
     ): SqlQueryPayload;
 
-    protected getValues (
-        props: ModelProps = []
-    ): string[] {
+    protected getValues (props: Indexer<unknown>): string[];
+    protected getValues (props?: unknown[]): string[];
+    protected getValues (props?: unknown): string[] {
         const id = this.recordId;
-        const values = Object.values(props);
+        let values = [];
+
+        if (Array.isArray(props)) {
+            values = props;
+        } else if (isObject(props)) {
+            values = Object.values(props);
+        }
 
         return (id)
             ? [id, ...values]

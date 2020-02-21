@@ -4,9 +4,8 @@ import { ValidationResult } from "@hapi/joi";
 import { EMAIL, ID, NAME, PASSWORD } from "constants/fieldNames";
 import ApiController from "types/ApiController";
 import Indexer from "types/Indexer";
-import ModelProps from "types/ModelProps";
 import PropsValidator from "utils/PropsValidator";
-import User from "api/user/user.model";
+import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const updateUser: ApiController = async function (
@@ -62,7 +61,7 @@ function validateBody (
 
 async function updateUserAndSendResponse (
     id: string,
-    props: ModelProps,
+    props: Indexer<unknown>,
     response: Response
 ): Promise<Response> {
     const user = await User.findById(id);

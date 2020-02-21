@@ -4,7 +4,6 @@ import Indexer from "types/Indexer";
 import constraints from "./constraints";
 
 type IsRequired = boolean;
-type UnknownObject = Indexer<unknown>;
 
 class SchemaMapProvider {
     private schemaMap: SchemaMap = {};
@@ -43,7 +42,7 @@ class SchemaMapProvider {
     private updateAndGetConstraint (
         propName: string,
         isRequired?: boolean
-    ): UnknownObject | null {
+    ): Indexer<unknown> | null {
         const constraint = this.findConstraint(propName);
         const isObject = constraint && typeof constraint === "object";
 
@@ -54,12 +53,12 @@ class SchemaMapProvider {
 
     private findConstraint (
         propName: string
-    ): UnknownObject | null {
-        const entries = Object.entries(constraints as UnknownObject);
+    ): Indexer<unknown> | null {
+        const entries = Object.entries(constraints as Indexer<unknown>);
 
         for (const [key, value] of entries) {
             if (key === propName) {
-                return value as UnknownObject;
+                return value as Indexer<unknown>;
             }
         }
 

@@ -1,4 +1,4 @@
-import ModelProps from "types/ModelProps";
+import Indexer from "types/Indexer";
 import Sql from "./Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 
@@ -12,7 +12,7 @@ class UpdateAttributes extends Sql {
     }
 
     generate (
-        props: ModelProps
+        props: Indexer<unknown>
     ): SqlQueryPayload {
         return {
             name: this.queryName,
@@ -22,7 +22,7 @@ class UpdateAttributes extends Sql {
     }
 
     private getText (
-        props: ModelProps
+        props: Indexer<unknown>
     ): string {
         const { setClause, andClause } = this.createClauses(props);
 
@@ -35,7 +35,7 @@ class UpdateAttributes extends Sql {
         `;
     }
 
-    private createClauses (props: ModelProps): {
+    private createClauses (props: Indexer<unknown>): {
         setClause: string;
         andClause: string;
     } {
