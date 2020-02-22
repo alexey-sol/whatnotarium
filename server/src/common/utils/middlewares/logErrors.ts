@@ -5,7 +5,7 @@ import {
     NextFunction
 } from "express";
 
-import { ValidationError } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import isOfType from "utils/isOfType";
 import logger from "utils/winston";
@@ -16,7 +16,7 @@ const logErrors: ErrorRequestHandler = function (
     response: Response,
     next: NextFunction
 ): void {
-    const isJoiValidationError = isOfType<ValidationError>(error, "isJoi");
+    const isJoiValidationError = isOfType<Joi.ValidationError>(error, "isJoi");
 
     if (isJoiValidationError) {
         error.statusCode = 400;

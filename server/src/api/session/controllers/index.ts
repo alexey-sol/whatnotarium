@@ -1,5 +1,9 @@
-import authenticate from "./authenticate";
+import createSession from "./createSession";
+import deleteSession from "./deleteSession";
+import getSession from "./getSession";
 
 export {
-    authenticate
+    createSession,
+    deleteSession,
+    getSession
 };

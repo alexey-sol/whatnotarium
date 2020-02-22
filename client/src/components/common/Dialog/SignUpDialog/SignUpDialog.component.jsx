@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import {
     CONFIRM_PASSWORD,
@@ -11,8 +12,8 @@ import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import Input from "components/Input";
-import { propTypes } from "../Dialog.props";
-import { signUp } from "common/utils/api";
+import { propTypes } from "./SignUpDialog.props";
+import { signUpStart } from "redux/user/user.actions";
 
 import {
     validateConfirmPassword,
@@ -34,7 +35,7 @@ const INITIAL_CREDENTIALS = {
     password: ""
 };
 
-function SignUpDialog ({ onClose }) {
+function SignUpDialog ({ onClose, signUpStart }) {
     const validateCredential = (stateName, credentials) => {
         const { confirmPassword, email, name, password } = credentials;
 
@@ -59,7 +60,7 @@ function SignUpDialog ({ onClose }) {
     } = useAuthentication(
         INITIAL_CREDENTIALS,
         validateCredential,
-        signUp
+        signUpStart
     );
 
     const {
@@ -146,4 +147,13 @@ function SignUpDialog ({ onClose }) {
     );
 }
 
-export default SignUpDialog;
+const mapDispatchToProps = (dispatch) => ({
+    signUpStart: (credentials) => dispatch(signUpStart(credentials))
+});
+
+const ConnectedSignUpDialog = connect(
+    null,
+    mapDispatchToProps
+)(SignUpDialog);
+
+export default ConnectedSignUpDialog;

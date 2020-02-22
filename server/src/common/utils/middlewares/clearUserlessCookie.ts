@@ -14,13 +14,14 @@ const clearUserlessCookie: RequestHandler = function (
 ): void {
     const { name } = sessionConfig;
 
-    const isCookieUseless = (
+    const isCookieUserless = (
+        request.cookies &&
         request.cookies[name] &&
         request.session &&
         !request.session.user
     );
 
-    if (isCookieUseless) {
+    if (isCookieUserless) {
         response.clearCookie(name);
     }
 

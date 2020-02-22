@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import { ID } from "constants/fieldNames";
 import ApiController from "types/ApiController";
@@ -28,7 +28,7 @@ export default deleteUser;
 
 function validateParams (
     params: Indexer<unknown>
-): ValidationResult {
+): Joi.ValidationResult {
     const paramsValidator = new PropsValidator(params);
     return paramsValidator.validate(ID);
 }

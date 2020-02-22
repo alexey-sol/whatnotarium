@@ -1,11 +1,11 @@
-import { ObjectSchema, Reference, ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import Indexer from "types/Indexer";
 import SchemaProvider from "./SchemaProvider";
 
 type IsRequired = boolean;
 type ObjectOptionKey = "max" | "min";
-type ObjectOptionValue = number | Reference;
+type ObjectOptionValue = number | Joi.Reference;
 type ObjectOptions = {
     [Type in ObjectOptionKey]?: ObjectOptionValue;
 };
@@ -21,7 +21,7 @@ class PropsValidator {
 
     validate (
         ...propsToValidate: string[] | [string, IsRequired][]
-    ): ValidationResult {
+    ): Joi.ValidationResult {
         const schema = this.createSchema(propsToValidate);
 
         const validationResult = schema.validate(
@@ -34,7 +34,7 @@ class PropsValidator {
 
     private createSchema (
         propsToValidate: string[] | [string, IsRequired][]
-    ): ObjectSchema {
+    ): Joi.ObjectSchema {
         const schemaProvider = new SchemaProvider(this.objectOptions);
         return schemaProvider.generate(propsToValidate);
     }

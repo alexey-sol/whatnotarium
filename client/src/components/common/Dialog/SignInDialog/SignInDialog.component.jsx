@@ -1,12 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { EMAIL, PASSWORD } from "common/constants/credentialProps";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
-import { propTypes } from "../Dialog.props";
-import { signIn } from "common/utils/api";
+import { propTypes } from "./SignInDialog.props";
+import { signInStart } from "redux/user/user.actions";
 import { validateEmail, validatePassword } from "common/utils/Validator";
 import styles from "./SignInDialog.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
@@ -18,7 +19,7 @@ const INITIAL_CREDENTIALS = {
     password: ""
 };
 
-function SignInDialog ({ onClose, showSignUpDialog }) {
+function SignInDialog ({ onClose, showSignUpDialog, signInStart }) {
     const validateCredential = (stateName, credentials) => {
         const { email, password } = credentials;
 
@@ -38,7 +39,7 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     } = useAuthentication(
         INITIAL_CREDENTIALS,
         validateCredential,
-        signIn
+        signInStart
     );
 
     const {
@@ -136,4 +137,13 @@ function SignInDialog ({ onClose, showSignUpDialog }) {
     );
 }
 
-export default SignInDialog;
+const mapDispatchToProps = (dispatch) => ({
+    signInStart: (credentials) => dispatch(signInStart(credentials))
+});
+
+const ConnectedSignInDialog = connect(
+    null,
+    mapDispatchToProps
+)(SignInDialog);
+
+export default ConnectedSignInDialog;

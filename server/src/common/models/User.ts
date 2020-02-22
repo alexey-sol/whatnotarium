@@ -10,7 +10,7 @@ import { USERS } from "constants/dbTableNames";
 import DbQuery from "utils/DbQuery";
 import Indexer from "types/Indexer";
 import Model from "types/Model";
-import PropsError from "utils/errors/PropsError";
+import ValidationError from "utils/errors/ValidationError";
 import isEmptyObject from "utils/isEmptyObject";
 
 class User implements Model<User> {
@@ -24,7 +24,7 @@ class User implements Model<User> {
         props: Indexer<unknown>
     ): Promise<User | null> | never {
         if (isEmptyObject(props)) {
-            throw new PropsError();
+            throw new ValidationError();
         }
 
         const sql = new Create(USERS)
@@ -35,6 +35,13 @@ class User implements Model<User> {
         const userProps = queryPayload[0];
         const user = new User(userProps);
         return user;
+    }
+
+    static async findOne (
+        filter?: Indexer<unknown>
+    ): Promise<User> | never {
+        const users = await User.find(filter);
+        return users[0];
     }
 
     static async find (
@@ -87,7 +94,7 @@ class User implements Model<User> {
         props: Indexer<unknown>
     ): Promise<User> | never {
         if (isEmptyObject(props) || !this.id) {
-            throw new PropsError();
+            throw new ValidationError();
         }
 
         const sql = new UpdateAttributes(USERS, this.id as string)

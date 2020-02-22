@@ -1,4 +1,4 @@
-import { ValidationError, ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import { REDIS_HOST, REDIS_PORT } from "constants/env";
 import EnvForRedis from "types/env/EnvForRedis";
@@ -14,7 +14,7 @@ if (error) {
 
 export default createRedisConfig(value);
 
-function validateEnvForRedis (): ValidationResult {
+function validateEnvForRedis (): Joi.ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
@@ -24,7 +24,7 @@ function validateEnvForRedis (): ValidationResult {
 }
 
 function logErrorAndExit (
-    error: ValidationError
+    error: Joi.ValidationError
 ): void {
     new ProcessManager().exit(error);
 }

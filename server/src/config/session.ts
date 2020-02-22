@@ -1,4 +1,4 @@
-import { ValidationError, ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import { SESSION_NAME, SESSION_SECRET } from "constants/env";
 import EnvForSession from "types/env/EnvForSession";
@@ -14,7 +14,7 @@ if (error) {
 
 export default createSessionConfig(value);
 
-function validateEnvForSession (): ValidationResult {
+function validateEnvForSession (): Joi.ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
@@ -24,7 +24,7 @@ function validateEnvForSession (): ValidationResult {
 }
 
 function logErrorAndExit (
-    error: ValidationError
+    error: Joi.ValidationError
 ): void {
     new ProcessManager().exit(error);
 }

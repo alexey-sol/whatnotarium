@@ -1,4 +1,4 @@
-import { ValidationError, ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import { HOST, PORT, URL } from "constants/env";
 import EnvForServer from "types/env/EnvForServer";
@@ -14,7 +14,7 @@ if (error) {
 
 export default createServerConfig(value);
 
-function validateEnvForServer (): ValidationResult {
+function validateEnvForServer (): Joi.ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
@@ -25,7 +25,7 @@ function validateEnvForServer (): ValidationResult {
 }
 
 function logErrorAndExit (
-    error: ValidationError
+    error: Joi.ValidationError
 ): void {
     new ProcessManager().exit(error);
 }

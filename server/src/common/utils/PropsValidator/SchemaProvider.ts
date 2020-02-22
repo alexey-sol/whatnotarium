@@ -1,14 +1,10 @@
-import Joi, {
-    ObjectSchema,
-    Reference,
-    SchemaMap
-} from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import SchemaMapProvider from "./SchemaMapProvider";
 
 type IsRequired = boolean;
 type ObjectOptionKey = "max" | "min";
-type ObjectOptionValue = number | Reference;
+type ObjectOptionValue = number | Joi.Reference;
 type ObjectOptions = {
     [Type in ObjectOptionKey]?: ObjectOptionValue;
 };
@@ -21,7 +17,7 @@ class SchemaProvider {
     generate (
         propsToValidate: string[] | [string, IsRequired][],
         objectOptions?: ObjectOptions
-    ): ObjectSchema {
+    ): Joi.ObjectSchema {
         const schemaMapProvider = new SchemaMapProvider();
         const schemaMap = schemaMapProvider.generate(propsToValidate);
 
@@ -31,9 +27,9 @@ class SchemaProvider {
     }
 
     private createSchemaWithOptions (
-        schemaMap: SchemaMap,
+        schemaMap: Joi.SchemaMap,
         objectOptions: ObjectOptions
-    ): ObjectSchema {
+    ): Joi.ObjectSchema {
         let objectSchema = this.createSimpleSchema(schemaMap);
 
         for (const [key, value] of Object.entries(objectOptions)) {
@@ -50,16 +46,16 @@ class SchemaProvider {
     }
 
     private createSimpleSchema (
-        schemaMap: SchemaMap
-    ): ObjectSchema {
+        schemaMap: Joi.SchemaMap
+    ): Joi.ObjectSchema {
         return Joi.object(schemaMap);
     }
 
     private updateSchemaByCallingItsMethod (
-        objectSchema: ObjectSchema,
+        objectSchema: Joi.ObjectSchema,
         methodName: ObjectOptionKey,
         methodArgument: ObjectOptionValue
-    ): ObjectSchema {
+    ): Joi.ObjectSchema {
         return objectSchema[methodName](methodArgument);
     }
 }

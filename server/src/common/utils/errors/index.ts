@@ -1,9 +1,9 @@
 import ForbiddenError from "./ForbiddenError";
 import NotFoundError from "./NotFoundError";
-import PropsError from "./PropsError";
+import ValidationError from "./ValidationError";
 
 export {
     ForbiddenError,
     NotFoundError,
-    PropsError
+    ValidationError
 };

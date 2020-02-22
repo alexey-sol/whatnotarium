@@ -1,16 +1,18 @@
 import { Request, Response, NextFunction } from "express";
-import { ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import { EMAIL, PASSWORD } from "constants/fieldNames";
+import { INVALID_CREDENTIALS, NO_USER_FOUND } from "constants/validationErrors";
 import ApiController from "types/ApiController";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
-import UnauthorizedError from "utils/errors/UnauthorizedError";
 import User from "models/User";
+import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
 import sendResponse from "utils/sendResponse";
+import sessionConfig from "config/session";
 
-const authenticate: ApiController = async function (
+const createSession: ApiController = async function (
     request: Request,
     response: Response,
     next: NextFunction
@@ -21,34 +23,52 @@ const authenticate: ApiController = async function (
         return next(error);
     }
 
+    const { name } = sessionConfig;
+    const { email, password } = value;
+
     try {
-        const { email, password } = value;
         const user = await findUserByEmail(email);
 
-        const isAuthorized = Boolean(
-            request.session &&
-            user &&
-            isValidPassword(password, user.password as Buffer)
-        );
-
-        if (!isAuthorized) {
-            return next(new UnauthorizedError());
+        if (!user) {
+            return next(new ValidationError(
+                NO_USER_FOUND,
+                404,
+                request.ip
+            ));
         }
 
-        // "request.session" and "user" were checked but the compiler still
-        // complains, so... bang!
-        request.session!.user = user!.id;
-        sendResponse(response);
+        if (!isValidPassword(password, user.password as Buffer)) {
+            return next(new ValidationError(
+                INVALID_CREDENTIALS,
+                401,
+                request.ip
+            ));
+        }
+
+        const isAlreadySignIn = (
+            request.session &&
+            request.session.user &&
+            request.cookies &&
+            request.cookies[name]
+        );
+
+        if (!isAlreadySignIn) {
+            // "request.session" and "user" were checked but the compiler still
+            // complains, so... bang!
+            request.session!.user = user!.id;
+        }
+
+        sendResponse(response, user);
     } catch (error) {
         return next(error);
     }
 };
 
-export default authenticate;
+export default createSession;
 
 function validateBody (
     body: Indexer<unknown>
-): ValidationResult {
+): Joi.ValidationResult {
     const bodyValidator = new PropsValidator(body);
 
     return bodyValidator.validate(
@@ -68,6 +88,6 @@ function isValidPassword (
     passwordToCheck: string,
     storedHash: Buffer
 ): boolean {
-    const { hash } = hashPassword(passwordToCheck, "sha512");
+    const { hash } = hashPassword(passwordToCheck);
     return hash === storedHash;
 }

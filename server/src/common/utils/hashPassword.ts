@@ -3,18 +3,28 @@ import crypto from "crypto";
 
 import HashPasswordResult from "types/HashPasswordResult";
 
+interface Options {
+    digest: string;
+    iterations: number;
+    keyLength: number;
+    salt: string;
+}
+
 type HashPassword = (
     password: string | Buffer,
-    digest?: string
+    options?: Options
 ) => HashPasswordResult;
 
 const hashPassword: HashPassword = function (
     password: string | Buffer,
-    digest = "sha512"
+    options = getDefaultOptions()
 ): HashPasswordResult {
-    const salt = crypto.randomBytes(128).toString("base64");
-    const iterations = 10000;
-    const keyLength = 32;
+    const {
+        digest,
+        iterations,
+        keyLength,
+        salt
+    } = options;
 
     const hash = pbkdf2Sync(
         password,
@@ -33,3 +43,19 @@ const hashPassword: HashPassword = function (
 };
 
 export default hashPassword;
+
+function getDefaultOptions (): Options {
+    return {
+        digest: "sha512",
+        iterations: 10000,
+        keyLength: 32,
+        salt: getSalt()
+    };
+}
+
+function getSalt (): string {
+    return crypto.randomBytes(128).toString("base64");
+}
+
+// TODO: hash_options table with (id, salt, iterations, key_length, digest,
+// user_id)

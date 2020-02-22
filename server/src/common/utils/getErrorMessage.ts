@@ -1,15 +1,15 @@
-import { ValidationError } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import isOfType from "utils/isOfType";
 
 type GetErrorMessage = (
-    error: Error & ValidationError
+    error: Error & Joi.ValidationError
 ) => string;
 
 const getErrorMessage: GetErrorMessage = function (
-    error: Error & ValidationError
+    error: Error & Joi.ValidationError
 ) {
-    const isJoiValidationError = isOfType<ValidationError>(error, "isJoi");
+    const isJoiValidationError = isOfType<Joi.ValidationError>(error, "isJoi");
 
     return (isJoiValidationError)
         ? error.details[0].message

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 
 import { EMAIL, ID, NAME, PASSWORD } from "constants/fieldNames";
 import ApiController from "types/ApiController";
@@ -39,14 +39,14 @@ export default updateUser;
 
 function validateParams (
     params: Indexer<unknown>
-): ValidationResult {
+): Joi.ValidationResult {
     const paramsValidator = new PropsValidator(params);
     return paramsValidator.validate(ID);
 }
 
 function validateBody (
     body: Indexer<unknown>
-): ValidationResult {
+): Joi.ValidationResult {
     const bodyValidator = new PropsValidator(
         body,
         { min: 1 }

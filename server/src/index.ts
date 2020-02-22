@@ -1,5 +1,5 @@
 import "module-alias/register";
-import { ValidationError, ValidationResult } from "@hapi/joi";
+import Joi from "@hapi/joi";
 import dotenv from "dotenv";
 
 import { DEVELOPMENT } from "constants/nodeEnv";
@@ -21,7 +21,7 @@ if (isDevelopment) {
 
 export default require("./app");
 
-function validateNodeEnv (): ValidationResult {
+function validateNodeEnv (): Joi.ValidationResult {
     const envValidator = new PropsValidator(process.env);
 
     return envValidator.validate(
@@ -30,7 +30,7 @@ function validateNodeEnv (): ValidationResult {
 }
 
 function logErrorAndExit (
-    error: ValidationError
+    error: Joi.ValidationError
 ): void {
     new ProcessManager().exit(error);
 }

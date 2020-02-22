@@ -5,7 +5,7 @@ import {
     NextFunction
 } from "express";
 
-import getErrorMessage from "utils/getErrorMessage";
+import formatErrorForResponse from "utils/formatErrorForResponse";
 import sendResponse from "utils/sendResponse";
 
 const handleError: ErrorRequestHandler = function (
@@ -18,8 +18,11 @@ const handleError: ErrorRequestHandler = function (
         return next(error);
     }
 
-    const errorMessage = getErrorMessage(error);
-    sendResponse(response, errorMessage, error.statusCode || 500);
+    sendResponse(
+        response,
+        formatErrorForResponse(error),
+        error.statusCode || 500
+    );
 };
 
 export default handleError;
