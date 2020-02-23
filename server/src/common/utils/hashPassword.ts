@@ -56,6 +56,3 @@ function getDefaultOptions (): Options {
 function getSalt (): string {
     return crypto.randomBytes(128).toString("base64");
 }
-
-// TODO: hash_options table with (id, salt, iterations, key_length, digest,
-// user_id)

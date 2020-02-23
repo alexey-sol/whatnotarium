@@ -1,11 +1,11 @@
-import Sql from "./Sql";
+import CrudSql from "./CrudSql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 
-class DestroyById extends Sql {
+class FindById extends CrudSql {
     constructor (
         tableName: string,
         recordId: string,
-        queryName = "destroy-by-id"
+        queryName = "find-by-id"
     ) {
         super(tableName, recordId, queryName);
     }
@@ -20,11 +20,11 @@ class DestroyById extends Sql {
 
     private getText (): string {
         return `
-            DELETE FROM ${this.tableName}
-            WHERE id = $1
-            RETURNING *;
+            SELECT *
+            FROM ${this.tableName}
+            WHERE id = $1;
         `;
     }
 }
 
-export default DestroyById;
+export default FindById;

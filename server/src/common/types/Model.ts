@@ -1,4 +1,4 @@
-import Indexer from "./Indexer";
+import Indexer from "types/Indexer";
 
 interface Model<Type> extends Indexer<unknown> {
     save (): Promise<Type> | never;

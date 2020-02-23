@@ -1,8 +1,8 @@
+import CrudSql from "./CrudSql";
 import Indexer from "types/Indexer";
-import Sql from "./Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 
-class UpdateAttributes extends Sql {
+class UpdateAttributes extends CrudSql {
     constructor (
         tableName: string,
         recordId: string,

@@ -1,14 +1,15 @@
 import Indexer from "types/Indexer";
+import Sql from "types/Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 import isObject from "utils/isObject";
 
-abstract class Sql {
+abstract class CrudSql implements Sql {
     protected offset: number;
 
     constructor (
-        protected tableName: string,
-        protected recordId?: string,
-        protected queryName?: string
+        protected readonly tableName: string,
+        protected readonly recordId?: string,
+        protected readonly queryName?: string
     ) {
         this.tableName = tableName;
         this.offset = (recordId) ? 1 : 0;
@@ -36,4 +37,4 @@ abstract class Sql {
     }
 }
 
-export default Sql;
+export default CrudSql;

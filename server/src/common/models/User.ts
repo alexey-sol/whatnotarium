@@ -4,7 +4,7 @@ import {
     Find,
     FindById,
     UpdateAttributes
-} from "utils/Sql";
+} from "utils/CrudSql";
 
 import { USERS } from "constants/dbTableNames";
 import DbQuery from "utils/DbQuery";

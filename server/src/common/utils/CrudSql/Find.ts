@@ -1,8 +1,8 @@
+import CrudSql from "./CrudSql";
 import Indexer from "types/Indexer";
-import Sql from "./Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 
-class Find extends Sql {
+class Find extends CrudSql {
     constructor (
         tableName: string,
         queryName = "find"
