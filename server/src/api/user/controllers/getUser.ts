@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
 import { ID } from "constants/fieldNames";
+import { USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
+import BaseModel from "models/BaseModel";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
-import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const getUser: ApiController = async function (
@@ -19,7 +20,7 @@ const getUser: ApiController = async function (
         return next(error);
     }
 
-    User.findById(value.id)
+    BaseModel.findById(USERS, value.id)
         .then(user => sendResponse(response, user))
         .catch(next);
 };

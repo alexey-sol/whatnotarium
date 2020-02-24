@@ -1,12 +1,13 @@
 import CrudSql from "./CrudSql";
 import Indexer from "types/Indexer";
 import SqlQueryPayload from "types/SqlQueryPayload";
+import generateId from "utils/generateId";
 
 class UpdateAttributes extends CrudSql {
     constructor (
         tableName: string,
         recordId: string,
-        queryName = "update-attributes"
+        queryName = generateId()
     ) {
         super(tableName, recordId, queryName);
     }

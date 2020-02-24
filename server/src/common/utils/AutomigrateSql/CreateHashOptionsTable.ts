@@ -1,11 +1,11 @@
+import { HASH_OPTIONS } from "constants/dbTableNames";
 import Sql from "types/Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
+import generateId from "utils/generateId";
 
 class CreateHashOptionsTable implements Sql {
-    private readonly tableName = "hash_options";
-
     constructor (
-        private readonly queryName = "create-hash-options-table"
+        private readonly queryName = generateId()
     ) {
         this.queryName = queryName;
     }
@@ -19,7 +19,7 @@ class CreateHashOptionsTable implements Sql {
 
     private getText (): string {
         return `
-            CREATE TABLE IF NOT EXISTS ${this.tableName} (
+            CREATE TABLE IF NOT EXISTS ${HASH_OPTIONS} (
                 id SERIAL PRIMARY KEY,
                 salt VARCHAR(255) NOT NULL,
                 iterations INTEGER NOT NULL,

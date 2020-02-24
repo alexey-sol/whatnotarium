@@ -1,11 +1,12 @@
 import CrudSql from "./CrudSql";
 import Indexer from "types/Indexer";
 import SqlQueryPayload from "types/SqlQueryPayload";
+import generateId from "utils/generateId";
 
 class Create extends CrudSql {
     constructor (
         tableName: string,
-        queryName = "create"
+        queryName = generateId()
     ) {
         super(tableName, undefined, queryName);
     }

@@ -35,6 +35,7 @@ const hashPassword: HashPassword = function (
     );
 
     return {
+        digest,
         hash,
         iterations,
         keyLength,

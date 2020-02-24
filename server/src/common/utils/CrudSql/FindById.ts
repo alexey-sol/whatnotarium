@@ -1,11 +1,12 @@
 import CrudSql from "./CrudSql";
 import SqlQueryPayload from "types/SqlQueryPayload";
+import generateId from "utils/generateId";
 
 class FindById extends CrudSql {
     constructor (
         tableName: string,
         recordId: string,
-        queryName = "find-by-id"
+        queryName = generateId()
     ) {
         super(tableName, recordId, queryName);
     }

@@ -3,10 +3,12 @@ import Joi from "@hapi/joi";
 
 import { EMAIL, NAME, PASSWORD } from "constants/fieldNames";
 import { EMAIL_OCCUPIED } from "constants/validationErrors";
+import { HASH_OPTIONS, USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
+import BaseModel from "models/BaseModel";
+import HashPasswordResult from "types/HashPasswordResult";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
-import User from "models/User";
 import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
 import sendResponse from "utils/sendResponse";
@@ -23,27 +25,35 @@ const createUser: ApiController = async function (
     }
 
     const { email, password } = value;
-    const emailIsOccupied = await checkIfEmailIsOccupied(email);
 
-    if (emailIsOccupied) {
-        return next(new ValidationError(
-            EMAIL_OCCUPIED,
-            400,
-            request.ip
-        ));
-    }
+    try {
+        const emailIsOccupied = await checkIfEmailIsOccupied(email);
 
-    const { hash } = hashPassword(password);
+        if (emailIsOccupied) {
+            throw new ValidationError(
+                EMAIL_OCCUPIED,
+                400,
+                request.ip
+            );
+        }
 
-    const props = {
-        ...value,
-        password: hash
-    };
+        const hashResult = hashPassword(password);
+        const { hash } = hashResult;
 
-    User.create(props)
-        .then(user => sendResponse(response, user))
-        .catch(next);
-    // TODO: email verification
+        const hashOptions = await BaseModel.create(
+            HASH_OPTIONS,
+            getHashOptionsProps(hashResult)
+        );
+
+        const user = await BaseModel.create(
+            USERS,
+            getUserProps(value, hash, hashOptions)
+        );
+
+        sendResponse(response, user);
+    } catch (error) {
+        next(error);
+    } // TODO: email verification
 };
 
 export default createUser;
@@ -62,7 +72,32 @@ function validateBody (
 
 async function checkIfEmailIsOccupied (
     email: string
-): Promise<boolean> {
-    const user = await User.findOne({ email });
+): Promise<boolean> | never {
+    const user = await BaseModel.findOne(USERS, { email });
     return Boolean(user);
+}
+
+function getHashOptionsProps (
+    hashPasswordResult: HashPasswordResult
+): Indexer<unknown> {
+    const { digest, iterations, keyLength, salt } = hashPasswordResult;
+
+    return {
+        digest,
+        iterations,
+        key_length: keyLength,
+        salt
+    };
+}
+
+function getUserProps (
+    value: Joi.ValidationResult,
+    hash: Buffer,
+    hashOptions: Indexer<unknown> | null
+): Indexer<unknown> {
+    return {
+        ...value,
+        password: hash,
+        hash_options_id: hashOptions && hashOptions.id
+    };
 }

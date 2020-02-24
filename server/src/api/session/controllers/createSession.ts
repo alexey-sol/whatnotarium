@@ -3,10 +3,11 @@ import Joi from "@hapi/joi";
 
 import { EMAIL, PASSWORD } from "constants/fieldNames";
 import { INVALID_CREDENTIALS, NO_USER_FOUND } from "constants/validationErrors";
+import { USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
+import BaseModel from "models/BaseModel";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
-import User from "models/User";
 import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
 import sendResponse from "utils/sendResponse";
@@ -79,8 +80,8 @@ function validateBody (
 
 async function findUserByEmail (
     email: string
-): Promise<User | null> {
-    const users = await User.find({ email });
+): Promise<BaseModel | null> {
+    const users = await BaseModel.find(USERS, { email });
     return users[0];
 }
 
