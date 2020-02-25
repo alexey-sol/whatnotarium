@@ -1,9 +1,7 @@
-interface HashPasswordResult {
-    digest: string;
+import HashPasswordOptions from "./HashPasswordOptions";
+
+interface HashPasswordResult extends HashPasswordOptions {
     hash: Buffer;
-    iterations: number;
-    keyLength: number;
-    salt: string;
 }
 
 export default HashPasswordResult;

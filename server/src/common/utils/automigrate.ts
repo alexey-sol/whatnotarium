@@ -1,6 +1,6 @@
 import {
     CreateHashOptionsTable,
-    CreateUsersTable
+    CreateUserTable
 } from "utils/AutomigrateSql";
 
 import DbQuery from "utils/DbQuery";
@@ -13,10 +13,10 @@ const automigrate: Automigrate = async function (): Promise<void> {
     await new DbQuery<unknown>()
         .query(createHashOptionsTable);
 
-    const createUsersTableSql = new CreateUsersTable()
+    const createUserTableSql = new CreateUserTable()
         .generate();
     await new DbQuery<unknown>()
-        .query(createUsersTableSql);
+        .query(createUserTableSql);
 };
 
 export default automigrate;

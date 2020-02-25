@@ -22,9 +22,9 @@ class CreateHashOptionsTable implements Sql {
             CREATE TABLE IF NOT EXISTS ${HASH_OPTIONS} (
                 id SERIAL PRIMARY KEY,
                 salt VARCHAR(255) NOT NULL,
+                digest VARCHAR(255) NOT NULL,
                 iterations INTEGER NOT NULL,
-                key_length INTEGER NOT NULL,
-                digest VARCHAR(255) NOT NULL
+                key_length INTEGER NOT NULL
             );
         `;
     }

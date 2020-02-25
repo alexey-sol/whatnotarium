@@ -1,18 +1,12 @@
 import { pbkdf2Sync } from "pbkdf2";
 import crypto from "crypto";
 
+import HashPasswordOptions from "types/HashPasswordOptions";
 import HashPasswordResult from "types/HashPasswordResult";
-
-interface Options {
-    digest: string;
-    iterations: number;
-    keyLength: number;
-    salt: string;
-}
 
 type HashPassword = (
     password: string | Buffer,
-    options?: Options
+    options?: HashPasswordOptions
 ) => HashPasswordResult;
 
 const hashPassword: HashPassword = function (
@@ -35,17 +29,14 @@ const hashPassword: HashPassword = function (
     );
 
     return {
-        digest,
-        hash,
-        iterations,
-        keyLength,
-        salt
+        ...options,
+        hash
     };
 };
 
 export default hashPassword;
 
-function getDefaultOptions (): Options {
+function getDefaultOptions (): HashPasswordOptions {
     return {
         digest: "sha512",
         iterations: 10000,

@@ -2,11 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
 import { EMAIL, NAME, PASSWORD } from "constants/fieldNames";
-import { EMAIL_OCCUPIED } from "constants/validationErrors";
+import { EMAIL_OCCUPIED, NO_REQUIRED_PROPS } from "constants/validationErrors";
 import { HASH_OPTIONS, USERS } from "constants/dbTableNames";
+
+import {
+    formatCreateHashOptionsInput,
+    formatCreateUserInput
+} from "utils/DbInputFormatter";
+
 import ApiController from "types/ApiController";
 import BaseModel from "models/BaseModel";
-import HashPasswordResult from "types/HashPasswordResult";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
 import ValidationError from "utils/errors/ValidationError";
@@ -42,18 +47,32 @@ const createUser: ApiController = async function (
 
         const hashOptions = await BaseModel.create(
             HASH_OPTIONS,
-            getHashOptionsProps(hashResult)
+            formatCreateHashOptionsInput(hashResult)
         );
+
+        if (!hashOptions) {
+            return next(new ValidationError(
+                NO_REQUIRED_PROPS,
+                400,
+                request.ip
+            ));
+        }
+
+        const formattedCreateUserInput = formatCreateUserInput({
+            ...value,
+            hashOptionsId: hashOptions.id,
+            password: hash
+        });
 
         const user = await BaseModel.create(
             USERS,
-            getUserProps(value, hash, hashOptions)
+            formattedCreateUserInput
         );
 
         sendResponse(response, user);
     } catch (error) {
         next(error);
-    } // TODO: email verification
+    }
 };
 
 export default createUser;
@@ -75,29 +94,4 @@ async function checkIfEmailIsOccupied (
 ): Promise<boolean> | never {
     const user = await BaseModel.findOne(USERS, { email });
     return Boolean(user);
-}
-
-function getHashOptionsProps (
-    hashPasswordResult: HashPasswordResult
-): Indexer<unknown> {
-    const { digest, iterations, keyLength, salt } = hashPasswordResult;
-
-    return {
-        digest,
-        iterations,
-        key_length: keyLength,
-        salt
-    };
-}
-
-function getUserProps (
-    value: Joi.ValidationResult,
-    hash: Buffer,
-    hashOptions: Indexer<unknown> | null
-): Indexer<unknown> {
-    return {
-        ...value,
-        password: hash,
-        hash_options_id: hashOptions && hashOptions.id
-    };
 }

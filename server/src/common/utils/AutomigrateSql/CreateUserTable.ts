@@ -3,7 +3,7 @@ import Sql from "types/Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 import generateId from "utils/generateId";
 
-class CreateUsersTable implements Sql {
+class CreateUserTable implements Sql {
     constructor (
         private readonly queryName = generateId()
     ) {
@@ -23,7 +23,7 @@ class CreateUsersTable implements Sql {
                 id SERIAL PRIMARY KEY,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password BYTEA NOT NULL,
-                hash_options_id INTEGER REFERENCES ${HASH_OPTIONS}(id),
+                hash_options_id INTEGER REFERENCES ${HASH_OPTIONS} (id),
                 name VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT NOW()
             );
@@ -31,4 +31,4 @@ class CreateUsersTable implements Sql {
     }
 }
 
-export default CreateUsersTable;
+export default CreateUserTable;

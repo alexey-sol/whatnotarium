@@ -3,9 +3,10 @@ import Joi from "@hapi/joi";
 
 import { EMAIL, PASSWORD } from "constants/fieldNames";
 import { INVALID_CREDENTIALS, NO_USER_FOUND } from "constants/validationErrors";
-import { USERS } from "constants/dbTableNames";
+import { USERS, HASH_OPTIONS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
 import BaseModel from "models/BaseModel";
+import HashPasswordOptions from "types/HashPasswordOptions";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
 import ValidationError from "utils/errors/ValidationError";
@@ -38,7 +39,9 @@ const createSession: ApiController = async function (
             ));
         }
 
-        if (!isValidPassword(password, user.password as Buffer)) {
+        const passwordIsValid = await isValidPassword(password, user);
+
+        if (!passwordIsValid) {
             return next(new ValidationError(
                 INVALID_CREDENTIALS,
                 401,
@@ -46,17 +49,15 @@ const createSession: ApiController = async function (
             ));
         }
 
-        const isAlreadySignIn = (
+        const isAlreadySignedIn = (
             request.session &&
             request.session.user &&
             request.cookies &&
             request.cookies[name]
         );
 
-        if (!isAlreadySignIn) {
-            // "request.session" and "user" were checked but the compiler still
-            // complains, so... bang!
-            request.session!.user = user!.id;
+        if (!isAlreadySignedIn) {
+            request.session!.user = user.id;
         }
 
         sendResponse(response, user);
@@ -85,10 +86,41 @@ async function findUserByEmail (
     return users[0];
 }
 
-function isValidPassword (
+async function isValidPassword (
     passwordToCheck: string,
-    storedHash: Buffer
-): boolean {
-    const { hash } = hashPassword(passwordToCheck);
-    return hash === storedHash;
+    user: Indexer<unknown>
+): Promise<boolean> | never {
+    const {
+        hash_options_id: hashOptionsId, // TODO: format function?
+        password
+    } = user;
+
+    const hashOptionsRecord = await BaseModel.findById(
+        HASH_OPTIONS,
+        hashOptionsId as string
+    );
+
+    if (!hashOptionsRecord) {
+        return false;
+    }
+
+    const {
+        digest,
+        iterations,
+        key_length: keyLength, // TODO: format function?
+        salt
+    } = hashOptionsRecord;
+
+    const hashOptions = {
+        digest,
+        iterations,
+        keyLength,
+        salt
+    } as HashPasswordOptions;
+
+    const {
+        hash: hashThashoCheck
+    } = hashPassword(passwordToCheck, hashOptions);
+
+    return hashThashoCheck.equals(password as Buffer);
 }

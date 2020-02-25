@@ -1,7 +1,7 @@
 import CreateHashOptionsTable from "./CreateHashOptionsTable";
-import CreateUsersTable from "./CreateUsersTable";
+import CreateUserTable from "./CreateUserTable";
 
 export {
     CreateHashOptionsTable,
-    CreateUsersTable
+    CreateUserTable
 };
