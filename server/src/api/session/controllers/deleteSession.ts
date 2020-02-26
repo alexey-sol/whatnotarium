@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import ApiController from "types/ApiController";
+import RequestSession from "utils/RequestSession";
 import sendResponse from "utils/sendResponse";
 import sessionConfig from "config/session";
 
@@ -9,15 +10,9 @@ const deleteSession: ApiController = async function (
     response: Response
 ): Promise<void> {
     const { name } = sessionConfig;
+    const session = new RequestSession(request);
 
-    const isSignedIn = (
-        request.session &&
-        request.session.user &&
-        request.cookies &&
-        request.cookies[name]
-    );
-
-    if (isSignedIn) {
+    if (session.userIsSignedIn()) {
         response.clearCookie(name);
     }
 

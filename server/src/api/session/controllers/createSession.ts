@@ -1,18 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
+import {
+    INVALID_CREDENTIALS,
+    NO_USER_FOUND
+} from "constants/validationErrors";
+
 import { EMAIL, PASSWORD } from "constants/fieldNames";
-import { INVALID_CREDENTIALS, NO_USER_FOUND } from "constants/validationErrors";
 import { USERS, HASH_OPTIONS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
 import BaseModel from "models/BaseModel";
 import HashPasswordOptions from "types/HashPasswordOptions";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
+import RequestSession from "utils/RequestSession";
 import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
 import sendResponse from "utils/sendResponse";
-import sessionConfig from "config/session";
 
 const createSession: ApiController = async function (
     request: Request,
@@ -25,7 +29,6 @@ const createSession: ApiController = async function (
         return next(error);
     }
 
-    const { name } = sessionConfig;
     const { email, password } = value;
 
     try {
@@ -49,15 +52,10 @@ const createSession: ApiController = async function (
             ));
         }
 
-        const isAlreadySignedIn = (
-            request.session &&
-            request.session.user &&
-            request.cookies &&
-            request.cookies[name]
-        );
+        const session = new RequestSession(request);
 
-        if (!isAlreadySignedIn) {
-            request.session!.user = user.id;
+        if (!session.userIsSignedIn()) {
+            session.assignUserToSession(user);
         }
 
         sendResponse(response, user);

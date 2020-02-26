@@ -1,6 +1,7 @@
 import { join } from "path";
 import bodyParser from "body-parser";
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
@@ -28,6 +29,7 @@ app.use(createMorgan());
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(createSession());
 app.use(clearUserlessCookie);
 app.use(compression());

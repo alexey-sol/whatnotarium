@@ -5,6 +5,7 @@ import {
     NextFunction
 } from "express";
 
+import RequestSession from "utils/RequestSession";
 import sessionConfig from "config/session";
 
 const clearUserlessCookie: RequestHandler = function (
@@ -13,15 +14,9 @@ const clearUserlessCookie: RequestHandler = function (
     next: NextFunction
 ): void {
     const { name } = sessionConfig;
+    const session = new RequestSession(request);
 
-    const isCookieUserless = (
-        request.cookies &&
-        request.cookies[name] &&
-        request.session &&
-        !request.session.user
-    );
-
-    if (isCookieUserless) {
+    if (session.cookieExistsButHasNoUser()) {
         response.clearCookie(name);
     }
 
