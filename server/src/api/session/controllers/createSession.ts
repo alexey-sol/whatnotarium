@@ -9,11 +9,14 @@ import {
 import { EMAIL, PASSWORD } from "constants/fieldNames";
 import { USERS, HASH_OPTIONS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
-import BaseModel from "models/BaseModel";
-import HashPasswordOptions from "types/HashPasswordOptions";
+// import BaseModel from "models/BaseModel";
+import DbQuery from "utils/DbQuery";
+import HashOptions from "models/HashOptions";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
 import RequestSession from "utils/RequestSession";
+// import User from "models/User/types/User";
+import User from "models/User";
 import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
 import sendResponse from "utils/sendResponse";
@@ -79,46 +82,29 @@ function validateBody (
 
 async function findUserByEmail (
     email: string
-): Promise<BaseModel | null> {
-    const users = await BaseModel.find(USERS, { email });
+): Promise<User | null> {
+    const users = await User.find({ email });
     return users[0];
 }
 
 async function isValidPassword (
     passwordToCheck: string,
-    user: Indexer<unknown>
+    user: User
 ): Promise<boolean> | never {
     const {
-        hash_options_id: hashOptionsId, // TODO: format function?
+        hashOptionsId,
         password
     } = user;
 
-    const hashOptionsRecord = await BaseModel.findById(
-        HASH_OPTIONS,
-        hashOptionsId as string
-    );
+    const hashOptions = await HashOptions.findById(hashOptionsId);
 
-    if (!hashOptionsRecord) {
+    if (!hashOptions) {
         return false;
     }
 
     const {
-        digest,
-        iterations,
-        key_length: keyLength, // TODO: format function?
-        salt
-    } = hashOptionsRecord;
-
-    const hashOptions = {
-        digest,
-        iterations,
-        keyLength,
-        salt
-    } as HashPasswordOptions;
-
-    const {
-        hash: hashThashoCheck
+        hash: hashToCheck
     } = hashPassword(passwordToCheck, hashOptions);
 
-    return hashThashoCheck.equals(password as Buffer);
+    return hashToCheck.equals(password);
 }

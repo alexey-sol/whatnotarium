@@ -5,11 +5,6 @@ import { EMAIL, NAME, PASSWORD } from "constants/fieldNames";
 import { EMAIL_OCCUPIED, NO_REQUIRED_PROPS } from "constants/validationErrors";
 import { HASH_OPTIONS, USERS } from "constants/dbTableNames";
 
-import {
-    formatCreateHashOptionsInput,
-    formatCreateUserInput
-} from "utils/DbInputFormatter";
-
 import ApiController from "types/ApiController";
 import BaseModel from "models/BaseModel";
 import Indexer from "types/Indexer";
@@ -47,7 +42,7 @@ const createUser: ApiController = async function (
 
         const hashOptions = await BaseModel.create(
             HASH_OPTIONS,
-            formatCreateHashOptionsInput(hashResult)
+            generateHashOptionsProps(hashResult)
         );
 
         if (!hashOptions) {
@@ -94,4 +89,10 @@ async function checkIfEmailIsOccupied (
 ): Promise<boolean> | never {
     const user = await BaseModel.findOne(USERS, { email });
     return Boolean(user);
+}
+
+function generateHashOptionsProps (
+
+) {
+
 }
