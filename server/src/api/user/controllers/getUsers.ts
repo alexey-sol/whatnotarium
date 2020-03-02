@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 
-import { USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
-import BaseModel from "models/BaseModel";
+import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const getUsers: ApiController = async function (
@@ -10,7 +9,7 @@ const getUsers: ApiController = async function (
     response: Response,
     next: NextFunction
 ): Promise<void> {
-    BaseModel.find(USERS)
+    User.find()
         .then(users => sendResponse(response, users))
         .catch(next);
 };

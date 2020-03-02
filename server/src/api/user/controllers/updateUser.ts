@@ -2,11 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
 import { EMAIL, ID, NAME, PASSWORD } from "constants/fieldNames";
-import { USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
-import BaseModel from "models/BaseModel";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
+import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const updateUser: ApiController = async function (
@@ -61,11 +60,11 @@ function validateBody (
 }
 
 async function updateUserAndSendResponse (
-    id: string,
+    id: number,
     props: Indexer<unknown>,
     response: Response
 ): Promise<Response> {
-    const user = await BaseModel.findById(USERS, id);
+    const user = await User.findById(id);
     let updatedUser = null;
 
     if (user) {

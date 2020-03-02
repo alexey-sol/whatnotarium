@@ -1,7 +1,7 @@
 import { Request } from "express";
 
-import Indexer from "types/Indexer";
 import SessionUser from "types/SessionUser";
+import User from "models/User";
 import sessionConfig from "config/session";
 
 class RequestSession {
@@ -11,7 +11,7 @@ class RequestSession {
         this.request = request;
     }
 
-    assignUserToSession (user: Indexer<unknown>): void {
+    assignUserToSession (user: User): void {
         const { session } = this.request;
 
         if (session) {

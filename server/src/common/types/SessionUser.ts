@@ -1,5 +1,5 @@
 interface SessionUser {
-    id: string;
+    id: number;
 }
 
 export default SessionUser;

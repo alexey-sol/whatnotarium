@@ -1,11 +1,9 @@
-import CreateUserProps from "models/User/types/CreateUserProps";
-import CreateUserRecordProps from "models/User/types/CreateUserRecordProps";
-import DbPropsNormalizer from "types/DbPropsNormalizer";
-import User from "models/User/types/User";
-import UserRecord from "models/User/types/UserRecord";
+import FormattedProps from "models/User/types/FormattedProps";
+import ModelFormatter from "types/ModelFormatter";
+import RawProps from "models/User/types/RawProps";
 
-class CreateUserPropsNormalizer implements DbPropsNormalizer {
-    normalizeInput (props: CreateUserProps): CreateUserRecordProps {
+class UserFormatter implements ModelFormatter<RawProps, FormattedProps> {
+    toDbCase (props: FormattedProps): RawProps {
         const {
             email,
             hashOptionsId,
@@ -21,7 +19,7 @@ class CreateUserPropsNormalizer implements DbPropsNormalizer {
         };
     }
 
-    normalizeOutput (props: UserRecord): User {
+    fromDbCase (props: RawProps): FormattedProps {
         const {
             email,
             hash_options_id,
@@ -40,4 +38,4 @@ class CreateUserPropsNormalizer implements DbPropsNormalizer {
     }
 }
 
-export default CreateUserPropsNormalizer;
+export default UserFormatter;

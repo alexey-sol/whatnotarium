@@ -1,9 +1,9 @@
-import { NO_REQUIRED_PROPS } from "constants/validationErrors";
+import { INVALID_PROPS } from "constants/validationErrors";
 import ServerError from "./ServerError";
 
 class ValidationError extends ServerError {
     constructor (
-        message = NO_REQUIRED_PROPS,
+        message = INVALID_PROPS,
         statusCode = 400,
         ip?: string
     ) {

@@ -1,84 +1,124 @@
+import {
+    createRecord,
+    destroyRecordById,
+    findOneRecord,
+    findRecordById,
+    findRecords,
+    updateRecordAttributes
+} from "utils/model";
 
-import { USERS } from "constants/dbTableNames";
-import { CreateUserPropsNormalizer } from "utils/DbPropsNormalizer";
-import BaseModel from "models/BaseModel";
-import BaseModelUtil from "models/BaseModelUtil";
-import CreateInput from "models/HashOptions/types/CreateInput";
-import DbQuery from "utils/DbQuery";
-import HashOptions from "models/HashOptions/types/HashOptions";
+import { HASH_OPTIONS } from "constants/dbTableNames";
+import { INVALID_PROPS } from "constants/validationErrors";
+import FormattedProps from "./types/FormattedProps";
+import HashOptionsFormatter from "utils/ModelFormatter/HashOptionsFormatter";
+import HashOptionsProps from "models/HashOptions/types/HashOptionsProps";
 import Indexer from "types/Indexer";
-import UpdateAttributesInput from
-    "models/HashOptions/types/UpdateAttributesInput";
+import Model from "types/Model";
+import RawProps from "models/HashOptions/types/RawProps";
+import ValidationError from "utils/errors/ValidationError";
+import isHashOptionsProps from "utils/isHashOptionsProps";
 
-const normalizer = new CreateUserPropsNormalizer();
+class HashOptions implements Model<FormattedProps, HashOptions> {
+    static formatter = new HashOptionsFormatter();
 
-class HashOptionsModel extends BaseModel {
+    digest: string;
+    id: number
+    iterations: number;
+    keyLength: number;
+    salt: string;
+
+    private constructor (props: HashOptionsProps) {
+        this.digest = props.digest;
+        this.id = props.id;
+        this.iterations = props.iterations;
+        this.keyLength = props.keyLength;
+        this.salt = props.salt;
+    }
+
     static async create (
-        props: CreateInput
+        props: FormattedProps
     ): Promise<HashOptions | null> | never {
-        const userDbQuery = new DbQuery<HashOptions>(normalizer);
+        const propsToDb = HashOptions.formatter.toDbCase(props);
 
-        return await BaseModelUtil.create(
-            USERS,
-            userDbQuery,
-            props
-        ) as HashOptions | null;
+        const record = await createRecord<RawProps, HashOptionsProps>(
+            HASH_OPTIONS,
+            propsToDb
+        );
+
+        return (record)
+            ? HashOptions.formatPropsAndInstantiate(record)
+            : null;
+    }
+
+    static async destroyById (
+        id: number
+    ): Promise<boolean> | never {
+        return destroyRecordById<HashOptionsProps>(HASH_OPTIONS, id);
+    }
+
+    static async find (
+        filter?: Indexer<unknown>
+    ): Promise<HashOptions[]> | never {
+        const records = await findRecords<HashOptionsProps>(
+            HASH_OPTIONS,
+            filter
+        );
+
+        return records.map(record => {
+            return HashOptions.formatPropsAndInstantiate(record);
+        });
     }
 
     static async findOne (
         filter?: Indexer<unknown>
     ): Promise<HashOptions | null> | never {
-        const userDbQuery = new DbQuery<HashOptions>(normalizer);
-
-        return await BaseModelUtil.findOne(
-            USERS,
-            userDbQuery,
+        const record = await findOneRecord<HashOptionsProps>(
+            HASH_OPTIONS,
             filter
-        ) as HashOptions | null;
-    }
+        );
 
-    static async find (
-        filter?: Indexer<unknown>
-    ): Promise<(HashOptionsModel & HashOptions)[]> | never {
-        const userDbQuery = new DbQuery<HashOptions>(normalizer);
-
-        return await BaseModelUtil.find(
-            USERS,
-            userDbQuery,
-            filter
-        ) as (HashOptionsModel & HashOptions)[];
+        return (record)
+            ? HashOptions.formatPropsAndInstantiate(record)
+            : null;
     }
 
     static async findById (
-        id: string
+        id: number
     ): Promise<HashOptions | null> | never {
-        const userDbQuery = new DbQuery<HashOptions>(normalizer);
+        const record = await findRecordById<HashOptionsProps>(HASH_OPTIONS, id);
 
-        return await BaseModelUtil.findById(
-            USERS,
-            userDbQuery,
-            id
-        ) as HashOptions | null;
+        return (record)
+            ? HashOptions.formatPropsAndInstantiate(record)
+            : null;
     }
 
-    static async destroyById (
-        id: string
-    ): Promise<boolean> | never {
-        const userDbQuery = new DbQuery<HashOptions>();
-
-        return BaseModelUtil.destroyById(
-            USERS,
-            userDbQuery,
-            id
-        );
+    async save (): Promise<HashOptions> | never {
+        return this.updateAttributes(this);
     }
 
     async updateAttributes (
-        props: UpdateAttributesInput
-    ): Promise<HashOptionsModel & HashOptions> | never {
-        return await super.updateAttributes(props) as
-            HashOptionsModel & HashOptions;
+        props: FormattedProps
+    ): Promise<HashOptions> | never {
+        const record = await updateRecordAttributes<RawProps, HashOptionsProps>(
+            HASH_OPTIONS,
+            this.id,
+            props
+        );
+
+        return HashOptions.formatPropsAndInstantiate(record);
+    }
+
+    static formatPropsAndInstantiate (
+        props: RawProps
+    ): HashOptions | never {
+        const formattedProps = HashOptions.formatter.fromDbCase(props);
+
+        if (!isHashOptionsProps(formattedProps)) {
+            throw new ValidationError(INVALID_PROPS, 400);
+        }
+
+        return new HashOptions(formattedProps);
     }
 }
 
-export default HashOptionsModel;
+export default HashOptions;

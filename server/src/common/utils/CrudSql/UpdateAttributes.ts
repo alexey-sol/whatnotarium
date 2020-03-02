@@ -6,7 +6,7 @@ import generateId from "utils/generateId";
 class UpdateAttributes extends CrudSql {
     constructor (
         tableName: string,
-        recordId: string,
+        recordId: number,
         queryName = generateId()
     ) {
         super(tableName, recordId, queryName);

@@ -1,8 +1,9 @@
-interface CreateInput {
+interface HashOptionsProps {
     digest: string;
+    id: number;
     iterations: number;
     keyLength: number;
     salt: string;
 }
 
-export default CreateInput;
+export default HashOptionsProps;

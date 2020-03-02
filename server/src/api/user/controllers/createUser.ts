@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
 import { EMAIL, NAME, PASSWORD } from "constants/fieldNames";
-import { EMAIL_OCCUPIED, NO_REQUIRED_PROPS } from "constants/validationErrors";
-import { HASH_OPTIONS, USERS } from "constants/dbTableNames";
+import { EMAIL_OCCUPIED, INVALID_PROPS } from "constants/validationErrors";
 
 import ApiController from "types/ApiController";
-import BaseModel from "models/BaseModel";
+import HashOptions from "models/HashOptions";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
+import User from "models/User";
 import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
 import sendResponse from "utils/sendResponse";
@@ -40,29 +40,21 @@ const createUser: ApiController = async function (
         const hashResult = hashPassword(password);
         const { hash } = hashResult;
 
-        const hashOptions = await BaseModel.create(
-            HASH_OPTIONS,
-            generateHashOptionsProps(hashResult)
-        );
+        const hashOptions = await HashOptions.create(hashResult);
 
         if (!hashOptions) {
             return next(new ValidationError(
-                NO_REQUIRED_PROPS,
+                INVALID_PROPS,
                 400,
                 request.ip
             ));
         }
 
-        const formattedCreateUserInput = formatCreateUserInput({
+        const user = await User.create({
             ...value,
             hashOptionsId: hashOptions.id,
             password: hash
         });
-
-        const user = await BaseModel.create(
-            USERS,
-            formattedCreateUserInput
-        );
 
         sendResponse(response, user);
     } catch (error) {
@@ -87,12 +79,6 @@ function validateBody (
 async function checkIfEmailIsOccupied (
     email: string
 ): Promise<boolean> | never {
-    const user = await BaseModel.findOne(USERS, { email });
+    const user = await User.findOne({ email });
     return Boolean(user);
-}
-
-function generateHashOptionsProps (
-
-) {
-
 }

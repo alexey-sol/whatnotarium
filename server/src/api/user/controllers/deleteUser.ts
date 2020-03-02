@@ -2,11 +2,10 @@ import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
 import { ID } from "constants/fieldNames";
-import { USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
-import BaseModel from "models/BaseModel";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
+import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const deleteUser: ApiController = async function (
@@ -20,7 +19,7 @@ const deleteUser: ApiController = async function (
         return next(error);
     }
 
-    BaseModel.destroyById(USERS, value.id)
+    User.destroyById(value.id)
         .then(result => sendResponse(response, result))
         .catch(next);
 };

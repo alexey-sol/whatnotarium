@@ -5,7 +5,7 @@ import generateId from "utils/generateId";
 class DestroyById extends CrudSql {
     constructor (
         tableName: string,
-        recordId: string,
+        recordId: number,
         queryName = generateId()
     ) {
         super(tableName, recordId, queryName);

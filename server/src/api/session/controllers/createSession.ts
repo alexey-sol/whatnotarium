@@ -1,21 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
-import {
-    INVALID_CREDENTIALS,
-    NO_USER_FOUND
-} from "constants/validationErrors";
-
 import { EMAIL, PASSWORD } from "constants/fieldNames";
-import { USERS, HASH_OPTIONS } from "constants/dbTableNames";
+import { INVALID_CREDENTIALS, NO_USER_FOUND } from "constants/validationErrors";
 import ApiController from "types/ApiController";
-// import BaseModel from "models/BaseModel";
-import DbQuery from "utils/DbQuery";
 import HashOptions from "models/HashOptions";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
 import RequestSession from "utils/RequestSession";
-// import User from "models/User/types/User";
 import User from "models/User";
 import ValidationError from "utils/errors/ValidationError";
 import hashPassword from "utils/hashPassword";
@@ -83,8 +75,8 @@ function validateBody (
 async function findUserByEmail (
     email: string
 ): Promise<User | null> {
-    const users = await User.find({ email });
-    return users[0];
+    const user = await User.findOne({ email });
+    return user;
 }
 
 async function isValidPassword (

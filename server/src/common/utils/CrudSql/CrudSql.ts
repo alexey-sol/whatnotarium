@@ -8,7 +8,7 @@ abstract class CrudSql implements Sql {
 
     constructor (
         protected readonly tableName: string,
-        protected readonly recordId?: string,
+        protected readonly recordId?: number,
         protected readonly queryName?: string
     ) {
         this.tableName = tableName;

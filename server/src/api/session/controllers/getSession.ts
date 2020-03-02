@@ -1,10 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 
-import { USERS } from "constants/dbTableNames";
 import ApiController from "types/ApiController";
-import BaseModel from "models/BaseModel";
 import RequestSession from "utils/RequestSession";
 import UnauthorizedError from "utils/errors/UnauthorizedError";
+import User from "models/User";
 import sendResponse from "utils/sendResponse";
 
 const getSession: ApiController = async function (
@@ -25,7 +24,7 @@ const getSession: ApiController = async function (
         let user = null;
 
         if (sessionUser) {
-            user = await BaseModel.findById(USERS, sessionUser.id);
+            user = await User.findById(sessionUser.id);
         }
 
         sendResponse(response, user);

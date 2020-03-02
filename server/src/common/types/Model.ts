@@ -1,11 +1,6 @@
-import Indexer from "types/Indexer";
-
-interface Model<Type> extends Indexer<unknown> {
-    save (): Promise<Type> | never;
-
-    updateAttributes (
-        data: Indexer<unknown>
-    ): Promise<Type> | never;
+interface Model<InputType, ModelType> {
+    save (): Promise<ModelType> | never;
+    updateAttributes (props: InputType): Promise<ModelType> | never;
 }
 
 export default Model;

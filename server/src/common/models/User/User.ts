@@ -1,82 +1,115 @@
+import {
+    createRecord,
+    destroyRecordById,
+    findOneRecord,
+    findRecordById,
+    findRecords,
+    updateRecordAttributes
+} from "utils/model";
 
+import { INVALID_PROPS } from "constants/validationErrors";
 import { USERS } from "constants/dbTableNames";
-import { CreateUserPropsNormalizer } from "utils/DbPropsNormalizer";
-import BaseModel from "models/BaseModel";
-import BaseModelUtil from "models/BaseModelUtil";
-import CreateInput from "models/User/types/CreateInput";
-import DbQuery from "utils/DbQuery";
+import FormattedProps from "./types/FormattedProps";
 import Indexer from "types/Indexer";
-import UpdateAttributesInput from "models/User/types/UpdateAttributesInput";
-import User from "models/User/types/User";
+import Model from "types/Model";
+import RawProps from "models/User/types/RawProps";
+import UserFormatter from "utils/ModelFormatter/UserFormatter";
+import UserProps from "models/User/types/UserProps";
+import ValidationError from "utils/errors/ValidationError";
+import isUserProps from "utils/isUserProps";
 
-const normalizer = new CreateUserPropsNormalizer();
+class User implements Model<FormattedProps, User> {
+    static formatter = new UserFormatter();
 
-class UserModel extends BaseModel {
+    hashOptionsId: number;
+    email: string
+    id: number
+    name: string;
+    password: Buffer;
+
+    private constructor (props: UserProps) {
+        this.hashOptionsId = props.hashOptionsId;
+        this.email = props.email;
+        this.id = props.id;
+        this.name = props.name;
+        this.password = props.password;
+    }
+
     static async create (
-        props: CreateInput
+        props: FormattedProps
     ): Promise<User | null> | never {
-        const userDbQuery = new DbQuery<User>(normalizer);
+        const propsToDb = User.formatter.toDbCase(props);
 
-        return await BaseModelUtil.create(
+        const record = await createRecord<RawProps, UserProps>(
             USERS,
-            userDbQuery,
-            props
-        ) as User | null;
+            propsToDb
+        );
+
+        return (record)
+            ? User.formatPropsAndInstantiate(record)
+            : null;
+    }
+
+    static async destroyById (
+        id: number
+    ): Promise<boolean> | never {
+        return destroyRecordById<UserProps>(USERS, id);
+    }
+
+    static async find (
+        filter?: Indexer<unknown>
+    ): Promise<User[]> | never {
+        const records = await findRecords<UserProps>(USERS, filter);
+        return records.map(record => User.formatPropsAndInstantiate(record));
     }
 
     static async findOne (
         filter?: Indexer<unknown>
     ): Promise<User | null> | never {
-        const userDbQuery = new DbQuery<User>(normalizer);
+        const record = await findOneRecord<UserProps>(USERS, filter);
 
-        return await BaseModelUtil.findOne(
-            USERS,
-            userDbQuery,
-            filter
-        ) as User | null;
-    }
-
-    static async find (
-        filter?: Indexer<unknown>
-    ): Promise<(User)[]> | never {
-        const userDbQuery = new DbQuery<User>(normalizer);
-
-        return await BaseModelUtil.find(
-            USERS,
-            userDbQuery,
-            filter
-        ) as (User)[];
+        return (record)
+            ? User.formatPropsAndInstantiate(record)
+            : null;
     }
 
     static async findById (
-        id: string
+        id: number
     ): Promise<User | null> | never {
-        const userDbQuery = new DbQuery<User>(normalizer);
+        const record = await findRecordById<UserProps>(USERS, id);
 
-        return await BaseModelUtil.findById(
-            USERS,
-            userDbQuery,
-            id
-        ) as User | null;
+        return (record)
+            ? User.formatPropsAndInstantiate(record)
+            : null;
     }
 
-    static async destroyById (
-        id: string
-    ): Promise<boolean> | never {
-        const userDbQuery = new DbQuery<User>();
-
-        return BaseModelUtil.destroyById(
-            USERS,
-            userDbQuery,
-            id
-        );
+    async save (): Promise<User> | never {
+        return this.updateAttributes(this);
     }
 
     async updateAttributes (
-        props: UpdateAttributesInput
+        props: FormattedProps
     ): Promise<User> | never {
-        return await super.updateAttributes(props) as User;
+        const record = await updateRecordAttributes<RawProps, UserProps>(
+            USERS,
+            this.id,
+            props
+        );
+
+        return User.formatPropsAndInstantiate(record);
+    }
+
+    static formatPropsAndInstantiate (
+        props: RawProps
+    ): User | never {
+        const formattedProps = User.formatter.fromDbCase(props);
+
+        if (!isUserProps(formattedProps)) {
+            throw new ValidationError(INVALID_PROPS, 400);
+        }
+
+        return new User(formattedProps);
     }
 }
 
-export default UserModel;
+export default User;
