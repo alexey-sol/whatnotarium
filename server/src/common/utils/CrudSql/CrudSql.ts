@@ -1,7 +1,7 @@
 import Indexer from "types/Indexer";
 import Sql from "types/Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
-import isObject from "utils/isObject";
+import isObject from "utils/Object/isObject";
 
 abstract class CrudSql implements Sql {
     protected offset: number;

@@ -61,7 +61,7 @@ function validateBody (
 
 async function updateUserAndSendResponse (
     id: number,
-    props: Indexer<unknown>,
+    props: Indexer<unknown>, // unknown?
     response: Response
 ): Promise<Response> {
     const user = await User.findById(id);

@@ -8,9 +8,9 @@ import helmet from "helmet";
 
 import Version from "utils/Version";
 import clearUserlessCookie from "utils/middlewares/clearUserlessCookie";
-import createMorgan from "utils/createMorgan";
-import createPgPool from "utils/createPgPool";
-import createSession from "utils/createSession";
+import createMorgan from "utils/initializers/createMorgan";
+import createPgPool from "utils/initializers/createPgPool";
+import createSession from "utils/initializers/createSession";
 import handleError from "utils/middlewares/handleError";
 import logErrors from "utils/middlewares/logErrors";
 import sessionRouter from "api/session";

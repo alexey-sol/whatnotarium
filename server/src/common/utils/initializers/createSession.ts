@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import session from "express-session";
 
-import createRedisClient from "utils/createRedisClient";
+import createRedisClient from "utils/initializers/createRedisClient";
 import sessionConfig from "config/session";
 
 type CreateSession = () => RequestHandler;

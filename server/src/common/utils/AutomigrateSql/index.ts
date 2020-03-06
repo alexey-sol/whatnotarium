@@ -1,7 +1,2 @@
-import CreateHashOptionsTable from "./CreateHashOptionsTable";
-import CreateUserTable from "./CreateUserTable";
-
-export {
-    CreateHashOptionsTable,
-    CreateUserTable
-};
+export { default as CreateHashOptionsTable } from "./CreateHashOptionsTable";
+export { default as CreateUserTable } from "./CreateUserTable";

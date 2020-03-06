@@ -2,8 +2,8 @@ import { NO_PROPS } from "constants/validationErrors";
 import { Create } from "utils/CrudSql";
 import PgQuery from "utils/PgQuery";
 import ValidationError from "utils/errors/ValidationError";
-import isEmptyObject from "utils/isEmptyObject";
-import isObject from "utils/isObject";
+import isEmptyObject from "utils/Object/isEmptyObject";
+import isObject from "utils/Object/isObject";
 
 async function createRecord<InputType, OutputType> (
     tableName: string,

@@ -1,13 +1,5 @@
-import Create from "./Create";
-import DestroyById from "./DestroyById";
-import Find from "./Find";
-import FindById from "./FindById";
-import UpdateAttributes from "./UpdateAttributes";
-
-export {
-    Create,
-    DestroyById,
-    Find,
-    FindById,
-    UpdateAttributes
-};
+export { default as Create } from "./Create";
+export { default as DestroyById } from "./DestroyById";
+export { default as Find } from "./Find";
+export { default as FindById } from "./FindById";
+export { default as UpdateAttributes } from "./UpdateAttributes";
