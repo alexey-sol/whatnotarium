@@ -1,11 +1,4 @@
-import checkSession from "./checkSession";
-import signIn from "./signIn";
-import signOut from "./signOut";
-import signUp from "./signUp";
-
-export {
-    checkSession,
-    signIn,
-    signOut,
-    signUp
-};
+export { default as checkSession } from "./checkSession";
+export { default as signIn } from "./signIn";
+export { default as signOut } from "./signOut";
+export { default as signUp } from "./signUp";

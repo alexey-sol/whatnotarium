@@ -1,35 +1,27 @@
-import React, { memo, useEffect, useRef } from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import classnames from "classnames";
 
 import { CloseIconButton } from "components/common/IconButton";
 import { defaultProps, propTypes } from "./BaseDialog.props";
+import BaseOverlay from "components/BaseOverlay";
 import styles from "./BaseDialog.module.scss";
 
 BaseDialog.propTypes = propTypes;
 BaseDialog.defaultProps = defaultProps;
 
 function BaseDialog ({ children, className, onClose, title, width }) {
-    const rootRef = useRef(null);
-
     const containerClassName = classnames(
         styles.container,
         styles[`${width}Width`],
         className
     );
 
-    const handleMouseDownOnRoot = (event) => {
-        const targetIsRoot = event.target === rootRef.current;
-        if (targetIsRoot) onClose();
-    };
-
     // TODO: add back button
 
-    const dialogElement = (
-        <div
-            className={styles.root}
-            onMouseDown={handleMouseDownOnRoot}
-            ref={rootRef}
+    return (
+        <BaseOverlay
+            onClose={onClose}
+            rootClassName={styles.root}
         >
             <div
                 className={containerClassName}
@@ -44,28 +36,10 @@ function BaseDialog ({ children, className, onClose, title, width }) {
                     {title}
                 </div>}
 
-                <div className={styles.content}>
-                    {children}
-                </div>
+                {children}
             </div>
-        </div>
-    );
-
-    const onKeydown = (event) => {
-        if (event.key === "Escape") {
-            onClose();
-        }
-    };
-
-    useEffect(() => {
-        document.addEventListener("keydown", onKeydown);
-        return () => document.removeEventListener("keydown", onKeydown);
-    }, [children]);
-
-    return ReactDOM.createPortal(
-        dialogElement,
-        document.body
+        </BaseOverlay>
     );
 }
 
-export default memo(BaseDialog);
+export default BaseDialog;

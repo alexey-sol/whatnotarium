@@ -1,11 +1,4 @@
-import validateConfirmPassword from "./validateConfirmPassword";
-import validateEmail from "./validateEmail";
-import validateName from "./validateName";
-import validatePassword from "./validatePassword";
-
-export {
-    validateConfirmPassword,
-    validateEmail,
-    validateName,
-    validatePassword
-};
+export { default as validateConfirmPassword } from "./validateConfirmPassword";
+export { default as validateEmail } from "./validateEmail";
+export { default as validateName } from "./validateName";
+export { default as validatePassword } from "./validatePassword";

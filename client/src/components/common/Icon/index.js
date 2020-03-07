@@ -1,9 +1,3 @@
-import Close from "./Close.component";
-import Search from "./Search.component";
-import User from "./User.component";
-
-export {
-    Close,
-    Search,
-    User
-};
+export { default as Close } from "./Close.component";
+export { default as Search } from "./Search.component";
+export { default as User } from "./User.component";

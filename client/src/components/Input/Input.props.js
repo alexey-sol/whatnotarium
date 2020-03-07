@@ -5,7 +5,7 @@ const { bool, func, string } = PropTypes;
 export const defaultProps = {
     className: "",
     error: "",
-    errorTooltip: "",
+    errorTooltipText: "",
     hasFixedTooltip: false,
     label: "",
     rootClassName: "",
@@ -15,7 +15,7 @@ export const defaultProps = {
 export const propTypes = {
     className: string,
     error: string,
-    errorTooltip: string,
+    errorTooltipText: string,
     hasFixedTooltip: bool,
     label: string,
     name: string.isRequired,

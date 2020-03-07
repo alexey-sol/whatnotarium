@@ -1,0 +1,17 @@
+@import "styles/style.scss";
+
+.container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    background-color: $base-dropdown-bg-color;
+}
+
+.transparent {
+    opacity: 0;
+}
+
+.fixed {
+    position: fixed;
+}

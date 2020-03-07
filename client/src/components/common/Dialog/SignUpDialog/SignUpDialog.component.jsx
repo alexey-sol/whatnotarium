@@ -117,7 +117,7 @@ function SignUpDialog ({ onClose, signUpStart }) {
 
                 <Input
                     error={passwordError}
-                    errorTooltip={weakPasswordHint}
+                    errorTooltipText={weakPasswordHint}
                     hasFixedTooltip
                     label="Пароль"
                     name={PASSWORD}

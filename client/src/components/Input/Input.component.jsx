@@ -11,7 +11,7 @@ Input.defaultProps = defaultProps;
 function Input ({
     className,
     error,
-    errorTooltip,
+    errorTooltipText,
     hasFixedTooltip,
     label,
     name,
@@ -20,7 +20,7 @@ function Input ({
     value,
     ...rest
 }) {
-    const errorTooltipRef = useRef(null);
+    const errorSpanRef = useRef(null);
 
     const hasValue = value.length > 0;
 
@@ -51,15 +51,15 @@ function Input ({
 
             {error && <span
                 className={styles.errorText}
-                ref={errorTooltipRef}
+                ref={errorSpanRef}
             >
                 {error}
             </span>}
 
-            {errorTooltip && <Tooltip
-                elementRef={errorTooltipRef}
+            {errorTooltipText && <Tooltip
+                elementRef={errorSpanRef}
                 isFixed={hasFixedTooltip}
-                text={errorTooltip}
+                text={errorTooltipText}
             />}
         </div>
     );
