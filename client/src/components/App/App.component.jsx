@@ -3,11 +3,11 @@ import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import Banner from "components/Banner";
+import Aside from "components/Aside";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
+import Header from "components/Header";
 import Main from "components/Main";
-import Menu from "components/Menu";
 import Spinner from "components/Spinner";
 import { checkSession } from "redux/user/user.actions";
 import { propTypes } from "./App.props";
@@ -25,7 +25,7 @@ function App ({ checkSession, currentUser }) {
 
     return (
         <div className={styles.container}>
-            <Banner />
+            <Header />
 
             <Main>
                 <Switch>
@@ -41,7 +41,7 @@ function App ({ checkSession, currentUser }) {
                 </Switch>
             </Main>
 
-            <Menu />
+            <Aside />
             <Footer />
         </div>
     );

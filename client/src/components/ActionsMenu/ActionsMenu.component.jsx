@@ -3,23 +3,22 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import {
+    BookmarkIconButton,
+    NotificationIconButton,
     SearchIconButton,
     UserIconButton
 } from "components/common/IconButton";
 
 import { SignInDialog, SignUpDialog } from "components/common/Dialog";
-import { UserMenuDropdown } from "components/common/Dropdown";
 import { propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./ActionsMenu.module.scss";
 
 ActionsMenu.propTypes = propTypes;
 
-function ActionsMenu ({ currentUser }) {
+function ActionsMenu ({ currentUser, showUserMenu }) {
     const [signInDialogIsShown, setSignInDialogIsShown] = useState(false);
     const [signUpDialogIsShown, setSignUpDialogIsShown] = useState(false);
-    const [userMenuDropdownIsShown, setUserMenuDropdownIsShown] =
-        useState(false);
 
     const userIconButtonRef = useRef(null);
 
@@ -27,12 +26,8 @@ function ActionsMenu ({ currentUser }) {
         setSignInDialogIsShown(true);
     }, [currentUser]);
 
-    const showUserMenuDropdown = useCallback(() => {
-        setUserMenuDropdownIsShown(true);
-    }, [currentUser]);
-
     const handleClickOnUserButton = (currentUser)
-        ? showUserMenuDropdown
+        ? showUserMenu
         : showSignInDialog;
 
     const hideDialogs = () => {
@@ -47,16 +42,32 @@ function ActionsMenu ({ currentUser }) {
     return (
         <div className={styles.container}>
             <div className={styles.content}>
-                <SearchIconButton
-                    className={styles.iconButton}
-                    onClick={() => console.log("Click on search icon")}
-                />
-
-                <span ref={userIconButtonRef}>
-                    <UserIconButton
+                <span className={styles.iconButton}>
+                    <SearchIconButton
                         className={styles.iconButton}
-                        onClick={handleClickOnUserButton}
+                        onClick={() => console.log("Click on search icon")}
                     />
+                </span>
+
+                <span className={styles.iconButton}>
+                    <BookmarkIconButton
+                        className={styles.iconButton}
+                        onClick={() => console.log("Click on bookmark icon")}
+                    />
+                </span>
+
+                <span className={styles.iconButton}>
+                    <NotificationIconButton
+                        className={styles.iconButton}
+                        onClick={() => console.log("Click on notif icon")}
+                    />
+                </span>
+
+                <span
+                    className={styles.iconButton}
+                    ref={userIconButtonRef}
+                >
+                    <UserIconButton onClick={handleClickOnUserButton} />
                 </span>
             </div>
 
@@ -67,11 +78,6 @@ function ActionsMenu ({ currentUser }) {
 
             {signUpDialogIsShown && <SignUpDialog
                 onClose={() => setSignUpDialogIsShown(false)}
-            />}
-
-            {userMenuDropdownIsShown && <UserMenuDropdown
-                elementRef={userIconButtonRef}
-                onClose={() => setUserMenuDropdownIsShown(false)}
             />}
         </div>
     );

@@ -5,7 +5,7 @@ const { arrayOf, func, node, number, oneOfType, string } = PropTypes;
 export const defaultProps = {
     children: null,
     className: "",
-    size: 22
+    size: 24
 };
 
 export const propTypes = {

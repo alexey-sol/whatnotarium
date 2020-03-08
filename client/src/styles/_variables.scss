@@ -1,4 +1,5 @@
 $font-family--normal: "Open Sans Condensed", sans-serif;
+$font-family--logo: "Bree Serif", "Helvetica", "Arial", sans-serif;
 
 $font-size--smallest: 1rem;
 $font-size--smaller: 1.2rem;
@@ -24,8 +25,6 @@ $color-quaternary: #663939;
 $selection-bg-color: $color-primary;
 $text-color--normal: $gray--darkest;
 
-$banner-bg-color: $color-primary;
-
 $base-button-bg-color-dark: $color-tertiary;
 $base-button-bg-color-light: $color-primary;
 $base-button-border-color-dark: $color-tertiary;
@@ -46,6 +45,8 @@ $custom-link-text-color--hover: #f58d7f;
 $footer-aside-bg-color: $color-quaternary;
 $footer-content-bg-color: $color-secondary;
 
+$header-bg-color: $color-primary;
+
 $icon-color: $color-quaternary;
 $icon-color--hover: $color-tertiary;
 
@@ -59,11 +60,9 @@ $input-label-color: $gray--dark;
 $input-label-color--error: red;
 $input-label-color--shrink: $gray--darken;
 
-$logo-bg-color: $color-tertiary;
-$logo-bg-color--hover: $color-quaternary;
 $logo-text-color: white;
 
-$menu-item-bg-color: $color-secondary;
+$menu-item-bg-color: $color-quaternary;
 $menu-item-bg-color--hover: $color-tertiary;
 $menu-item-color: white;
 
@@ -71,8 +70,15 @@ $tooltip-bg-color: white;
 $tooltip-border-color: $gray--light;
 $tooltip-text-color: $text-color--normal;
 
-$banner-width: 120px;
-$footer-height: 120px;
-$main-width: 800px;
+$user-menu-bg-color: white;
+$user-menu-item-bg-color: #8f8a7a; //$color-secondary;
+$user-menu-item-bg-color--hover: $color-tertiary;
+$user-menu-item-text-color: white;
+
+$actions-menu-height: 5rem;
+$footer-height: 12rem;
+$header-height: 5rem;
+$grid-width: 85rem;
+$menu-width: 17.4rem;
 
 // Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361

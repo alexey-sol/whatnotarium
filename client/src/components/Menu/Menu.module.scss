@@ -1,7 +1,13 @@
 @import "styles/style.scss";
 
 .container {
-    grid-area: menu;
+    position: fixed;
     display: flex;
     flex-direction: column;
+    padding-right: 1rem;
+
+    .commonMenu {
+        animation-name: emergence;
+        animation-duration: 0.1s;
+    }
 }

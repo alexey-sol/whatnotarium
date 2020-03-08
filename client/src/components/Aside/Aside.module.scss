@@ -1,0 +1,7 @@
+@import "styles/style.scss";
+
+.container {
+    grid-area: aside;
+    display: flex;
+    justify-content: flex-end;
+}
