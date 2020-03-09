@@ -15,6 +15,7 @@ import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./App.module.scss";
 
 const Home = lazy(() => import("pages/Home"));
+const Profile = lazy(() => import("pages/Profile"));
 
 App.propTypes = propTypes;
 
@@ -35,6 +36,11 @@ function App ({ checkSession, currentUser }) {
                                 component={Home}
                                 exact
                                 path="/"
+                            />
+
+                            <Route
+                                component={Profile}
+                                path="/profile"
                             />
                         </Suspense>
                     </ErrorBoundary>

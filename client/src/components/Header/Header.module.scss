@@ -20,7 +20,14 @@
 
         .logo {
             display: flex;
+            box-sizing: border-box;
             font-family: $font-family--logo;
+
+            &:hover {
+                a {
+                    color: rgba(255, 255, 255, 0.9);
+                }
+            }
 
             a {
                 display: flex;
@@ -30,11 +37,9 @@
                 color: $logo-text-color;
                 font-size: $font-size--larger;
                 text-align: center;
-                transition: .1s ease;
                 user-select: none;
+                transition: .1s ease;
             }
         }
     }
-
-
 }

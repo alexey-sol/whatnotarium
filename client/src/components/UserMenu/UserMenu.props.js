@@ -1,7 +1,9 @@
 import PropTypes from "prop-types";
 
-const { func } = PropTypes;
+const { func, object } = PropTypes;
 
 export const propTypes = {
-    onClose: func.isRequired
+    history: object.isRequired,
+    onClose: func.isRequired,
+    signOutStart: func.isRequired
 };

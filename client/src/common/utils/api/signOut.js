@@ -1,9 +1,11 @@
 import superagent from "superagent";
 
 async function signOut () {
-    return superagent
+    const response = await superagent
         .delete("/api/v0/session")
         .set("Content-Type", "application/json");
+
+    return response && response.body;
 }
 
 export default signOut;

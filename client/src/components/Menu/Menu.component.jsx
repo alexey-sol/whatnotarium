@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import ActionsMenu from "components/ActionsMenu";
 import Navbar from "components/Navbar";
@@ -16,7 +16,7 @@ function Menu () {
     useEffect(() => {
         const onScroll = () => {
             const y = window.scrollY;
-            const headerHeight = 50;
+            const headerHeight = 40;
 
             const newScrollY = (y < headerHeight)
                 ? y
