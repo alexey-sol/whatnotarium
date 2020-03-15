@@ -7,7 +7,7 @@ import styles from "./BaseIconButton.module.scss";
 BaseIconButton.propTypes = propTypes;
 BaseIconButton.defaultProps = defaultProps;
 
-function BaseIconButton ({ children, className, onClick, size }) {
+function BaseIconButton ({ children, className, onClick, size, title }) {
     const dynamicStyle = {
         height: size,
         width: size,
@@ -19,6 +19,7 @@ function BaseIconButton ({ children, className, onClick, size }) {
             className={classnames(styles.container, className)}
             onClick={onClick}
             style={dynamicStyle}
+            title={title}
         >
             {children}
         </div>

@@ -1,3 +1,1 @@
-import BaseDialog from "./BaseDialog.component";
-
-export default BaseDialog;
+export { default } from "./BaseDialog.component";

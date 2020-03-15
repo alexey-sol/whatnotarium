@@ -1,3 +1,1 @@
-import ActionsMenu from "./ActionsMenu.component";
-
-export default ActionsMenu;
+export { default } from "./ActionsMenu.component";

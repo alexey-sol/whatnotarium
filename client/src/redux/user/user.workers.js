@@ -1,27 +1,32 @@
 import { put } from "redux-saga/effects";
 
 import {
+    checkSessionFailure,
+    checkSessionSuccess,
     signInFailure,
     signInSuccess,
     signOutFailure,
     signOutSuccess,
     signUpFailure,
-    signUpSuccess
+    signUpSuccess,
+    updateProfileFailure,
+    updateProfileSuccess
 } from "./user.actions";
 
 import {
     checkSession,
     signIn,
     signOut,
-    signUp
+    signUp,
+    updateProfile
 } from "common/utils/api";
 
 function * doCheckSession () {
     try {
         const currentUser = yield checkSession();
-        yield put(signInSuccess(currentUser));
+        yield put(checkSessionSuccess(currentUser));
     } catch (error) {
-        yield put(signInFailure(error));
+        yield put(checkSessionFailure(error));
     }
 }
 
@@ -52,9 +57,19 @@ function * doSignUp ({ payload }) {
     }
 }
 
+function * doUpdateProfile ({ payload }) {
+    try {
+        const currentUser = yield updateProfile(payload);
+        yield put(updateProfileSuccess(currentUser));
+    } catch (error) {
+        yield put(updateProfileFailure(error));
+    }
+}
+
 export {
     doCheckSession,
     doSignIn,
     doSignOut,
-    doSignUp
+    doSignUp,
+    doUpdateProfile
 };

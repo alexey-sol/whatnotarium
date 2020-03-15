@@ -1,0 +1,8 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+    color: $text-color--normal;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
+}

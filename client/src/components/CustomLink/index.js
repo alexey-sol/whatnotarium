@@ -1,3 +1,1 @@
-import CustomLink from "./CustomLink.component";
-
-export default CustomLink;
+export { default } from "./CustomLink.component";

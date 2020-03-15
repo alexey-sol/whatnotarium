@@ -9,8 +9,8 @@ import Footer from "components/Footer";
 import Header from "components/Header";
 import Main from "components/Main";
 import Spinner from "components/Spinner";
-import { checkSession } from "redux/user/user.actions";
-import { propTypes } from "./App.props";
+import { checkSessionStart } from "redux/user/user.actions";
+import { defaultProps, propTypes } from "./App.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./App.module.scss";
 
@@ -18,11 +18,12 @@ const Home = lazy(() => import("pages/Home"));
 const Profile = lazy(() => import("pages/Profile"));
 
 App.propTypes = propTypes;
+App.defaultProps = defaultProps;
 
-function App ({ checkSession, currentUser }) {
+function App ({ checkSessionStart, currentUser }) {
     useEffect(() => {
-        checkSession();
-    }, [checkSession]);
+        checkSessionStart();
+    }, [checkSessionStart]);
 
     return (
         <div className={styles.container}>
@@ -58,7 +59,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    checkSession: () => dispatch(checkSession())
+    checkSessionStart: () => dispatch(checkSessionStart())
 });
 
 const ConnectedApp = connect(

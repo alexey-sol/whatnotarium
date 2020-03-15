@@ -1,3 +1,1 @@
-import Menu from "./Menu.component";
-
-export default Menu;
+export { default } from "./Menu.component";

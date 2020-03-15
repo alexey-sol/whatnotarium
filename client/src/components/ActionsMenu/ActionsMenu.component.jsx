@@ -49,19 +49,23 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
                     />
                 </span>
 
-                <span className={styles.iconButton}>
-                    <BookmarkIconButton
-                        className={styles.iconButton}
-                        onClick={() => console.log("Click on bookmark icon")}
-                    />
-                </span>
+                {currentUser && (
+                    <span className={styles.iconButton}>
+                        <BookmarkIconButton
+                            className={styles.iconButton}
+                            onClick={() => console.log("Click on bm icon")}
+                        />
+                    </span>
+                )}
 
-                <span className={styles.iconButton}>
-                    <NotificationIconButton
-                        className={styles.iconButton}
-                        onClick={() => console.log("Click on notif icon")}
-                    />
-                </span>
+                {currentUser && (
+                    <span className={styles.iconButton}>
+                        <NotificationIconButton
+                            className={styles.iconButton}
+                            onClick={() => console.log("Click on notif icon")}
+                        />
+                    </span>
+                )}
 
                 <span
                     className={styles.iconButton}

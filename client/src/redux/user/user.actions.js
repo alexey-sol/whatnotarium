@@ -1,5 +1,7 @@
 import {
-    CHECK_SESSION,
+    CHECK_SESSION_FAILURE,
+    CHECK_SESSION_START,
+    CHECK_SESSION_SUCCESS,
     SIGN_IN_FAILURE,
     SIGN_IN_START,
     SIGN_IN_SUCCESS,
@@ -8,12 +10,29 @@ import {
     SIGN_OUT_SUCCESS,
     SIGN_UP_FAILURE,
     SIGN_UP_START,
-    SIGN_UP_SUCCESS
+    SIGN_UP_SUCCESS,
+    UPDATE_PROFILE_FAILURE,
+    UPDATE_PROFILE_START,
+    UPDATE_PROFILE_SUCCESS
 } from "./user.types";
 
-function checkSession () {
+function checkSessionFailure (error) {
     return {
-        type: CHECK_SESSION
+        payload: error,
+        type: CHECK_SESSION_FAILURE
+    };
+}
+
+function checkSessionStart () {
+    return {
+        type: CHECK_SESSION_START
+    };
+}
+
+function checkSessionSuccess (currentUser) {
+    return {
+        payload: currentUser,
+        type: CHECK_SESSION_SUCCESS
     };
 }
 
@@ -24,9 +43,9 @@ function signInFailure (error) {
     };
 }
 
-function signInStart (error) {
+function signInStart (userCredentials) {
     return {
-        payload: error,
+        payload: userCredentials,
         type: SIGN_IN_START
     };
 }
@@ -78,8 +97,31 @@ function signUpSuccess ({ currentUser, additionalData }) {
     };
 }
 
+function updateProfileFailure (error) {
+    return {
+        payload: error,
+        type: UPDATE_PROFILE_FAILURE
+    };
+}
+
+function updateProfileStart (userParams) {
+    return {
+        payload: userParams,
+        type: UPDATE_PROFILE_START
+    };
+}
+
+function updateProfileSuccess ({ currentUser }) {
+    return {
+        payload: currentUser,
+        type: UPDATE_PROFILE_SUCCESS
+    };
+}
+
 export {
-    checkSession,
+    checkSessionFailure,
+    checkSessionStart,
+    checkSessionSuccess,
     signInFailure,
     signInStart,
     signInSuccess,
@@ -88,5 +130,8 @@ export {
     signOutSuccess,
     signUpFailure,
     signUpStart,
-    signUpSuccess
+    signUpSuccess,
+    updateProfileFailure,
+    updateProfileStart,
+    updateProfileSuccess
 };

@@ -1,3 +1,1 @@
-import SignInDialog from "./SignInDialog.component";
-
-export default SignInDialog;
+export { default } from "./SignInDialog.component";

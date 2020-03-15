@@ -1,3 +1,1 @@
-import UserMenu from "./UserMenu.component";
-
-export default UserMenu;
+export { default } from "./UserMenu.component";

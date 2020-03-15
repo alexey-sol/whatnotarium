@@ -1,3 +1,1 @@
-import BaseIconButton from "./BaseIconButton.component";
-
-export default BaseIconButton;
+export { default } from "./BaseIconButton.component";

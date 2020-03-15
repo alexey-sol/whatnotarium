@@ -5,7 +5,8 @@ const { arrayOf, func, node, number, oneOfType, string } = PropTypes;
 export const defaultProps = {
     children: null,
     className: "",
-    size: 24
+    size: 24,
+    title: ""
 };
 
 export const propTypes = {
@@ -18,5 +19,7 @@ export const propTypes = {
 
     onClick: func.isRequired,
 
-    size: number
+    size: number,
+
+    title: string
 };

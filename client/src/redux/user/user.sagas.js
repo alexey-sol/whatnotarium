@@ -5,21 +5,23 @@ import {
 } from "redux-saga/effects";
 
 import {
-    CHECK_SESSION,
+    CHECK_SESSION_START,
     SIGN_IN_START,
     SIGN_OUT_START,
-    SIGN_UP_START
+    SIGN_UP_START,
+    UPDATE_PROFILE_START
 } from "./user.types";
 
 import {
     doCheckSession,
     doSignIn,
     doSignOut,
-    doSignUp
+    doSignUp,
+    doUpdateProfile
 } from "./user.workers";
 
-function * onCheckUserSession () {
-    yield takeLatest(CHECK_SESSION, doCheckSession);
+function * onCheckUserSessionStart () {
+    yield takeLatest(CHECK_SESSION_START, doCheckSession);
 }
 
 function * onSignInStart () {
@@ -34,12 +36,17 @@ function * onSignUpStart () {
     yield takeLatest(SIGN_UP_START, doSignUp);
 }
 
+function * onUpdateProfileStart () {
+    yield takeLatest(UPDATE_PROFILE_START, doUpdateProfile);
+}
+
 function * userSagas () {
     yield all([
-        call(onCheckUserSession),
+        call(onCheckUserSessionStart),
         call(onSignInStart),
         call(onSignOutStart),
-        call(onSignUpStart)
+        call(onSignUpStart),
+        call(onUpdateProfileStart)
     ]);
 }
 

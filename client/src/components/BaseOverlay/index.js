@@ -1,3 +1,1 @@
-import BaseOverlay from "./BaseOverlay.component";
-
-export default BaseOverlay;
+export { default } from "./BaseOverlay.component";
