@@ -1,18 +1,17 @@
-import { pbkdf2Sync } from "pbkdf2";
-import crypto from "crypto";
+import { pbkdf2, randomBytes } from "crypto";
 
 import HashPasswordOptions from "types/HashPasswordOptions";
 import HashPasswordResult from "types/HashPasswordResult";
 
 type HashPassword = (
-    password: string | Buffer,
+    password: string,
     options?: HashPasswordOptions
-) => HashPasswordResult;
+) => Promise<HashPasswordResult>;
 
-const hashPassword: HashPassword = function (
-    password: string | Buffer,
+const hashPassword: HashPassword = async function (
+    password: string,
     options = getDefaultOptions()
-): HashPasswordResult {
+): Promise<HashPasswordResult> {
     const {
         digest,
         iterations,
@@ -20,13 +19,14 @@ const hashPassword: HashPassword = function (
         salt
     } = options;
 
-    const hash = pbkdf2Sync(
+    const hash: Buffer = await new Promise((resolve, reject) => pbkdf2(
         password,
         salt,
         iterations,
         keyLength,
-        digest
-    );
+        digest,
+        (error, hash) => error ? reject(error) : resolve(hash)
+    ));
 
     return {
         ...options,
@@ -46,5 +46,5 @@ function getDefaultOptions (): HashPasswordOptions {
 }
 
 function getSalt (): string {
-    return crypto.randomBytes(128).toString("base64");
+    return randomBytes(128).toString("base64");
 }

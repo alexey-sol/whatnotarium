@@ -1,16 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import Joi from "@hapi/joi";
 
-import { EMAIL, PASSWORD } from "constants/fieldNames";
-import { INVALID_CREDENTIALS, NO_USER_FOUND } from "constants/validationErrors";
+import { CURRENT_PASSWORD, EMAIL } from "constants/fieldNames";
+import { INVALID_CREDENTIALS } from "constants/validationErrors";
 import ApiController from "types/ApiController";
-import HashOptions from "models/HashOptions";
 import Indexer from "types/Indexer";
 import PropsValidator from "utils/PropsValidator";
 import RequestSession from "utils/RequestSession";
 import User from "models/User";
 import ValidationError from "utils/errors/ValidationError";
-import hashPassword from "utils/hashPassword";
+import isValidPassword from "utils/isValidPassword";
 import sendResponse from "utils/sendResponse";
 
 const createSession: ApiController = async function (
@@ -24,20 +23,20 @@ const createSession: ApiController = async function (
         return next(error);
     }
 
-    const { email, password } = value;
+    const { currentPassword, email } = value;
 
     try {
         const user = await findUserByEmail(email);
 
         if (!user) {
             return next(new ValidationError(
-                NO_USER_FOUND,
-                404,
+                INVALID_CREDENTIALS,
+                401,
                 request.ip
             ));
         }
 
-        const passwordIsValid = await isValidPassword(password, user);
+        const passwordIsValid = await isValidPassword(currentPassword, user);
 
         if (!passwordIsValid) {
             return next(new ValidationError(
@@ -68,7 +67,7 @@ function validateBody (
 
     return bodyValidator.validate(
         [EMAIL, true],
-        [PASSWORD, true]
+        [CURRENT_PASSWORD, true]
     );
 }
 
@@ -77,26 +76,4 @@ async function findUserByEmail (
 ): Promise<User | null> {
     const user = await User.findOne({ email });
     return user;
-}
-
-async function isValidPassword (
-    passwordToCheck: string,
-    user: User
-): Promise<boolean> | never {
-    const {
-        hashOptionsId,
-        password
-    } = user;
-
-    const hashOptions = await HashOptions.findById(hashOptionsId);
-
-    if (!hashOptions) {
-        return false;
-    }
-
-    const {
-        hash: hashToCheck
-    } = hashPassword(passwordToCheck, hashOptions);
-
-    return hashToCheck.equals(password);
 }

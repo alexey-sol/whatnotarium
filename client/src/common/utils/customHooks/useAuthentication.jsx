@@ -6,44 +6,49 @@ import isEmptyObject from "common/utils/isEmptyObject";
 import translateError from "common/utils/translateError";
 
 function useAuthentication (
-    initialCredentials,
-    validateCredential,
-    sendCredentials
+    initialProps,
+    initialErrors,
+    validateProp,
+    sendProps
 ) {
-    const [credentials, setCredentials] = useState(initialCredentials);
-    const [errors, setErrors] = useState(initialCredentials);
-    const [errorCodes, setErrorCodes] = useState(initialCredentials);
+    const [props, setProps] = useState(initialProps);
+    const [errors, setErrors] = useState(initialErrors);
+    const [errorCodes, setErrorCodes] = useState(initialProps);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const errors = validate(credentials);
-        setUpdatedErrors(errors, sendCredentials);
+        const errors = validate(props);
+        setUpdatedErrors(errors);
+
+        if (!errors) {
+            sendProps(props);
+        }
     };
 
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
 
-        const newCredentials = {
-            ...credentials,
+        const newProps = {
+            ...props,
             [name]: value
         };
 
-        setCredentials(newCredentials);
+        setProps(newProps);
 
         const hasValidationErrors = !isEmptyObject(discardFalsyValues(errors));
 
         if (hasValidationErrors) {
-            const updatedErrors = validate(newCredentials);
+            const updatedErrors = validate(newProps);
             setUpdatedErrors(updatedErrors);
         }
     };
 
-    const validate = (credentials) => {
+    const validate = (props) => {
         const errorCodes = {};
 
-        for (const stateName of Object.keys(credentials)) {
-            const errorCode = validateCredential(stateName, credentials);
+        for (const stateName of Object.keys(props)) {
+            const errorCode = validateProp(stateName, props);
 
             if (errorCode) {
                 errorCodes[stateName] = errorCode;
@@ -67,20 +72,19 @@ function useAuthentication (
         return translatedErrors;
     };
 
-    const setUpdatedErrors = (updatedErrors, callback) => {
+    const setUpdatedErrors = (updatedErrors) => {
         if (updatedErrors) {
             const newErrorsState = deriveNewErrorsState(updatedErrors);
             setErrorCodes(newErrorsState);
             setErrors(getTranslatedErrors(newErrorsState));
         } else {
-            setErrorCodes(initialCredentials);
-            setErrors(initialCredentials);
-            if (callback) callback(credentials);
+            setErrorCodes(initialErrors);
+            setErrors(initialErrors);
         }
     };
 
     return {
-        credentials,
+        props,
         errorCodes,
         errors,
         handleInputChange,

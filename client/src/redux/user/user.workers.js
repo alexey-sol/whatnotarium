@@ -21,11 +21,14 @@ import {
     updateProfile
 } from "common/utils/api";
 
+import getErrorFromResponse from "common/utils/getErrorFromResponse";
+
 function * doCheckSession () {
     try {
         const currentUser = yield checkSession();
         yield put(checkSessionSuccess(currentUser));
-    } catch (error) {
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
         yield put(checkSessionFailure(error));
     }
 }
@@ -34,7 +37,8 @@ function * doSignIn ({ payload }) {
     try {
         const currentUser = yield signIn(payload);
         yield put(signInSuccess(currentUser));
-    } catch (error) {
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
         yield put(signInFailure(error));
     }
 }
@@ -43,7 +47,8 @@ function * doSignOut () {
     try {
         yield signOut();
         yield put(signOutSuccess());
-    } catch (error) {
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
         yield put(signOutFailure(error));
     }
 }
@@ -52,16 +57,20 @@ function * doSignUp ({ payload }) {
     try {
         const currentUser = yield signUp(payload);
         yield put(signUpSuccess(currentUser));
-    } catch (error) {
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
         yield put(signUpFailure(error));
     }
 }
 
 function * doUpdateProfile ({ payload }) {
+    const { id, ...props } = payload;
+
     try {
-        const currentUser = yield updateProfile(payload);
+        const currentUser = yield updateProfile(id, props);
         yield put(updateProfileSuccess(currentUser));
-    } catch (error) {
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
         yield put(updateProfileFailure(error));
     }
 }

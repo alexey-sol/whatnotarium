@@ -2,6 +2,7 @@ import {
     CHECK_SESSION_FAILURE,
     CHECK_SESSION_START,
     CHECK_SESSION_SUCCESS,
+    RESET_USER_ERROR,
     SIGN_IN_FAILURE,
     SIGN_IN_START,
     SIGN_IN_SUCCESS,
@@ -36,6 +37,12 @@ function checkSessionSuccess (currentUser) {
     };
 }
 
+function resetUserError () {
+    return {
+        type: RESET_USER_ERROR
+    };
+}
+
 function signInFailure (error) {
     return {
         payload: error,
@@ -43,9 +50,9 @@ function signInFailure (error) {
     };
 }
 
-function signInStart (userCredentials) {
+function signInStart (credentials) {
     return {
-        payload: userCredentials,
+        payload: credentials,
         type: SIGN_IN_START
     };
 }
@@ -83,9 +90,9 @@ function signUpFailure (error) {
     };
 }
 
-function signUpStart (userCredentials) {
+function signUpStart (credentials) {
     return {
-        payload: userCredentials,
+        payload: credentials,
         type: SIGN_UP_START
     };
 }
@@ -104,14 +111,14 @@ function updateProfileFailure (error) {
     };
 }
 
-function updateProfileStart (userParams) {
+function updateProfileStart (params) {
     return {
-        payload: userParams,
+        payload: params,
         type: UPDATE_PROFILE_START
     };
 }
 
-function updateProfileSuccess ({ currentUser }) {
+function updateProfileSuccess (currentUser) {
     return {
         payload: currentUser,
         type: UPDATE_PROFILE_SUCCESS
@@ -122,6 +129,7 @@ export {
     checkSessionFailure,
     checkSessionStart,
     checkSessionSuccess,
+    resetUserError,
     signInFailure,
     signInStart,
     signInSuccess,

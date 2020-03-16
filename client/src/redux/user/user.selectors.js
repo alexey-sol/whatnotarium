@@ -7,6 +7,12 @@ const selectCurrentUser = createSelector(
     ({ currentUser }) => currentUser
 );
 
+const selectUserError = createSelector(
+    [selectUser],
+    ({ error }) => error
+);
+
 export {
-    selectCurrentUser
+    selectCurrentUser,
+    selectUserError
 };

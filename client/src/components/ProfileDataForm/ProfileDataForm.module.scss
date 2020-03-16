@@ -1,0 +1,14 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    color: $text-color--normal;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
+
+    .updateProfileDataButton {
+        margin-top: 3rem;
+    }
+}

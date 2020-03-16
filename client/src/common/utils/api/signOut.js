@@ -5,7 +5,7 @@ async function signOut () {
         .delete("/api/v0/session")
         .set("Content-Type", "application/json");
 
-    return response && response.body;
+    return response?.body;
 }
 
 export default signOut;

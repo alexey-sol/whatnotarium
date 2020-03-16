@@ -1,12 +1,12 @@
 import superagent from "superagent";
 
-async function updateProfile (params) {
+async function updateProfile (id, props) {
     const response = await superagent
-        .put("/api/v0/user")
+        .put(`/api/v0/user/${id}`)
         .set("Content-Type", "application/json")
-        .send(params);
+        .send(props);
 
-    return response && response.body;
+    return response?.body;
 }
 
 export default updateProfile;

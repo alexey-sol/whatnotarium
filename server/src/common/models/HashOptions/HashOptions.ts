@@ -99,10 +99,12 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     async updateAttributes (
         props: FormattedProps
     ): Promise<HashOptions> | never {
+        const propsToDb = HashOptions.formatter.toDbCase(props);
+
         const record = await updateRecordAttributes<RawProps, HashOptionsProps>(
             HASH_OPTIONS,
             this.id,
-            props
+            propsToDb
         );
 
         return HashOptions.formatPropsAndInstantiate(record);

@@ -43,6 +43,7 @@ function Input ({
                 className={inputClassName}
                 name={name}
                 onChange={onChange}
+                value={value}
             />
 
             {label && <label className={labelClassName}>

@@ -2,7 +2,17 @@
 
 .container {
     display: flex;
-    color: $text-color--normal;
-    font-family: $font-family--normal;
-    font-size: $font-size--medium;
+    box-sizing: border-box;
+    padding: 0 3rem;
+
+    .section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .formContainer {
+        &:not(:first-of-type) {
+            margin-top: 3rem;
+        }
+    }
 }

@@ -5,7 +5,7 @@ async function checkSession () {
         .get("/api/v0/session")
         .set("Content-Type", "application/json");
 
-    return response && response.body;
+    return response?.body;
 }
 
 export default checkSession;

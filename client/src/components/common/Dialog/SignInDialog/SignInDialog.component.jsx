@@ -1,55 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
-import { EMAIL, PASSWORD } from "common/constants/credentialProps";
+import { EMAIL, CURRENT_PASSWORD } from "common/constants/userData";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
-import { propTypes } from "./SignInDialog.props";
-import { signInStart } from "redux/user/user.actions";
-import { validateEmail, validatePassword } from "common/utils/Validator";
+import { defaultProps, propTypes } from "./SignInDialog.props";
+import { selectUserError } from "redux/user/user.selectors";
+import { resetUserError, signInStart } from "redux/user/user.actions";
+import { validateCurrentPassword, validateEmail } from "common/utils/Validator";
+import getTranslatedReducerError from "common/utils/getTranslatedReducerError";
 import styles from "./SignInDialog.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
 SignInDialog.propTypes = propTypes;
+SignInDialog.defaultProps = defaultProps;
 
 const INITIAL_CREDENTIALS = {
-    email: "",
-    password: ""
+    currentPassword: "",
+    email: ""
 };
 
-function SignInDialog ({ onClose, showSignUpDialog, signInStart }) {
+function SignInDialog ({
+    onClose,
+    resetUserError,
+    showSignUpDialog,
+    signInStart,
+    userError
+}) {
     const validateCredential = (stateName, credentials) => {
-        const { email, password } = credentials;
+        const { currentPassword, email } = credentials;
+
+        resetUserError();
 
         switch (stateName) {
+            case CURRENT_PASSWORD:
+                return validateCurrentPassword(currentPassword);
             case EMAIL:
                 return validateEmail(email);
-            case PASSWORD:
-                return validatePassword(password);
         }
     };
 
     const {
-        credentials,
+        props,
         errors,
         handleInputChange,
         handleSubmit
     } = useAuthentication(
+        INITIAL_CREDENTIALS,
         INITIAL_CREDENTIALS,
         validateCredential,
         signInStart
     );
 
     const {
-        email,
-        password
-    } = credentials;
+        currentPassword,
+        email
+    } = props;
 
     const {
-        email: emailError,
-        password: passwordError
+        currentPassword: currentPasswordError,
+        email: emailError
     } = errors;
 
     const handleClickOnSignUp = (event) => {
@@ -63,6 +76,12 @@ function SignInDialog ({ onClose, showSignUpDialog, signInStart }) {
         console.log("signInUsingYandex");
     };
 
+    const serverError = getTranslatedReducerError(userError);
+
+    useEffect(() => {
+        return () => resetUserError();
+    }, []);
+
     return (
         <BaseDialog
             onClose={onClose}
@@ -75,24 +94,22 @@ function SignInDialog ({ onClose, showSignUpDialog, signInStart }) {
                     onSubmit={handleSubmit}
                 >
                     <Input
-                        error={emailError}
+                        error={emailError || serverError}
                         label="Email"
                         name={EMAIL}
                         onChange={handleInputChange}
-                        rootClassName={styles.inputContainer}
                         type="text"
                         value={email}
                     />
 
                     <Input
-                        error={passwordError}
+                        error={currentPasswordError}
                         hasFixedTooltip
                         label="Пароль"
-                        name={PASSWORD}
+                        name={CURRENT_PASSWORD}
                         onChange={handleInputChange}
-                        rootClassName={styles.inputContainer}
                         type="password"
-                        value={password}
+                        value={currentPassword}
                     />
 
                     <BaseButton
@@ -137,12 +154,17 @@ function SignInDialog ({ onClose, showSignUpDialog, signInStart }) {
     );
 }
 
+const mapStateToProps = createStructuredSelector({
+    userError: selectUserError
+});
+
 const mapDispatchToProps = (dispatch) => ({
+    resetUserError: () => dispatch(resetUserError()),
     signInStart: (credentials) => dispatch(signInStart(credentials))
 });
 
 const ConnectedSignInDialog = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(SignInDialog);
 

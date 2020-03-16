@@ -37,7 +37,7 @@ const createUser: ApiController = async function (
             );
         }
 
-        const hashResult = hashPassword(password);
+        const hashResult = await hashPassword(password);
         const { hash } = hashResult;
 
         const hashOptions = await HashOptions.create(hashResult);

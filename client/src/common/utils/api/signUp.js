@@ -6,7 +6,7 @@ async function signUp (credentials) {
         .set("Content-Type", "application/json")
         .send(credentials);
 
-    return response && response.body;
+    return response?.body;
 }
 
 export default signUp;

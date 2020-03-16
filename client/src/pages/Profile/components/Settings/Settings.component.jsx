@@ -1,34 +1,23 @@
 import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { updateProfileStart } from "redux/user/user.actions";
 
-import { defaultProps, propTypes } from "./Settings.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import PasswordDataForm from "components/PasswordDataForm";
+import ProfileDataForm from "components/ProfileDataForm";
 import styles from "./Settings.module.scss";
 
-Settings.propTypes = propTypes;
-Settings.defaultProps = defaultProps;
-
-function Settings ({ currentUser, updateProfileStart }) {
+function Settings () {
     return (
         <div className={styles.container}>
-            Настройки
+            <div className={styles.section}>
+                <div className={styles.formContainer}>
+                    <ProfileDataForm />
+                </div>
+
+                <div className={styles.formContainer}>
+                    <PasswordDataForm />
+                </div>
+            </div>
         </div>
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    updateProfileStart: (params) => dispatch(updateProfileStart(params))
-});
-
-const ConnectedSettings = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Settings);
-
-export default ConnectedSettings;
+export default Settings;

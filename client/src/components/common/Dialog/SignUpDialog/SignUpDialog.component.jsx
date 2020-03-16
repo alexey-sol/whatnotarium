@@ -1,25 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import {
     CONFIRM_PASSWORD,
     EMAIL,
     NAME,
     PASSWORD
-} from "common/constants/credentialProps";
+} from "common/constants/userData";
 
 import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import BaseDialog from "components/BaseDialog";
 import Input from "components/Input";
-import { propTypes } from "./SignUpDialog.props";
-import { signUpStart } from "redux/user/user.actions";
+import { defaultProps, propTypes } from "./SignUpDialog.props";
+import { selectUserError } from "redux/user/user.selectors";
+import { resetUserError, signUpStart } from "redux/user/user.actions";
+import getTranslatedReducerError from "common/utils/getTranslatedReducerError";
 
 import {
     validateConfirmPassword,
     validateEmail,
     validateName,
-    validatePassword
+    validateNewPassword
 } from "common/utils/Validator";
 
 import hints from "common/resources/text/hints";
@@ -27,6 +30,7 @@ import styles from "./SignUpDialog.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
 SignUpDialog.propTypes = propTypes;
+SignUpDialog.defaultProps = defaultProps;
 
 const INITIAL_CREDENTIALS = {
     confirmPassword: "",
@@ -35,9 +39,21 @@ const INITIAL_CREDENTIALS = {
     password: ""
 };
 
-function SignUpDialog ({ onClose, signUpStart }) {
+function SignUpDialog ({
+    onClose,
+    resetUserError,
+    signUpStart,
+    userError
+}) {
     const validateCredential = (stateName, credentials) => {
-        const { confirmPassword, email, name, password } = credentials;
+        const {
+            confirmPassword,
+            email,
+            name,
+            password
+        } = credentials;
+
+        resetUserError();
 
         switch (stateName) {
             case CONFIRM_PASSWORD:
@@ -47,17 +63,18 @@ function SignUpDialog ({ onClose, signUpStart }) {
             case NAME:
                 return validateName(name);
             case PASSWORD:
-                return validatePassword(password, true);
+                return validateNewPassword(password);
         }
     };
 
     const {
-        credentials,
+        props,
         errorCodes,
         errors,
         handleInputChange,
         handleSubmit
     } = useAuthentication(
+        INITIAL_CREDENTIALS,
         INITIAL_CREDENTIALS,
         validateCredential,
         signUpStart
@@ -68,7 +85,7 @@ function SignUpDialog ({ onClose, signUpStart }) {
         email,
         name,
         password
-    } = credentials;
+    } = props;
 
     const {
         password: passwordErrorCode
@@ -81,9 +98,15 @@ function SignUpDialog ({ onClose, signUpStart }) {
         password: passwordError
     } = errors;
 
+    const emailServerError = getTranslatedReducerError(userError);
+
     const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
         ? hints.weakPassword
         : "";
+
+    useEffect(() => {
+        return () => resetUserError();
+    }, []);
 
     return (
         <BaseDialog
@@ -100,17 +123,15 @@ function SignUpDialog ({ onClose, signUpStart }) {
                     label="Имя"
                     name={NAME}
                     onChange={handleInputChange}
-                    rootClassName={styles.inputContainer}
                     type="text"
                     value={name}
                 />
 
                 <Input
-                    error={emailError}
+                    error={emailError || emailServerError}
                     label="Email"
                     name={EMAIL}
                     onChange={handleInputChange}
-                    rootClassName={styles.inputContainer}
                     type="email"
                     value={email}
                 />
@@ -122,7 +143,6 @@ function SignUpDialog ({ onClose, signUpStart }) {
                     label="Пароль"
                     name={PASSWORD}
                     onChange={handleInputChange}
-                    rootClassName={styles.inputContainer}
                     type="password"
                     value={password}
                 />
@@ -132,7 +152,6 @@ function SignUpDialog ({ onClose, signUpStart }) {
                     label="Пароль еще раз"
                     name={CONFIRM_PASSWORD}
                     onChange={handleInputChange}
-                    rootClassName={styles.inputContainer}
                     type="password"
                     value={confirmPassword}
                 />
@@ -147,12 +166,17 @@ function SignUpDialog ({ onClose, signUpStart }) {
     );
 }
 
+const mapStateToProps = createStructuredSelector({
+    userError: selectUserError
+});
+
 const mapDispatchToProps = (dispatch) => ({
+    resetUserError: () => dispatch(resetUserError()),
     signUpStart: (credentials) => dispatch(signUpStart(credentials))
 });
 
 const ConnectedSignUpDialog = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(SignUpDialog);
 

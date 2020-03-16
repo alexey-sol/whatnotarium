@@ -1,6 +1,11 @@
 import { string } from "@hapi/joi";
 
+const passwordConstraints = string()
+    .min(6);
+
 export default {
+    currentPassword: string(),
+
     email: string()
         .email({ minDomainSegments: 2 }),
 
@@ -8,6 +13,7 @@ export default {
         .min(3)
         .max(30),
 
-    password: string()
-        .min(6)
+    newPassword: passwordConstraints,
+
+    password: passwordConstraints
 };

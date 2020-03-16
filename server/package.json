@@ -32,7 +32,6 @@
     "@types/helmet": "0.0.45",
     "@types/morgan": "^1.7.37",
     "@types/node": "^13.7.0",
-    "@types/pbkdf2": "^3.0.0",
     "@types/pg": "^7.14.1",
     "@types/redis": "^2.8.14",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
@@ -61,7 +60,6 @@
     "module-alias": "~2.2.2",
     "moment": "~2.24.0",
     "morgan": "~1.9.1",
-    "pbkdf2": "~3.0.17",
     "pg": "~7.18.1",
     "redis": "~3.0.2",
     "winston": "~3.2.1"

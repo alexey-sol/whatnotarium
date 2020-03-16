@@ -1,6 +1,7 @@
 import {
     CHECK_SESSION_FAILURE,
     CHECK_SESSION_SUCCESS,
+    RESET_USER_ERROR,
     SIGN_IN_FAILURE,
     SIGN_IN_SUCCESS,
     SIGN_OUT_FAILURE,
@@ -44,6 +45,12 @@ function userReducer (state = INITIAL_STATE, action = {}) {
             return {
                 ...state,
                 currentUser: null,
+                error: null
+            };
+
+        case RESET_USER_ERROR:
+            return {
+                ...state,
                 error: null
             };
 
