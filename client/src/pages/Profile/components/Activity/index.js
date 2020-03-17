@@ -1,3 +1,1 @@
-import Activity from "./Activity.component";
-
-export default Activity;
+export { default } from "./Activity.component";

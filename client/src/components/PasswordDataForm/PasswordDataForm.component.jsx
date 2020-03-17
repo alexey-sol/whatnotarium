@@ -14,7 +14,7 @@ import Input from "components/Input";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 import { resetUserError, updateProfileStart } from "redux/user/user.actions";
-import getTranslatedReducerError from "common/utils/getTranslatedReducerError";
+import translateReducerError from "common/utils/translateReducerError";
 
 import {
     validateConfirmPassword,
@@ -96,7 +96,7 @@ function PasswordDataForm ({
         newPassword: newPasswordError
     } = errors;
 
-    const passwordServerError = getTranslatedReducerError(userError);
+    const passwordServerError = translateReducerError(userError);
 
     const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
         ? hints.weakPassword

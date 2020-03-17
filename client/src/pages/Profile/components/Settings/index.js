@@ -1,3 +1,1 @@
-import Settings from "./Settings.component";
-
-export default Settings;
+export { default } from "./Settings.component";

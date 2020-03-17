@@ -1,3 +1,1 @@
-import Profile from "./Profile.component";
-
-export default Profile;
+export { default } from "./Profile.component";

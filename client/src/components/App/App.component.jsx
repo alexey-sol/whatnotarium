@@ -16,6 +16,7 @@ import styles from "./App.module.scss";
 
 const Home = lazy(() => import("pages/Home"));
 const Profile = lazy(() => import("pages/Profile"));
+const SignIn = lazy(() => import("pages/SignIn"));
 
 App.propTypes = propTypes;
 App.defaultProps = defaultProps;
@@ -42,6 +43,11 @@ function App ({ checkSessionStart, currentUser }) {
                             <Route
                                 component={Profile}
                                 path="/profile"
+                            />
+
+                            <Route
+                                component={SignIn}
+                                path="/sign-in"
                             />
                         </Suspense>
                     </ErrorBoundary>

@@ -1,3 +1,1 @@
-import MyNotes from "./MyNotes.component";
-
-export default MyNotes;
+export { default } from "./MyNotes.component";

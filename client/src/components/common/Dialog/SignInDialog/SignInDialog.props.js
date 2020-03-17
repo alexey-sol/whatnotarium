@@ -2,16 +2,9 @@ import PropTypes from "prop-types";
 
 import { propTypes as dialogPropTypes } from "../Dialog.props";
 
-const { func, object } = PropTypes;
-
-export const defaultProps = {
-    userError: null
-};
+const { func } = PropTypes;
 
 export const propTypes = {
     ...dialogPropTypes,
-    resetUserError: func.isRequired,
-    signInStart: func.isRequired,
-    showSignUpDialog: func.isRequired,
-    userError: object
+    showSignUpDialog: func.isRequired
 };
