@@ -3,16 +3,19 @@ import {
     CONFIRM_PASSWORD_NOT_MATCH,
     EMAIL_EMPTY,
     EMAIL_INVALID,
-    EMAIL_OCCUPIED,
-    INVALID_CREDENTIALS,
-    INVALID_PASSWORD,
     NAME_EMPTY,
     NAME_TOO_LONG,
     NAME_TOO_SHORT,
-    NO_USER_FOUND,
     PASSWORD_EMPTY,
     PASSWORD_TOO_WEAK
 } from "common/constants/validationErrors";
+
+import {
+    EMAIL_OCCUPIED,
+    INVALID_CREDENTIALS,
+    INVALID_PASSWORD,
+    NO_USER_FOUND
+} from "common/constants/serverErrors";
 
 function translateError (error) {
     if (!error) {

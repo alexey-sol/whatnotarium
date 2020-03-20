@@ -1,1 +1,4 @@
-export const UNAUTHORIZED = "Unauthorized";
+export const EMAIL_OCCUPIED = "EMAIL_OCCUPIED";
+export const INVALID_CREDENTIALS = "INVALID_CREDENTIALS";
+export const INVALID_PASSWORD = "INVALID_PASSWORD";
+export const NO_USER_FOUND = "NO_USER_FOUND";

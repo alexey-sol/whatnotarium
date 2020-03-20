@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -6,7 +6,7 @@ import { EMAIL, NAME } from "common/constants/userData";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 import { updateProfileStart, resetUserError } from "redux/user/user.actions";
 import { validateEmail, validateName } from "common/utils/Validator";
 import styles from "./ProfileDataForm.module.scss";
@@ -15,20 +15,21 @@ import useAuthentication from "common/utils/customHooks/useAuthentication";
 ProfileDataForm.propTypes = propTypes;
 ProfileDataForm.defaultProps = defaultProps;
 
-const INITIAL_ERRORS = {
-    email: "",
-    name: ""
-};
-
 function ProfileDataForm ({
     currentUser,
     resetUserError,
-    updateProfileStart
+    updateProfileStart,
+    userError
 }) {
-    const INITIAL_PROPS = {
+    const initialProps = {
         email: currentUser?.email,
         id: currentUser?.id,
         name: currentUser?.name
+    };
+
+    const initialErrors = {
+        email: userError?.message?.email,
+        name: ""
     };
 
     const validateProp = (stateName, props) => {
@@ -42,27 +43,31 @@ function ProfileDataForm ({
         }
     };
 
+    const useAuthenticationOptions = {
+        initialErrors,
+        initialProps,
+        resetReducerError: resetUserError,
+        sendProps: updateProfileStart,
+        validateProp
+    };
+
     const {
         props,
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(
-        INITIAL_PROPS,
-        INITIAL_ERRORS,
-        validateProp,
-        updateProfileStart
-    );
+    } = useAuthentication(useAuthenticationOptions);
 
-    const {
-        email,
-        name
-    } = props;
+    const { email, name } = props;
 
     const {
         email: emailError,
         name: nameError
     } = errors;
+
+    useEffect(() => {
+        return () => resetUserError();
+    }, [resetUserError]);
 
     return (
         <form
@@ -97,7 +102,8 @@ function ProfileDataForm ({
 }
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
+    currentUser: selectCurrentUser,
+    userError: selectUserError
 });
 
 const mapDispatchToProps = (dispatch) => ({

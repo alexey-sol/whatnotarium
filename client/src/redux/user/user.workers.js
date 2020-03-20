@@ -1,7 +1,6 @@
 import { put } from "redux-saga/effects";
 
 import {
-    checkSessionFailure,
     checkSessionSuccess,
     signInFailure,
     signInSuccess,
@@ -27,10 +26,7 @@ function * doCheckSession () {
     try {
         const currentUser = yield checkSession();
         yield put(checkSessionSuccess(currentUser));
-    } catch (errorResponse) {
-        const error = getErrorFromResponse(errorResponse);
-        yield put(checkSessionFailure(error));
-    }
+    } catch (errorResponse) {}
 }
 
 function * doSignIn ({ payload }) {

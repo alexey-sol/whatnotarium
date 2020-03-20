@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import {
-    CURRENT_PASSWORD,
     CONFIRM_NEW_PASSWORD,
+    CURRENT_PASSWORD,
     NEW_PASSWORD
 } from "common/constants/userData";
 
@@ -12,9 +12,8 @@ import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
-import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 import { resetUserError, updateProfileStart } from "redux/user/user.actions";
-import translateReducerError from "common/utils/translateReducerError";
+import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 
 import {
     validateConfirmPassword,
@@ -29,42 +28,48 @@ import useAuthentication from "common/utils/customHooks/useAuthentication";
 PasswordDataForm.propTypes = propTypes;
 PasswordDataForm.defaultProps = defaultProps;
 
-const INITIAL_ERRORS = {
-    confirmNewPassword: "",
-    currentPassword: "",
-    newPassword: ""
-};
-
 function PasswordDataForm ({
     currentUser,
     resetUserError,
     updateProfileStart,
     userError
 }) {
-    const INITIAL_PROPS = {
+    const initialProps = {
         confirmNewPassword: "",
+        currentPassword: "",
         id: currentUser?.id,
-        newPassword: "",
-        currentPassword: ""
+        newPassword: ""
+    };
+
+    const initialErrors = {
+        confirmNewPassword: "",
+        currentPassword: userError?.message?.password,
+        newPassword: ""
     };
 
     const validateProp = (stateName, props) => {
         const {
             confirmNewPassword,
-            newPassword,
-            currentPassword
+            currentPassword,
+            newPassword
         } = props;
-
-        resetUserError();
 
         switch (stateName) {
             case CONFIRM_NEW_PASSWORD:
                 return validateConfirmPassword(newPassword, confirmNewPassword);
-            case NEW_PASSWORD:
-                return validateNewPassword(newPassword);
             case CURRENT_PASSWORD:
                 return validateCurrentPassword(currentPassword);
+            case NEW_PASSWORD:
+                return validateNewPassword(newPassword);
         }
+    };
+
+    const useAuthenticationOptions = {
+        initialErrors,
+        initialProps,
+        resetReducerError: resetUserError,
+        sendProps: updateProfileStart,
+        validateProp
     };
 
     const {
@@ -73,12 +78,7 @@ function PasswordDataForm ({
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(
-        INITIAL_PROPS,
-        INITIAL_ERRORS,
-        validateProp,
-        updateProfileStart
-    );
+    } = useAuthentication(useAuthenticationOptions);
 
     const {
         confirmNewPassword,
@@ -96,15 +96,13 @@ function PasswordDataForm ({
         newPassword: newPasswordError
     } = errors;
 
-    const passwordServerError = translateReducerError(userError);
-
     const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
         ? hints.weakPassword
         : "";
 
     useEffect(() => {
         return () => resetUserError();
-    }, []);
+    }, [resetUserError]);
 
     return (
         <form
@@ -112,7 +110,7 @@ function PasswordDataForm ({
             onSubmit={handleSubmit}
         >
             <Input
-                error={currentPasswordError || passwordServerError}
+                error={currentPasswordError}
                 label="Текущий пароль"
                 name={CURRENT_PASSWORD}
                 onChange={handleInputChange}

@@ -10,8 +10,8 @@ const formatErrorForResponse: FormatErrorMessage = function (
 
     return {
         error: {
-            name,
-            message
+            message,
+            name
         }
     };
 };

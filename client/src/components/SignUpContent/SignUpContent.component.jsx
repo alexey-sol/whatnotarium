@@ -13,9 +13,8 @@ import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./SignUpContent.props";
-import { selectUserError } from "redux/user/user.selectors";
 import { resetUserError, signUpStart } from "redux/user/user.actions";
-import translateReducerError from "common/utils/translateReducerError";
+import { selectUserError } from "redux/user/user.selectors";
 
 import {
     validateConfirmPassword,
@@ -31,7 +30,7 @@ import useAuthentication from "common/utils/customHooks/useAuthentication";
 SignUpContent.propTypes = propTypes;
 SignUpContent.defaultProps = defaultProps;
 
-const INITIAL_CREDENTIALS = {
+const initialProps = {
     confirmPassword: "",
     email: "",
     name: "",
@@ -43,15 +42,18 @@ function SignUpContent ({
     signUpStart,
     userError
 }) {
-    const validateCredential = (stateName, credentials) => {
+    const initialErrors = {
+        ...initialProps,
+        email: userError?.message?.email
+    };
+
+    const validateProp = (stateName, credentials) => {
         const {
             confirmPassword,
             email,
             name,
             password
         } = credentials;
-
-        resetUserError();
 
         switch (stateName) {
             case CONFIRM_PASSWORD:
@@ -65,18 +67,21 @@ function SignUpContent ({
         }
     };
 
+    const useAuthenticationOptions = {
+        initialErrors,
+        initialProps,
+        resetReducerError: resetUserError,
+        sendProps: signUpStart,
+        validateProp
+    };
+
     const {
         props,
         errorCodes,
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(
-        INITIAL_CREDENTIALS,
-        INITIAL_CREDENTIALS,
-        validateCredential,
-        signUpStart
-    );
+    } = useAuthentication(useAuthenticationOptions);
 
     const {
         confirmPassword,
@@ -96,15 +101,13 @@ function SignUpContent ({
         password: passwordError
     } = errors;
 
-    const emailServerError = translateReducerError(userError);
-
     const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
         ? hints.weakPassword
         : "";
 
     useEffect(() => {
         return () => resetUserError();
-    }, []);
+    }, [resetUserError]);
 
     return (
         <form
@@ -121,7 +124,7 @@ function SignUpContent ({
             />
 
             <Input
-                error={emailError || emailServerError}
+                error={emailError}
                 label="Email"
                 name={EMAIL}
                 onChange={handleInputChange}

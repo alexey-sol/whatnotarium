@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import deriveNewErrorsState from "common/utils/deriveNewErrorsState";
-import discardFalsyValues from "common/utils/discardFalsyValues";
+import filterFalsyValues from "common/utils/filterFalsyValues";
 import isEmptyObject from "common/utils/isEmptyObject";
 import translateError from "common/utils/translateError";
 
-function useAuthentication (
-    initialProps,
-    initialErrors,
-    validateProp,
-    sendProps
-) {
+function useAuthentication ({
+    initialProps = {},
+    initialErrors = {},
+    resetReducerError,
+    sendProps,
+    validateProp
+}) {
     const [props, setProps] = useState(initialProps);
     const [errors, setErrors] = useState(initialErrors);
     const [errorCodes, setErrorCodes] = useState(initialProps);
@@ -18,10 +19,10 @@ function useAuthentication (
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const errors = validate(props);
-        setUpdatedErrors(errors);
+        const validationErrors = validate(props);
+        setUpdatedErrors(validationErrors);
 
-        if (!errors) {
+        if (!validationErrors) {
             sendProps(props);
         }
     };
@@ -36,7 +37,7 @@ function useAuthentication (
 
         setProps(newProps);
 
-        const hasValidationErrors = !isEmptyObject(discardFalsyValues(errors));
+        const hasValidationErrors = !isEmptyObject(filterFalsyValues(errors));
 
         if (hasValidationErrors) {
             const updatedErrors = validate(newProps);
@@ -62,7 +63,7 @@ function useAuthentication (
             : null;
     };
 
-    const getTranslatedErrors = (errorCodes) => {
+    const translateErrors = (errorCodes) => {
         const translatedErrors = {};
 
         for (const [key, value] of Object.entries(errorCodes)) {
@@ -74,14 +75,27 @@ function useAuthentication (
 
     const setUpdatedErrors = (updatedErrors) => {
         if (updatedErrors) {
-            const newErrorsState = deriveNewErrorsState(updatedErrors);
-            setErrorCodes(newErrorsState);
-            setErrors(getTranslatedErrors(newErrorsState));
+            updateErrorsState(updatedErrors);
         } else {
-            setErrorCodes(initialErrors);
-            setErrors(initialErrors);
+            resetErrorsState();
         }
     };
+
+    const updateErrorsState = (updatedErrors) => {
+        const newErrorsState = deriveNewErrorsState(updatedErrors);
+        setErrorCodes(newErrorsState);
+        setErrors(translateErrors(newErrorsState));
+    };
+
+    const resetErrorsState = () => {
+        setErrorCodes(initialErrors);
+        setErrors(initialErrors);
+        if (resetReducerError) resetReducerError();
+    };
+
+    useEffect(() => {
+        setUpdatedErrors(initialErrors);
+    }, getDependenciesFrom(initialErrors));
 
     return {
         props,
@@ -93,3 +107,7 @@ function useAuthentication (
 };
 
 export default useAuthentication;
+
+function getDependenciesFrom (object = {}) {
+    return [...Object.values(object)];
+}

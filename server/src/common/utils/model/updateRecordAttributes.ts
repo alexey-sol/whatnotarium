@@ -9,7 +9,7 @@ async function updateRecordAttributes<InputType, OutputType> (
     tableName: string,
     id: number,
     props: InputType
-): Promise<OutputType> | never {
+): Promise<OutputType | null> | never {
     if (!isObject(props) || isEmptyObject(props)) {
         throw new ValidationError(NO_PROPS, 400);
     }

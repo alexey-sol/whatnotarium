@@ -2,22 +2,21 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { EMAIL, CURRENT_PASSWORD } from "common/constants/userData";
+import { CURRENT_PASSWORD, EMAIL } from "common/constants/userData";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./SignInContent.props";
-import { selectUserError } from "redux/user/user.selectors";
 import { resetUserError, signInStart } from "redux/user/user.actions";
+import { selectUserError } from "redux/user/user.selectors";
 import { validateCurrentPassword, validateEmail } from "common/utils/Validator";
 import styles from "./SignInContent.module.scss";
-import translateReducerError from "common/utils/translateReducerError";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
 SignInContent.propTypes = propTypes;
 SignInContent.defaultProps = defaultProps;
 
-const INITIAL_CREDENTIALS = {
+const initialProps = {
     currentPassword: "",
     email: ""
 };
@@ -29,10 +28,13 @@ function SignInContent ({
     signInStart,
     userError
 }) {
-    const validateCredential = (stateName, credentials) => {
-        const { currentPassword, email } = credentials;
+    const initialErrors = {
+        ...initialProps,
+        email: userError?.message?.email
+    };
 
-        resetUserError();
+    const validateProp = (stateName, credentials) => {
+        const { currentPassword, email } = credentials;
 
         switch (stateName) {
             case CURRENT_PASSWORD:
@@ -42,17 +44,20 @@ function SignInContent ({
         }
     };
 
+    const useAuthenticationOptions = {
+        initialErrors,
+        initialProps,
+        resetReducerError: resetUserError,
+        sendProps: signInStart,
+        validateProp
+    };
+
     const {
         props,
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(
-        INITIAL_CREDENTIALS,
-        INITIAL_CREDENTIALS,
-        validateCredential,
-        signInStart
-    );
+    } = useAuthentication(useAuthenticationOptions);
 
     const {
         currentPassword,
@@ -75,11 +80,9 @@ function SignInContent ({
         console.log("signInUsingYandex");
     };
 
-    const serverError = translateReducerError(userError);
-
     useEffect(() => {
         return () => resetUserError();
-    }, []);
+    }, [resetUserError]);
 
     return (
         <div className={styles.container}>
@@ -88,7 +91,7 @@ function SignInContent ({
                 onSubmit={handleSubmit}
             >
                 <Input
-                    error={emailError || serverError}
+                    error={emailError}
                     label="Email"
                     name={EMAIL}
                     onChange={handleInputChange}

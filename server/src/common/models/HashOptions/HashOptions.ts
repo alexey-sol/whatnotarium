@@ -107,6 +107,10 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
             propsToDb
         );
 
+        if (!record) {
+            throw new ValidationError(INVALID_PROPS, 400);
+        }
+
         return HashOptions.formatPropsAndInstantiate(record);
     }
 

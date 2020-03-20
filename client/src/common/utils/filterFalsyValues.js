@@ -1,4 +1,4 @@
-function discardFalsyValues (object = {}) {
+function filterFalsyValues (object = {}) {
     const result = {};
 
     for (const [key, value] of Object.entries(object)) {
@@ -10,4 +10,4 @@ function discardFalsyValues (object = {}) {
     return result;
 };
 
-export default discardFalsyValues;
+export default filterFalsyValues;

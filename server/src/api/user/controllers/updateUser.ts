@@ -105,6 +105,7 @@ async function updateUserAndSendResponse (
     response: Response
 ): Promise<Response> {
     let updatedUser = null;
+
     const {
         email,
         name,

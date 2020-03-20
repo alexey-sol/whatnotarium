@@ -17,7 +17,6 @@ const handleError: ErrorRequestHandler = function (
     if (response.headersSent) {
         return next(error);
     }
-
     sendResponse(
         response,
         formatErrorForResponse(error),

@@ -1,19 +1,19 @@
 import Indexer from "types/Indexer";
 
-interface DiscardFalsyValues {
+interface FilterFalsyValues {
     (object: unknown[]): unknown[];
     (object: Indexer<unknown>): Indexer<unknown>;
 }
 
-function discardFalsyValues (
+function filterFalsyValues (
     object: unknown[]
 ): unknown[];
 
-function discardFalsyValues (
+function filterFalsyValues (
     object: Indexer<unknown>
 ): Indexer<unknown>;
 
-function discardFalsyValues (
+function filterFalsyValues (
     object: unknown
 ): unknown[] | Indexer<unknown> {
     if (Array.isArray(object)) {
@@ -23,9 +23,9 @@ function discardFalsyValues (
     }
 }
 
-const typedDiscardFalsyValues: DiscardFalsyValues = discardFalsyValues;
+const typedFilterFalsyValues: FilterFalsyValues = filterFalsyValues;
 
-export default typedDiscardFalsyValues;
+export default typedFilterFalsyValues;
 
 function filterOutArray (
     array: unknown[]

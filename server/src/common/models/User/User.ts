@@ -90,11 +90,17 @@ class User implements Model<FormattedProps, User> {
     async updateAttributes (
         props: FormattedProps
     ): Promise<User> | never {
+        const propsToDb = User.formatter.toDbCase(props);
+
         const record = await updateRecordAttributes<RawProps, UserProps>(
             USERS,
             this.id,
-            props
+            propsToDb
         );
+
+        if (!record) {
+            throw new ValidationError(INVALID_PROPS, 400);
+        }
 
         return User.formatPropsAndInstantiate(record);
     }
