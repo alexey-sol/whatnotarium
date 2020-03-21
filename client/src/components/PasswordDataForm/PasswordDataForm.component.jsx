@@ -87,7 +87,7 @@ function PasswordDataForm ({
     } = props;
 
     const {
-        password: passwordErrorCode
+        newPassword: passwordErrorCode
     } = errorCodes;
 
     const {

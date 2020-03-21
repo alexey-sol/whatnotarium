@@ -1,12 +1,7 @@
 import PropTypes from "prop-types";
 
-const { func, object } = PropTypes;
-
-export const defaultProps = {
-    currentUser: null
-};
+const { func } = PropTypes;
 
 export const propTypes = {
-    checkSessionStart: func.isRequired,
-    currentUser: object
+    checkSessionStart: func.isRequired
 };

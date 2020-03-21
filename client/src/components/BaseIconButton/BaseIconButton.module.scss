@@ -1,7 +1,13 @@
 @import "styles/style.scss";
 
 .container {
+    transition: .1s ease;
     cursor: pointer;
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
 
     svg {
         fill: $icon-color;

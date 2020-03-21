@@ -10,5 +10,6 @@ export const defaultProps = {
 
 export const propTypes = {
     ...iconButtonPropTypes,
-    currentUser: object
+    currentUser: object,
+    location: object.isRequired
 };

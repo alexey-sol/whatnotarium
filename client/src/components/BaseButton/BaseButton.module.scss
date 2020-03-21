@@ -29,11 +29,19 @@
         border: 1px solid $base-button-border-color-light;
         background-color: $base-button-bg-color-light;
         color: $base-button-text-color-light;
+
+        &:hover {
+            background-color: $base-button-bg-color-light--hover;
+        }
     }
 
     &.darkTheme {
         border: 1px solid $base-button-border-color-dark;
         background-color: $base-button-bg-color-dark;
         color: $base-button-text-color-dark;
+
+        &:hover {
+            background-color: $base-button-bg-color-dark--hover;
+        }
     }
 }

@@ -45,6 +45,6 @@ function formatServerError (error = {}) {
         formattedError.message = {};
         formattedError.message[key] = message;
     }
-    console.log(formattedError)
+
     return formattedError || error;
 }

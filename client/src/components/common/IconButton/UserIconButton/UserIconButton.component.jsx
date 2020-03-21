@@ -1,7 +1,9 @@
+import { withRouter } from "react-router-dom";
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
+import { SIGN_IN } from "common/constants/pathnames";
 import { User as UserIcon } from "components/common/Icon";
 import IconButton from "components/BaseIconButton";
 import { defaultProps, propTypes } from "./UserIconButton.props";
@@ -10,13 +12,22 @@ import { selectCurrentUser } from "redux/user/user.selectors";
 UserIconButton.propTypes = propTypes;
 UserIconButton.defaultProps = defaultProps;
 
-function UserIconButton ({ currentUser, onClick, ...rest }) {
-    const userName = currentUser && currentUser.name;
-    const title = userName || "Учетная запись";
+function UserIconButton ({
+    currentUser,
+    location,
+    onClick,
+    ...rest
+}) {
+    const username = currentUser?.name;
+    const title = username || "Учетная запись";
+
+    const { pathname } = location;
+    const isSignInPage = pathname === SIGN_IN;
 
     return (
         <IconButton
             {...rest}
+            disabled={isSignInPage}
             onClick={onClick}
             title={title}
         >
@@ -33,4 +44,4 @@ const ConnectedUserIconButton = connect(
     mapStateToProps
 )(UserIconButton);
 
-export default ConnectedUserIconButton;
+export default withRouter(ConnectedUserIconButton);

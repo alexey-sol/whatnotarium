@@ -31,7 +31,9 @@ $scrollbar-thumb-bg-color: $gray;
 $scrollbar-track-bg-color: $gray--lightest;
 
 $base-button-bg-color-dark: $color-tertiary;
+$base-button-bg-color-dark--hover: #ce746e;
 $base-button-bg-color-light: $color-primary;
+$base-button-bg-color-light--hover: #ffdc9a;
 $base-button-border-color-dark: $color-tertiary;
 $base-button-border-color-light: $color-quaternary;
 $base-button-text-color-dark: white;
@@ -43,7 +45,7 @@ $base-dialog-title-text-color: $gray--darken;
 $base-dropdown-bg-color: white;
 
 $custom-link-border-color: $color-tertiary;
-$custom-link-border-color--hover: #f58d7f;
+$custom-link-border-color--hover: #f5c67f;
 $custom-link-text-color: $color-tertiary;
 $custom-link-text-color--hover: #f58d7f;
 
@@ -74,9 +76,9 @@ $menu-item-bg-color--hover: $color-tertiary;
 $menu-item-color: white;
 
 $profile-tab-color: $gray;
-$profile-tab-color--active: $text-color--normal;
+$profile-tab-color--active: $gray--darken;
 $profile-tab-border-color: $gray--light;
-$profile-tab-border-color--active: $text-color--normal;
+$profile-tab-border-color--active: $gray--darken;
 
 $tooltip-bg-color: white;
 $tooltip-border-color: $gray--light;

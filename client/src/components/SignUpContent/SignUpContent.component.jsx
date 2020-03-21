@@ -1,3 +1,4 @@
+import { Redirect } from "react-router";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -14,7 +15,7 @@ import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./SignUpContent.props";
 import { resetUserError, signUpStart } from "redux/user/user.actions";
-import { selectUserError } from "redux/user/user.selectors";
+import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 
 import {
     validateConfirmPassword,
@@ -38,6 +39,7 @@ const initialProps = {
 };
 
 function SignUpContent ({
+    currentUser,
     resetUserError,
     signUpStart,
     userError
@@ -109,7 +111,7 @@ function SignUpContent ({
         return () => resetUserError();
     }, [resetUserError]);
 
-    return (
+    const component = (
         <form
             className={styles.container}
             onSubmit={handleSubmit}
@@ -159,9 +161,14 @@ function SignUpContent ({
             />
         </form>
     );
+
+    return (currentUser)
+        ? <Redirect to="/" />
+        : component;
 }
 
 const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
     userError: selectUserError
 });
 

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { BackIconButton } from "components/common/IconButton";
+import { PROFILE } from "common/constants/pathnames";
 import { signOutStart } from "redux/user/user.actions";
 import { propTypes } from "./UserMenu.props";
 import styles from "./UserMenu.module.scss";
@@ -13,7 +14,7 @@ function UserMenu ({ history, onClose, signOutStart }) {
     const containerRef = useRef(null);
 
     const redirectToProfile = () => {
-        history.push("/profile");
+        history.push(PROFILE);
         onClose();
     };
 
