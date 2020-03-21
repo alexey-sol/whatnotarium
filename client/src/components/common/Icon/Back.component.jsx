@@ -2,8 +2,8 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-Back.propTypes = propTypes;
 Back.defaultProps = defaultProps;
+Back.propTypes = propTypes;
 
 function Back ({ fill, size }) {
     return (

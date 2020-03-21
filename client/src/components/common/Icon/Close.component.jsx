@@ -2,8 +2,8 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-Close.propTypes = propTypes;
 Close.defaultProps = defaultProps;
+Close.propTypes = propTypes;
 
 function Close ({ fill, size }) {
     return (

@@ -28,8 +28,8 @@ import hints from "common/resources/text/hints";
 import styles from "./SignUpContent.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
-SignUpContent.propTypes = propTypes;
 SignUpContent.defaultProps = defaultProps;
+SignUpContent.propTypes = propTypes;
 
 const initialProps = {
     confirmPassword: "",

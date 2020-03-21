@@ -4,8 +4,8 @@ import classnames from "classnames";
 import { defaultProps, propTypes } from "./BaseIconButton.props";
 import styles from "./BaseIconButton.module.scss";
 
-BaseIconButton.propTypes = propTypes;
 BaseIconButton.defaultProps = defaultProps;
+BaseIconButton.propTypes = propTypes;
 
 function BaseIconButton ({
     children,
@@ -21,7 +21,7 @@ function BaseIconButton ({
         boxSizing: "border-box"
     };
 
-    const buttonClassName = classnames(
+    const containerClassName = classnames(
         styles.container,
         className,
         (disabled) ? styles.disabled : ""
@@ -29,7 +29,7 @@ function BaseIconButton ({
 
     return (
         <div
-            className={buttonClassName}
+            className={containerClassName}
             onClick={onClick}
             style={dynamicStyle}
             title={title}

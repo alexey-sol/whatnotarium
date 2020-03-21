@@ -4,8 +4,8 @@ import React from "react";
 import { defaultProps, propTypes } from "./CustomLink.props";
 import styles from "./CustomLink.module.scss";
 
-CustomLink.propTypes = propTypes;
 CustomLink.defaultProps = defaultProps;
+CustomLink.propTypes = propTypes;
 
 function CustomLink ({ children, ...rest }) {
     return (

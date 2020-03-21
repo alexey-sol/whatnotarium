@@ -12,8 +12,8 @@ import { validateEmail, validateName } from "common/utils/Validator";
 import styles from "./ProfileDataForm.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
-ProfileDataForm.propTypes = propTypes;
 ProfileDataForm.defaultProps = defaultProps;
+ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,

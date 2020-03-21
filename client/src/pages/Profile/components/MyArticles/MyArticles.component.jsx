@@ -6,8 +6,8 @@ import { defaultProps, propTypes } from "./MyArticles.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./MyArticles.module.scss";
 
-MyArticles.propTypes = propTypes;
 MyArticles.defaultProps = defaultProps;
+MyArticles.propTypes = propTypes;
 
 function MyArticles ({ currentUser }) {
     return (

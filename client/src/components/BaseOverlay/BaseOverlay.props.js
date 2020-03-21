@@ -1,6 +1,10 @@
-import PropTypes from "prop-types";
-
-const { arrayOf, func, oneOfType, node, string } = PropTypes;
+import {
+    arrayOf,
+    func,
+    oneOfType,
+    node,
+    string
+} from "prop-types";
 
 export const defaultProps = {
     children: null,

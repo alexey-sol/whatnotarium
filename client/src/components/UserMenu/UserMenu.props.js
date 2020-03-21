@@ -1,6 +1,4 @@
-import PropTypes from "prop-types";
-
-const { func, object } = PropTypes;
+import { func, object } from "prop-types";
 
 export const propTypes = {
     history: object.isRequired,

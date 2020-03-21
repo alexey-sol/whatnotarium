@@ -7,8 +7,8 @@ import { SIGN_IN } from "common/constants/pathnames";
 import { defaultProps, propTypes } from "./Route.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 
-PrivateRoute.propTypes = propTypes;
 PrivateRoute.defaultProps = defaultProps;
+PrivateRoute.propTypes = propTypes;
 
 function PrivateRoute ({
     component: Component,

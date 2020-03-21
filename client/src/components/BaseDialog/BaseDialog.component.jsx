@@ -6,17 +6,21 @@ import { defaultProps, propTypes } from "./BaseDialog.props";
 import BaseOverlay from "components/BaseOverlay";
 import styles from "./BaseDialog.module.scss";
 
-BaseDialog.propTypes = propTypes;
 BaseDialog.defaultProps = defaultProps;
+BaseDialog.propTypes = propTypes;
 
-function BaseDialog ({ children, className, onClose, title, width }) {
+function BaseDialog ({
+    children,
+    className,
+    onClose,
+    title,
+    width
+}) {
     const containerClassName = classnames(
         styles.container,
         styles[`${width}Width`],
         className
     );
-
-    // TODO: add back button
 
     return (
         <BaseOverlay

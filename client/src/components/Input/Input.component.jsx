@@ -5,8 +5,8 @@ import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./Input.props";
 import styles from "./Input.module.scss";
 
-Input.propTypes = propTypes;
 Input.defaultProps = defaultProps;
+Input.propTypes = propTypes;
 
 function Input ({
     className,

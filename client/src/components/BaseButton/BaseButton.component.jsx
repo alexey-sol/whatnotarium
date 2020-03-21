@@ -4,8 +4,8 @@ import classnames from "classnames";
 import { defaultProps, propTypes } from "./BaseButton.props";
 import styles from "./BaseButton.module.scss";
 
-BaseButton.propTypes = propTypes;
 BaseButton.defaultProps = defaultProps;
+BaseButton.propTypes = propTypes;
 
 function BaseButton ({
     className,
@@ -16,7 +16,7 @@ function BaseButton ({
     width,
     ...rest
 }) {
-    const buttonClassName = classnames(
+    const containerClassName = classnames(
         styles.button,
         styles[`${width}Width`],
         className,
@@ -27,7 +27,7 @@ function BaseButton ({
     return (
         <button
             {...rest}
-            className={buttonClassName}
+            className={containerClassName}
             disabled={disabled}
             onClick={onClick}
         >

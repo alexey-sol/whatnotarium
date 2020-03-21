@@ -4,8 +4,8 @@ import { defaultProps, propTypes } from "./ErrorBoundary.props";
 import styles from "./ErrorBoundary.module.scss";
 
 class ErrorBoundary extends Component {
-    static propTypes = propTypes
     static defaultProps = defaultProps
+    static propTypes = propTypes
 
     state = {
         error: null

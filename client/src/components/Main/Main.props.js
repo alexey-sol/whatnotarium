@@ -1,6 +1,4 @@
-import PropTypes from "prop-types";
-
-const { arrayOf, node, oneOfType } = PropTypes;
+import { arrayOf, node, oneOfType } from "prop-types";
 
 export const defaultProps = {
     children: null

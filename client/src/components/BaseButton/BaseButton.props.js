@@ -1,6 +1,4 @@
-import PropTypes from "prop-types";
-
-const { bool, func, oneOf, string } = PropTypes;
+import { bool, func, oneOf, string } from "prop-types";
 
 export const defaultProps = {
     className: "",

@@ -6,8 +6,8 @@ import { defaultProps, propTypes } from "./Activity.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./Activity.module.scss";
 
-Activity.propTypes = propTypes;
 Activity.defaultProps = defaultProps;
+Activity.propTypes = propTypes;
 
 function Activity ({ currentUser }) {
     return (

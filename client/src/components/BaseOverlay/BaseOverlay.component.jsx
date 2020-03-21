@@ -5,8 +5,8 @@ import classnames from "classnames";
 import { defaultProps, propTypes } from "./BaseOverlay.props";
 import styles from "./BaseOverlay.module.scss";
 
-BaseOverlay.propTypes = propTypes;
 BaseOverlay.defaultProps = defaultProps;
+BaseOverlay.propTypes = propTypes;
 
 function BaseOverlay ({ children, onClose, rootClassName }) {
     const rootRef = useRef(null);

@@ -1,6 +1,4 @@
-import PropTypes from "prop-types";
-
-const { number, string } = PropTypes;
+import { number, string } from "prop-types";
 
 export const defaultProps = {
     size: 24

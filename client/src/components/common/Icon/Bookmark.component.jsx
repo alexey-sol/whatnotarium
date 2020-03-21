@@ -2,8 +2,8 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-Bookmark.propTypes = propTypes;
 Bookmark.defaultProps = defaultProps;
+Bookmark.propTypes = propTypes;
 
 function Bookmark ({ fill, size }) {
     return (

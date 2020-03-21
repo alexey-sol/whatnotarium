@@ -14,8 +14,8 @@ import { validateCurrentPassword, validateEmail } from "common/utils/Validator";
 import styles from "./SignInContent.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
-SignInContent.propTypes = propTypes;
 SignInContent.defaultProps = defaultProps;
+SignInContent.propTypes = propTypes;
 
 const initialProps = {
     currentPassword: "",

@@ -2,8 +2,8 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-Search.propTypes = propTypes;
 Search.defaultProps = defaultProps;
+Search.propTypes = propTypes;
 
 function Search ({ fill, size }) {
     return (

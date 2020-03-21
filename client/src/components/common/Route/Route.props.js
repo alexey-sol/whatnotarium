@@ -1,6 +1,4 @@
-import PropTypes from "prop-types";
-
-const { elementType, object } = PropTypes;
+import { elementType, object } from "prop-types";
 
 export const defaultProps = {
     currentUser: null

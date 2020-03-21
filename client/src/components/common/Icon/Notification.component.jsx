@@ -2,8 +2,8 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-Notification.propTypes = propTypes;
 Notification.defaultProps = defaultProps;
+Notification.propTypes = propTypes;
 
 function Notification ({ fill, size }) {
     return (

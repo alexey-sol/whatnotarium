@@ -25,8 +25,8 @@ import hints from "common/resources/text/hints";
 import styles from "./PasswordDataForm.module.scss";
 import useAuthentication from "common/utils/customHooks/useAuthentication";
 
-PasswordDataForm.propTypes = propTypes;
 PasswordDataForm.defaultProps = defaultProps;
+PasswordDataForm.propTypes = propTypes;
 
 function PasswordDataForm ({
     currentUser,

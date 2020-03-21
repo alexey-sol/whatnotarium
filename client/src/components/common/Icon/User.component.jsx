@@ -2,8 +2,8 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-User.propTypes = propTypes;
 User.defaultProps = defaultProps;
+User.propTypes = propTypes;
 
 function User ({ fill, size }) {
     return (

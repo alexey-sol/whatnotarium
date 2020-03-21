@@ -9,8 +9,8 @@ import IconButton from "components/BaseIconButton";
 import { defaultProps, propTypes } from "./UserIconButton.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 
-UserIconButton.propTypes = propTypes;
 UserIconButton.defaultProps = defaultProps;
+UserIconButton.propTypes = propTypes;
 
 function UserIconButton ({
     currentUser,
