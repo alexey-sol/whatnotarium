@@ -3,6 +3,7 @@ import { createLogger, format, transports } from "winston";
 import { join } from "path";
 
 import { DEBUG, ERROR } from "constants/loggingLevels";
+import { PRODUCTION } from "constants/nodeEnv";
 import DateFormatter from "utils/DateFormatter";
 
 const { combine, errors, prettyPrint, timestamp } = format;
@@ -24,15 +25,40 @@ function getCombinedFormat (): Format {
     );
 }
 
-function createWinstonTransports (): (
+type WinstonTransports = (
     transports.FileTransportInstance |
     transports.ConsoleTransportInstance
-)[] {
-    return [
+)[];
+
+function createWinstonTransports (): WinstonTransports {
+    const result: WinstonTransports = [];
+
+    const nodeEnv = process.env.NODE_ENV;
+    const isProduction = nodeEnv === PRODUCTION;
+
+    if (isProduction) {
+        pushFileOptionsTo(result);
+    }
+
+    pushConsoleOptionsTo(result);
+    return result;
+}
+
+function pushFileOptionsTo (
+    loggerTransports: WinstonTransports
+): void {
+    loggerTransports.push(
         new transports.File(getFileOptionsForLevel(ERROR)),
-        new transports.File(getFileOptionsForLevel(DEBUG)),
+        new transports.File(getFileOptionsForLevel(DEBUG))
+    );
+}
+
+function pushConsoleOptionsTo (
+    loggerTransports: WinstonTransports
+): void {
+    loggerTransports.push(
         new transports.Console(getConsoleOptions())
-    ];
+    );
 }
 
 function getFileOptionsForLevel (

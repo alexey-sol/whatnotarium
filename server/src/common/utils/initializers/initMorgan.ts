@@ -1,15 +1,15 @@
 import { RequestHandler } from "express";
 import morgan from "morgan";
 
-import logger from "utils/winston";
+import logger from "utils/logger";
 
-type CreateMorgan = () => RequestHandler;
+type InitMorgan = () => RequestHandler;
 
-const createMorgan: CreateMorgan = function (): RequestHandler {
+const initMorgan: InitMorgan = function (): RequestHandler {
     return morgan("combined", getMorganOptions());
 };
 
-export default createMorgan;
+export default initMorgan;
 
 function getMorganOptions (): morgan.Options {
     return {

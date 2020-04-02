@@ -8,7 +8,7 @@ import {
 import Joi from "@hapi/joi";
 
 import isOfType from "utils/isOfType";
-import logger from "utils/winston";
+import logger from "utils/logger";
 
 const logErrors: ErrorRequestHandler = function (
     error: any,

@@ -1,13 +1,13 @@
 import {
     CreateHashOptionsTable,
     CreateUserTable
-} from "utils/AutomigrateSql";
+} from "utils/CreateTableSql";
 
 import PgQuery from "utils/PgQuery";
 
-type Automigrate = () => Promise<void>;
+type CreateTables = () => Promise<void>;
 
-const automigrate: Automigrate = async function (): Promise<void> {
+const createTables: CreateTables = async function (): Promise<void> {
     const createHashOptionsTable = new CreateHashOptionsTable()
         .generate();
     await new PgQuery<unknown>()
@@ -19,4 +19,4 @@ const automigrate: Automigrate = async function (): Promise<void> {
         .query(createUserTableSql);
 };
 
-export default automigrate;
+export default createTables;

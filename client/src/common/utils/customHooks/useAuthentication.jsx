@@ -104,7 +104,7 @@ function useAuthentication ({
         handleInputChange,
         handleSubmit
     };
-};
+}
 
 export default useAuthentication;
 

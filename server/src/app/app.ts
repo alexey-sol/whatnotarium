@@ -8,16 +8,16 @@ import helmet from "helmet";
 
 import Version from "utils/Version";
 import clearUserlessCookie from "utils/middlewares/clearUserlessCookie";
-import createMorgan from "utils/initializers/createMorgan";
-import createPgPool from "utils/initializers/createPgPool";
-import createSession from "utils/initializers/createSession";
 import handleError from "utils/middlewares/handleError";
+import initMorgan from "utils/initializers/initMorgan";
+import initPgPool from "utils/initializers/initPgPool";
+import initSession from "utils/initializers/initSession";
 import logErrors from "utils/middlewares/logErrors";
 import sessionRouter from "api/session";
 import userRouter from "api/user";
 
 const app = express();
-const pgPool = createPgPool();
+const pgPool = initPgPool();
 
 const root = process.cwd();
 const publicDirPath = join(root, "public");
@@ -25,12 +25,12 @@ const appMajorVersion = Version.getMajorVersion();
 const apiRoute = `/api/v${appMajorVersion}`;
 
 app.set("pgPool", pgPool);
-app.use(createMorgan());
+app.use(initMorgan());
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(createSession());
+app.use(initSession());
 app.use(clearUserlessCookie);
 app.use(compression());
 app.use(express.static(publicDirPath));

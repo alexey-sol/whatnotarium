@@ -1,5 +1,5 @@
 import { Client, Pool } from "pg";
-import logger from "utils/winston";
+import logger from "utils/logger";
 
 import { SIGTERM } from "constants/signals";
 

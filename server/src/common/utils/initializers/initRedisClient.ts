@@ -1,14 +1,14 @@
 import connectRedis from "connect-redis";
 import redis from "redis";
 
-import logger from "utils/winston";
+import logger from "utils/logger";
 import redisConfig from "config/redis";
 
-type CreateRedisClient = (
+type InitRedisClient = (
     session: any
 ) => connectRedis.RedisStore;
 
-const createRedisClient: CreateRedisClient = function (
+const initRedisClient: InitRedisClient = function (
     session: any
 ): connectRedis.RedisStore {
     const { host, port } = redisConfig;
@@ -21,7 +21,7 @@ const createRedisClient: CreateRedisClient = function (
     return new RedisStore(getRedisOptions(client));
 };
 
-export default createRedisClient;
+export default initRedisClient;
 
 function getRedisOptions (
     client: redis.RedisClient

@@ -1,16 +1,16 @@
 import { RequestHandler } from "express";
 import session from "express-session";
 
-import createRedisClient from "utils/initializers/createRedisClient";
+import initRedisClient from "utils/initializers/initRedisClient";
 import sessionConfig from "config/session";
 
-type CreateSession = () => RequestHandler;
+type InitSession = () => RequestHandler;
 
-const createSession: CreateSession = function (): RequestHandler {
+const initSession: InitSession = function (): RequestHandler {
     return session(getSessionOptions());
 };
 
-export default createSession;
+export default initSession;
 
 function getSessionOptions (): session.SessionOptions {
     const { name, secret } = sessionConfig;
@@ -25,7 +25,7 @@ function getSessionOptions (): session.SessionOptions {
         resave: false,
         saveUninitialized: true,
         secret,
-        store: createRedisClient(session)
+        store: initRedisClient(session)
     };
 }
 

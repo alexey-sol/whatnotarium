@@ -2,12 +2,12 @@ import { Pool } from "pg";
 
 import connectionString from "config/database";
 
-type CreatePgPool = () => Pool;
+type InitPgPool = () => Pool;
 
-const createPgPool: CreatePgPool = function (): Pool {
+const initPgPool: InitPgPool = function (): Pool {
     return new Pool({
         connectionString
     });
 };
 
-export default createPgPool;
+export default initPgPool;

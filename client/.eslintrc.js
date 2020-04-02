@@ -32,6 +32,7 @@ module.exports = {
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": [2, "double"],
         "max-len": ["error", { "code": 80 }],
+        "no-extra-semi": "error",
         "object-curly-spacing": [2, "always"],
         "semi": [2, "always", { "omitLastInOneLineBlock": true }]
     }
