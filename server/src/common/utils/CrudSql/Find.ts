@@ -1,7 +1,7 @@
 import CrudSql from "./CrudSql";
-import Indexer from "types/Indexer";
-import SqlQueryPayload from "types/SqlQueryPayload";
-import generateId from "utils/generateId";
+import Indexer from "@common/types/Indexer";
+import SqlQueryPayload from "@common/types/SqlQueryPayload";
+import generateId from "@common/utils/helpers/generateId";
 
 class Find extends CrudSql {
     constructor (

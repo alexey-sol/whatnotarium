@@ -1,5 +1,5 @@
 import findRecords from "./findRecords";
-import Indexer from "types/Indexer";
+import Indexer from "@common/types/Indexer";
 
 async function findOneRecord<OutputType> (
     tableName: string,

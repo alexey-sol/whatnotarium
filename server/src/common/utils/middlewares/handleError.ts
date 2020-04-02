@@ -5,8 +5,8 @@ import {
     NextFunction
 } from "express";
 
-import formatErrorForResponse from "utils/formatErrorForResponse";
-import sendResponse from "utils/sendResponse";
+import formatErrorForResponse from "@common/utils/helpers/formatErrorForResponse"; // eslint-disable-line
+import sendResponse from "@common/utils/helpers/sendResponse";
 
 const handleError: ErrorRequestHandler = function (
     error: any,

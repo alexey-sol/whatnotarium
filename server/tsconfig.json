@@ -15,21 +15,20 @@
         "outDir": "dist",
         "baseUrl": "./",
         "paths": {
-            "api/*": ["./src/api/*"],
-            "app": ["./src/app"],
-            "config/*": ["./src/config/*"],
-            "constants/*": ["./src/common/constants/*"],
-            "models/*": ["./src/common/models/*"],
-            "root/*": ["./*"],
-            "types/*": ["./src/common/types/*"],
-            "utils/*": ["./src/common/utils/*"]
+            "@common/*": ["./src/common/*"],
+            "@config/*": ["./src/config/*"],
+            "@const/*": ["./src/const/*"],
+            "@hashOptions/*": ["./src/components/hashOptions/*"],
+            "@root/*": ["./*"],
+            "@session/*": ["./src/components/session/*"],
+            "@user/*": ["./src/components/user/*"]
         }
     },
     "include": [
         "src/**/*"
     ],
     "exclude" : [
-        "src/types/*",
+        "types/",
         "node_modules"
     ]
 }

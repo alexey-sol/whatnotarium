@@ -1,7 +1,7 @@
-import { HASH_OPTIONS, USERS } from "constants/dbTableNames";
-import Sql from "types/Sql";
-import SqlQueryPayload from "types/SqlQueryPayload";
-import generateId from "utils/generateId";
+import { HASH_OPTIONS, USERS } from "@const/dbTableNames";
+import Sql from "@common/types/Sql";
+import SqlQueryPayload from "@common/types/SqlQueryPayload";
+import generateId from "@common/utils/helpers/generateId";
 
 class CreateUserTable implements Sql {
     constructor (

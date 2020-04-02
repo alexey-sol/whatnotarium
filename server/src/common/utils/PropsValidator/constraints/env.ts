@@ -1,6 +1,6 @@
 import { number, string } from "@hapi/joi";
 
-import { DEVELOPMENT, PRODUCTION } from "constants/nodeEnv";
+import { DEVELOPMENT, PRODUCTION } from "@const/nodeEnv";
 
 export default {
     HOST: string()

@@ -1,6 +1,6 @@
 import CrudSql from "./CrudSql";
-import SqlQueryPayload from "types/SqlQueryPayload";
-import generateId from "utils/generateId";
+import SqlQueryPayload from "@common/types/SqlQueryPayload";
+import generateId from "@common/utils/helpers/generateId";
 
 class DestroyById extends CrudSql {
     constructor (

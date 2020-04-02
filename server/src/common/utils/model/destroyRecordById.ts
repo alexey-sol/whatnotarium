@@ -1,5 +1,5 @@
-import { DestroyById } from "utils/CrudSql";
-import PgQuery from "utils/PgQuery";
+import { DestroyById } from "@common/utils/CrudSql";
+import PgQuery from "@common/utils/helpers/PgQuery";
 
 async function destroyRecordById<OutputType> (
     tableName: string,

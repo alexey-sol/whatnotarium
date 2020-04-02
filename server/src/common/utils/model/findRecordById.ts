@@ -1,5 +1,5 @@
-import { FindById } from "utils/CrudSql";
-import PgQuery from "utils/PgQuery";
+import { FindById } from "@common/utils/CrudSql";
+import PgQuery from "@common/utils/helpers/PgQuery";
 
 async function findRecordById<OutputType> (
     tableName: string,

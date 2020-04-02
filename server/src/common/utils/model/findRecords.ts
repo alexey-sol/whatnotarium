@@ -1,6 +1,6 @@
-import { Find } from "utils/CrudSql";
-import Indexer from "types/Indexer";
-import PgQuery from "utils/PgQuery";
+import { Find } from "@common/utils/CrudSql";
+import Indexer from "@common/types/Indexer";
+import PgQuery from "@common/utils/helpers/PgQuery";
 
 async function findRecords<OutputType> (
     tableName: string,

@@ -1,6 +1,6 @@
-import FormattedProps from "models/HashOptions/types/FormattedProps";
-import ModelFormatter from "types/ModelFormatter";
-import RawProps from "models/HashOptions/types/RawProps";
+import FormattedProps from "@hashOptions/model/types/FormattedProps";
+import ModelFormatter from "@common/types/ModelFormatter";
+import RawProps from "@hashOptions/model/types/RawProps";
 
 class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {

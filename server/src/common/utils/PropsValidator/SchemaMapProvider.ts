@@ -1,6 +1,6 @@
 import { SchemaMap } from "@hapi/joi";
 
-import Indexer from "types/Indexer";
+import Indexer from "@common/types/Indexer";
 import constraints from "./constraints";
 
 type IsRequired = boolean;

@@ -1,6 +1,6 @@
 import Joi from "@hapi/joi";
 
-import Indexer from "types/Indexer";
+import Indexer from "@common/types/Indexer";
 import SchemaProvider from "./SchemaProvider";
 
 type IsRequired = boolean;

@@ -1,9 +1,9 @@
-import { NO_PROPS } from "constants/validationErrors";
-import { UpdateAttributes } from "utils/CrudSql";
-import PgQuery from "utils/PgQuery";
-import ValidationError from "utils/errors/ValidationError";
-import isEmptyObject from "utils/Object/isEmptyObject";
-import isObject from "utils/Object/isObject";
+import { NO_PROPS } from "@const/validationErrors";
+import { UpdateAttributes } from "@common/utils/CrudSql";
+import PgQuery from "@common/utils/helpers/PgQuery";
+import ValidationError from "@common/errors/ValidationError";
+import isEmptyObject from "@common/utils/helpers/isEmptyObject";
+import isObject from "@common/utils/typeGuards/isObject";
 
 async function updateRecordAttributes<InputType, OutputType> (
     tableName: string,

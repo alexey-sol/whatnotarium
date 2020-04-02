@@ -1,6 +1,6 @@
-import FormattedProps from "models/User/types/FormattedProps";
-import ModelFormatter from "types/ModelFormatter";
-import RawProps from "models/User/types/RawProps";
+import FormattedProps from "@user/model/types/FormattedProps";
+import ModelFormatter from "@common/types/ModelFormatter";
+import RawProps from "@user/model/types/RawProps";
 
 class UserFormatter implements ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {

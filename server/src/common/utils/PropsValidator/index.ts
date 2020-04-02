@@ -1,3 +1,1 @@
-import PropsValidator from "./PropsValidator";
-
-export default PropsValidator;
+export { default } from "./PropsValidator";
