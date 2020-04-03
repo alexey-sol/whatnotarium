@@ -1,4 +1,4 @@
-import { INVALID_PROPS } from "@const/validationErrors";
+import { INVALID_PROPS } from "const/validationErrors";
 import ServerError from "./ServerError";
 
 class ValidationError extends ServerError {

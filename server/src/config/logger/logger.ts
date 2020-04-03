@@ -2,9 +2,9 @@ import { Format } from "logform";
 import { createLogger, format, transports } from "winston";
 import { join } from "path";
 
-import { DEBUG, ERROR } from "@const/loggingLevels";
-import { PRODUCTION } from "@const/nodeEnv";
-import DateFormatter from "@common/utils/helpers/DateFormatter";
+import { DEBUG, ERROR } from "const/loggingLevels";
+import { PRODUCTION } from "const/nodeEnv";
+import DateFormatter from "utils/formatters/DateFormatter";
 
 const { combine, errors, prettyPrint, timestamp } = format;
 const dateTimeFormatPattern = "YYYY-MM-DD HH:mm:ss";
@@ -33,7 +33,7 @@ type WinstonTransports = (
 function createWinstonTransports (): WinstonTransports {
     const result: WinstonTransports = [];
 
-    const nodeEnv = process.env.NODE_ENV;
+    const nodeEnv = process.env.NODE_ENV?.trim();
     const isProduction = nodeEnv === PRODUCTION;
 
     if (isProduction) {

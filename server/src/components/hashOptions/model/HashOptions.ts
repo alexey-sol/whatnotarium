@@ -5,21 +5,21 @@ import {
     findRecordById,
     findRecords,
     updateRecordAttributes
-} from "@common/utils/model";
+} from "utils/helpers/Model";
 
-import { HASH_OPTIONS } from "@const/dbTableNames";
-import { INVALID_PROPS } from "@const/validationErrors";
+import { HASH_OPTIONS } from "const/dbTableNames";
+import { INVALID_PROPS } from "const/validationErrors";
 import FormattedProps from "./types/FormattedProps";
-import HashOptionsFormatter from "@common/utils/ModelFormatter/HashOptionsFormatter"; // eslint-disable-line
-import HashOptionsProps from "@hashOptions/model/types/HashOptionsProps";
-import Indexer from "@common/types/Indexer";
-import Model from "@common/types/Model";
-import RawProps from "@hashOptions/model/types/RawProps";
-import ValidationError from "@common/errors/ValidationError";
-import isHashOptionsProps from "@common/utils/typeGuards/isHashOptionsProps";
+import Formatter from "utils/formatters/ModelFormatter/HashOptionsFormatter";
+import HashOptionsProps from "hashOptions/model/types/HashOptionsProps";
+import Indexer from "types/Indexer";
+import Model from "types/Model";
+import RawProps from "hashOptions/model/types/RawProps";
+import ValidationError from "errors/ValidationError";
+import isHashOptionsProps from "utils/typeGuards/isHashOptionsProps";
 
 class HashOptions implements Model<FormattedProps, HashOptions> {
-    static formatter = new HashOptionsFormatter();
+    static formatter = new Formatter();
 
     digest: string;
     id: number
@@ -37,7 +37,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
 
     static async create (
         props: FormattedProps
-    ): Promise<HashOptions | null> | never {
+    ): Promise<HashOptions> | never {
         const propsToDb = HashOptions.formatter.toDbCase(props);
 
         const record = await createRecord<RawProps, HashOptionsProps>(
@@ -45,9 +45,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
             propsToDb
         );
 
-        return (record)
-            ? HashOptions.formatPropsAndInstantiate(record)
-            : null;
+        return HashOptions.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (

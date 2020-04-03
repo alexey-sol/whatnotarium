@@ -1,39 +1,13 @@
-import Joi from "@hapi/joi";
+import ProcessManager from "utils/helpers/ProcessManager";
 
-import { SESSION_NAME, SESSION_SECRET } from "@const/env";
-import EnvForSession from "./types/EnvForSession";
-import ProcessManager from "@common/utils/helpers/ProcessManager";
-import PropsValidator from "@common/utils/PropsValidator";
-import SessionConfig from "./types/SessionConfig";
+const { processEnv } = new ProcessManager();
 
-const { error, value } = validateEnvForSession();
+const {
+    SESSION_NAME,
+    SESSION_SECRET
+} = processEnv;
 
-if (error) {
-    logErrorAndExit(error);
-}
-
-export default createSessionConfig(value);
-
-function validateEnvForSession (): Joi.ValidationResult {
-    const envValidator = new PropsValidator(process.env);
-
-    return envValidator.validate(
-        [SESSION_NAME, true],
-        [SESSION_SECRET, true]
-    );
-}
-
-function logErrorAndExit (
-    error: Joi.ValidationError
-): void {
-    new ProcessManager().exit(error);
-}
-
-function createSessionConfig (
-    env: EnvForSession
-): SessionConfig {
-    return {
-        name: env.SESSION_NAME,
-        secret: env.SESSION_SECRET
-    };
-}
+export default {
+    name: SESSION_NAME as string,
+    secret: SESSION_SECRET as string
+};

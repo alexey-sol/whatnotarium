@@ -7,20 +7,20 @@ import express from "express";
 import helmet from "helmet";
 import http from "http";
 
-import { SIGTERM } from "@const/signals";
-import ProcessManager from "@common/utils/helpers/ProcessManager";
-import Version from "@common/utils/helpers/Version";
-import clearUserlessCookie from "@common/utils/middlewares/clearUserlessCookie";
+import { SIGTERM } from "const/signals";
+import ProcessManager from "utils/helpers/ProcessManager";
+import Version from "utils/helpers/Version";
+import clearUserlessCookie from "middlewares/clearUserlessCookie";
 import createTables from "./helpers/createTables";
-import handleError from "@common/utils/middlewares/handleError";
+import handleError from "middlewares/handleError";
 import initMorgan from "./helpers/initMorgan";
 import initPgPool from "./helpers/initPgPool";
 import initSession from "./helpers/initSession";
-import logger from "@config/logger";
-import logErrors from "@common/utils/middlewares/logErrors";
-import serverConfig from "@config/server";
-import sessionRouter from "@session/api/v1";
-import userRouter from "@user/api/v1";
+import logger from "config/logger";
+import logErrors from "middlewares/logErrors";
+import serverConfig from "config/server";
+import sessionRouter from "session/api/v1";
+import userRouter from "user/api/v1";
 
 const app = express();
 const pgPool = initPgPool();
@@ -45,13 +45,13 @@ app.use(`${apiRoute}/session`, sessionRouter);
 app.use(logErrors);
 app.use(handleError);
 
-startServerAndDatabase();
+runServerAndCreateTables();
 
 export default app;
 
-function startServerAndDatabase (): void {
+function runServerAndCreateTables (): void {
     const { port } = serverConfig;
-    const env = new ProcessManager().getEnv();
+    const env = new ProcessManager().nodeEnv;
     const server = app.listen(port, () => createTablesAndLogInfo(port, env));
 
     process.on(SIGTERM, () => logInfoAndCloseServer(server));

@@ -1,6 +1,6 @@
 import { Pool } from "pg";
 
-import connectionString from "@config/database";
+import connectionString from "config/database";
 
 type InitPgPool = () => Pool;
 

@@ -1,41 +1,15 @@
-import Joi from "@hapi/joi";
+import ProcessManager from "utils/helpers/ProcessManager";
 
-import { HOST, PORT, URL } from "@const/env";
-import EnvForServer from "./types/EnvForServer";
-import ProcessManager from "@common/utils/helpers/ProcessManager";
-import PropsValidator from "@common/utils/PropsValidator";
-import ServerConfig from "./types/ServerConfig";
+const { processEnv } = new ProcessManager();
 
-const { error, value } = validateEnvForServer();
+const {
+    HOST,
+    PORT,
+    URL
+} = processEnv;
 
-if (error) {
-    logErrorAndExit(error);
-}
-
-export default createServerConfig(value);
-
-function validateEnvForServer (): Joi.ValidationResult {
-    const envValidator = new PropsValidator(process.env);
-
-    return envValidator.validate(
-        [HOST, true],
-        [PORT, true],
-        [URL, true]
-    );
-}
-
-function logErrorAndExit (
-    error: Joi.ValidationError
-): void {
-    new ProcessManager().exit(error);
-}
-
-function createServerConfig (
-    env: EnvForServer
-): ServerConfig {
-    return {
-        host: env.HOST,
-        port: env.PORT,
-        url: env.URL
-    };
-}
+export default {
+    host: HOST as string,
+    port: PORT as unknown as number,
+    url: URL as string
+};

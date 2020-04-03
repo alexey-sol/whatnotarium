@@ -1,6 +1,6 @@
-import HashOptions from "@hashOptions/model";
-import User from "@user/model";
-import hashPassword from "@common/utils/helpers/hashPassword";
+import HashOptions from "hashOptions/model";
+import User from "user/model";
+import hashPassword from "utils/helpers/hashPassword";
 
 type IsValidPassword = (
     passwordToCheck: string,

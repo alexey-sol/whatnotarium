@@ -1,4 +1,4 @@
-import Indexer from "@common/types/Indexer";
+import Indexer from "types/Indexer";
 
 type IsEmptyObject = (
     object: Indexer<unknown>

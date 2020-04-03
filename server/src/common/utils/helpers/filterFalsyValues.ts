@@ -1,4 +1,4 @@
-import Indexer from "@common/types/Indexer";
+import Indexer from "types/Indexer";
 
 interface FilterFalsyValues {
     (object: unknown[]): unknown[];

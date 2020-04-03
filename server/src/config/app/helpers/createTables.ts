@@ -1,9 +1,9 @@
 import {
     CreateHashOptionsTable,
     CreateUserTable
-} from "@common/utils/CreateTableSql";
+} from "utils/sql/CreateTableSql";
 
-import PgQuery from "@common/utils/helpers/PgQuery";
+import PgQuery from "utils/sql/PgQuery";
 
 type CreateTables = () => Promise<void>;
 

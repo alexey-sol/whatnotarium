@@ -1,7 +1,7 @@
 import { pbkdf2, randomBytes } from "crypto";
 
-import HashPasswordOptions from "@common/types/HashPasswordOptions";
-import HashPasswordResult from "@common/types/HashPasswordResult";
+import HashPasswordOptions from "types/HashPasswordOptions";
+import HashPasswordResult from "types/HashPasswordResult";
 
 type HashPassword = (
     password: string,

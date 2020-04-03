@@ -5,21 +5,21 @@ import {
     findRecordById,
     findRecords,
     updateRecordAttributes
-} from "@common/utils/model";
+} from "utils/helpers/Model";
 
-import { INVALID_PROPS } from "@const/validationErrors";
-import { USERS } from "@const/dbTableNames";
+import { INVALID_PROPS } from "const/validationErrors";
+import { USERS } from "const/dbTableNames";
 import FormattedProps from "./types/FormattedProps";
-import Indexer from "@common/types/Indexer";
-import Model from "@common/types/Model";
-import RawProps from "@user/model/types/RawProps";
-import UserFormatter from "@common/utils/ModelFormatter/UserFormatter";
-import UserProps from "@user/model/types/UserProps";
-import ValidationError from "@common/errors/ValidationError";
-import isUserProps from "@common/utils/typeGuards/isUserProps";
+import Indexer from "types/Indexer";
+import Model from "types/Model";
+import RawProps from "user/model/types/RawProps";
+import Formatter from "utils/formatters/ModelFormatter/UserFormatter";
+import UserProps from "user/model/types/UserProps";
+import ValidationError from "errors/ValidationError";
+import isUserProps from "utils/typeGuards/isUserProps";
 
 class User implements Model<FormattedProps, User> {
-    static formatter = new UserFormatter();
+    static formatter = new Formatter();
 
     hashOptionsId: number;
     email: string

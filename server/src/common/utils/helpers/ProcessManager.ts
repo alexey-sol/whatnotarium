@@ -1,6 +1,6 @@
 import { Client, Pool } from "pg";
-import { SIGTERM } from "@const/signals";
-import logger from "@config/logger";
+import { SIGTERM } from "const/signals";
+import logger from "config/logger";
 
 class ProcessManager {
     constructor (
@@ -9,6 +9,19 @@ class ProcessManager {
     ) {
         this.pg = pg;
         this.nodeProcess = nodeProcess;
+    }
+
+    get processEnv (): NodeJS.ProcessEnv {
+        return this.nodeProcess.env;
+    }
+
+    get nodeEnv (): string {
+        const { NODE_ENV } = this.processEnv;
+        const isString = typeof NODE_ENV === "string";
+
+        return (isString)
+            ? NODE_ENV!.trim()
+            : "";
     }
 
     exit (
@@ -42,15 +55,6 @@ class ProcessManager {
         } else {
             logger.info(loggingMessage as string);
         }
-    }
-
-    getEnv (): string {
-        const { NODE_ENV } = this.nodeProcess.env;
-        const isString = typeof NODE_ENV === "string";
-
-        return (isString)
-            ? NODE_ENV!.trim()
-            : "";
     }
 }
 

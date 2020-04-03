@@ -1,5 +1,5 @@
-import FormattedProps from "@hashOptions/model/types/FormattedProps";
-import HashOptionsProps from "@hashOptions/model/types/HashOptionsProps";
+import FormattedProps from "hashOptions/model/types/FormattedProps";
+import HashOptionsProps from "hashOptions/model/types/HashOptionsProps";
 
 const isHashOptionsProps = function (
     objectToCheck: FormattedProps

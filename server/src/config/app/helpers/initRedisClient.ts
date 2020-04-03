@@ -1,8 +1,8 @@
 import connectRedis from "connect-redis";
 import redis from "redis";
 
-import logger from "@config/logger";
-import redisConfig from "@config/redis";
+import logger from "config/logger";
+import redisConfig from "config/redis";
 
 type InitRedisClient = (
     session: any

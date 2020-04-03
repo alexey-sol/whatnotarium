@@ -1,5 +1,5 @@
-import FormattedProps from "@user/model/types/FormattedProps";
-import UserProps from "@user/model/types/UserProps";
+import FormattedProps from "user/model/types/FormattedProps";
+import UserProps from "user/model/types/UserProps";
 
 const isUserProps = function (
     objectToCheck: FormattedProps

@@ -1,15 +1,27 @@
 import express from "express";
 
-import {
-    createSession,
-    deleteSession,
-    getSession
-} from "./controllers";
+import controllers from "./controllers";
+import dataValidation from "./dataValidation";
+import schemaValidation from "./schemaValidation";
 
 const router = express.Router();
 
-router.get("/", getSession);
-router.post("/", createSession);
-router.delete("/", deleteSession);
+router.get(
+    "/",
+    dataValidation.getSession,
+    controllers.getSession
+);
+
+router.post(
+    "/",
+    schemaValidation.postSession,
+    dataValidation.postSession,
+    controllers.postSession
+);
+
+router.delete(
+    "/",
+    controllers.deleteSession
+);
 
 export default router;

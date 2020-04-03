@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import morgan from "morgan";
 
-import logger from "@config/logger";
+import logger from "config/logger";
 
 type InitMorgan = () => RequestHandler;
 

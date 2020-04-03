@@ -1,4 +1,4 @@
-import packageJson from "@root/package.json";
+import packageJson from "root/package.json";
 
 class Version {
     static getMajorVersion (): string | void {

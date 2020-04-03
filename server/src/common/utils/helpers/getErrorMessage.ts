@@ -1,6 +1,6 @@
 import Joi from "@hapi/joi";
 
-import isOfType from "@common/utils/typeGuards/isOfType";
+import isOfType from "utils/typeGuards/isOfType";
 
 type GetErrorMessage = (
     error: Error & Joi.ValidationError

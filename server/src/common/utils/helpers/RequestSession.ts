@@ -1,8 +1,8 @@
 import { Request } from "express";
 
-import SessionUser from "@common/types/SessionUser";
-import User from "@user/model";
-import sessionConfig from "@config/session";
+import SessionUser from "types/SessionUser";
+import User from "user/model";
+import sessionConfig from "config/session";
 
 class RequestSession {
     private sessionName = sessionConfig.name;

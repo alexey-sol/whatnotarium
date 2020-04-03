@@ -1,19 +1,42 @@
 import express from "express";
 
-import {
-    createUser,
-    deleteUser,
-    getUser,
-    getUsers,
-    updateUser
-} from "./controllers";
+import controllers from "./controllers";
+import dataValidation from "./dataValidation";
+import schemaValidation from "./schemaValidation";
 
 const router = express.Router();
 
-router.get("/", getUsers);
-router.get("/:id", getUser);
-router.post("/", createUser);
-router.put("/:id", updateUser);
-router.delete("/:id", deleteUser);
+router.get(
+    "/",
+    controllers.getUsers
+);
+
+router.get(
+    "/:id",
+    schemaValidation.getUser,
+    dataValidation.getUser,
+    controllers.getUser
+);
+
+router.post(
+    "/",
+    schemaValidation.postUser,
+    dataValidation.postUser,
+    controllers.postUser
+);
+
+router.put(
+    "/",
+    schemaValidation.putUser,
+    dataValidation.putUser,
+    controllers.putUser
+);
+
+router.delete(
+    "/:id",
+    schemaValidation.deleteUser,
+    dataValidation.deleteUser,
+    controllers.deleteUser
+);
 
 export default router;

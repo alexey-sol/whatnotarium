@@ -1,37 +1,20 @@
-import { Request, Response, NextFunction } from "express";
-import Joi from "@hapi/joi";
+import { RequestHandler } from "express";
 
-import { ID } from "@const/fieldNames";
-import { NO_USER_FOUND } from "@const/validationErrors";
-import ApiController from "@common/types/ApiController";
-import HashOptions from "@hashOptions/model";
-import Indexer from "@common/types/Indexer";
-import PropsValidator from "@common/utils/PropsValidator";
-import User from "@user/model";
-import ValidationError from "@common/errors/ValidationError";
-import sendResponse from "@common/utils/helpers/sendResponse";
+import HashOptions from "hashOptions/model";
+import User from "user/model";
+import sendResponse from "utils/http/sendResponse";
 
-const deleteUser: ApiController = async function (
-    request: Request,
-    response: Response,
-    next: NextFunction
+const deleteUser: RequestHandler = async function (
+    { params },
+    response,
+    next
 ): Promise<void> {
-    const { error, value } = validateParams(request.params);
-
-    if (error) {
-        return next(error);
-    }
-
     try {
-        const { id: userId } = value;
-        const user = await User.findById(userId);
-
-        if (!user) {
-            throw new ValidationError(NO_USER_FOUND, 404);
-        }
+        const { id } = params;
+        const user = await User.findById(+id) as User;
 
         const { hashOptionsId } = user;
-        const result = await User.destroyById(userId);
+        const result = await User.destroyById(+id);
         await HashOptions.destroyById(hashOptionsId);
 
         sendResponse(response, result);
@@ -41,10 +24,3 @@ const deleteUser: ApiController = async function (
 };
 
 export default deleteUser;
-
-function validateParams (
-    params: Indexer<unknown>
-): Joi.ValidationResult {
-    const paramsValidator = new PropsValidator(params);
-    return paramsValidator.validate(ID);
-}

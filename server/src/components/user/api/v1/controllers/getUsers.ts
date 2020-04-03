@@ -1,13 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 
-import ApiController from "@common/types/ApiController";
-import User from "@user/model";
-import sendResponse from "@common/utils/helpers/sendResponse";
+import User from "user/model";
+import sendResponse from "utils/http/sendResponse";
 
-const getUsers: ApiController = async function (
-    request: Request,
-    response: Response,
-    next: NextFunction
+const getUsers: RequestHandler = async function (
+    request,
+    response,
+    next
 ): Promise<void> {
     User.find()
         .then(users => sendResponse(response, users))

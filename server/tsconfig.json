@@ -15,13 +15,16 @@
         "outDir": "dist",
         "baseUrl": "./",
         "paths": {
-            "@common/*": ["./src/common/*"],
-            "@config/*": ["./src/config/*"],
-            "@const/*": ["./src/const/*"],
-            "@hashOptions/*": ["./src/components/hashOptions/*"],
-            "@root/*": ["./*"],
-            "@session/*": ["./src/components/session/*"],
-            "@user/*": ["./src/components/user/*"]
+            "config/*": ["./src/config/*"],
+            "const/*": ["./src/const/*"],
+            "errors/*": ["./src/common/errors/*"],
+            "hashOptions/*": ["./src/components/hashOptions/*"],
+            "middlewares/*": ["./src/common/middlewares/*"],
+            "root/*": ["./*"],
+            "session/*": ["./src/components/session/*"],
+            "types/*": ["./src/common/types/*"],
+            "user/*": ["./src/components/user/*"],
+            "utils/*": ["./src/common/utils/*"],
         }
     },
     "include": [
