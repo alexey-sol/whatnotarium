@@ -1,9 +1,10 @@
 interface FormattedProps {
+    createdAt?: Date;
     email?: string;
-    hashOptionsId?: number;
     id?: number;
     name?: string;
     password?: Buffer;
+    updatedAt?: Date;
 }
 
 export default FormattedProps;

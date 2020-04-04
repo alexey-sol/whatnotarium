@@ -6,34 +6,36 @@ class UserFormatter implements ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
         const {
             email,
-            hashOptionsId,
             name,
-            password
+            password,
+            updatedAt
         } = props;
 
         return {
             email,
-            hash_options_id: hashOptionsId,
             name,
-            password
+            password,
+            updated_at: updatedAt
         };
     }
 
     fromDbCase (props: RawProps): FormattedProps {
         const {
+            created_at,
             email,
-            hash_options_id,
             id,
             name,
-            password
+            password,
+            updated_at
         } = props;
 
         return {
+            createdAt: created_at,
             email,
-            hashOptionsId: hash_options_id,
             id,
             name,
-            password
+            password,
+            updatedAt: updated_at
         };
     }
 }

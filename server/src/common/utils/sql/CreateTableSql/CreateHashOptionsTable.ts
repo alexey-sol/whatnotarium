@@ -1,4 +1,4 @@
-import { HASH_OPTIONS } from "const/dbTableNames";
+import { HASH_OPTIONS, USERS } from "const/dbTableNames";
 import Sql from "types/Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 import generateId from "utils/helpers/generateId";
@@ -24,7 +24,9 @@ class CreateHashOptionsTable implements Sql {
                 salt VARCHAR(255) NOT NULL,
                 digest VARCHAR(255) NOT NULL,
                 iterations INTEGER NOT NULL,
-                key_length INTEGER NOT NULL
+                key_length INTEGER NOT NULL,
+                user_id INTEGER NOT NULL REFERENCES ${USERS} (id)
+                    ON DELETE CASCADE
             );
         `;
     }

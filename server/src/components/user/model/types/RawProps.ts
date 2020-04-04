@@ -1,9 +1,10 @@
 interface RawProps {
+    created_at?: Date;
     email?: string;
-    hash_options_id?: number;
     id?: number;
     name?: string;
     password?: Buffer;
+    updated_at?: Date;
 }
 
 export default RawProps;

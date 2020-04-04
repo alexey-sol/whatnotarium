@@ -4,6 +4,7 @@ interface HashOptionsProps {
     iterations: number;
     keyLength: number;
     salt: string;
+    userId: number;
 }
 
 export default HashOptionsProps;

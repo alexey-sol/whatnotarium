@@ -9,7 +9,8 @@ const isHashOptionsProps = function (
         id,
         iterations,
         keyLength,
-        salt
+        salt,
+        userId
     } = objectToCheck;
 
     return (
@@ -17,7 +18,8 @@ const isHashOptionsProps = function (
         typeof id === "number" &&
         typeof iterations === "number" &&
         typeof keyLength === "number" &&
-        typeof salt === "string"
+        typeof salt === "string" &&
+        typeof userId === "number"
     );
 };
 

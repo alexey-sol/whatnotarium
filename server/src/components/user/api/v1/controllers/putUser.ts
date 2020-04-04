@@ -37,14 +37,15 @@ async function updateUserAndSendResponse (
 
     const updatedProps: FormattedUserProps = {
         email,
-        name
+        name,
+        updatedAt: new Date()
     };
 
     if (newPassword) {
         const hashResult = await hashPassword(newPassword);
         const { hash } = hashResult;
 
-        await updateHashOptions(user.hashOptionsId, hashResult);
+        await updateHashOptions(user.id, hashResult);
         updatedProps.password = hash;
     }
 
@@ -56,6 +57,6 @@ async function updateHashOptions (
     id: number,
     hashPasswordOptions: HashPasswordOptions
 ): Promise<void> {
-    const hashOptions = await HashOptions.findById(id);
+    const hashOptions = await HashOptions.findOne({ userId: id });
     await hashOptions?.updateAttributes(hashPasswordOptions);
 }

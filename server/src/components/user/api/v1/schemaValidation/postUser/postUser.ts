@@ -7,7 +7,7 @@ const postUser: RequestHandler = async function (
     response,
     next
 ): Promise<void> {
-    const { error } = bodySchema.validate(body);
+    const { error } = bodySchema.validate(body, { stripUnknown: true });
 
     if (error) {
         return next(error);

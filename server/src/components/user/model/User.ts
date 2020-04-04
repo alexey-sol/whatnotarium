@@ -21,23 +21,25 @@ import isUserProps from "utils/typeGuards/isUserProps";
 class User implements Model<FormattedProps, User> {
     static formatter = new Formatter();
 
-    hashOptionsId: number;
+    createdAt: Date;
     email: string
     id: number
     name: string;
     password: Buffer;
+    updatedAt: Date;
 
     private constructor (props: UserProps) {
-        this.hashOptionsId = props.hashOptionsId;
+        this.createdAt = props.createdAt;
         this.email = props.email;
         this.id = props.id;
         this.name = props.name;
         this.password = props.password;
+        this.updatedAt = props.updatedAt;
     }
 
     static async create (
         props: FormattedProps
-    ): Promise<User | null> | never {
+    ): Promise<User> | never {
         const propsToDb = User.formatter.toDbCase(props);
 
         const record = await createRecord<RawProps, UserProps>(
@@ -45,9 +47,7 @@ class User implements Model<FormattedProps, User> {
             propsToDb
         );
 
-        return (record)
-            ? User.formatPropsAndInstantiate(record)
-            : null;
+        return User.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (

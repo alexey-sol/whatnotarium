@@ -1,9 +1,9 @@
-import { HASH_OPTIONS, USERS } from "const/dbTableNames";
+import { USERS } from "const/dbTableNames";
 import Sql from "types/Sql";
 import SqlQueryPayload from "types/SqlQueryPayload";
 import generateId from "utils/helpers/generateId";
 
-class CreateUserTable implements Sql {
+class CreateUsersTable implements Sql {
     constructor (
         private readonly queryName = generateId()
     ) {
@@ -23,12 +23,12 @@ class CreateUserTable implements Sql {
                 id SERIAL PRIMARY KEY,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password BYTEA NOT NULL,
-                hash_options_id INTEGER REFERENCES ${HASH_OPTIONS} (id),
                 name VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP DEFAULT NOW()
+                created_at TIMESTAMP DEFAULT NOW() NOT NULL,
+                updated_at TIMESTAMP DEFAULT NOW() NOT NULL
             );
         `;
     }
 }
 
-export default CreateUserTable;
+export default CreateUsersTable;

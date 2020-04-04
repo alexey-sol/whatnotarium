@@ -8,14 +8,16 @@ class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
             digest,
             iterations,
             keyLength,
-            salt
+            salt,
+            userId
         } = props;
 
         return {
             digest,
             iterations,
             key_length: keyLength,
-            salt
+            salt,
+            user_id: userId
         };
     }
 
@@ -25,7 +27,8 @@ class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
             id,
             iterations,
             key_length,
-            salt
+            salt,
+            user_id
         } = props;
 
         return {
@@ -33,7 +36,8 @@ class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
             id,
             iterations,
             keyLength: key_length,
-            salt
+            salt,
+            userId: user_id
         };
     }
 }

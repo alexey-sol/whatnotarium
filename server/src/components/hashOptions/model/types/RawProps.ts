@@ -4,6 +4,7 @@ interface RawProps {
     iterations?: number;
     key_length?: number;
     salt?: string;
+    user_id?: number;
 }
 
 export default RawProps;

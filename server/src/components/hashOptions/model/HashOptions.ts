@@ -26,6 +26,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     iterations: number;
     keyLength: number;
     salt: string;
+    userId: number;
 
     private constructor (props: HashOptionsProps) {
         this.digest = props.digest;
@@ -33,6 +34,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         this.iterations = props.iterations;
         this.keyLength = props.keyLength;
         this.salt = props.salt;
+        this.userId = props.userId;
     }
 
     static async create (

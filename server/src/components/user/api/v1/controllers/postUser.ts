@@ -16,12 +16,16 @@ const postUser: RequestHandler = async function (
         const hashResult = await hashPassword(password);
         const { hash } = hashResult;
 
-        const hashOptions = await HashOptions.create(hashResult);
-
         const user = await User.create({
             ...body,
-            hashOptionsId: hashOptions.id,
-            password: hash
+            createdAt: new Date(),
+            password: hash,
+            updatedAt: new Date()
+        });
+
+        await HashOptions.create({
+            ...hashResult,
+            userId: user.id
         });
 
         sendResponse(response, user);

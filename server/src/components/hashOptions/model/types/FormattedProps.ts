@@ -4,6 +4,7 @@ interface FormattedProps {
     iterations?: number;
     keyLength?: number;
     salt?: string;
+    userId?: number;
 }
 
 export default FormattedProps;

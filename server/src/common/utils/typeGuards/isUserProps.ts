@@ -5,16 +5,18 @@ const isUserProps = function (
     objectToCheck: FormattedProps
 ): objectToCheck is UserProps {
     const {
+        createdAt,
         email,
-        hashOptionsId,
         id,
         name,
-        password
+        password,
+        updatedAt
     } = objectToCheck;
 
     return (
+        createdAt instanceof Date &&
+        updatedAt instanceof Date &&
         typeof email === "string" &&
-        typeof hashOptionsId === "number" &&
         typeof id === "number" &&
         typeof name === "string" &&
         Buffer.isBuffer(password)
