@@ -1,15 +1,17 @@
 import { RequestHandler } from "express";
 import session from "express-session";
 
-import config from "#config";
 import initRedisStore from "./initRedisStore";
+import sessionConfig from "#config/session";
 
-export default function (): RequestHandler {
+function initSession (): RequestHandler {
     return session(getSessionOptions());
 }
 
+export default initSession;
+
 function getSessionOptions (): session.SessionOptions {
-    const { name, secret } = config.session;
+    const { name, secret } = sessionConfig;
 
     return {
         cookie: {

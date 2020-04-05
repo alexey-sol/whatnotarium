@@ -7,11 +7,7 @@ import {
 
 import PgQuery from "#utils/sql/PgQuery";
 
-type CreateTablesIfNotExist = (pg: Pool) => Promise<void>;
-
-const createTablesIfNotExist: CreateTablesIfNotExist = async function (
-    pg: Pool
-): Promise<void> {
+async function createTablesIfNotExist (pg: Pool): Promise<void> {
     const createUsersTableSql = new CreateUsersTable()
         .generate();
     await new PgQuery<unknown>(pg)
@@ -21,6 +17,6 @@ const createTablesIfNotExist: CreateTablesIfNotExist = async function (
         .generate();
     await new PgQuery<unknown>(pg)
         .query(createHashOptionsTable);
-};
+}
 
 export default createTablesIfNotExist;

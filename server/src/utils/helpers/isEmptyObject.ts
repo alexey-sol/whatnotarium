@@ -1,13 +1,9 @@
 import Indexer from "#types/Indexer";
 
-type IsEmptyObject = (
-    object: Indexer<unknown>
-) => boolean;
-
-const isEmptyObject: IsEmptyObject = function (
+function isEmptyObject (
     object: Indexer<unknown>
 ): boolean {
     return Object.entries(object).length === 0;
-};
+}
 
 export default isEmptyObject;

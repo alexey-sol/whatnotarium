@@ -1,7 +1,7 @@
 import FormattedProps from "#types/hashOptions/FormattedProps";
 import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
 
-const isHashOptionsProps = function (
+function isHashOptionsProps (
     objectToCheck: FormattedProps
 ): objectToCheck is HashOptionsProps {
     const {
@@ -21,6 +21,6 @@ const isHashOptionsProps = function (
         typeof salt === "string" &&
         typeof userId === "number"
     );
-};
+}
 
 export default isHashOptionsProps;

@@ -2,10 +2,10 @@ import { Request } from "express";
 
 import SessionUser from "#types/SessionUser";
 import User from "#models/User";
-import config from "#config";
+import sessionConfig from "#config/session";
 
 class RequestSession {
-    private sessionName = config.session.name;
+    private sessionName = sessionConfig.name;
 
     constructor (private request: Request) {
         this.request = request;

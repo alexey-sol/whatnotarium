@@ -12,7 +12,7 @@
   "_moduleAliases": {
     "#api": "src/api/",
     "#app": "src/app",
-    "#config": "src/config",
+    "#config": "src/config/",
     "#loaders": "src/loaders",
     "#logger": "src/loaders/logger",
     "#models": "src/models/",

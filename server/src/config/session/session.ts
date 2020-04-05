@@ -1,14 +1,19 @@
-import EnvForSession from "./types/EnvForSession";
-import SessionConfig from "./types/SessionConfig";
+import ProcessManager from "#utils/helpers/ProcessManager";
 
-export default function (env: EnvForSession): SessionConfig {
-    const {
-        SESSION_NAME,
-        SESSION_SECRET
-    } = env;
-
-    return {
-        name: SESSION_NAME,
-        secret: SESSION_SECRET
-    };
+interface ValidatedEnv {
+    SESSION_NAME: string;
+    SESSION_SECRET: string;
 }
+
+const { processEnv } = new ProcessManager();
+const validatedEnv = processEnv as unknown as ValidatedEnv;
+
+const {
+    SESSION_NAME,
+    SESSION_SECRET
+} = validatedEnv;
+
+export default {
+    name: SESSION_NAME,
+    secret: SESSION_SECRET
+};

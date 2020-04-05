@@ -1,10 +1,6 @@
 import getErrorMessage from "#utils/helpers/getErrorMessage";
 
-type FormatErrorMessage = (error: any) => unknown;
-
-const formatErrorForResponse: FormatErrorMessage = function (
-    error: any = {}
-): unknown {
+function formatErrorForResponse (error: any = {}): unknown {
     const { name } = error;
     const message = getErrorMessage(error);
 
@@ -14,6 +10,6 @@ const formatErrorForResponse: FormatErrorMessage = function (
             name
         }
     };
-};
+}
 
 export default formatErrorForResponse;

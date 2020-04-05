@@ -1,16 +1,12 @@
 import Indexer from "#types/Indexer";
 
-type IsObject = (
-    objectToCheck: unknown
-) => boolean;
-
-const IsObject = function (
+function IsObject (
     objectToCheck: unknown
 ): objectToCheck is Indexer<unknown> {
     return (
         typeof objectToCheck === "object" &&
         (objectToCheck as object).constructor.name === "Object"
     );
-};
+}
 
 export default IsObject;

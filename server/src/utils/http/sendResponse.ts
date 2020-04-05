@@ -1,12 +1,6 @@
 import { Response } from "express";
 
-type SendResponse = (
-    response: Response,
-    data?: unknown,
-    statusCode?: number
-) => Response;
-
-const sendResponse: SendResponse = function (
+function sendResponse (
     response: Response,
     data?: unknown,
     statusCode = 200
@@ -14,6 +8,6 @@ const sendResponse: SendResponse = function (
     return response
         .status(statusCode)
         .send(data);
-};
+}
 
 export default sendResponse;

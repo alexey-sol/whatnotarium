@@ -1,7 +1,7 @@
 import FormattedProps from "#types/user/FormattedProps";
 import UserProps from "#types/user/UserProps";
 
-const isUserProps = function (
+function isUserProps (
     objectToCheck: FormattedProps
 ): objectToCheck is UserProps {
     const {
@@ -21,6 +21,6 @@ const isUserProps = function (
         typeof name === "string" &&
         Buffer.isBuffer(password)
     );
-};
+}
 
 export default isUserProps;

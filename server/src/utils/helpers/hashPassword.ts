@@ -3,12 +3,7 @@ import { pbkdf2, randomBytes } from "crypto";
 import HashPasswordOptions from "#types/HashPasswordOptions";
 import HashPasswordResult from "#types/HashPasswordResult";
 
-type HashPassword = (
-    password: string,
-    options?: HashPasswordOptions
-) => Promise<HashPasswordResult>;
-
-const hashPassword: HashPassword = async function (
+async function hashPassword (
     password: string,
     options = getDefaultOptions()
 ): Promise<HashPasswordResult> {
@@ -32,7 +27,7 @@ const hashPassword: HashPassword = async function (
         ...options,
         hash
     };
-};
+}
 
 export default hashPassword;
 

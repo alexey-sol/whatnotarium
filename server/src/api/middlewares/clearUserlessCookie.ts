@@ -6,14 +6,14 @@ import {
 } from "express";
 
 import RequestSession from "#utils/helpers/RequestSession";
-import config from "#config";
+import sessionConfig from "#config/session";
 
 const clearUserlessCookie: RequestHandler = function (
     request: Request,
     response: Response,
     next: NextFunction
 ): void {
-    const { name } = config.session;
+    const { name } = sessionConfig;
     const session = new RequestSession(request);
 
     if (session.cookieExistsButHasNoUser()) {

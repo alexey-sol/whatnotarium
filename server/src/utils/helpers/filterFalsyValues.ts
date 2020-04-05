@@ -1,10 +1,5 @@
 import Indexer from "#types/Indexer";
 
-interface FilterFalsyValues {
-    (object: unknown[]): unknown[];
-    (object: Indexer<unknown>): Indexer<unknown>;
-}
-
 function filterFalsyValues (
     object: unknown[]
 ): unknown[];
@@ -23,9 +18,7 @@ function filterFalsyValues (
     }
 }
 
-const typedFilterFalsyValues: FilterFalsyValues = filterFalsyValues;
-
-export default typedFilterFalsyValues;
+export default filterFalsyValues;
 
 function filterOutArray (
     array: unknown[]

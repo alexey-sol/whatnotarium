@@ -4,7 +4,7 @@ import http from "http";
 
 import { SIGTERM } from "#utils/const/signals";
 import ProcessManager from "#utils/helpers/ProcessManager";
-import config from "#config";
+import serverConfig from "#config/server";
 import loaders from "#loaders";
 import logger from "#logger";
 
@@ -16,10 +16,10 @@ function startServerAndGetApp (): express.Application {
     const app = express();
     loaders.init(app);
 
-    const { port } = config.server;
+    const { port } = serverConfig;
     const { exit, nodeEnv } = new ProcessManager();
 
-    const server = app.listen(port, (error) => (error)
+    const server = app.listen(+port, (error) => (error)
         ? exit(error)
         : logSuccess({ nodeEnv, port })
     );
@@ -31,12 +31,12 @@ function startServerAndGetApp (): express.Application {
 
 function logSuccess (options: {
     nodeEnv: string;
-    port: number;
+    port: string;
 }): void {
     const { nodeEnv, port } = options;
 
     logger.info(
-        `Server is running at http://localhost:${port} in ${nodeEnv} mode`
+        `🚀 Server is running at http://localhost:${port} in ${nodeEnv} mode`
     );
 }
 

@@ -1,16 +1,22 @@
-import EnvForServer from "./types/EnvForServer";
-import ServerConfig from "./types/ServerConfig";
+import ProcessManager from "#utils/helpers/ProcessManager";
 
-export default function (env: EnvForServer): ServerConfig {
-    const {
-        HOST,
-        PORT,
-        URL
-    } = env;
-
-    return {
-        host: HOST,
-        port: PORT,
-        url: URL
-    };
+interface ValidatedEnv {
+    HOST: string;
+    PORT: string;
+    URL: string;
 }
+
+const { processEnv } = new ProcessManager();
+const validatedEnv = processEnv as unknown as ValidatedEnv;
+
+const {
+    HOST,
+    PORT,
+    URL
+} = validatedEnv;
+
+export default {
+    host: HOST,
+    port: PORT,
+    url: URL
+};

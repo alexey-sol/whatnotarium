@@ -3,9 +3,11 @@ import morgan from "morgan";
 
 import logger from "#logger";
 
-export default function (): RequestHandler {
+function initMorgan (): RequestHandler {
     return morgan("combined", getMorganOptions());
 }
+
+export default initMorgan;
 
 function getMorganOptions (): morgan.Options {
     return {
