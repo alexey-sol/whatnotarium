@@ -1,0 +1,27 @@
+import { Pool, QueryResult } from "pg";
+import DbQuery from "#types/DbQuery";
+import SqlQueryPayload from "#types/SqlQueryPayload";
+import app from "#app";
+
+class PgQuery<Type> implements DbQuery<Type> {
+    constructor (
+        private readonly pg: Pool = app.get("pg")
+    ) {
+        this.pg = pg;
+    }
+
+    async query (
+        sqlQueryPayload: SqlQueryPayload
+    ): Promise<Type[]> | never {
+        const queryResult = await this.pg.query(sqlQueryPayload);
+        return this.getPayload(queryResult);
+    }
+
+    private getPayload (
+        queryResult: QueryResult<Type>
+    ): Type[] {
+        return queryResult.rows;
+    }
+}
+
+export default PgQuery;

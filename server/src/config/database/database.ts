@@ -1,5 +1,12 @@
-import ProcessManager from "utils/helpers/ProcessManager";
+import DatabaseConfig from "./types/DatabaseConfig";
+import EnvForDatabase from "./types/EnvForDatabase";
 
-const { processEnv } = new ProcessManager();
+export default function (env: EnvForDatabase): DatabaseConfig {
+    const {
+        POSTGRES_URL
+    } = env;
 
-export default processEnv.POSTGRES_URL as string;
+    return {
+        url: POSTGRES_URL
+    };
+}

@@ -1,13 +1,14 @@
-import ProcessManager from "utils/helpers/ProcessManager";
+import EnvForRedis from "./types/EnvForRedis";
+import RedisConfig from "./types/RedisConfig";
 
-const { processEnv } = new ProcessManager();
+export default function (env: EnvForRedis): RedisConfig {
+    const {
+        REDIS_HOST,
+        REDIS_PORT
+    } = env;
 
-const {
-    REDIS_HOST,
-    REDIS_PORT
-} = processEnv;
-
-export default {
-    host: REDIS_HOST as string,
-    port: REDIS_PORT as unknown as number
-};
+    return {
+        host: REDIS_HOST,
+        port: REDIS_PORT
+    };
+}

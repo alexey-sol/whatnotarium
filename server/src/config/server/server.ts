@@ -1,15 +1,16 @@
-import ProcessManager from "utils/helpers/ProcessManager";
+import EnvForServer from "./types/EnvForServer";
+import ServerConfig from "./types/ServerConfig";
 
-const { processEnv } = new ProcessManager();
+export default function (env: EnvForServer): ServerConfig {
+    const {
+        HOST,
+        PORT,
+        URL
+    } = env;
 
-const {
-    HOST,
-    PORT,
-    URL
-} = processEnv;
-
-export default {
-    host: HOST as string,
-    port: PORT as unknown as number,
-    url: URL as string
-};
+    return {
+        host: HOST,
+        port: PORT,
+        url: URL
+    };
+}
