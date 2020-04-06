@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 
-import databaseConfig from "#config/database";
 import createTablesIfNotExist from "./helpers/createTablesIfNotExist";
+import databaseConfig from "#config/database";
 import logger from "./logger";
 
 export default function (): Pool {

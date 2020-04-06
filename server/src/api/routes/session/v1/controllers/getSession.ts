@@ -11,7 +11,7 @@ const getSession: RequestHandler = async function (
 ): Promise<void> {
     try {
         const session = new RequestSession(request);
-        const sessionUser = session.getUser();
+        const sessionUser = session.getUserFromSession();
 
         let user = null;
 

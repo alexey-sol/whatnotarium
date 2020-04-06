@@ -1,11 +1,14 @@
-import Indexer from "#types/Indexer";
 import findRecords from "./findRecords";
 
-async function findOneRecord<OutputType> (
+async function findOneRecord<FilterType, OutputType> (
     tableName: string,
-    filter?: Indexer<unknown>
+    filter?: FilterType
 ): Promise<OutputType | null> | never {
-    const records = await findRecords<OutputType>(tableName, filter);
+    const records = await findRecords<FilterType, OutputType>(
+        tableName,
+        filter
+    );
+
     return records[0];
 }
 

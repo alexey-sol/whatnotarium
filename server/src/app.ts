@@ -4,9 +4,9 @@ import http from "http";
 
 import { SIGTERM } from "#utils/const/signals";
 import ProcessManager from "#utils/helpers/ProcessManager";
-import serverConfig from "#config/server";
 import loaders from "#loaders";
 import logger from "#logger";
+import serverConfig from "#config/server";
 
 const app = startServerAndGetApp();
 
@@ -21,7 +21,7 @@ function startServerAndGetApp (): express.Application {
 
     const server = app.listen(+port, (error) => (error)
         ? exit(error)
-        : logSuccess({ nodeEnv, port })
+        : logSuccess({ nodeEnv, port }) // ?
     );
 
     process.on(SIGTERM, () => logInfoAndCloseServer(server));

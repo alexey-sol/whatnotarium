@@ -12,7 +12,6 @@ import { INVALID_PROPS, NOT_FOUND } from "#utils/const/validationErrors";
 import FormattedProps from "#types/hashOptions/FormattedProps";
 import Formatter from "#utils/formatters/ModelFormatter/HashOptionsFormatter";
 import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
-import Indexer from "#types/Indexer";
 import Model from "#types/Model";
 import RawProps from "#types/hashOptions/RawProps";
 import HashOptionsError from "#utils/errors/HashOptionsError";
@@ -57,11 +56,15 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     }
 
     static async find (
-        filter?: Indexer<unknown>
+        filter?: FormattedProps
     ): Promise<HashOptions[]> | never {
-        const records = await findRecords<HashOptionsProps>(
+        const formattedFilter = (filter)
+            ? HashOptions.formatter.toDbCase(filter)
+            : filter;
+
+        const records = await findRecords<FormattedProps, HashOptionsProps>(
             HASH_OPTIONS,
-            filter
+            formattedFilter
         );
 
         return records.map(record => {
@@ -70,11 +73,15 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     }
 
     static async findOne (
-        filter?: Indexer<unknown>
+        filter?: FormattedProps
     ): Promise<HashOptions | null> | never {
-        const record = await findOneRecord<HashOptionsProps>(
+        const formattedFilter = (filter)
+            ? HashOptions.formatter.toDbCase(filter)
+            : filter;
+
+        const record = await findOneRecord<FormattedProps, HashOptionsProps>(
             HASH_OPTIONS,
-            filter
+            formattedFilter
         );
 
         return (record)

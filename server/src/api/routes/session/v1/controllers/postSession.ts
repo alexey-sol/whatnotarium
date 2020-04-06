@@ -15,8 +15,8 @@ const postSession: RequestHandler = async function (
         const user = await User.findOne({ email }) as User;
         const session = new RequestSession(request);
 
-        if (!session.userIsSignedIn()) {
-            session.assignUserToSession(user);
+        if (!session.isAuthed()) {
+            session.attachUserToSession(user);
         }
 
         sendResponse(response, user);

@@ -1,6 +1,7 @@
 import FormattedProps from "#types/hashOptions/FormattedProps";
 import ModelFormatter from "#types/ModelFormatter";
 import RawProps from "#types/hashOptions/RawProps";
+import filterFalsyValues from "#utils/helpers/filterFalsyValues";
 
 class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
@@ -12,13 +13,13 @@ class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
             userId
         } = props;
 
-        return {
+        return filterFalsyValues({
             digest,
             iterations,
             key_length: keyLength,
             salt,
             user_id: userId
-        };
+        });
     }
 
     fromDbCase (props: RawProps): FormattedProps {
@@ -31,14 +32,14 @@ class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
             user_id
         } = props;
 
-        return {
+        return filterFalsyValues({
             digest,
             id,
             iterations,
             keyLength: key_length,
             salt,
             userId: user_id
-        };
+        });
     }
 }
 

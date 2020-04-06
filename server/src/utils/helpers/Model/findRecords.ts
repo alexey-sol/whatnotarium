@@ -1,11 +1,17 @@
 import { Find } from "#utils/sql/CrudSql";
-import Indexer from "#types/Indexer";
+import { INVALID_FILTER } from "#utils/const/validationErrors";
 import PgQuery from "#utils/sql/PgQuery";
+import isObject from "#utils/typeGuards/isObject";
+import ModelError from "#utils/errors/ModelError";
 
-async function findRecords<OutputType> (
+async function findRecords<FilterType, OutputType> (
     tableName: string,
-    filter?: Indexer<unknown>
+    filter?: FilterType
 ): Promise<OutputType[]> | never {
+    if (!isObject(filter)) {
+        throw new ModelError(INVALID_FILTER, 400);
+    }
+
     const pgQuery = new PgQuery<OutputType>();
 
     const sql = new Find(tableName)

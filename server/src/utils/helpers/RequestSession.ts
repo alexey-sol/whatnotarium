@@ -11,7 +11,7 @@ class RequestSession {
         this.request = request;
     }
 
-    assignUserToSession (user: User): void {
+    attachUserToSession (user: User): void {
         const { session } = this.request;
 
         if (session) {
@@ -20,7 +20,7 @@ class RequestSession {
         }
     }
 
-    userIsSignedIn (): boolean {
+    isAuthed (): boolean {
         const { session, cookies } = this.request;
 
         return Boolean(
@@ -38,7 +38,7 @@ class RequestSession {
         );
     }
 
-    getUser (): SessionUser | undefined {
+    getUserFromSession (): SessionUser | undefined {
         return this.request.session?.user;
     }
 }

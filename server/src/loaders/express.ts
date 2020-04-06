@@ -8,11 +8,9 @@ import express from "express";
 import helmet from "helmet";
 
 import Version from "#utils/helpers/Version";
-import clearUserlessCookie from "#api/middlewares/clearUserlessCookie";
-import handleError from "#api/middlewares/handleError";
 import initMorgan from "./helpers/initMorgan";
 import initSession from "./helpers/initSession";
-import logErrors from "#api/middlewares/logErrors";
+import middlewares from "#api/middlewares";
 import sessionRouter from "#api/routes/session/v1";
 import userRouter from "#api/routes/user/v1";
 
@@ -36,13 +34,13 @@ export default function (options: Options): express.Application {
     app.use(bodyParser.json());
     app.use(cookieParser());
     app.use(initSession());
-    app.use(clearUserlessCookie);
     app.use(compression());
     app.use(express.static(publicDirPath));
+    app.use(middlewares.clearUserlessCookie);
     app.use(`${apiRoute}/user`, userRouter);
     app.use(`${apiRoute}/session`, sessionRouter);
-    app.use(logErrors);
-    app.use(handleError);
+    app.use(middlewares.logError);
+    app.use(middlewares.handleError);
 
     return app;
 }

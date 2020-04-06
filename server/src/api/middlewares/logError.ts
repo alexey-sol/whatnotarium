@@ -10,7 +10,7 @@ import Joi from "@hapi/joi";
 import isOfType from "#utils/typeGuards/isOfType";
 import logger from "#logger";
 
-const logErrors: ErrorRequestHandler = function (
+const logError: ErrorRequestHandler = function (
     error: any,
     request: Request,
     response: Response,
@@ -26,4 +26,4 @@ const logErrors: ErrorRequestHandler = function (
     next(error);
 };
 
-export default logErrors;
+export default logError;

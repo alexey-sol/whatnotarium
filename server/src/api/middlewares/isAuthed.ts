@@ -4,7 +4,7 @@ import { UNAUTHORIZED } from "#utils/const/validationErrors";
 import RequestSession from "#utils/helpers/RequestSession";
 import UnauthorizedError from "#utils/errors/UnauthorizedError";
 
-const getSession: RequestHandler = async function (
+const isAuthed: RequestHandler = async function (
     request,
     response,
     next
@@ -22,4 +22,4 @@ const getSession: RequestHandler = async function (
     }
 };
 
-export default getSession;
+export default isAuthed;

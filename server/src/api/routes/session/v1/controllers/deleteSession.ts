@@ -11,7 +11,7 @@ const deleteSession: RequestHandler = async function (
     const { name } = sessionConfig;
     const session = new RequestSession(request);
 
-    if (session.userIsSignedIn()) {
+    if (session.isAuthed()) {
         response.clearCookie(name);
     }
 

@@ -2,6 +2,7 @@ import express from "express";
 
 import controllers from "./controllers";
 import dataValidation from "./dataValidation";
+import middlewares from "#api/middlewares";
 import schemaValidation from "./schemaValidation";
 
 const router = express.Router();
@@ -27,6 +28,7 @@ router.post(
 
 router.put(
     "/",
+    middlewares.isAuthed,
     schemaValidation.putUser,
     dataValidation.putUser,
     controllers.putUser
@@ -34,6 +36,7 @@ router.put(
 
 router.delete(
     "/:id",
+    middlewares.isAuthed,
     schemaValidation.deleteUser,
     dataValidation.deleteUser,
     controllers.deleteUser

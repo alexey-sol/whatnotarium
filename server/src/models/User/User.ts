@@ -10,7 +10,6 @@ import {
 import { INVALID_PROPS, NOT_FOUND } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/dbTableNames";
 import FormattedProps from "#types/user/FormattedProps";
-import Indexer from "#types/Indexer";
 import Model from "#types/Model";
 import RawProps from "#types/user/RawProps";
 import Formatter from "#utils/formatters/ModelFormatter/UserFormatter";
@@ -57,16 +56,31 @@ class User implements Model<FormattedProps, User> {
     }
 
     static async find (
-        filter?: Indexer<unknown>
+        filter?: FormattedProps
     ): Promise<User[]> | never {
-        const records = await findRecords<UserProps>(USERS, filter);
+        const formattedFilter = (filter)
+            ? User.formatter.toDbCase(filter)
+            : filter;
+
+        const records = await findRecords<FormattedProps, UserProps>(
+            USERS,
+            formattedFilter
+        );
+
         return records.map(record => User.formatPropsAndInstantiate(record));
     }
 
     static async findOne (
-        filter?: Indexer<unknown>
+        filter?: FormattedProps
     ): Promise<User | null> | never {
-        const record = await findOneRecord<UserProps>(USERS, filter);
+        const formattedFilter = (filter)
+            ? User.formatter.toDbCase(filter)
+            : filter;
+
+        const record = await findOneRecord<FormattedProps, UserProps>(
+            USERS,
+            formattedFilter
+        );
 
         return (record)
             ? User.formatPropsAndInstantiate(record)
