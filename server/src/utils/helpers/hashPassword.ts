@@ -5,14 +5,19 @@ import HashPasswordResult from "#types/HashPasswordResult";
 
 async function hashPassword (
     password: string,
-    options = getDefaultOptions()
+    options = {}
 ): Promise<HashPasswordResult> {
+    const supplementedOptions = {
+        ...getDefaultOptions(),
+        ...options
+    };
+
     const {
         digest,
         iterations,
         keyLength,
         salt
-    } = options;
+    } = supplementedOptions;
 
     const hash: Buffer = await new Promise((resolve, reject) => pbkdf2(
         password,
@@ -24,7 +29,7 @@ async function hashPassword (
     ));
 
     return {
-        ...options,
+        ...supplementedOptions,
         hash
     };
 }

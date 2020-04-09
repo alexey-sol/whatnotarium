@@ -21,7 +21,7 @@ function startServerAndGetApp (): express.Application {
 
     const server = app.listen(+port, (error) => (error)
         ? exit(error)
-        : logSuccess({ nodeEnv, port }) // ?
+        : logSuccess({ nodeEnv, port })
     );
 
     process.on(SIGTERM, () => logInfoAndCloseServer(server));

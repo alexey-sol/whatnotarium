@@ -22,8 +22,6 @@ services:
             - geek-regime-server:/app/node_modules
         networks:
             - geek-regime
-        # expose:
-            # - 8000
         depends_on:
             - postgres
             - redis
@@ -58,8 +56,6 @@ services:
             - redis-data:/data
         networks:
             - geek-regime
-        expose:
-            - 6379
 networks:
     geek-regime:
         driver: bridge
