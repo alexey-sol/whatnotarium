@@ -21,7 +21,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     static formatter = new Formatter();
 
     digest: string;
-    id: number
+    id: number;
     iterations: number;
     keyLength: number;
     salt: string;

@@ -63,7 +63,7 @@ class Find extends CrudSql {
         const values = [];
 
         for (const fieldName of fieldNames) {
-            count++;
+            count += 1;
             values.push(`${fieldName} = $${count}`);
         }
 

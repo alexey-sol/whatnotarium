@@ -4,11 +4,11 @@ import { UNAUTHORIZED } from "#utils/const/validationErrors";
 import RequestSession from "#utils/helpers/RequestSession";
 import UnauthorizedError from "#utils/errors/UnauthorizedError";
 
-const isAuthed: RequestHandler = async function (
+const isAuthed: RequestHandler = async (
     request,
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     try {
         const session = new RequestSession(request);
 

@@ -6,7 +6,13 @@ import { DEBUG, ERROR } from "#utils/const/loggingLevels";
 import { PRODUCTION } from "#utils/const/nodeEnv";
 import DateFormatter from "#utils/formatters/DateFormatter";
 
-const { combine, errors, prettyPrint, timestamp } = format;
+const {
+    combine,
+    errors,
+    prettyPrint,
+    timestamp
+} = format;
+
 const dateTimeFormatPattern = "YYYY-MM-DD HH:mm:ss";
 
 const logger = createLogger({

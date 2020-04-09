@@ -2,11 +2,11 @@ import { RequestHandler } from "express";
 
 import paramsSchema from "./schemas/params";
 
-const getUser: RequestHandler = async function (
+const getUser: RequestHandler = async (
     { params },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const { error } = paramsSchema.validate(params);
 
     if (error) {

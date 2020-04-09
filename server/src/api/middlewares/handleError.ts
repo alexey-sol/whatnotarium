@@ -8,12 +8,12 @@ import {
 import formatErrorForResponse from "#utils/formatters/formatErrorForResponse";
 import sendResponse from "#utils/http/sendResponse";
 
-const handleError: ErrorRequestHandler = function (
+const handleError: ErrorRequestHandler = (
     error: any,
     request: Request,
     response: Response,
     next: NextFunction
-): void {
+): void => {
     if (response.headersSent) {
         return next(error);
     }

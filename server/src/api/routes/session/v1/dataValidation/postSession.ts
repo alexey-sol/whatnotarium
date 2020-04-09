@@ -5,11 +5,11 @@ import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import isValidPassword from "#utils/helpers/isValidPassword";
 
-const postSession: RequestHandler = async function (
+const postSession: RequestHandler = async (
     { body, ip },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const { currentPassword, email } = body;
 
     try {

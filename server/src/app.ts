@@ -8,36 +8,29 @@ import loaders from "#loaders";
 import logger from "#logger";
 import serverConfig from "#config/server";
 
-const app = startServerAndGetApp();
+startServer();
 
-export default app;
-
-function startServerAndGetApp (): express.Application {
+async function startServer (): Promise<void> {
     const app = express();
-    loaders.init(app);
+    await loaders.init(app);
 
-    const { port } = serverConfig;
+    const { port, url } = serverConfig;
     const { exit, nodeEnv } = new ProcessManager();
 
     const server = app.listen(+port, (error) => (error)
         ? exit(error)
-        : logSuccess({ nodeEnv, port })
+        : logSuccess({ nodeEnv, url })
     );
 
     process.on(SIGTERM, () => logInfoAndCloseServer(server));
-
-    return app;
 }
 
 function logSuccess (options: {
     nodeEnv: string;
-    port: string;
+    url: string;
 }): void {
-    const { nodeEnv, port } = options;
-
-    logger.info(
-        `🚀 Server is running at http://localhost:${port} in ${nodeEnv} mode`
-    );
+    const { nodeEnv, url } = options;
+    logger.info(`🚀 Server is running at ${url} in ${nodeEnv} mode`);
 }
 
 function logInfoAndCloseServer (server: http.Server): void {

@@ -3,11 +3,11 @@ import { RequestHandler } from "express";
 import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
-const putUser: RequestHandler = async function (
+const putUser: RequestHandler = async (
     { body, params },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const { id } = params;
 
     UserService.putUser(+id, body)

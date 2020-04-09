@@ -16,8 +16,8 @@
         "baseUrl": "./",
         "paths": {
             "#api/*": ["./src/api/*"],
-            "#app": ["./src/app"],
             "#config/*": ["./src/config/*"],
+            "#connectionPool": ["./src/loaders/connectionPool"],
             "#loaders": ["./src/loaders"],
             "#logger": ["./src/loaders/logger"],
             "#models/*": ["./src/models/*"],

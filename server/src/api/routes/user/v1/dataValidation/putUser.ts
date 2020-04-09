@@ -5,11 +5,11 @@ import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import isValidPassword from "#utils/helpers/isValidPassword";
 
-const putUser: RequestHandler = async function (
+const putUser: RequestHandler = async (
     { body, ip, params },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const { id } = params;
 
     try {

@@ -3,11 +3,11 @@ import { RequestHandler } from "express";
 import bodySchema from "./schemas/body";
 import paramsSchema from "./schemas/params";
 
-const putUser: RequestHandler = async function (
+const putUser: RequestHandler = async (
     { body, params },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const {
         error: bodyError
     } = bodySchema.validate(body);

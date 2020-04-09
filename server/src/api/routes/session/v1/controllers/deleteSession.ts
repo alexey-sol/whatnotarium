@@ -4,10 +4,10 @@ import RequestSession from "#utils/helpers/RequestSession";
 import sessionConfig from "#config/session";
 import sendResponse from "#utils/http/sendResponse";
 
-const deleteSession: RequestHandler = async function (
+const deleteSession: RequestHandler = async (
     request,
     response
-): Promise<void> {
+): Promise<void> => {
     const { name } = sessionConfig;
     const session = new RequestSession(request);
 

@@ -3,11 +3,11 @@ import { RequestHandler } from "express";
 import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
-const deleteUser: RequestHandler = async function (
+const deleteUser: RequestHandler = async (
     { params },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     try {
         const { id } = params;
         const result = await UserService.deleteUser(+id);

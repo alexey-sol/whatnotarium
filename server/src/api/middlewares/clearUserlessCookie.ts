@@ -8,11 +8,11 @@ import {
 import RequestSession from "#utils/helpers/RequestSession";
 import sessionConfig from "#config/session";
 
-const clearUserlessCookie: RequestHandler = function (
+const clearUserlessCookie: RequestHandler = (
     request: Request,
     response: Response,
     next: NextFunction
-): void {
+): void => {
     const { name } = sessionConfig;
     const session = new RequestSession(request);
 

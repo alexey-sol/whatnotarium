@@ -4,11 +4,11 @@ import RequestSession from "#utils/helpers/RequestSession";
 import User from "#models/User";
 import sendResponse from "#utils/http/sendResponse";
 
-const postSession: RequestHandler = async function (
+const postSession: RequestHandler = async (
     request,
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const { email } = request.body;
 
     try {

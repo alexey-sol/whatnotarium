@@ -13,9 +13,9 @@ function filterFalsyValues (
 ): unknown[] | Indexer<unknown> {
     if (Array.isArray(object)) {
         return filterOutArray(object);
-    } else {
-        return filterOutObject(object as Indexer<unknown>);
     }
+
+    return filterOutObject(object as Indexer<unknown>);
 }
 
 export default filterFalsyValues;

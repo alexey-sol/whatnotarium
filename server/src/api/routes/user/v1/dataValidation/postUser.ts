@@ -4,11 +4,11 @@ import { ALREADY_EXISTS } from "#utils/const/validationErrors";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 
-const postUser: RequestHandler = async function (
+const postUser: RequestHandler = async (
     { body, ip },
     response,
     next
-): Promise<void> {
+): Promise<void> => {
     const { email } = body;
 
     try {

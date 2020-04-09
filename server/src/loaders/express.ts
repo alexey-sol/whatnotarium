@@ -1,4 +1,3 @@
-import { Pool } from "pg";
 import { join } from "path";
 import bodyParser from "body-parser";
 import compression from "compression";
@@ -16,18 +15,16 @@ import userRouter from "#api/routes/user/v1";
 
 interface Options {
     app: express.Application;
-    pg: Pool;
 }
 
 export default function (options: Options): express.Application {
-    const { app, pg } = options;
+    const { app } = options;
 
     const root = process.cwd();
     const publicDirPath = join(root, "public");
     const appMajorVersion = Version.getMajorVersion();
     const apiRoute = `/api/v${appMajorVersion}`;
 
-    app.set("pg", pg);
     app.use(initMorgan());
     app.use(cors());
     app.use(helmet());

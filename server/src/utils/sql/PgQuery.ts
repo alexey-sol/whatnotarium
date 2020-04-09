@@ -1,11 +1,11 @@
 import { Pool, QueryResult } from "pg";
 import DbQuery from "#types/DbQuery";
 import SqlQueryPayload from "#types/SqlQueryPayload";
-import app from "#app";
+import cp from "#connectionPool";
 
 class PgQuery<Type> implements DbQuery<Type> {
     constructor (
-        private readonly pg: Pool = app.get("pg")
+        private readonly pg: Pool = cp
     ) {
         this.pg = pg;
     }

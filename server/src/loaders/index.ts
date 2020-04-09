@@ -5,14 +5,14 @@ import expressLoader from "./express";
 import logger from "#logger";
 import pgLoader from "./pg";
 
-function init (app: express.Application): void {
+async function init (app: express.Application): Promise<void> {
     envLoader();
     logger.info("🔵 Environment variables are ready");
 
-    const pg = pgLoader();
+    await pgLoader();
     logger.info("🔵 Database is ready");
 
-    expressLoader({ app, pg });
+    expressLoader({ app });
     logger.info("🔵 Express is ready");
 }
 

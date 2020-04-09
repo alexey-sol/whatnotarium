@@ -52,9 +52,11 @@ class Create extends CrudSql {
         let count = this.offset;
         const values = [];
 
-        for (const _key in props) {
-            count++;
-            values.push(`$${count}`);
+        for (const key in props) {
+            if (key) {
+                count += 1;
+                values.push(`$${count}`);
+            }
         }
 
         return values.join(", ");

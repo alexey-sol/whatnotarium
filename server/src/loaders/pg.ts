@@ -1,16 +1,11 @@
-import { Pool } from "pg";
-
+import cp from "#connectionPool";
 import createTablesIfNotExist from "./helpers/createTablesIfNotExist";
-import databaseConfig from "#config/database";
 import logger from "./logger";
 
-export default function (): Pool {
-    const pg = new Pool({
-        connectionString: databaseConfig.url
-    });
-
-    createTablesIfNotExist(pg)
-        .catch(error => logger.error(error));
-
-    return pg;
+export default async function (): Promise<void> {
+    try {
+        await createTablesIfNotExist(cp);
+    } catch (error) {
+        logger.error(error);
+    }
 }
