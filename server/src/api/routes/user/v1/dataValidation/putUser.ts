@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import status from "http-status";
 
 import { INVALID_PASSWORD, NOT_FOUND } from "#utils/const/validationErrors";
 import User from "#models/User";
@@ -16,7 +17,7 @@ const putUser: RequestHandler = async (
         const user = await User.findById(+id);
 
         if (!user) {
-            throw new UserError(NOT_FOUND, 404, ip);
+            throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
         }
 
         const { currentPassword, newPassword } = body;
@@ -28,7 +29,7 @@ const putUser: RequestHandler = async (
             );
 
             if (!passwordIsValid) {
-                throw new UserError(INVALID_PASSWORD, 403, ip);
+                throw new UserError(INVALID_PASSWORD, status.UNAUTHORIZED, ip);
             }
         }
 

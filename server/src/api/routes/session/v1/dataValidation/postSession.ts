@@ -1,3 +1,4 @@
+import { FORBIDDEN } from "http-status";
 import { RequestHandler } from "express";
 
 import { INVALID_CREDENTIALS } from "#utils/const/validationErrors";
@@ -16,13 +17,13 @@ const postSession: RequestHandler = async (
         const user = await User.findOne({ email });
 
         if (!user) {
-            throw new UserError(INVALID_CREDENTIALS, 403, ip);
+            throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);
         }
 
         const passwordIsValid = await isValidPassword(currentPassword, user);
 
         if (!passwordIsValid) {
-            throw new UserError(INVALID_CREDENTIALS, 403, ip);
+            throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);
         }
 
         next();

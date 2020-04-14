@@ -6,6 +6,7 @@ import {
 } from "express";
 
 import Joi from "@hapi/joi";
+import { UNPROCESSABLE_ENTITY } from "http-status";
 
 import isOfType from "#utils/typeGuards/isOfType";
 import logger from "#logger";
@@ -19,7 +20,7 @@ const logError: ErrorRequestHandler = (
     const isJoiValidationError = isOfType<Joi.ValidationError>(error, "isJoi");
 
     if (isJoiValidationError) {
-        error.statusCode = 400; // eslint-disable-line
+        error.statusCode = UNPROCESSABLE_ENTITY; // eslint-disable-line
     }
 
     logger.error(error);

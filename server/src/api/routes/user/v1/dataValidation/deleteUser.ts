@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import status from "http-status";
 
 import { NOT_FOUND } from "#utils/const/validationErrors";
 import User from "#models/User";
@@ -15,7 +16,7 @@ const deleteUser: RequestHandler = async (
         const user = await User.findById(+id);
 
         if (!user) {
-            throw new UserError(NOT_FOUND, 404, ip);
+            throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
         }
 
         next();

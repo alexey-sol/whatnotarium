@@ -1,7 +1,9 @@
+import { INTERNAL_SERVER_ERROR } from "http-status";
+
 abstract class ServerError extends Error {
     constructor (
         message: string,
-        private statusCode: number = 500,
+        private statusCode: number = INTERNAL_SERVER_ERROR,
         private ip?: string
     ) {
         super(message);

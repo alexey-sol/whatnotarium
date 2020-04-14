@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { CONFLICT } from "http-status";
 
 import { ALREADY_EXISTS } from "#utils/const/validationErrors";
 import User from "#models/User";
@@ -15,7 +16,7 @@ const postUser: RequestHandler = async (
         const alreadyExists = await checkIfAlreadyExists(email);
 
         if (alreadyExists) {
-            throw new UserError(ALREADY_EXISTS, 400, ip);
+            throw new UserError(ALREADY_EXISTS, CONFLICT, ip);
         }
 
         next();

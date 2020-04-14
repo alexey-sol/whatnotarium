@@ -5,6 +5,8 @@ import {
     NextFunction
 } from "express";
 
+import { INTERNAL_SERVER_ERROR } from "http-status";
+
 import formatErrorForResponse from "#utils/formatters/formatErrorForResponse";
 import sendResponse from "#utils/http/sendResponse";
 
@@ -20,7 +22,7 @@ const handleError: ErrorRequestHandler = (
     sendResponse(
         response,
         formatErrorForResponse(error),
-        error.statusCode || 500
+        error.statusCode || INTERNAL_SERVER_ERROR
     );
 };
 
