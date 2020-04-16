@@ -1,22 +1,9 @@
-import { Pool } from "pg";
+import HashOptions from "#models/HashOptions";
+import User from "#models/User";
 
-import {
-    CreateHashOptionsTable,
-    CreateUsersTable
-} from "#utils/sql/CreateTableSql";
-
-import PgQuery from "#utils/sql/PgQuery";
-
-async function createTablesIfNotExist (pg: Pool): Promise<void> {
-    const createUsersTableSql = new CreateUsersTable()
-        .generate();
-    await new PgQuery<unknown>(pg)
-        .query(createUsersTableSql);
-
-    const createHashOptionsTable = new CreateHashOptionsTable()
-        .generate();
-    await new PgQuery<unknown>(pg)
-        .query(createHashOptionsTable);
+async function createTablesIfNotExist (): Promise<void> {
+    await User.up();
+    await HashOptions.up();
 }
 
 export default createTablesIfNotExist;

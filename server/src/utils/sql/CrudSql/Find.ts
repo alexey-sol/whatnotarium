@@ -1,9 +1,8 @@
 import CrudSql from "./CrudSql";
-import Indexer from "#types/Indexer";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class Find extends CrudSql {
+class Find<FilterType> extends CrudSql<FilterType> {
     constructor (
         tableName: string,
         queryName = generateId()
@@ -11,14 +10,14 @@ class Find extends CrudSql {
         super(tableName, undefined, queryName);
     }
 
-    generate (filter?: Indexer<unknown>): SqlQueryPayload {
+    generate (filter?: FilterType): SqlQueryPayload {
         return (filter)
             ? this.createQueryPayloadWithFilter(filter)
             : this.createQueryPayloadWithoutFilter();
     }
 
     private createQueryPayloadWithFilter (
-        filter: Indexer<unknown>
+        filter: FilterType
     ): SqlQueryPayload {
         const fieldNames = Object.keys(filter);
         const fieldValues = Object.values(filter);

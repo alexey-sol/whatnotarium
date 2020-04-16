@@ -1,11 +1,14 @@
-import cp from "#connectionPool";
+import ProcessManager from "#utils/helpers/ProcessManager";
 import createTablesIfNotExist from "./helpers/createTablesIfNotExist";
-import logger from "./logger";
 
 export default async function (): Promise<void> {
     try {
-        await createTablesIfNotExist(cp);
+        await createTablesIfNotExist();
     } catch (error) {
-        logger.error(error);
+        logErrorAndExit(error);
     }
+}
+
+function logErrorAndExit (error: Error): void {
+    new ProcessManager().exit(error);
 }

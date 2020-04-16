@@ -1,9 +1,8 @@
-import Indexer from "#types/Indexer";
-import Sql from "#types/Sql";
+import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import isObject from "#utils/typeGuards/isObject";
 
-abstract class CrudSql implements Sql {
+abstract class CrudSql<InputType> implements SqlGenerator<InputType> {
     protected offset: number;
 
     constructor (
@@ -15,20 +14,18 @@ abstract class CrudSql implements Sql {
         this.offset = (recordId) ? 1 : 0;
     }
 
-    abstract generate (
-        props?: Indexer<unknown>
-    ): SqlQueryPayload;
+    abstract generate (input?: InputType): SqlQueryPayload;
 
-    protected getValues (props: Indexer<unknown>): string[];
-    protected getValues (props?: unknown[]): string[];
-    protected getValues (props?: unknown): string[] {
+    protected getValues (input: InputType): string[];
+    protected getValues (input?: unknown[]): string[];
+    protected getValues (input?: unknown): string[] {
         const id = this.recordId;
         let values = [];
 
-        if (Array.isArray(props)) {
-            values = props;
-        } else if (isObject(props)) {
-            values = Object.values(props);
+        if (Array.isArray(input)) {
+            values = input;
+        } else if (isObject(input)) {
+            values = Object.values(input);
         }
 
         return (id)

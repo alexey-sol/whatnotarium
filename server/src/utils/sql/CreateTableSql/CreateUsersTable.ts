@@ -1,9 +1,9 @@
 import { USERS } from "#utils/const/dbTableNames";
-import Sql from "#types/Sql";
+import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class CreateUsersTable implements Sql {
+class CreateUsersTable implements SqlGenerator<unknown> {
     constructor (
         private readonly queryName = generateId()
     ) {

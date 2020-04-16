@@ -1,9 +1,8 @@
 import CrudSql from "./CrudSql";
-import Indexer from "#types/Indexer";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class UpdateAttributes extends CrudSql {
+class UpdateAttributes<InputType> extends CrudSql<InputType> {
     constructor (
         tableName: string,
         recordId: number,
@@ -13,7 +12,7 @@ class UpdateAttributes extends CrudSql {
     }
 
     generate (
-        props: Indexer<unknown>
+        props: InputType
     ): SqlQueryPayload {
         return {
             name: this.queryName,
@@ -23,7 +22,7 @@ class UpdateAttributes extends CrudSql {
     }
 
     private getText (
-        props: Indexer<unknown>
+        props: InputType
     ): string {
         const { setClause, andClause } = this.createClauses(props);
 
@@ -36,7 +35,7 @@ class UpdateAttributes extends CrudSql {
         `;
     }
 
-    private createClauses (props: Indexer<unknown>): {
+    private createClauses (props: InputType): {
         setClause: string;
         andClause: string;
     } {
@@ -46,9 +45,11 @@ class UpdateAttributes extends CrudSql {
         const andClauseRows: string[] = [];
 
         for (const key in props) {
-            count++;
-            setClauseRows.push(`${key} = COALESCE($${count}, ${key})`);
-            andClauseRows.push(`$${count} IS DISTINCT FROM ${key}`);
+            if (key) {
+                count += 1;
+                setClauseRows.push(`${key} = COALESCE($${count}, ${key})`);
+                andClauseRows.push(`$${count} IS DISTINCT FROM ${key}`);
+            }
         }
 
         return {

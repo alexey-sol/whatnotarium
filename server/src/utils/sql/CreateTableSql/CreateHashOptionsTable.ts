@@ -1,9 +1,9 @@
 import { HASH_OPTIONS, USERS } from "#utils/const/dbTableNames";
-import Sql from "#types/Sql";
+import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class CreateHashOptionsTable implements Sql {
+class CreateHashOptionsTable implements SqlGenerator<unknown> {
     constructor (
         private readonly queryName = generateId()
     ) {

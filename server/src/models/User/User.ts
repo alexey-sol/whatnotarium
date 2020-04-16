@@ -1,3 +1,5 @@
+import status from "http-status";
+
 import {
     createRecord,
     destroyRecordById,
@@ -7,6 +9,7 @@ import {
     updateRecordAttributes
 } from "#utils/helpers/Model";
 
+import { CreateUsersTable } from "#utils/sql/CreateTableSql";
 import { INVALID_PROPS, NOT_FOUND } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/dbTableNames";
 import FormattedProps from "#types/user/FormattedProps";
@@ -15,6 +18,7 @@ import RawProps from "#types/user/RawProps";
 import Formatter from "#utils/formatters/ModelFormatter/UserFormatter";
 import UserError from "#utils/errors/UserError";
 import UserProps from "#types/user/UserProps";
+import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserProps from "#utils/typeGuards/isUserProps";
 
 class User implements Model<FormattedProps, User> {
@@ -34,6 +38,10 @@ class User implements Model<FormattedProps, User> {
         this.name = props.name;
         this.password = props.password;
         this.updatedAt = props.updatedAt;
+    }
+
+    static async up (): Promise<void> {
+        await generateSqlAndQuery(new CreateUsersTable());
     }
 
     static async create (
@@ -113,7 +121,7 @@ class User implements Model<FormattedProps, User> {
         );
 
         if (!record) {
-            throw new UserError(NOT_FOUND, 404);
+            throw new UserError(NOT_FOUND, status.NOT_FOUND);
         }
 
         return User.formatPropsAndInstantiate(record);
@@ -125,7 +133,7 @@ class User implements Model<FormattedProps, User> {
         const formattedProps = User.formatter.fromDbCase(props);
 
         if (!isUserProps(formattedProps)) {
-            throw new UserError(INVALID_PROPS, 400);
+            throw new UserError(INVALID_PROPS, status.UNPROCESSABLE_ENTITY);
         }
 
         return new User(formattedProps);

@@ -1,20 +1,13 @@
 import { FindById } from "#utils/sql/CrudSql";
-import PgQuery from "#utils/sql/PgQuery";
+import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
 async function findRecordById<OutputType> (
     tableName: string,
     id: number
 ): Promise<OutputType | null> | never {
-    const pgQuery = new PgQuery<OutputType>();
-
-    const sql = new FindById(tableName, id)
-        .generate();
-    const queryPayload = await pgQuery
-        .query(sql);
-
-    if (queryPayload.length === 0) {
-        return null;
-    }
+    const queryPayload = await generateSqlAndQuery<unknown, OutputType>(
+        new FindById(tableName, id)
+    );
 
     return queryPayload[0];
 }

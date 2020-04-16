@@ -1,3 +1,5 @@
+import status from "http-status";
+
 import {
     createRecord,
     destroyRecordById,
@@ -7,6 +9,7 @@ import {
     updateRecordAttributes
 } from "#utils/helpers/Model";
 
+import { CreateHashOptionsTable } from "#utils/sql/CreateTableSql";
 import { HASH_OPTIONS } from "#utils/const/dbTableNames";
 import { INVALID_PROPS, NOT_FOUND } from "#utils/const/validationErrors";
 import FormattedProps from "#types/hashOptions/FormattedProps";
@@ -15,6 +18,7 @@ import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
 import Model from "#types/Model";
 import RawProps from "#types/hashOptions/RawProps";
 import HashOptionsError from "#utils/errors/HashOptionsError";
+import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isHashOptionsProps from "#utils/typeGuards/isHashOptionsProps";
 
 class HashOptions implements Model<FormattedProps, HashOptions> {
@@ -34,6 +38,10 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         this.keyLength = props.keyLength;
         this.salt = props.salt;
         this.userId = props.userId;
+    }
+
+    static async up (): Promise<void> {
+        await generateSqlAndQuery(new CreateHashOptionsTable());
     }
 
     static async create (
@@ -115,7 +123,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         );
 
         if (!record) {
-            throw new HashOptionsError(NOT_FOUND, 404);
+            throw new HashOptionsError(NOT_FOUND, status.NOT_FOUND);
         }
 
         return HashOptions.formatPropsAndInstantiate(record);
@@ -127,7 +135,10 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         const formattedProps = HashOptions.formatter.fromDbCase(props);
 
         if (!isHashOptionsProps(formattedProps)) {
-            throw new HashOptionsError(INVALID_PROPS, 400);
+            throw new HashOptionsError(
+                INVALID_PROPS,
+                status.UNPROCESSABLE_ENTITY
+            );
         }
 
         return new HashOptions(formattedProps);

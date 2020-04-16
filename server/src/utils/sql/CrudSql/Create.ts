@@ -1,9 +1,8 @@
 import CrudSql from "./CrudSql";
-import Indexer from "#types/Indexer";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class Create extends CrudSql {
+class Create<InputType> extends CrudSql<InputType> {
     constructor (
         tableName: string,
         queryName = generateId()
@@ -12,7 +11,7 @@ class Create extends CrudSql {
     }
 
     generate (
-        props: Indexer<unknown>
+        props: InputType
     ): SqlQueryPayload {
         return {
             name: this.queryName,
@@ -22,7 +21,7 @@ class Create extends CrudSql {
     }
 
     private getText (
-        props: Indexer<unknown>
+        props: InputType
     ): string {
         const insertIntoClause = this.createInsertIntoClause(props);
         const valuesClause = this.createValuesClause(props);
@@ -39,7 +38,7 @@ class Create extends CrudSql {
     }
 
     private createInsertIntoClause (
-        props: Indexer<unknown>
+        props: InputType
     ): string {
         return Object
             .keys(props)
@@ -47,7 +46,7 @@ class Create extends CrudSql {
     }
 
     private createValuesClause (
-        props: Indexer<unknown>
+        props: InputType
     ): string {
         let count = this.offset;
         const values = [];

@@ -2,7 +2,7 @@ import CrudSql from "./CrudSql";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class FindById extends CrudSql {
+class FindById extends CrudSql<unknown> {
     constructor (
         tableName: string,
         recordId: number,
