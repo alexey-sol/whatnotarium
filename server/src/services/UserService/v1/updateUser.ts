@@ -1,5 +1,5 @@
 import { NOT_FOUND } from "#utils/const/validationErrors";
-import FormattedUserProps from "#types/user/FormattedProps";
+import FormattedProps from "#types/user/FormattedProps";
 import HashOptions from "#models/HashOptions";
 import HashPasswordOptions from "#types/HashPasswordOptions";
 import User from "#models/User";
@@ -29,7 +29,7 @@ export default async function (
         newPassword
     } = props;
 
-    const updatedProps: FormattedUserProps = {
+    const updatedProps: FormattedProps = {
         email,
         name,
         updatedAt: new Date()

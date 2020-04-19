@@ -5,8 +5,6 @@ import { DEVELOPMENT, PRODUCTION } from "#utils/const/nodeEnv";
 export default Joi.object({
     HOST: Joi
         .string()
-        .min(3)
-        .trim()
         .required(),
 
     NODE_ENV: Joi
@@ -21,14 +19,10 @@ export default Joi.object({
 
     POSTGRES_URL: Joi
         .string()
-        .min(8)
-        .trim()
         .required(),
 
     REDIS_HOST: Joi
         .string()
-        .min(3)
-        .trim()
         .required(),
 
     REDIS_PORT: Joi
@@ -37,19 +31,13 @@ export default Joi.object({
 
     SESSION_NAME: Joi
         .string()
-        .min(3)
-        .trim()
         .required(),
 
     SESSION_SECRET: Joi
         .string()
-        .min(3)
-        .trim()
         .required(),
 
     URL: Joi
         .string()
-        .min(8)
-        .trim()
         .required()
 });

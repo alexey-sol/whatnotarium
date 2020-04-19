@@ -1,4 +1,4 @@
-import status from "http-status";
+import { UNPROCESSABLE_ENTITY } from "http-status";
 
 import {
     createRecord,
@@ -7,17 +7,17 @@ import {
     findRecordById,
     findRecords,
     updateRecordAttributes
-} from "#utils/helpers/Model";
+} from "#utils/sql/Model";
 
 import { CreateHashOptionsTable } from "#utils/sql/CreateTableSql";
 import { HASH_OPTIONS } from "#utils/const/dbTableNames";
-import { INVALID_PROPS, NOT_FOUND } from "#utils/const/validationErrors";
+import { INVALID_PROPS } from "#utils/const/validationErrors";
 import FormattedProps from "#types/hashOptions/FormattedProps";
 import Formatter from "#utils/formatters/ModelFormatter/HashOptionsFormatter";
+import HashOptionsError from "#utils/errors/HashOptionsError";
 import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
 import Model from "#types/Model";
 import RawProps from "#types/hashOptions/RawProps";
-import HashOptionsError from "#utils/errors/HashOptionsError";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isHashOptionsProps from "#utils/typeGuards/isHashOptionsProps";
 
@@ -54,12 +54,12 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
             propsToDb
         );
 
-        return HashOptions.formatPropsAndInstantiate(record);
+        return HashOptions.instantiate(record);
     }
 
     static async destroyById (
         id: number
-    ): Promise<boolean> | never {
+    ): Promise<number | null> | never {
         return destroyRecordById<HashOptionsProps>(HASH_OPTIONS, id);
     }
 
@@ -76,7 +76,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         );
 
         return records.map(record => {
-            return HashOptions.formatPropsAndInstantiate(record);
+            return HashOptions.instantiate(record);
         });
     }
 
@@ -93,7 +93,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         );
 
         return (record)
-            ? HashOptions.formatPropsAndInstantiate(record)
+            ? HashOptions.instantiate(record)
             : null;
     }
 
@@ -103,7 +103,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         const record = await findRecordById<HashOptionsProps>(HASH_OPTIONS, id);
 
         return (record)
-            ? HashOptions.formatPropsAndInstantiate(record)
+            ? HashOptions.instantiate(record)
             : null;
     }
 
@@ -122,23 +122,20 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
             propsToDb
         );
 
-        if (!record) {
-            throw new HashOptionsError(NOT_FOUND, status.NOT_FOUND);
-        }
-
-        return HashOptions.formatPropsAndInstantiate(record);
+        return HashOptions.instantiate(record);
     }
 
-    static formatPropsAndInstantiate (
+    static instantiate (
         props: RawProps
     ): HashOptions | never {
-        const formattedProps = HashOptions.formatter.fromDbCase(props);
+        const shouldFormatProps = this.formatter.isDbCase(props);
+
+        const formattedProps = (shouldFormatProps)
+            ? HashOptions.formatter.fromDbCase(props)
+            : props;
 
         if (!isHashOptionsProps(formattedProps)) {
-            throw new HashOptionsError(
-                INVALID_PROPS,
-                status.UNPROCESSABLE_ENTITY
-            );
+            throw new HashOptionsError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
         return new HashOptions(formattedProps);

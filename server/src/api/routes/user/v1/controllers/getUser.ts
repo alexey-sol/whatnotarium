@@ -10,7 +10,7 @@ const getUser: RequestHandler = async (
 ): Promise<void> => {
     const { id } = params;
 
-    UserService.getUser(+id)
+    UserService.findUser(+id)
         .then(user => sendResponse(response, user))
         .catch(next);
 };

@@ -3,9 +3,9 @@ import SqlGenerator from "#types/SqlGenerator";
 
 async function generateSqlAndQuery<InputType, OutputType> (
     sqlGenerator: SqlGenerator<InputType>,
-    props?: InputType
+    input?: InputType
 ): Promise<OutputType[]> | never {
-    const sql = sqlGenerator.generate(props);
+    const sql = sqlGenerator.generate(input);
 
     return new PgQuery<OutputType>()
         .query(sql);

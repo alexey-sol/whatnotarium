@@ -8,7 +8,7 @@ const getUsers: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    UserService.getUsers()
+    UserService.findUsers()
         .then(users => sendResponse(response, users))
         .catch(next);
 };

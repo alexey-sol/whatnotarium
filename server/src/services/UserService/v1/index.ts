@@ -1,13 +1,13 @@
+import createUser from "./createUser";
 import deleteUser from "./deleteUser";
-import getUser from "./getUser";
-import getUsers from "./getUsers";
-import postUser from "./postUser";
-import putUser from "./putUser";
+import findUser from "./findUser";
+import findUsers from "./findUsers";
+import updateUser from "./updateUser";
 
 export default {
+    createUser,
     deleteUser,
-    getUser,
-    getUsers,
-    postUser,
-    putUser
+    findUser,
+    findUsers,
+    updateUser
 };

@@ -1,9 +1,9 @@
 import FormattedProps from "#types/user/FormattedProps";
-import ModelFormatter from "#types/ModelFormatter";
+import ModelFormatter from "./ModelFormatter";
 import RawProps from "#types/user/RawProps";
 import filterFalsyValues from "#utils/helpers/filterFalsyValues";
 
-class UserFormatter implements ModelFormatter<RawProps, FormattedProps> {
+class UserFormatter extends ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
         const {
             email,

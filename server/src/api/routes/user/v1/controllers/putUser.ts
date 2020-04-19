@@ -10,7 +10,7 @@ const putUser: RequestHandler = async (
 ): Promise<void> => {
     const { id } = params;
 
-    UserService.putUser(+id, body)
+    UserService.updateUser(+id, body)
         .then(user => sendResponse(response, user))
         .catch(next);
 };

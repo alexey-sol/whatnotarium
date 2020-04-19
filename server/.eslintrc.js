@@ -63,6 +63,15 @@ module.exports = {
         "space-before-function-paren": ["error", "always"]
     },
 
+    overrides: [
+        {
+            "files": [ "*.test.ts" ],
+            "rules": {
+                "max-len": ["error", { "code": 100 }]
+            }
+        }
+    ],
+
     settings: {
         "import/parsers": {
             "@typescript-eslint/parser": [".ts"]

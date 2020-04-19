@@ -1,4 +1,4 @@
-import status from "http-status";
+import { UNPROCESSABLE_ENTITY } from "http-status";
 
 import {
     createRecord,
@@ -7,15 +7,15 @@ import {
     findRecordById,
     findRecords,
     updateRecordAttributes
-} from "#utils/helpers/Model";
+} from "#utils/sql/Model";
 
 import { CreateUsersTable } from "#utils/sql/CreateTableSql";
-import { INVALID_PROPS, NOT_FOUND } from "#utils/const/validationErrors";
+import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/dbTableNames";
 import FormattedProps from "#types/user/FormattedProps";
+import Formatter from "#utils/formatters/ModelFormatter/UserFormatter";
 import Model from "#types/Model";
 import RawProps from "#types/user/RawProps";
-import Formatter from "#utils/formatters/ModelFormatter/UserFormatter";
 import UserError from "#utils/errors/UserError";
 import UserProps from "#types/user/UserProps";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
@@ -54,12 +54,12 @@ class User implements Model<FormattedProps, User> {
             propsToDb
         );
 
-        return User.formatPropsAndInstantiate(record);
+        return User.instantiate(record);
     }
 
     static async destroyById (
         id: number
-    ): Promise<boolean> | never {
+    ): Promise<number | null> | never {
         return destroyRecordById<UserProps>(USERS, id);
     }
 
@@ -75,7 +75,7 @@ class User implements Model<FormattedProps, User> {
             formattedFilter
         );
 
-        return records.map(record => User.formatPropsAndInstantiate(record));
+        return records.map(record => User.instantiate(record));
     }
 
     static async findOne (
@@ -91,7 +91,7 @@ class User implements Model<FormattedProps, User> {
         );
 
         return (record)
-            ? User.formatPropsAndInstantiate(record)
+            ? User.instantiate(record)
             : null;
     }
 
@@ -101,7 +101,7 @@ class User implements Model<FormattedProps, User> {
         const record = await findRecordById<UserProps>(USERS, id);
 
         return (record)
-            ? User.formatPropsAndInstantiate(record)
+            ? User.instantiate(record)
             : null;
     }
 
@@ -120,20 +120,20 @@ class User implements Model<FormattedProps, User> {
             propsToDb
         );
 
-        if (!record) {
-            throw new UserError(NOT_FOUND, status.NOT_FOUND);
-        }
-
-        return User.formatPropsAndInstantiate(record);
+        return User.instantiate(record);
     }
 
-    static formatPropsAndInstantiate (
+    static instantiate (
         props: RawProps
     ): User | never {
-        const formattedProps = User.formatter.fromDbCase(props);
+        const shouldFormatProps = this.formatter.isDbCase(props);
+
+        const formattedProps = (shouldFormatProps)
+            ? User.formatter.fromDbCase(props)
+            : props;
 
         if (!isUserProps(formattedProps)) {
-            throw new UserError(INVALID_PROPS, status.UNPROCESSABLE_ENTITY);
+            throw new UserError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
         return new User(formattedProps);

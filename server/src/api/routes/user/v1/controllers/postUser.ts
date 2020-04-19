@@ -8,7 +8,7 @@ const postUser: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    UserService.postUser(body)
+    UserService.createUser(body)
         .then(user => sendResponse(response, user))
         .catch(next);
 };

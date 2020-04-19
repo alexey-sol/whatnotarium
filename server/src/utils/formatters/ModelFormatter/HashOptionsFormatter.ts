@@ -1,9 +1,9 @@
 import FormattedProps from "#types/hashOptions/FormattedProps";
-import ModelFormatter from "#types/ModelFormatter";
+import ModelFormatter from "./ModelFormatter";
 import RawProps from "#types/hashOptions/RawProps";
 import filterFalsyValues from "#utils/helpers/filterFalsyValues";
 
-class HashOptionsFormatter implements ModelFormatter<RawProps, FormattedProps> {
+class HashOptionsFormatter extends ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
         const {
             digest,
