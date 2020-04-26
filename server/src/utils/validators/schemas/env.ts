@@ -1,6 +1,6 @@
 import Joi from "@hapi/joi";
 
-import { DEVELOPMENT, PRODUCTION } from "#utils/const/nodeEnv";
+import { DEVELOPMENT, PRODUCTION, TEST } from "#utils/const/nodeEnv";
 
 export default Joi.object({
     HOST: Joi
@@ -10,7 +10,7 @@ export default Joi.object({
     NODE_ENV: Joi
         .string()
         .trim()
-        .valid(DEVELOPMENT, PRODUCTION)
+        .valid(DEVELOPMENT, PRODUCTION, TEST)
         .required(),
 
     PORT: Joi
@@ -18,6 +18,10 @@ export default Joi.object({
         .required(),
 
     POSTGRES_URL: Joi
+        .string()
+        .required(),
+
+    POSTGRES_URL_TEST: Joi
         .string()
         .required(),
 

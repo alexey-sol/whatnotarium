@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx nodemon src/index.ts",
-    "test": "nyc ts-mocha -p tsconfig.json"
+    "test": "env NODE_ENV=test nyc ts-mocha -p tsconfig.json"
   },
   "author": "Alexey Soloviev",
   "license": "ISC",

@@ -1,4 +1,7 @@
 module.exports = {
     require: "module-alias/register",
-    spec: "src/**/*.test.ts"
+    spec: [
+        "src/test/setup.ts",
+        "src/**/*.test.ts"
+    ]
 };
