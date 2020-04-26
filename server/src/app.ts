@@ -14,8 +14,9 @@ async function startServer (): Promise<void> {
     const app = express();
     await loaders.init(app);
 
+    const pool = require("#connectionPool").default; // eslint-disable-line
     const { port, url } = serverConfig;
-    const { exit, nodeEnv } = new ProcessManager();
+    const { exit, nodeEnv } = new ProcessManager(pool);
 
     const server = app.listen(+port, (error) => (error)
         ? exit(error)

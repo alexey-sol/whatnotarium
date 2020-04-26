@@ -3,6 +3,9 @@ import { Client, Pool } from "pg";
 import { SIGTERM } from "#utils/const/signals";
 import logger from "#logger";
 
+const ERROR_CODE = 1;
+const SUCCESS_CODE = 0;
+
 class ProcessManager {
     constructor (
         private pg?: Client | Pool,
@@ -25,36 +28,45 @@ class ProcessManager {
             : "";
     }
 
-    exit (
+    async exit (
         loggingMessage?: Error | string,
-        code = 1
-    ): never {
+        code = ERROR_CODE
+    ): Promise<void> {
         if (loggingMessage) {
-            this.logMessage(loggingMessage);
+            this.logMessage(loggingMessage, code);
         }
 
+        await this.closeDatabaseIfNeeded();
         this.nodeProcess.exit(code);
     }
 
-    async killGracefully (loggingMessage?: Error | string): Promise<void> {
+    async killGracefully (
+        loggingMessage?: Error | string
+    ): Promise<void> {
         if (loggingMessage) {
-            this.logMessage(loggingMessage);
+            this.logMessage(loggingMessage, SUCCESS_CODE);
         }
 
-        if (this.pg) {
-            await this.pg.end();
-        }
-
+        await this.closeDatabaseIfNeeded();
         this.nodeProcess.kill(this.nodeProcess.pid, SIGTERM);
     }
 
-    private logMessage (loggingMessage: Error | string): void {
-        const isError = loggingMessage instanceof Error;
+    private logMessage (
+        loggingMessage: Error | string,
+        code: number
+    ): void {
+        const isSuccess = code === SUCCESS_CODE;
 
-        if (isError) {
-            logger.error(loggingMessage as Error);
-        } else {
+        if (isSuccess) {
             logger.info(loggingMessage as string);
+        } else {
+            logger.error(loggingMessage as Error);
+        }
+    }
+
+    private async closeDatabaseIfNeeded (): Promise<void> {
+        if (this.pg) {
+            await this.pg.end();
         }
     }
 }

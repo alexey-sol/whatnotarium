@@ -9,7 +9,7 @@ async function findRecordById<OutputType> (
         new FindById(tableName, id)
     );
 
-    return queryPayload[0];
+    return queryPayload[0] || null;
 }
 
 export default findRecordById;

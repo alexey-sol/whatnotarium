@@ -1,5 +1,6 @@
 import ProcessManager from "#utils/helpers/ProcessManager";
 import createTablesIfNotExist from "#utils/sql/createTablesIfNotExist";
+import pool from "#connectionPool";
 
 export default async function (): Promise<void> {
     try {
@@ -10,5 +11,5 @@ export default async function (): Promise<void> {
 }
 
 function logErrorAndExit (error: Error): void {
-    new ProcessManager().exit(error);
+    new ProcessManager(pool).exit(error);
 }

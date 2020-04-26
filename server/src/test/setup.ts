@@ -20,6 +20,16 @@ if (error) {
     logErrorAndExit(error);
 }
 
+const pool = require("#connectionPool").default;
+const recreateSchema = require("#utils/test/recreatePublicSchema").default;
+
+before(recreateSchema);
+after(exit);
+
 function logErrorAndExit (errorToLog: Error | string): void {
-    new ProcessManager().exit(errorToLog);
+    new ProcessManager(pool).exit(errorToLog);
+}
+
+function exit (): void {
+    new ProcessManager(pool).exit(undefined, 0);
 }
