@@ -1,84 +1,64 @@
 import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import faker from "faker";
-import proxyquire from "proxyquire";
-import sinon from "sinon";
 
+import { INVALID_PROPS } from "#utils/const/validationErrors";
+import { USERS } from "#utils/const/dbTableNames";
+import User from "#models/User";
+import UserError from "#utils/errors/UserError";
+import createUser from "#utils/test/createUser";
 import generateFakeUserProps from "#utils/test/generateFakeUserProps";
+import resetPublicSchema from "#utils/test/resetPublicSchema";
+import resetTables from "#utils/test/resetTables";
+import tableExists from "#utils/test/tableExists";
 
 chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("User", async () => {
-    describe("up", () => {
-        it("should be a function", async () => {
-            const generateSqlAndQuery = sinon.stub();
-
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/generateSqlAndQuery": {
-                    default: generateSqlAndQuery
-                }
-            }).default;
-
-            await User.up();
-            expect(generateSqlAndQuery.calledOnce).to.be.true;
-            expect(User.up).to.be.a("function");
-        });
-    });
+    beforeEach(resetTables);
 
     describe("create", () => {
         it("should add a new user to DB and return a User instance", async () => {
-            const userProps = await generateFakeUserProps();
-            const createRecord = sinon.stub().resolves(userProps);
-
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { createRecord }
-            }).default;
+            const { email, name, password } = await generateFakeUserProps();
 
             const user = await User.create({
-                email: userProps.email,
-                name: userProps.name,
-                password: userProps.password
+                email,
+                name,
+                password
             });
 
-            expect(createRecord.calledOnce).to.be.true;
             expect(User.create).to.be.a("function");
             expect(user).to.be.an("object").instanceOf(User);
-            expect(user.createdAt).to.equal(userProps.createdAt);
-            expect(user.email).to.equal(userProps.email);
-            expect(user.id).to.equal(userProps.id);
-            expect(user.name).to.equal(userProps.name);
-            expect(user.password).to.equal(userProps.password);
-            expect(user.updatedAt).to.equal(userProps.updatedAt);
+            expect(user.createdAt).instanceof(Date);
+            expect(user.email).to.equal(email);
+            expect(user.id).to.be.a("number").equal(1);
+            expect(user.name).to.equal(name);
+            expect(user.password).to.deep.equal(password);
+            expect(user.updatedAt).instanceof(Date);
         });
     });
 
     describe("destroyById", () => {
         it("should delete a user from DB and return ID of the deleted user", async () => {
-            const userId = faker.random.number({ min: 1 });
-            const destroyRecordById = sinon.stub().resolves(userId);
+            const { email, name, password } = await generateFakeUserProps();
 
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { destroyRecordById }
-            }).default;
+            const user = await User.create({
+                email,
+                name,
+                password
+            });
 
-            const result = await User.destroyById(userId);
-            expect(destroyRecordById.calledOnce).to.be.true;
+            const result = await User.destroyById(user.id);
+
             expect(User.destroyById).to.be.a("function");
-            expect(result).to.be.a("number");
-            expect(result).to.equal(userId);
+            expect(result).to.be.a("number").equal(user.id);
         });
 
-        it("should return null if there's no user with provided ID in DB", async () => {
+        it("should return null if no user with provided ID found in DB", async () => {
             const userId = faker.random.number({ min: 1 });
-            const destroyRecordById = sinon.stub().resolves(null);
-
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { destroyRecordById }
-            }).default;
-
             const result = await User.destroyById(userId);
-            expect(destroyRecordById.calledOnce).to.be.true;
+
             expect(User.destroyById).to.be.a("function");
             expect(result).to.be.a("null");
         });
@@ -86,126 +66,159 @@ describe("User", async () => {
 
     describe("find", () => {
         it("should fetch all users from DB", async () => {
-            const userProps1 = await generateFakeUserProps();
-            const userProps2 = await generateFakeUserProps();
-            const userProps3 = await generateFakeUserProps();
-            const allUserProps = [userProps1, userProps2, userProps3];
-            const findRecords = sinon.stub().resolves(allUserProps);
+            const user1 = await createUser();
+            const user2 = await createUser();
+            const user3 = await createUser();
 
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { findRecords }
-            }).default;
+            const allUsers = [user1, user2, user3];
+            const result = await User.find();
 
-            const users = await User.find();
-            expect(findRecords.calledOnce).to.be.true;
             expect(User.find).to.be.a("function");
-            expect(users)
+            expect(result)
                 .to.be.an("array")
                 .with.length(3)
-                .that.deep.include.members(allUserProps);
+                .that.deep.include.members(allUsers);
         });
 
         it("should fetch users from DB that match the search condition", async () => {
-            const userProps1 = await generateFakeUserProps({ name: "Fagin" });
-            const userProps2 = await generateFakeUserProps({ name: "Benjamin" });
-            const userProps3 = await generateFakeUserProps({ name: "Benjamin" });
-            const filteredUsers = [userProps2, userProps3];
-            const findRecords = sinon.stub().resolves(filteredUsers);
+            const user1 = await createUser({ name: "Fagin" });
+            const user2 = await createUser({ name: "Benjamin" });
+            const user3 = await createUser({ name: "Benjamin" });
 
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { findRecords }
-            }).default;
+            const filteredUsers = [user2, user3];
 
-            const users = await User.find({
+            const result = await User.find({
                 name: "Benjamin"
             });
 
-            expect(findRecords.calledOnce).to.be.true;
             expect(User.find).to.be.a("function");
-            expect(users)
+            expect(result)
                 .to.be.an("array")
                 .with.length(2)
                 .that.deep.include.members(filteredUsers)
-                .that.does.not.deep.include(userProps1);
+                .that.does.not.deep.include(user1);
+        });
+
+        it("should return an empty array if no users matching the search condition, found in DB", async () => {
+            const name = faker.name.findName();
+            const result = await User.find({ name });
+
+            expect(User.find).to.be.a("function");
+            expect(result).to.be.an("array").be.empty;
         });
     });
 
     describe("findOne", () => {
         it("should fetch a user from DB that matches the search condition", async () => {
-            const userProps = await generateFakeUserProps();
-            const findOneRecord = sinon.stub().resolves(userProps);
+            const { email, name, password } = await generateFakeUserProps();
 
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { findOneRecord }
-            }).default;
-
-            const user = await User.findOne({
-                name: userProps.name
+            await User.create({
+                email,
+                name,
+                password
             });
 
-            expect(findOneRecord.calledOnce).to.be.true;
+            const user = await User.findOne({
+                email
+            });
+
             expect(User.findOne).to.be.a("function");
             expect(user).to.be.an("object").instanceOf(User);
-            expect(user.createdAt).to.equal(userProps.createdAt);
-            expect(user.email).to.equal(userProps.email);
-            expect(user.id).to.equal(userProps.id);
-            expect(user.name).to.equal(userProps.name);
-            expect(user.password).to.equal(userProps.password);
-            expect(user.updatedAt).to.equal(userProps.updatedAt);
+            expect(user!.createdAt).instanceof(Date);
+            expect(user!.email).to.equal(email);
+            expect(user!.id).to.be.a("number").equal(1);
+            expect(user!.name).to.equal(name);
+            expect(user!.password).to.deep.equal(password);
+            expect(user!.updatedAt).instanceof(Date);
+        });
+
+        it("should return null if no user matching the search condition, found in DB", async () => {
+            const userId = faker.random.number({ min: 1 });
+
+            const result = await User.findOne({
+                id: userId
+            });
+
+            expect(User.findOne).to.be.a("function");
+            expect(result).to.be.a("null");
+        });
+    });
+
+    describe("formatPropsAndInstantiate", () => {
+        it("should return a User instance if valid user props are provided", async () => {
+            const props = await generateFakeUserProps();
+            props.createdAt = new Date();
+            props.updatedAt = new Date();
+            const user = User.formatPropsAndInstantiate(props);
+
+            expect(User.formatPropsAndInstantiate).to.be.a("function");
+            expect(user).to.be.an("object").instanceOf(User);
+            expect(user.createdAt).instanceof(Date);
+            expect(user.email).to.equal(user.email);
+            expect(user.id).to.be.a("number");
+            expect(user.name).to.equal(user.name);
+            expect(user.password).to.deep.equal(user.password);
+            expect(user.updatedAt).instanceof(Date);
+        });
+
+        it("should throw an error if invalid user props are provided", async () => {
+            const propsWithoutDates = await generateFakeUserProps();
+
+            return expect(() => User.formatPropsAndInstantiate(propsWithoutDates))
+                .to.throw(UserError)
+                .with.property("message", INVALID_PROPS);
         });
     });
 
     describe("save", () => {
         it("should save updated properties and return an updated user", async () => {
-            const originalUserProps = await generateFakeUserProps({ name: "Pip" });
-            const updatedUserProps = { ...originalUserProps, name: "Philip Pirrip" };
-            const updateRecordAttributes = sinon.stub().resolves(updatedUserProps);
-
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { updateRecordAttributes }
-            }).default;
-
-            const user = User.instantiate(originalUserProps);
+            const originalProps = await generateFakeUserProps({ name: "Pip" });
+            const user = await createUser(originalProps);
             user.name = "Philip Pirrip";
             const updatedUser = await user.save();
 
-            expect(updateRecordAttributes.calledOnce).to.be.true;
             expect(updatedUser.save).to.be.a("function");
             expect(updatedUser).to.be.an("object").instanceOf(User);
-            expect(updatedUser.createdAt).to.equal(user.createdAt);
+            expect(updatedUser.createdAt).to.deep.equal(user.createdAt);
             expect(updatedUser.email).to.equal(user.email);
             expect(updatedUser.id).to.equal(user.id);
             expect(updatedUser.name).to.equal(user.name);
-            expect(updatedUser.name).not.to.equal(originalUserProps.name);
-            expect(updatedUser.password).to.equal(user.password);
-            expect(updatedUser.updatedAt).to.equal(user.updatedAt);
+            expect(updatedUser.name).not.to.equal(originalProps.name);
+            expect(updatedUser.password).to.deep.equal(user.password);
+            expect(updatedUser.updatedAt).not.to.deep.equal(user.updatedAt);
+        });
+    });
+
+    describe("up", () => {
+        it(`should create a table called "${USERS}" in DB`, async () => {
+            await resetPublicSchema();
+            const tableExistsBeforeUp = await tableExists(USERS);
+
+            await User.up();
+            const tableExistsAfterUp = await tableExists(USERS);
+
+            expect(User.up).to.be.a("function");
+            expect(tableExistsBeforeUp).to.have.property("to_regclass").equal(null);
+            expect(tableExistsAfterUp).to.have.property("to_regclass").equal(USERS);
         });
     });
 
     describe("updateAttributes", () => {
         it("should update properties and return an updated user", async () => {
-            const originalUserProps = await generateFakeUserProps({ name: "Pip" });
-            const updatedUserProps = { ...originalUserProps, name: "Philip Pirrip" };
-            const updateRecordAttributes = sinon.stub().resolves(updatedUserProps);
-
-            const User = proxyquire.noPreserveCache()("./User", {
-                "#utils/sql/Model": { updateRecordAttributes }
-            }).default;
-
-            const user = User.instantiate(originalUserProps);
+            const originalProps = await generateFakeUserProps({ name: "Pip" });
+            const user = await User.create(originalProps);
             const updatedUser = await user.updateAttributes({ name: "Philip Pirrip" });
 
-            expect(updateRecordAttributes.calledOnce).to.be.true;
             expect(updatedUser.save).to.be.a("function");
             expect(updatedUser).to.be.an("object").instanceOf(User);
-            expect(updatedUser.createdAt).to.equal(user.createdAt);
+            expect(updatedUser.createdAt).to.deep.equal(user.createdAt);
             expect(updatedUser.email).to.equal(user.email);
             expect(updatedUser.id).to.equal(user.id);
-            expect(updatedUser.name).to.equal(updatedUserProps.name);
+            expect(updatedUser.name).to.equal(updatedUser.name);
             expect(updatedUser.name).not.to.equal(user.name);
-            expect(updatedUser.name).not.to.equal(originalUserProps.name);
-            expect(updatedUser.password).to.equal(user.password);
-            expect(updatedUser.updatedAt).to.equal(user.updatedAt);
+            expect(updatedUser.name).not.to.equal(originalProps.name);
+            expect(updatedUser.password).to.deep.equal(user.password);
+            expect(updatedUser.updatedAt).not.to.deep.equal(user.createdAt);
         });
     });
 });

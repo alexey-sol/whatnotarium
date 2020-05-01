@@ -54,7 +54,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
             propsToDb
         );
 
-        return HashOptions.instantiate(record);
+        return HashOptions.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (
@@ -76,16 +76,14 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         );
 
         return records.map(record => {
-            return HashOptions.instantiate(record);
+            return HashOptions.formatPropsAndInstantiate(record);
         });
     }
 
     static async findOne (
-        filter?: FormattedProps
+        filter: FormattedProps
     ): Promise<HashOptions | null> | never {
-        const formattedFilter = (filter)
-            ? HashOptions.formatter.toDbCase(filter)
-            : filter;
+        const formattedFilter = HashOptions.formatter.toDbCase(filter);
 
         const record = await findOneRecord<FormattedProps, HashOptionsProps>(
             HASH_OPTIONS,
@@ -93,7 +91,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         );
 
         return (record)
-            ? HashOptions.instantiate(record)
+            ? HashOptions.formatPropsAndInstantiate(record)
             : null;
     }
 
@@ -103,7 +101,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         const record = await findRecordById<HashOptionsProps>(HASH_OPTIONS, id);
 
         return (record)
-            ? HashOptions.instantiate(record)
+            ? HashOptions.formatPropsAndInstantiate(record)
             : null;
     }
 
@@ -122,10 +120,10 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
             propsToDb
         );
 
-        return HashOptions.instantiate(record);
+        return HashOptions.formatPropsAndInstantiate(record);
     }
 
-    static instantiate (
+    static formatPropsAndInstantiate (
         props: RawProps
     ): HashOptions | never {
         const shouldFormatProps = this.formatter.isDbCase(props);

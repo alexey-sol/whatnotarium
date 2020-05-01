@@ -47,14 +47,18 @@ class User implements Model<FormattedProps, User> {
     static async create (
         props: FormattedProps
     ): Promise<User> | never {
-        const propsToDb = User.formatter.toDbCase(props);
+        const propsToDb = User.formatter.toDbCase({
+            ...props,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        });
 
         const record = await createRecord<RawProps, UserProps>(
             USERS,
             propsToDb
         );
 
-        return User.instantiate(record);
+        return User.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (
@@ -75,15 +79,13 @@ class User implements Model<FormattedProps, User> {
             formattedFilter
         );
 
-        return records.map(record => User.instantiate(record));
+        return records.map(record => User.formatPropsAndInstantiate(record));
     }
 
     static async findOne (
-        filter?: FormattedProps
+        filter: FormattedProps
     ): Promise<User | null> | never {
-        const formattedFilter = (filter)
-            ? User.formatter.toDbCase(filter)
-            : filter;
+        const formattedFilter = User.formatter.toDbCase(filter);
 
         const record = await findOneRecord<FormattedProps, UserProps>(
             USERS,
@@ -91,7 +93,7 @@ class User implements Model<FormattedProps, User> {
         );
 
         return (record)
-            ? User.instantiate(record)
+            ? User.formatPropsAndInstantiate(record)
             : null;
     }
 
@@ -101,18 +103,28 @@ class User implements Model<FormattedProps, User> {
         const record = await findRecordById<UserProps>(USERS, id);
 
         return (record)
-            ? User.instantiate(record)
+            ? User.formatPropsAndInstantiate(record)
             : null;
     }
 
     async save (): Promise<User> | never {
-        return this.updateAttributes(this);
+        return this.updateAttributes({
+            ...this,
+            updatedAt: new Date()
+        });
     }
 
     async updateAttributes (
         props: FormattedProps
     ): Promise<User> | never {
-        const propsToDb = User.formatter.toDbCase(props);
+        const {
+            updatedAt = new Date()
+        } = props;
+
+        const propsToDb = User.formatter.toDbCase({
+            ...props,
+            updatedAt
+        });
 
         const record = await updateRecordAttributes<RawProps, UserProps>(
             USERS,
@@ -120,10 +132,10 @@ class User implements Model<FormattedProps, User> {
             propsToDb
         );
 
-        return User.instantiate(record);
+        return User.formatPropsAndInstantiate(record);
     }
 
-    static instantiate (
+    static formatPropsAndInstantiate (
         props: RawProps
     ): User | never {
         const shouldFormatProps = this.formatter.isDbCase(props);

@@ -67,7 +67,7 @@ module.exports = {
         {
             "files": [ "*.test.ts" ],
             "rules": {
-                "max-len": ["error", { "code": 100 }]
+                "max-len": ["error", { "code": 120 }]
             }
         }
     ],

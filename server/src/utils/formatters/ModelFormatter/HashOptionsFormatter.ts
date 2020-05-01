@@ -7,6 +7,7 @@ class HashOptionsFormatter extends ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
         const {
             digest,
+            id,
             iterations,
             keyLength,
             salt,
@@ -15,6 +16,7 @@ class HashOptionsFormatter extends ModelFormatter<RawProps, FormattedProps> {
 
         return filterFalsyValues({
             digest,
+            id,
             iterations,
             key_length: keyLength,
             salt,

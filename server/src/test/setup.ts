@@ -21,9 +21,9 @@ if (error) {
 }
 
 const pool = require("#connectionPool").default;
-const recreateSchema = require("#utils/test/recreatePublicSchema").default;
+const resetTables = require("#utils/test/resetTables").default;
 
-before(recreateSchema);
+before(resetTables);
 after(exit);
 
 function logErrorAndExit (errorToLog: Error | string): void {

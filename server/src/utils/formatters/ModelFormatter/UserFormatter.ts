@@ -7,6 +7,7 @@ class UserFormatter extends ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
         const {
             email,
+            id,
             name,
             password,
             updatedAt
@@ -14,6 +15,7 @@ class UserFormatter extends ModelFormatter<RawProps, FormattedProps> {
 
         return filterFalsyValues({
             email,
+            id,
             name,
             password,
             updated_at: updatedAt

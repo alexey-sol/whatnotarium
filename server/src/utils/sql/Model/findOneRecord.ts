@@ -2,7 +2,7 @@ import findRecords from "./findRecords";
 
 async function findOneRecord<FilterType, OutputType> (
     tableName: string,
-    filter?: FilterType
+    filter: FilterType
 ): Promise<OutputType | null> | never {
     const records = await findRecords<FilterType, OutputType>(
         tableName,
