@@ -1,8 +1,8 @@
-interface DbQueryFilter<WhereType> {
+interface DbQueryFilter<Props> {
     limit?: number;
     offset?: number;
     order?: string;
-    where?: WhereType;
+    where?: Props;
 }
 
 export default DbQueryFilter;

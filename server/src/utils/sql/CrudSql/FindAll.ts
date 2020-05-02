@@ -3,7 +3,7 @@ import DbQueryFilter from "#types/DbQueryFilter";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class FindAll<WhereType> extends CrudSql<WhereType> {
+class FindAll<Props> extends CrudSql<Props> {
     constructor (
         tableName: string,
         queryName = generateId()
@@ -11,14 +11,14 @@ class FindAll<WhereType> extends CrudSql<WhereType> {
         super(tableName, undefined, queryName);
     }
 
-    generate (filter?: DbQueryFilter<WhereType>): SqlQueryPayload {
+    generate (filter?: DbQueryFilter<Props>): SqlQueryPayload {
         return (filter)
             ? this.createQueryPayloadWithFilter(filter)
             : this.createQueryPayloadWithoutFilter();
     }
 
     private createQueryPayloadWithFilter (
-        filter: DbQueryFilter<WhereType>
+        filter: DbQueryFilter<Props>
     ): SqlQueryPayload {
         const {
             limit,

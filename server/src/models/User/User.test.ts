@@ -69,40 +69,22 @@ describe("User", async () => {
             const user1 = await createUser();
             const user2 = await createUser();
             const user3 = await createUser();
+            const expectedUsers = [user1, user2, user3];
 
-            const allUsers = [user1, user2, user3];
             const result = await User.findAll();
 
             expect(User.findAll).to.be.a("function");
             expect(result)
                 .to.be.an("array")
-                .with.length(allUsers.length)
-                .that.deep.include.members(allUsers);
-        });
-
-        it("should fetch first 2 users from DB", async () => {
-            const user1 = await createUser();
-            const user2 = await createUser();
-            const user3 = await createUser();
-            const limit = 2;
-
-            const limitedUsers = [user1, user2];
-            const result = await User.findAll({ limit });
-
-            expect(User.findAll).to.be.a("function");
-            expect(result)
-                .to.be.an("array")
-                .with.length(limit)
-                .that.deep.include.members(limitedUsers)
-                .that.does.not.deep.include(user3);
+                .with.length(expectedUsers.length)
+                .that.deep.include.members(expectedUsers);
         });
 
         it("should fetch users from DB that match search condition", async () => {
             const user1 = await createUser({ name: "Fagin" });
             const user2 = await createUser({ name: "Benjamin" });
             const user3 = await createUser({ name: "Benjamin" });
-
-            const filteredUsers = [user2, user3];
+            const expectedUsers = [user2, user3];
 
             const result = await User.findAll({
                 where: { name: "Benjamin" }
@@ -111,9 +93,107 @@ describe("User", async () => {
             expect(User.findAll).to.be.a("function");
             expect(result)
                 .to.be.an("array")
-                .with.length(filteredUsers.length)
-                .that.deep.include.members(filteredUsers)
+                .with.length(expectedUsers.length)
+                .that.deep.include.members(expectedUsers)
                 .that.does.not.deep.include(user1);
+        });
+
+        it("should fetch all users from DB in descending order by name", async () => {
+            const user1 = await createUser({ name: "Adams" });
+            const user2 = await createUser({ name: "Barley" });
+            const user3 = await createUser({ name: "Duff" });
+            const expectedUsers = [user3, user2, user1];
+
+            const result = await User.findAll({
+                order: "name DESC"
+            });
+
+            expect(User.findAll).to.be.a("function");
+            expect(result)
+                .to.be.an("array")
+                .with.length(expectedUsers.length)
+                .that.deep.ordered.members(expectedUsers);
+        });
+
+        it("should fetch first 2 users from DB", async () => {
+            const user1 = await createUser();
+            const user2 = await createUser();
+            const user3 = await createUser();
+            const limit = 2;
+            const expectedUsers = [user1, user2];
+
+            const result = await User.findAll({ limit });
+
+            expect(User.findAll).to.be.a("function");
+            expect(result)
+                .to.be.an("array")
+                .with.length(limit)
+                .that.deep.include.members(expectedUsers)
+                .that.does.not.deep.include(user3);
+        });
+
+        it("should skip 1st user and fetch rest users from DB", async () => {
+            const user1 = await createUser();
+            const user2 = await createUser();
+            const user3 = await createUser();
+            const offset = 1;
+            const expectedUsers = [user2, user3];
+
+            const result = await User.findAll({ offset });
+
+            expect(User.findAll).to.be.a("function");
+            expect(result)
+                .to.be.an("array")
+                .with.length(expectedUsers.length)
+                .that.deep.include.members(expectedUsers)
+                .that.does.not.deep.include(user1);
+        });
+
+        it("should skip 1st user and fetch next 2 users (but not more) matching search condition " +
+        "from DB, in descending order by ID", async () => {
+            await createUser({
+                id: 1,
+                name: "Nameless Ghoul"
+            });
+
+            const user2 = await createUser({
+                id: 2,
+                name: "Nameless Ghoul"
+            });
+
+            await createUser({
+                id: 3,
+                name: "Papa Nihil"
+            });
+
+            const user4 = await createUser({
+                id: 4,
+                name: "Nameless Ghoul"
+            });
+
+            await createUser({
+                id: 5,
+                name: "Nameless Ghoul"
+            });
+
+            const where = { name: "Nameless Ghoul" };
+            const limit = 2;
+            const offset = 1;
+            const order = "id DESC";
+            const expectedUsers = [user4, user2];
+
+            const result = await User.findAll({
+                limit,
+                offset,
+                order,
+                where
+            });
+
+            expect(User.findAll).to.be.a("function");
+            expect(result)
+                .to.be.an("array")
+                .with.length(expectedUsers.length)
+                .that.deep.ordered.members(expectedUsers);
         });
 
         it("should return empty array if no users matching search condition were found in DB", async () => {
@@ -169,6 +249,7 @@ describe("User", async () => {
             const props = await generateFakeUserProps();
             props.createdAt = new Date();
             props.updatedAt = new Date();
+
             const user = User.formatPropsAndInstantiate(props);
 
             expect(User.formatPropsAndInstantiate).to.be.a("function");
@@ -195,6 +276,7 @@ describe("User", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
             const user = await createUser(originalProps);
             user.name = "Philip Pirrip";
+
             const updatedUser = await user.save();
 
             expect(updatedUser.save).to.be.a("function");
@@ -227,6 +309,7 @@ describe("User", async () => {
         it("should update properties and return updated User instance", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
             const user = await User.create(originalProps);
+
             const updatedUser = await user.updateAttributes({ name: "Philip Pirrip" });
 
             expect(updatedUser.save).to.be.a("function");

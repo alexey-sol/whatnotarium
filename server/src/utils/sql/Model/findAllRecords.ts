@@ -2,11 +2,11 @@ import { FindAll } from "#utils/sql/CrudSql";
 import DbQueryFilter from "#types/DbQueryFilter";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
-async function findAllRecords<WhereType, OutputType> (
+async function findAllRecords<Props, OutputType> (
     tableName: string,
-    filter?: DbQueryFilter<WhereType>
+    filter?: DbQueryFilter<Props>
 ): Promise<OutputType[]> | never {
-    type FilterType = DbQueryFilter<WhereType>;
+    type FilterType = DbQueryFilter<Props>;
 
     const queryPayload = await generateSqlAndQuery<FilterType, OutputType>(
         new FindAll(tableName),
