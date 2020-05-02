@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("findRecords", () => {
-    it("should fetch all records from the table", async () => {
+    it("should fetch all records from table", async () => {
         const userProps1 = await generateFakeUserProps();
         const userProps2 = await generateFakeUserProps();
         const userProps3 = await generateFakeUserProps();
@@ -33,7 +33,7 @@ describe("findRecords", () => {
             .that.deep.include.members(allRecords);
     });
 
-    it("should fetch records from the table that match the search condition", async () => {
+    it("should fetch records from table that match search condition", async () => {
         const userProps1 = await generateFakeUserProps({ name: "Fagin" });
         const userProps2 = await generateFakeUserProps({ name: "Benjamin" });
         const userProps3 = await generateFakeUserProps({ name: "Benjamin" });

@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("findRecordById", () => {
-    it("should fetch a record from DB by its ID", async () => {
+    it("should fetch record from DB by its ID", async () => {
         const userProps = await generateFakeUserProps();
         const records = [userProps];
         const generateSqlAndQuery = sinon.stub().resolves(records);
@@ -39,7 +39,7 @@ describe("findRecordById", () => {
         expect(record.updatedAt).to.equal(userProps.updatedAt);
     });
 
-    it("should return null if there's no record with the given ID in the table", async () => {
+    it("should return null if no record with given ID was found in table", async () => {
         const userId = faker.random.number({ min: 1 });
         const generateSqlAndQuery = sinon.stub().resolves([]);
 

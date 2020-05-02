@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("destroyRecordById", () => {
-    it("should delete a record from DB and return its ID", async () => {
+    it("should delete record from table and return its ID", async () => {
         const userId = faker.random.number({ min: 1 });
         const records = [{ id: userId }];
         const generateSqlAndQuery = sinon.stub().resolves(records);
@@ -28,7 +28,7 @@ describe("destroyRecordById", () => {
         expect(result).to.be.a("number").equal(userId);
     });
 
-    it("should return null if there's no record with the given ID in DB", async () => {
+    it("should return null if no record with given ID was found in table", async () => {
         const userId = faker.random.number({ min: 1 });
         const generateSqlAndQuery = sinon.stub().resolves([]);
 

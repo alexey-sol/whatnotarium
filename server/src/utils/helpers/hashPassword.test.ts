@@ -11,7 +11,7 @@ const { expect } = chai;
 describe("utils -> helpers -> hashPassword", () => {
     const password = "qwerty";
 
-    it("should return a valid result object if called with full options", async () => {
+    it("should return valid result object for given full options", async () => {
         const fullOptions = {
             digest: "sha512",
             iterations: 1000,
@@ -23,7 +23,7 @@ describe("utils -> helpers -> hashPassword", () => {
         isValidResultObject(result);
     });
 
-    it("should return a valid result object if called with partial options", async () => {
+    it("should return valid result object for given partial options", async () => {
         const partialOptions = { keyLength: 16 };
         const result = await hashPassword(password, partialOptions);
         isValidResultObject(result);
@@ -34,7 +34,7 @@ describe("utils -> helpers -> hashPassword", () => {
         isValidResultObject(result);
     });
 
-    it("should throw an error if an invalid option is provided", async () => {
+    it("should throw error for given invalid option", async () => {
         const options = { keyLength: -1 };
 
         return expect(hashPassword(password, options))

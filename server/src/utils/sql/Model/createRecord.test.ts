@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("createRecord", () => {
-    it("should add a new record to DB and return it", async () => {
+    it("should add new record to table and return it", async () => {
         const userProps = await generateFakeUserProps();
         const records = [userProps];
         const generateSqlAndQuery = sinon.stub().resolves(records);

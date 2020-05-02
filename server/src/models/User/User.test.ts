@@ -19,7 +19,7 @@ describe("User", async () => {
     beforeEach(resetTables);
 
     describe("create", () => {
-        it("should add a new user to DB and return a User instance", async () => {
+        it("should add new user to DB and return User instance", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             const user = await User.create({
@@ -40,7 +40,7 @@ describe("User", async () => {
     });
 
     describe("destroyById", () => {
-        it("should delete a user from DB and return ID of the deleted user", async () => {
+        it("should delete user from DB and return ID of deleted user", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             const user = await User.create({
@@ -55,7 +55,7 @@ describe("User", async () => {
             expect(result).to.be.a("number").equal(user.id);
         });
 
-        it("should return null if no user with provided ID found in DB", async () => {
+        it("should return null if no user found in DB for given ID", async () => {
             const userId = faker.random.number({ min: 1 });
             const result = await User.destroyById(userId);
 
@@ -80,7 +80,7 @@ describe("User", async () => {
                 .that.deep.include.members(allUsers);
         });
 
-        it("should fetch users from DB that match the search condition", async () => {
+        it("should fetch users from DB that match search condition", async () => {
             const user1 = await createUser({ name: "Fagin" });
             const user2 = await createUser({ name: "Benjamin" });
             const user3 = await createUser({ name: "Benjamin" });
@@ -99,7 +99,7 @@ describe("User", async () => {
                 .that.does.not.deep.include(user1);
         });
 
-        it("should return an empty array if no users matching the search condition, found in DB", async () => {
+        it("should return empty array if no users matching search condition were found in DB", async () => {
             const name = faker.name.findName();
             const result = await User.find({ name });
 
@@ -109,7 +109,7 @@ describe("User", async () => {
     });
 
     describe("findOne", () => {
-        it("should fetch a user from DB that matches the search condition", async () => {
+        it("should fetch user from DB that matches search condition", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             await User.create({
@@ -132,7 +132,7 @@ describe("User", async () => {
             expect(user!.updatedAt).instanceof(Date);
         });
 
-        it("should return null if no user matching the search condition, found in DB", async () => {
+        it("should return null if no user matching search condition was found in DB", async () => {
             const userId = faker.random.number({ min: 1 });
 
             const result = await User.findOne({
@@ -145,7 +145,7 @@ describe("User", async () => {
     });
 
     describe("formatPropsAndInstantiate", () => {
-        it("should return a User instance if valid user props are provided", async () => {
+        it("should return User instance if valid user props were given", async () => {
             const props = await generateFakeUserProps();
             props.createdAt = new Date();
             props.updatedAt = new Date();
@@ -161,7 +161,7 @@ describe("User", async () => {
             expect(user.updatedAt).instanceof(Date);
         });
 
-        it("should throw an error if invalid user props are provided", async () => {
+        it("should throw error if invalid user props were given", async () => {
             const propsWithoutDates = await generateFakeUserProps();
 
             return expect(() => User.formatPropsAndInstantiate(propsWithoutDates))
@@ -171,7 +171,7 @@ describe("User", async () => {
     });
 
     describe("save", () => {
-        it("should save updated properties and return an updated user", async () => {
+        it("should save updated properties and return updated User instance", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
             const user = await createUser(originalProps);
             user.name = "Philip Pirrip";
@@ -190,7 +190,7 @@ describe("User", async () => {
     });
 
     describe("up", () => {
-        it(`should create a table called "${USERS}" in DB`, async () => {
+        it(`should create table called "${USERS}" in DB`, async () => {
             await resetPublicSchema();
             const tableExistsBeforeUp = await tableExists(USERS);
 
@@ -204,7 +204,7 @@ describe("User", async () => {
     });
 
     describe("updateAttributes", () => {
-        it("should update properties and return an updated user", async () => {
+        it("should update properties and return updated User instance", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
             const user = await User.create(originalProps);
             const updatedUser = await user.updateAttributes({ name: "Philip Pirrip" });

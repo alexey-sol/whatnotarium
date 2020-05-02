@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("findOneRecord", () => {
-    it("should fetch a record from DB that matches the search condition", async () => {
+    it("should fetch record from table that matches search condition", async () => {
         const userProps = await generateFakeUserProps();
         const depResult = [userProps];
         const findRecords = sinon.stub().resolves(depResult);

@@ -10,7 +10,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("updateRecordAttributes", () => {
-    it("should update the record and return it", async () => {
+    it("should update record and return it", async () => {
         const originalProps = await generateFakeUserProps({ name: "Pip" });
         const updatedProps = { ...originalProps, name: "Philip Pirrip" };
         const records = [updatedProps];
