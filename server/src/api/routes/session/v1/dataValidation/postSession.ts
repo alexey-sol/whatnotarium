@@ -14,7 +14,9 @@ const postSession: RequestHandler = async (
     const { currentPassword, email } = body;
 
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({
+            where: { email }
+        });
 
         if (!user) {
             throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);

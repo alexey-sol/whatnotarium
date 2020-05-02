@@ -30,6 +30,9 @@ export default postUser;
 async function checkIfAlreadyExists (
     email: string
 ): Promise<boolean> | never {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({
+        where: { email }
+    });
+
     return Boolean(user);
 }

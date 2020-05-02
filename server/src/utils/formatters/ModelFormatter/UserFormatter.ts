@@ -6,6 +6,7 @@ import filterFalsyValues from "#utils/helpers/filterFalsyValues";
 class UserFormatter extends ModelFormatter<RawProps, FormattedProps> {
     toDbCase (props: FormattedProps): RawProps {
         const {
+            createdAt,
             email,
             id,
             name,
@@ -14,6 +15,7 @@ class UserFormatter extends ModelFormatter<RawProps, FormattedProps> {
         } = props;
 
         return filterFalsyValues({
+            created_at: createdAt,
             email,
             id,
             name,
@@ -23,6 +25,12 @@ class UserFormatter extends ModelFormatter<RawProps, FormattedProps> {
     }
 
     fromDbCase (props: RawProps): FormattedProps {
+        const shouldFormatProps = this.isDbCase(props);
+
+        if (!shouldFormatProps) {
+            return props;
+        }
+
         const {
             created_at,
             email,

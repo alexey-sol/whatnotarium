@@ -13,11 +13,11 @@ describe("findOneRecord", () => {
     it("should fetch record from table that matches search condition", async () => {
         const userProps = await generateFakeUserProps();
         const depResult = [userProps];
-        const findRecords = sinon.stub().resolves(depResult);
+        const findAllRecords = sinon.stub().resolves(depResult);
 
         const findOneRecord = proxyquire.noPreserveCache()("./findOneRecord", {
-            "./findRecords": {
-                default: findRecords
+            "./findAllRecords": {
+                default: findAllRecords
             }
         }).default;
 
@@ -25,7 +25,7 @@ describe("findOneRecord", () => {
             name: userProps.name
         });
 
-        expect(findRecords.calledOnce).to.be.true;
+        expect(findAllRecords.calledOnce).to.be.true;
         expect(findOneRecord).to.be.a("function");
         expect(record).to.be.an("object");
         expect(record.createdAt).to.equal(userProps.createdAt);

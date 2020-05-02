@@ -25,6 +25,12 @@ class HashOptionsFormatter extends ModelFormatter<RawProps, FormattedProps> {
     }
 
     fromDbCase (props: RawProps): FormattedProps {
+        const shouldFormatProps = this.isDbCase(props);
+
+        if (!shouldFormatProps) {
+            return props;
+        }
+
         const {
             digest,
             id,

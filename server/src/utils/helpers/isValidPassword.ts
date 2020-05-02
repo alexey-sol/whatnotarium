@@ -7,7 +7,11 @@ async function isValidPassword (
     user: User
 ): Promise<boolean> | never {
     const { id, password } = user;
-    const hashOptions = await HashOptions.findOne({ userId: id });
+    const findOneHashOptionsWhere = { userId: id };
+
+    const hashOptions = await HashOptions.findOne({
+        where: findOneHashOptionsWhere
+    });
 
     if (!hashOptions) {
         return false;

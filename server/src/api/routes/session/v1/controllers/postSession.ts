@@ -12,7 +12,10 @@ const postSession: RequestHandler = async (
     const { email } = request.body;
 
     try {
-        const user = await User.findOne({ email }) as User;
+        const user = await User.findOne({
+            where: { email }
+        }) as User;
+
         const session = new RequestSession(request);
 
         if (!session.isAuthed()) {

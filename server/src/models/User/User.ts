@@ -3,21 +3,23 @@ import { UNPROCESSABLE_ENTITY } from "http-status";
 import {
     createRecord,
     destroyRecordById,
+    findAllRecords,
     findOneRecord,
     findRecordById,
-    findRecords,
     updateRecordAttributes
 } from "#utils/sql/Model";
 
 import { CreateUsersTable } from "#utils/sql/CreateTableSql";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/dbTableNames";
+import DbQueryFilter from "#types/DbQueryFilter";
 import FormattedProps from "#types/user/FormattedProps";
 import Formatter from "#utils/formatters/ModelFormatter/UserFormatter";
 import Model from "#types/Model";
 import RawProps from "#types/user/RawProps";
 import UserError from "#utils/errors/UserError";
 import UserProps from "#types/user/UserProps";
+import formatDbQueryFilter from "#utils/formatters/formatDbQueryFilter";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserProps from "#utils/typeGuards/isUserProps";
 
@@ -47,10 +49,15 @@ class User implements Model<FormattedProps, User> {
     static async create (
         props: FormattedProps
     ): Promise<User> | never {
+        const {
+            createdAt = new Date(),
+            updatedAt = new Date()
+        } = props;
+
         const propsToDb = User.formatter.toDbCase({
             ...props,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            createdAt,
+            updatedAt
         });
 
         const record = await createRecord<RawProps, UserProps>(
@@ -67,29 +74,31 @@ class User implements Model<FormattedProps, User> {
         return destroyRecordById<UserProps>(USERS, id);
     }
 
-    static async find (
-        filter?: FormattedProps
+    static async findAll (
+        filter?: DbQueryFilter<FormattedProps>
     ): Promise<User[]> | never {
-        const formattedFilter = (filter)
-            ? User.formatter.toDbCase(filter)
-            : filter;
+        const updatedFilter = formatDbQueryFilter(User.formatter, filter);
 
-        const records = await findRecords<FormattedProps, UserProps>(
+        const records = await findAllRecords<RawProps, UserProps>(
             USERS,
-            formattedFilter
+            updatedFilter
         );
 
         return records.map(record => User.formatPropsAndInstantiate(record));
     }
 
     static async findOne (
-        filter: FormattedProps
+        filter: DbQueryFilter<FormattedProps>
     ): Promise<User | null> | never {
-        const formattedFilter = User.formatter.toDbCase(filter);
+        if (!filter.where) {
+            return null;
+        }
 
-        const record = await findOneRecord<FormattedProps, UserProps>(
+        const updatedFilter = formatDbQueryFilter(User.formatter, filter);
+
+        const record = await findOneRecord<RawProps, UserProps>(
             USERS,
-            formattedFilter
+            updatedFilter
         );
 
         return (record)
@@ -138,17 +147,13 @@ class User implements Model<FormattedProps, User> {
     static formatPropsAndInstantiate (
         props: RawProps
     ): User | never {
-        const shouldFormatProps = this.formatter.isDbCase(props);
+        const propsFromDb = User.formatter.fromDbCase(props);
 
-        const formattedProps = (shouldFormatProps)
-            ? User.formatter.fromDbCase(props)
-            : props;
-
-        if (!isUserProps(formattedProps)) {
+        if (!isUserProps(propsFromDb)) {
             throw new UserError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
-        return new User(formattedProps);
+        return new User(propsFromDb);
     }
 }
 

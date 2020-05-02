@@ -64,20 +64,37 @@ describe("User", async () => {
         });
     });
 
-    describe("find", () => {
+    describe("findAll", () => {
         it("should fetch all users from DB", async () => {
             const user1 = await createUser();
             const user2 = await createUser();
             const user3 = await createUser();
 
             const allUsers = [user1, user2, user3];
-            const result = await User.find();
+            const result = await User.findAll();
 
-            expect(User.find).to.be.a("function");
+            expect(User.findAll).to.be.a("function");
             expect(result)
                 .to.be.an("array")
-                .with.length(3)
+                .with.length(allUsers.length)
                 .that.deep.include.members(allUsers);
+        });
+
+        it("should fetch first 2 users from DB", async () => {
+            const user1 = await createUser();
+            const user2 = await createUser();
+            const user3 = await createUser();
+            const limit = 2;
+
+            const limitedUsers = [user1, user2];
+            const result = await User.findAll({ limit });
+
+            expect(User.findAll).to.be.a("function");
+            expect(result)
+                .to.be.an("array")
+                .with.length(limit)
+                .that.deep.include.members(limitedUsers)
+                .that.does.not.deep.include(user3);
         });
 
         it("should fetch users from DB that match search condition", async () => {
@@ -87,23 +104,26 @@ describe("User", async () => {
 
             const filteredUsers = [user2, user3];
 
-            const result = await User.find({
-                name: "Benjamin"
+            const result = await User.findAll({
+                where: { name: "Benjamin" }
             });
 
-            expect(User.find).to.be.a("function");
+            expect(User.findAll).to.be.a("function");
             expect(result)
                 .to.be.an("array")
-                .with.length(2)
+                .with.length(filteredUsers.length)
                 .that.deep.include.members(filteredUsers)
                 .that.does.not.deep.include(user1);
         });
 
         it("should return empty array if no users matching search condition were found in DB", async () => {
             const name = faker.name.findName();
-            const result = await User.find({ name });
 
-            expect(User.find).to.be.a("function");
+            const result = await User.findAll({
+                where: { name }
+            });
+
+            expect(User.findAll).to.be.a("function");
             expect(result).to.be.an("array").be.empty;
         });
     });
@@ -119,7 +139,7 @@ describe("User", async () => {
             });
 
             const user = await User.findOne({
-                email
+                where: { email }
             });
 
             expect(User.findOne).to.be.a("function");
@@ -133,10 +153,10 @@ describe("User", async () => {
         });
 
         it("should return null if no user matching search condition was found in DB", async () => {
-            const userId = faker.random.number({ min: 1 });
+            const id = faker.random.number({ min: 1 });
 
             const result = await User.findOne({
-                id: userId
+                where: { id }
             });
 
             expect(User.findOne).to.be.a("function");

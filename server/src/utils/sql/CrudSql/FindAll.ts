@@ -1,8 +1,9 @@
 import CrudSql from "./CrudSql";
+import DbQueryFilter from "#types/DbQueryFilter";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class Find<FilterType> extends CrudSql<FilterType> {
+class FindAll<WhereType> extends CrudSql<WhereType> {
     constructor (
         tableName: string,
         queryName = generateId()
@@ -10,21 +11,28 @@ class Find<FilterType> extends CrudSql<FilterType> {
         super(tableName, undefined, queryName);
     }
 
-    generate (filter?: FilterType): SqlQueryPayload {
+    generate (filter?: DbQueryFilter<WhereType>): SqlQueryPayload {
         return (filter)
             ? this.createQueryPayloadWithFilter(filter)
             : this.createQueryPayloadWithoutFilter();
     }
 
     private createQueryPayloadWithFilter (
-        filter: FilterType
+        filter: DbQueryFilter<WhereType>
     ): SqlQueryPayload {
-        const fieldNames = Object.keys(filter);
-        const fieldValues = Object.values(filter);
+        const {
+            limit,
+            offset,
+            order,
+            where = {}
+        } = filter;
+
+        const fieldNames = Object.keys(where);
+        const fieldValues = Object.values(where);
 
         return {
             name: this.queryName,
-            text: this.getText(fieldNames),
+            text: this.getText(fieldNames, order, limit, offset),
             values: this.getValues(fieldValues)
         };
     }
@@ -36,22 +44,38 @@ class Find<FilterType> extends CrudSql<FilterType> {
         };
     }
 
-    private getText (fieldNames?: string[]): string {
+    private getText (
+        fieldNames?: string[],
+        order?: string,
+        limit?: number,
+        offset?: number
+    ): string {
         let whereElement = "";
-        let orderElement = "";
 
-        if (fieldNames) {
+        if (fieldNames?.length) {
             const whereClause = this.createWhereClause(fieldNames);
             whereElement += `WHERE ${whereClause}`;
-        } else {
-            orderElement += "ORDER BY id ASC";
         }
+
+        const orderElement = (order)
+            ? `ORDER BY ${order}`
+            : "";
+
+        const limitElement = (limit)
+            ? `LIMIT ${limit}`
+            : "";
+
+        const offsetElement = (offset)
+            ? `OFFSET ${offset}`
+            : "";
 
         return `
             SELECT *
             FROM ${this.tableName}
             ${whereElement}
-            ${orderElement};
+            ${orderElement}
+            ${limitElement}
+            ${offsetElement};
         `;
     }
 
@@ -70,4 +94,4 @@ class Find<FilterType> extends CrudSql<FilterType> {
     }
 }
 
-export default Find;
+export default FindAll;

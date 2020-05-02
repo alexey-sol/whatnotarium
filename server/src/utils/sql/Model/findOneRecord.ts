@@ -1,12 +1,18 @@
-import findRecords from "./findRecords";
+import DbQueryFilter from "#types/DbQueryFilter";
+import findAllRecords from "./findAllRecords";
 
-async function findOneRecord<FilterType, OutputType> (
+async function findOneRecord<WhereType, OutputType> (
     tableName: string,
-    filter: FilterType
+    filter: DbQueryFilter<WhereType>
 ): Promise<OutputType | null> | never {
-    const records = await findRecords<FilterType, OutputType>(
+    const filterWithLimit = {
+        ...filter,
+        limit: 1
+    };
+
+    const records = await findAllRecords<WhereType, OutputType>(
         tableName,
-        filter
+        filterWithLimit
     );
 
     return records[0];

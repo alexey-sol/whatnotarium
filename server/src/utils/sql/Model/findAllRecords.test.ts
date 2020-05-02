@@ -9,7 +9,7 @@ import generateFakeUserProps from "#utils/test/generateFakeUserProps";
 chai.use(chaiAsPromised);
 const { expect } = chai;
 
-describe("findRecords", () => {
+describe("findAllRecords", () => {
     it("should fetch all records from table", async () => {
         const userProps1 = await generateFakeUserProps();
         const userProps2 = await generateFakeUserProps();
@@ -17,19 +17,19 @@ describe("findRecords", () => {
         const allRecords = [userProps1, userProps2, userProps3];
         const generateSqlAndQuery = sinon.stub().resolves(allRecords);
 
-        const findRecords = proxyquire.noPreserveCache()("./findRecords", {
+        const findAllRecords = proxyquire.noPreserveCache()("./findAllRecords", {
             "#utils/sql/generateSqlAndQuery": {
                 default: generateSqlAndQuery
             }
         }).default;
 
-        const users = await findRecords(USERS);
+        const users = await findAllRecords(USERS);
 
         expect(generateSqlAndQuery.calledOnce).to.be.true;
-        expect(findRecords).to.be.a("function");
+        expect(findAllRecords).to.be.a("function");
         expect(users)
             .to.be.an("array")
-            .with.length(3)
+            .with.length(allRecords.length)
             .that.deep.include.members(allRecords);
     });
 
@@ -40,21 +40,21 @@ describe("findRecords", () => {
         const filteredRecords = [userProps2, userProps3];
         const generateSqlAndQuery = sinon.stub().resolves(filteredRecords);
 
-        const findRecords = proxyquire.noPreserveCache()("./findRecords", {
+        const findAllRecords = proxyquire.noPreserveCache()("./findAllRecords", {
             "#utils/sql/generateSqlAndQuery": {
                 default: generateSqlAndQuery
             }
         }).default;
 
-        const users = await findRecords(USERS, {
+        const users = await findAllRecords(USERS, {
             name: "Benjamin"
         });
 
         expect(generateSqlAndQuery.calledOnce).to.be.true;
-        expect(findRecords).to.be.a("function");
+        expect(findAllRecords).to.be.a("function");
         expect(users)
             .to.be.an("array")
-            .with.length(2)
+            .with.length(filteredRecords.length)
             .that.deep.include.members(filteredRecords)
             .that.does.not.deep.include(userProps1);
     });

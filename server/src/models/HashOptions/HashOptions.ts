@@ -3,21 +3,23 @@ import { UNPROCESSABLE_ENTITY } from "http-status";
 import {
     createRecord,
     destroyRecordById,
+    findAllRecords,
     findOneRecord,
     findRecordById,
-    findRecords,
     updateRecordAttributes
 } from "#utils/sql/Model";
 
 import { CreateHashOptionsTable } from "#utils/sql/CreateTableSql";
 import { HASH_OPTIONS } from "#utils/const/dbTableNames";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
+import DbQueryFilter from "#types/DbQueryFilter";
 import FormattedProps from "#types/hashOptions/FormattedProps";
 import Formatter from "#utils/formatters/ModelFormatter/HashOptionsFormatter";
 import HashOptionsError from "#utils/errors/HashOptionsError";
 import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
 import Model from "#types/Model";
 import RawProps from "#types/hashOptions/RawProps";
+import formatDbQueryFilter from "#utils/formatters/formatDbQueryFilter";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isHashOptionsProps from "#utils/typeGuards/isHashOptionsProps";
 
@@ -63,16 +65,17 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
         return destroyRecordById<HashOptionsProps>(HASH_OPTIONS, id);
     }
 
-    static async find (
-        filter?: FormattedProps
+    static async findAll (
+        filter?: DbQueryFilter<FormattedProps>
     ): Promise<HashOptions[]> | never {
-        const formattedFilter = (filter)
-            ? HashOptions.formatter.toDbCase(filter)
-            : filter;
+        const updatedFilter = formatDbQueryFilter(
+            HashOptions.formatter,
+            filter
+        );
 
-        const records = await findRecords<FormattedProps, HashOptionsProps>(
+        const records = await findAllRecords<FormattedProps, HashOptionsProps>(
             HASH_OPTIONS,
-            formattedFilter
+            updatedFilter
         );
 
         return records.map(record => {
@@ -81,13 +84,20 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     }
 
     static async findOne (
-        filter: FormattedProps
+        filter: DbQueryFilter<FormattedProps>
     ): Promise<HashOptions | null> | never {
-        const formattedFilter = HashOptions.formatter.toDbCase(filter);
+        if (!filter.where) {
+            return null;
+        }
+
+        const updatedFilter = formatDbQueryFilter(
+            HashOptions.formatter,
+            filter
+        );
 
         const record = await findOneRecord<FormattedProps, HashOptionsProps>(
             HASH_OPTIONS,
-            formattedFilter
+            updatedFilter
         );
 
         return (record)
@@ -126,17 +136,13 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     static formatPropsAndInstantiate (
         props: RawProps
     ): HashOptions | never {
-        const shouldFormatProps = this.formatter.isDbCase(props);
+        const propsFromDb = HashOptions.formatter.fromDbCase(props);
 
-        const formattedProps = (shouldFormatProps)
-            ? HashOptions.formatter.fromDbCase(props)
-            : props;
-
-        if (!isHashOptionsProps(formattedProps)) {
+        if (!isHashOptionsProps(propsFromDb)) {
             throw new HashOptionsError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
-        return new HashOptions(formattedProps);
+        return new HashOptions(propsFromDb);
     }
 }
 

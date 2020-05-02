@@ -47,9 +47,12 @@ export default async function (
 }
 
 async function updateHashOptions (
-    id: number,
+    userId: number,
     hashPasswordOptions: HashPasswordOptions
 ): Promise<void> {
-    const hashOptions = await HashOptions.findOne({ userId: id });
+    const hashOptions = await HashOptions.findOne({
+        where: { userId }
+    });
+
     await hashOptions?.updateAttributes(hashPasswordOptions);
 }

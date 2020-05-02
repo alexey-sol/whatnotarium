@@ -17,9 +17,7 @@ export default async function (
 
     const user = await User.create({
         ...props,
-        createdAt: new Date(),
-        password: hash,
-        updatedAt: new Date()
+        password: hash
     });
 
     await HashOptions.create({
