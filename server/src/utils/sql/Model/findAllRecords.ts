@@ -1,4 +1,4 @@
-import { FindAll } from "#utils/sql/CrudSql";
+import { FindAll } from "#utils/sql/ModelSqlGenerator";
 import DbQueryFilter from "#types/DbQueryFilter";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 

@@ -1,4 +1,4 @@
-import { Create } from "#utils/sql/CrudSql";
+import { Create } from "#utils/sql/ModelSqlGenerator";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
 async function createRecord<InputType, OutputType> (

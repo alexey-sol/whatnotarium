@@ -1,8 +1,8 @@
-import CrudSql from "./CrudSql";
+import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class UpdateAttributes<InputType> extends CrudSql<InputType> {
+class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
     constructor (
         tableName: string,
         recordId: number,
@@ -21,7 +21,7 @@ class UpdateAttributes<InputType> extends CrudSql<InputType> {
         };
     }
 
-    private getText (
+    protected getText (
         props: InputType
     ): string {
         const { setClause, andClause } = this.createClauses(props);

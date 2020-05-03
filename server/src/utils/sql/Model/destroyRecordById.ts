@@ -1,4 +1,4 @@
-import { DestroyById } from "#utils/sql/CrudSql";
+import { DestroyById } from "#utils/sql/ModelSqlGenerator";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
 async function destroyRecordById<OutputType> (

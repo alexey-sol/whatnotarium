@@ -1,9 +1,9 @@
-import CrudSql from "./CrudSql";
 import DbQueryFilter from "#types/DbQueryFilter";
+import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class FindAll<Props> extends CrudSql<Props> {
+class FindAll<InputType> extends ModelSqlGenerator<InputType> {
     constructor (
         tableName: string,
         queryName = generateId()
@@ -11,28 +11,21 @@ class FindAll<Props> extends CrudSql<Props> {
         super(tableName, undefined, queryName);
     }
 
-    generate (filter?: DbQueryFilter<Props>): SqlQueryPayload {
+    generate (filter?: DbQueryFilter<InputType>): SqlQueryPayload {
         return (filter)
             ? this.createQueryPayloadWithFilter(filter)
             : this.createQueryPayloadWithoutFilter();
     }
 
     private createQueryPayloadWithFilter (
-        filter: DbQueryFilter<Props>
+        filter: DbQueryFilter<InputType>
     ): SqlQueryPayload {
-        const {
-            limit,
-            offset,
-            order,
-            where = {}
-        } = filter;
-
-        const fieldNames = Object.keys(where);
+        const { where = {} } = filter;
         const fieldValues = Object.values(where);
 
         return {
             name: this.queryName,
-            text: this.getText(fieldNames, order, limit, offset),
+            text: this.getText(filter),
             values: this.getValues(fieldValues)
         };
     }
@@ -44,12 +37,17 @@ class FindAll<Props> extends CrudSql<Props> {
         };
     }
 
-    private getText (
-        fieldNames?: string[],
-        order?: string,
-        limit?: number,
-        offset?: number
+    protected getText (
+        filter: DbQueryFilter<InputType> = {}
     ): string {
+        const {
+            limit,
+            offset,
+            order,
+            where = {}
+        } = filter;
+
+        const fieldNames = Object.keys(where);
         let whereElement = "";
 
         if (fieldNames?.length) {

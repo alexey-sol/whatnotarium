@@ -9,7 +9,7 @@ import {
     updateRecordAttributes
 } from "#utils/sql/Model";
 
-import { CreateUsersTable } from "#utils/sql/CreateTableSql";
+import { CreateUsersTable } from "#utils/sql/SchemaSqlGenerator";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/dbTableNames";
 import DbQueryFilter from "#types/DbQueryFilter";

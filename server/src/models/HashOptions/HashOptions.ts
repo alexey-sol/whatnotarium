@@ -9,7 +9,7 @@ import {
     updateRecordAttributes
 } from "#utils/sql/Model";
 
-import { CreateHashOptionsTable } from "#utils/sql/CreateTableSql";
+import { CreateHashOptionsTable } from "#utils/sql/SchemaSqlGenerator";
 import { HASH_OPTIONS } from "#utils/const/dbTableNames";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import DbQueryFilter from "#types/DbQueryFilter";

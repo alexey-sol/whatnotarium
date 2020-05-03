@@ -1,8 +1,8 @@
-import CrudSql from "./CrudSql";
+import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class Create<InputType> extends CrudSql<InputType> {
+class Create<InputType> extends ModelSqlGenerator<InputType> {
     constructor (
         tableName: string,
         queryName = generateId()
@@ -20,7 +20,7 @@ class Create<InputType> extends CrudSql<InputType> {
         };
     }
 
-    private getText (
+    protected getText (
         props: InputType
     ): string {
         const insertIntoClause = this.createInsertIntoClause(props);

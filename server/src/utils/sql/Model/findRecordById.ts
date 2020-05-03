@@ -1,4 +1,4 @@
-import { FindById } from "#utils/sql/CrudSql";
+import { FindById } from "#utils/sql/ModelSqlGenerator";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
 async function findRecordById<OutputType> (

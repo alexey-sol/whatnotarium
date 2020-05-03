@@ -1,8 +1,8 @@
-import CrudSql from "./CrudSql";
+import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
 
-class DestroyById extends CrudSql<unknown> {
+class DestroyById extends ModelSqlGenerator<unknown> {
     constructor (
         tableName: string,
         recordId: number,
@@ -19,7 +19,7 @@ class DestroyById extends CrudSql<unknown> {
         };
     }
 
-    private getText (): string {
+    protected getText (): string {
         return `
             DELETE FROM ${this.tableName}
             WHERE id = $1

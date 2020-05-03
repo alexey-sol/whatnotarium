@@ -1,8 +1,9 @@
+import DbQueryFilter from "#types/DbQueryFilter";
 import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import isObject from "#utils/typeGuards/isObject";
 
-abstract class CrudSql<InputType> implements SqlGenerator<InputType> {
+abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     protected offset: number;
 
     constructor (
@@ -15,6 +16,10 @@ abstract class CrudSql<InputType> implements SqlGenerator<InputType> {
     }
 
     abstract generate (input?: InputType): SqlQueryPayload;
+
+    protected abstract getText (
+        props?: InputType | DbQueryFilter<InputType>
+    ): string;
 
     protected getValues (input: InputType): string[];
     protected getValues (input?: unknown[]): string[];
@@ -34,4 +39,4 @@ abstract class CrudSql<InputType> implements SqlGenerator<InputType> {
     }
 }
 
-export default CrudSql;
+export default ModelSqlGenerator;

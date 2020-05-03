@@ -1,4 +1,4 @@
-import { UpdateAttributes } from "#utils/sql/CrudSql";
+import { UpdateAttributes } from "#utils/sql/ModelSqlGenerator";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
 async function updateRecordAttributes<InputType, OutputType> (
