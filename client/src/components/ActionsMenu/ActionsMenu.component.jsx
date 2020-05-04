@@ -16,6 +16,7 @@ import {
 } from "components/IconButton";
 
 import { SignInDialog, SignUpDialog } from "components/Dialog";
+import SignInContext from "context/SignInContext";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./ActionsMenu.module.scss";
@@ -36,6 +37,7 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
 
     const hideSignIn = useCallback(() => setSignInIsShown(false), []);
     const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
+    const showSignUp = useCallback(() => setSignUpIsShown(true), []);
 
     useEffect(() => {
         const hasUser = currentUser?.id;
@@ -87,16 +89,18 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
             </div>
 
             {signInIsShown && (
-                <SignInDialog
-                    onClose={hideSignIn}
-                    showSignUpDialog={() => setSignUpIsShown(true)}
-                />
+                <SignInContext.Provider
+                    value={{
+                        onClose: hideSignIn,
+                        showSignUp
+                    }}
+                >
+                    <SignInDialog onClose={hideSignIn} />
+                </SignInContext.Provider>
             )}
 
             {signUpIsShown && (
-                <SignUpDialog
-                    onClose={hideSignUp}
-                />
+                <SignUpDialog onClose={hideSignUp} />
             )}
         </div>
     );

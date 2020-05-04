@@ -1,5 +1,5 @@
 import { Redirect } from "react-router";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -7,6 +7,7 @@ import { CURRENT_PASSWORD, EMAIL } from "utils/const/userData";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
+import SignInContext from "context/SignInContext";
 import { defaultProps, propTypes } from "./SignInContent.props";
 import { resetUserError, signInStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
@@ -29,12 +30,12 @@ const initialProps = {
 
 function SignInContent ({
     currentUser,
-    onClose,
     onResetUserError,
     onSignInStart,
-    showSignUpDialog,
     userError
 }) {
+    const { onClose, showSignUp } = useContext(SignInContext);
+
     const initialErrors = {
         ...initialProps,
         email: userError?.message?.email
@@ -82,7 +83,7 @@ function SignInContent ({
         event.preventDefault();
 
         if (onClose) onClose();
-        showSignUpDialog();
+        showSignUp();
     };
 
     const signInUsingYandex = () => {

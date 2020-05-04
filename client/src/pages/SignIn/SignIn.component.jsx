@@ -10,7 +10,7 @@ function Home () {
     return (
         <div className={styles.container}>
             <SignInContent
-                showSignUpDialog={() => setSignUpIsShown(true)}
+                showSignUp={() => setSignUpIsShown(true)}
             />
 
             {signUpIsShown && (

@@ -6,17 +6,14 @@ import { propTypes } from "./SignInDialog.props";
 
 SignInDialog.propTypes = propTypes;
 
-function SignInDialog ({ onClose, showSignUpDialog }) {
+function SignInDialog ({ onClose }) {
     return (
         <BaseDialog
             onClose={onClose}
             title="Вход"
             width="fixed"
         >
-            <SignInContent
-                onClose={onClose}
-                showSignUpDialog={showSignUpDialog}
-            />
+            <SignInContent />
         </BaseDialog>
     );
 }

@@ -29,12 +29,11 @@ function Menu () {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    const hideUserMenu = useCallback(() => setUserMenuIsShown(false), []);
     const showUserMenu = useCallback(() => setUserMenuIsShown(true), []);
 
     const renderUserMenu = () => (
-        <UserMenu
-            onClose={() => setUserMenuIsShown(false)}
-        />
+        <UserMenu onClose={hideUserMenu} />
     );
 
     const renderCommonMenu = () => (

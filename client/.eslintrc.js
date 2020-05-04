@@ -76,6 +76,7 @@ module.exports = {
         "import/resolver": {
             alias: [
                 ["components", "./src/components"],
+                ["context", "./src/context"],
                 ["pages", "./src/pages"],
                 ["redux", "./src/redux"],
                 ["styles", "./src/styles"],
