@@ -1,7 +1,7 @@
 module.exports = {
     env: {
         es6: true,
-        node: true,
+        node: true
     },
 
     extends: [
@@ -43,12 +43,14 @@ module.exports = {
         "comma-dangle": ["error", "never"],
         "consistent-return": 0,
         "function-paren-newline": 0,
+        "generator-star-spacing": ["error", {"before": true, "after": true}],
         "import/extensions": 0,
         "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
         "import/prefer-default-export": 0,
         "import/order": 0,
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "no-confusing-arrow": 0,
+        "no-else-return": 0,
         "no-restricted-syntax": 0,
         "no-use-before-define": 0,
         "quotes": [2, "double"],

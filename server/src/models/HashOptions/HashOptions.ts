@@ -10,11 +10,11 @@ import {
 } from "#utils/sql/Model";
 
 import { CreateHashOptionsTable } from "#utils/sql/SchemaSqlGenerator";
-import { HASH_OPTIONS } from "#utils/const/dbTableNames";
+import { HASH_OPTIONS } from "#utils/const/database/tableNames";
+import { HashOptionsFormatter } from "#utils/formatters/ModelFormatter";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import DbQueryFilter from "#types/DbQueryFilter";
 import FormattedProps from "#types/hashOptions/FormattedProps";
-import Formatter from "#utils/formatters/ModelFormatter/HashOptionsFormatter";
 import HashOptionsError from "#utils/errors/HashOptionsError";
 import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
 import Model from "#types/Model";
@@ -24,7 +24,7 @@ import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isHashOptionsProps from "#utils/typeGuards/isHashOptionsProps";
 
 class HashOptions implements Model<FormattedProps, HashOptions> {
-    static formatter = new Formatter();
+    static formatter = new HashOptionsFormatter();
 
     digest: string;
     id: number;

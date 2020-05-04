@@ -1,4 +1,4 @@
-import { HASH_OPTIONS, USERS } from "#utils/const/dbTableNames";
+import { HASH_OPTIONS, USERS } from "#utils/const/database/tableNames";
 import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {

@@ -11,10 +11,10 @@ import {
 
 import { CreateUsersTable } from "#utils/sql/SchemaSqlGenerator";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
-import { USERS } from "#utils/const/dbTableNames";
+import { USERS } from "#utils/const/database/tableNames";
+import { UserFormatter } from "#utils/formatters/ModelFormatter";
 import DbQueryFilter from "#types/DbQueryFilter";
 import FormattedProps from "#types/user/FormattedProps";
-import Formatter from "#utils/formatters/ModelFormatter/UserFormatter";
 import Model from "#types/Model";
 import RawProps from "#types/user/RawProps";
 import UserError from "#utils/errors/UserError";
@@ -24,7 +24,7 @@ import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserProps from "#utils/typeGuards/isUserProps";
 
 class User implements Model<FormattedProps, User> {
-    static formatter = new Formatter();
+    static formatter = new UserFormatter();
 
     createdAt: Date;
     email: string

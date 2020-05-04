@@ -8,9 +8,9 @@ import {
     EMAIL,
     NAME,
     PASSWORD
-} from "common/constants/userData";
+} from "utils/const/userData";
 
-import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
+import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./SignUpContent.props";
@@ -22,11 +22,11 @@ import {
     validateEmail,
     validateName,
     validateNewPassword
-} from "common/utils/Validator";
+} from "utils/validators/Validator";
 
-import hints from "common/resources/text/hints";
+import hints from "utils/resources/text/hints";
 import styles from "./SignUpContent.module.scss";
-import useAuthentication from "common/utils/customHooks/useAuthentication";
+import useAuthentication from "utils/hooks/useAuthentication.jsx";
 
 SignUpContent.defaultProps = defaultProps;
 SignUpContent.propTypes = propTypes;
@@ -40,8 +40,8 @@ const initialProps = {
 
 function SignUpContent ({
     currentUser,
-    resetUserError,
-    signUpStart,
+    onResetUserError,
+    onSignUpStart,
     userError
 }) {
     const initialErrors = {
@@ -66,14 +66,16 @@ function SignUpContent ({
                 return validateName(name);
             case PASSWORD:
                 return validateNewPassword(password);
+            default:
+                return null;
         }
     };
 
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: resetUserError,
-        sendProps: signUpStart,
+        resetReducerError: onResetUserError,
+        sendProps: onSignUpStart,
         validateProp
     };
 
@@ -108,8 +110,8 @@ function SignUpContent ({
         : "";
 
     useEffect(() => {
-        return () => resetUserError();
-    }, [resetUserError]);
+        return () => onResetUserError();
+    }, [onResetUserError]);
 
     const component = (
         <form
@@ -173,8 +175,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    resetUserError: () => dispatch(resetUserError()),
-    signUpStart: (credentials) => dispatch(signUpStart(credentials))
+    onResetUserError: () => dispatch(resetUserError()),
+    onSignUpStart: (credentials) => dispatch(signUpStart(credentials))
 });
 
 const ConnectedSignUpContent = connect(

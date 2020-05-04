@@ -46,22 +46,28 @@ function Input ({
                 value={value}
             />
 
-            {label && <label className={labelClassName}>
-                {label}
-            </label>}
+            {label && (
+                <span className={labelClassName}>
+                    {label}
+                </span>
+            )}
 
-            {error && <span
-                className={styles.errorText}
-                ref={errorSpanRef}
-            >
-                {error}
-            </span>}
+            {error && (
+                <span
+                    className={styles.errorText}
+                    ref={errorSpanRef}
+                >
+                    {error}
+                </span>
+            )}
 
-            {errorTooltipText && <Tooltip
-                elementRef={errorSpanRef}
-                isFixed={hasFixedTooltip}
-                text={errorTooltipText}
-            />}
+            {errorTooltipText && (
+                <Tooltip
+                    elementRef={errorSpanRef}
+                    isFixed={hasFixedTooltip}
+                    text={errorTooltipText}
+                />
+            )}
         </div>
     );
 }

@@ -3,12 +3,12 @@ import chaiAsPromised from "chai-as-promised";
 import faker from "faker";
 
 import { INVALID_PROPS } from "#utils/const/validationErrors";
-import { USERS } from "#utils/const/dbTableNames";
+import { USERS } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
-import createUser from "#utils/test/createUser";
+import createFakeUser from "#utils/test/createFakeUser";
 import generateFakeUserProps from "#utils/test/generateFakeUserProps";
-import resetPublicSchema from "#utils/test/resetPublicSchema";
+import resetSchema from "#utils/test/resetSchema";
 import resetTables from "#utils/test/resetTables";
 import tableExists from "#utils/test/tableExists";
 
@@ -16,7 +16,7 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 
 describe("User", async () => {
-    beforeEach(resetTables);
+    beforeEach(() => resetTables());
 
     describe("create", () => {
         it("should add new user to DB and return User instance", async () => {
@@ -66,9 +66,9 @@ describe("User", async () => {
 
     describe("findAll", () => {
         it("should fetch all users from DB", async () => {
-            const user1 = await createUser();
-            const user2 = await createUser();
-            const user3 = await createUser();
+            const user1 = await createFakeUser();
+            const user2 = await createFakeUser();
+            const user3 = await createFakeUser();
             const expectedUsers = [user1, user2, user3];
 
             const result = await User.findAll();
@@ -81,9 +81,9 @@ describe("User", async () => {
         });
 
         it("should fetch users from DB that match search condition", async () => {
-            const user1 = await createUser({ name: "Fagin" });
-            const user2 = await createUser({ name: "Benjamin" });
-            const user3 = await createUser({ name: "Benjamin" });
+            const user1 = await createFakeUser({ name: "Fagin" });
+            const user2 = await createFakeUser({ name: "Benjamin" });
+            const user3 = await createFakeUser({ name: "Benjamin" });
             const expectedUsers = [user2, user3];
 
             const result = await User.findAll({
@@ -99,9 +99,9 @@ describe("User", async () => {
         });
 
         it("should fetch all users from DB in descending order by name", async () => {
-            const user1 = await createUser({ name: "Adams" });
-            const user2 = await createUser({ name: "Barley" });
-            const user3 = await createUser({ name: "Duff" });
+            const user1 = await createFakeUser({ name: "Adams" });
+            const user2 = await createFakeUser({ name: "Barley" });
+            const user3 = await createFakeUser({ name: "Duff" });
             const expectedUsers = [user3, user2, user1];
 
             const result = await User.findAll({
@@ -116,9 +116,9 @@ describe("User", async () => {
         });
 
         it("should fetch first 2 users from DB", async () => {
-            const user1 = await createUser();
-            const user2 = await createUser();
-            const user3 = await createUser();
+            const user1 = await createFakeUser();
+            const user2 = await createFakeUser();
+            const user3 = await createFakeUser();
             const limit = 2;
             const expectedUsers = [user1, user2];
 
@@ -133,9 +133,9 @@ describe("User", async () => {
         });
 
         it("should skip 1st user and fetch rest users from DB", async () => {
-            const user1 = await createUser();
-            const user2 = await createUser();
-            const user3 = await createUser();
+            const user1 = await createFakeUser();
+            const user2 = await createFakeUser();
+            const user3 = await createFakeUser();
             const offset = 1;
             const expectedUsers = [user2, user3];
 
@@ -151,27 +151,27 @@ describe("User", async () => {
 
         it("should skip 1st user and fetch next 2 users (but not more) matching search condition " +
         "from DB, in descending order by ID", async () => {
-            await createUser({
+            await createFakeUser({
                 id: 1,
                 name: "Nameless Ghoul"
             });
 
-            const user2 = await createUser({
+            const user2 = await createFakeUser({
                 id: 2,
                 name: "Nameless Ghoul"
             });
 
-            await createUser({
+            await createFakeUser({
                 id: 3,
                 name: "Papa Nihil"
             });
 
-            const user4 = await createUser({
+            const user4 = await createFakeUser({
                 id: 4,
                 name: "Nameless Ghoul"
             });
 
-            await createUser({
+            await createFakeUser({
                 id: 5,
                 name: "Nameless Ghoul"
             });
@@ -274,7 +274,7 @@ describe("User", async () => {
     describe("save", () => {
         it("should save updated properties and return updated User instance", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
-            const user = await createUser(originalProps);
+            const user = await createFakeUser(originalProps);
             user.name = "Philip Pirrip";
 
             const updatedUser = await user.save();
@@ -293,7 +293,7 @@ describe("User", async () => {
 
     describe("up", () => {
         it(`should create table called "${USERS}" in DB`, async () => {
-            await resetPublicSchema();
+            await resetSchema();
             const tableExistsBeforeUp = await tableExists(USERS);
 
             await User.up();

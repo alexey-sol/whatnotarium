@@ -7,7 +7,7 @@ export const defaultProps = {
 
 export const propTypes = {
     currentUser: object,
-    resetUserError: func.isRequired,
-    updateProfileStart: func.isRequired,
+    onResetUserError: func.isRequired,
+    onUpdateProfileStart: func.isRequired,
     userError: object
 };

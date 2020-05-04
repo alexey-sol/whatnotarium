@@ -13,6 +13,7 @@ function BaseButton ({
     onClick,
     theme,
     title,
+    type,
     width,
     ...rest
 }) {
@@ -30,6 +31,7 @@ function BaseButton ({
             className={containerClassName}
             disabled={disabled}
             onClick={onClick}
+            type={type}
         >
             {title}
         </button>

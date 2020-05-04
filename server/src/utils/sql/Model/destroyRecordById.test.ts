@@ -4,7 +4,7 @@ import faker from "faker";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 
-import { USERS } from "#utils/const/dbTableNames";
+import { USERS } from "#utils/const/database/tableNames";
 
 chai.use(chaiAsPromised);
 const { expect } = chai;

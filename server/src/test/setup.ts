@@ -23,7 +23,7 @@ if (error) {
 const pool = require("#connectionPool").default;
 const resetTables = require("#utils/test/resetTables").default;
 
-before(resetTables);
+before(() => resetTables());
 after(exit);
 
 function logErrorAndExit (errorToLog: Error | string): void {

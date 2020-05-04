@@ -6,9 +6,9 @@ import {
     CONFIRM_NEW_PASSWORD,
     CURRENT_PASSWORD,
     NEW_PASSWORD
-} from "common/constants/userData";
+} from "utils/const/userData";
 
-import { PASSWORD_TOO_WEAK } from "common/constants/validationErrors";
+import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
@@ -19,19 +19,19 @@ import {
     validateConfirmPassword,
     validateCurrentPassword,
     validateNewPassword
-} from "common/utils/Validator";
+} from "utils/validators/Validator";
 
-import hints from "common/resources/text/hints";
+import hints from "utils/resources/text/hints";
 import styles from "./PasswordDataForm.module.scss";
-import useAuthentication from "common/utils/customHooks/useAuthentication";
+import useAuthentication from "utils/hooks/useAuthentication.jsx";
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;
 
 function PasswordDataForm ({
     currentUser,
-    resetUserError,
-    updateProfileStart,
+    onResetUserError,
+    onUpdateProfileStart,
     userError
 }) {
     const initialProps = {
@@ -61,14 +61,16 @@ function PasswordDataForm ({
                 return validateCurrentPassword(currentPassword);
             case NEW_PASSWORD:
                 return validateNewPassword(newPassword);
+            default:
+                return null;
         }
     };
 
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: resetUserError,
-        sendProps: updateProfileStart,
+        resetReducerError: onResetUserError,
+        sendProps: onUpdateProfileStart,
         validateProp
     };
 
@@ -101,8 +103,8 @@ function PasswordDataForm ({
         : "";
 
     useEffect(() => {
-        return () => resetUserError();
-    }, [resetUserError]);
+        return () => onResetUserError();
+    }, [onResetUserError]);
 
     return (
         <form
@@ -152,8 +154,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    resetUserError: () => dispatch(resetUserError()),
-    updateProfileStart: (params) => dispatch(updateProfileStart(params))
+    onResetUserError: () => dispatch(resetUserError()),
+    onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
 });
 
 const ConnectedPasswordDataForm = connect(

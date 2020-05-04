@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 
 import SignInContent from "components/SignInContent";
-import SignUpDialog from "components/common/Dialog/SignUpDialog";
+import SignUpDialog from "components/Dialog/SignUpDialog";
 import styles from "./SignIn.module.scss";
 
 function Home () {
-    const [signUpDialogIsShown, setSignUpDialogIsShown] = useState(false);
+    const [signUpIsShown, setSignUpIsShown] = useState(false);
 
     return (
         <div className={styles.container}>
             <SignInContent
-                showSignUpDialog={() => setSignUpDialogIsShown(true)}
+                showSignUpDialog={() => setSignUpIsShown(true)}
             />
 
-            {signUpDialogIsShown && <SignUpDialog
-                onClose={() => setSignUpDialogIsShown(false)}
-            />}
+            {signUpIsShown && (
+                <SignUpDialog
+                    onClose={() => setSignUpIsShown(false)}
+                />
+            )}
         </div>
     );
 }

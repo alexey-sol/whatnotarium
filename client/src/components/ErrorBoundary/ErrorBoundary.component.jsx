@@ -7,15 +7,18 @@ class ErrorBoundary extends Component {
     static defaultProps = defaultProps
     static propTypes = propTypes
 
-    state = {
-        error: null
-    }
-
     static getDerivedStateFromError (error) {
         return { error };
     }
 
-    componentDidCatch (error, info) {
+    constructor (props) {
+        super(props);
+        this.state = {
+            error: null
+        };
+    }
+
+    componentDidCatch (error) {
         console.error(error);
     }
 
@@ -33,8 +36,7 @@ class ErrorBoundary extends Component {
 
         return (error)
             ? this.renderErrorMessage()
-            : children
-        ;
+            : children;
     }
 }
 

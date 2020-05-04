@@ -2,23 +2,23 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { EMAIL, NAME } from "common/constants/userData";
+import { EMAIL, NAME } from "utils/const/userData";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { resetUserError, updateProfileStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
-import { validateEmail, validateName } from "common/utils/Validator";
+import { validateEmail, validateName } from "utils/validators/Validator";
 import styles from "./ProfileDataForm.module.scss";
-import useAuthentication from "common/utils/customHooks/useAuthentication";
+import useAuthentication from "utils/hooks/useAuthentication.jsx";
 
 ProfileDataForm.defaultProps = defaultProps;
 ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,
-    resetUserError,
-    updateProfileStart,
+    onResetUserError,
+    onUpdateProfileStart,
     userError
 }) {
     const initialProps = {
@@ -40,14 +40,16 @@ function ProfileDataForm ({
                 return validateEmail(email);
             case NAME:
                 return validateName(name);
+            default:
+                return null;
         }
     };
 
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: resetUserError,
-        sendProps: updateProfileStart,
+        resetReducerError: onResetUserError,
+        sendProps: onUpdateProfileStart,
         validateProp
     };
 
@@ -66,8 +68,8 @@ function ProfileDataForm ({
     } = errors;
 
     useEffect(() => {
-        return () => resetUserError();
-    }, [resetUserError]);
+        return () => onResetUserError();
+    }, [onResetUserError]);
 
     return (
         <form
@@ -107,8 +109,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    resetUserError: () => dispatch(resetUserError()),
-    updateProfileStart: (params) => dispatch(updateProfileStart(params))
+    onResetUserError: () => dispatch(resetUserError()),
+    onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
 });
 
 const ConnectedProfileDataForm = connect(

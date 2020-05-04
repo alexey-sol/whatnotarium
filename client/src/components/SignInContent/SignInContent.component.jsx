@@ -3,16 +3,21 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { CURRENT_PASSWORD, EMAIL } from "common/constants/userData";
+import { CURRENT_PASSWORD, EMAIL } from "utils/const/userData";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./SignInContent.props";
 import { resetUserError, signInStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
-import { validateCurrentPassword, validateEmail } from "common/utils/Validator";
+
+import {
+    validateCurrentPassword,
+    validateEmail
+} from "utils/validators/Validator";
+
 import styles from "./SignInContent.module.scss";
-import useAuthentication from "common/utils/customHooks/useAuthentication";
+import useAuthentication from "utils/hooks/useAuthentication.jsx";
 
 SignInContent.defaultProps = defaultProps;
 SignInContent.propTypes = propTypes;
@@ -25,9 +30,9 @@ const initialProps = {
 function SignInContent ({
     currentUser,
     onClose,
-    resetUserError,
+    onResetUserError,
+    onSignInStart,
     showSignUpDialog,
-    signInStart,
     userError
 }) {
     const initialErrors = {
@@ -43,14 +48,16 @@ function SignInContent ({
                 return validateCurrentPassword(currentPassword);
             case EMAIL:
                 return validateEmail(email);
+            default:
+                return null;
         }
     };
 
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: resetUserError,
-        sendProps: signInStart,
+        resetReducerError: onResetUserError,
+        sendProps: onSignInStart,
         validateProp
     };
 
@@ -83,8 +90,8 @@ function SignInContent ({
     };
 
     useEffect(() => {
-        return () => resetUserError();
-    }, [resetUserError]);
+        return () => onResetUserError();
+    }, [onResetUserError]);
 
     const component = (
         <div className={styles.container}>
@@ -162,8 +169,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    resetUserError: () => dispatch(resetUserError()),
-    signInStart: (credentials) => dispatch(signInStart(credentials))
+    onResetUserError: () => dispatch(resetUserError()),
+    onSignInStart: (credentials) => dispatch(signInStart(credentials))
 });
 
 const ConnectedSignInContent = connect(

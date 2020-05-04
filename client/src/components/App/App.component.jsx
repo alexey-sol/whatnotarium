@@ -2,8 +2,8 @@ import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { PrivateRoute } from "components/common/Route";
-import { PROFILE, SIGN_IN } from "common/constants/pathnames";
+import { PROFILE, SIGN_IN } from "utils/const/pathnames";
+import { PrivateRoute } from "components/Route";
 import Aside from "components/Aside";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
@@ -20,10 +20,10 @@ const SignIn = lazy(() => import("pages/SignIn"));
 
 App.propTypes = propTypes;
 
-function App ({ checkSessionStart }) {
+function App ({ onCheckSessionStart }) {
     useEffect(() => {
-        checkSessionStart();
-    }, [checkSessionStart]);
+        onCheckSessionStart();
+    }, [onCheckSessionStart]);
 
     return (
         <div className={styles.container}>
@@ -60,7 +60,7 @@ function App ({ checkSessionStart }) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    checkSessionStart: () => dispatch(checkSessionStart())
+    onCheckSessionStart: () => dispatch(checkSessionStart())
 });
 
 const ConnectedApp = connect(

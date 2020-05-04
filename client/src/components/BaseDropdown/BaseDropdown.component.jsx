@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import { defaultProps, propTypes } from "./BaseDropdown.props";
 import classnames from "classnames";
-import getPopupCoords from "common/utils/getPopupCoords";
+import getPopupCoords from "utils/helpers/getPopupCoords";
 import styles from "./BaseDropdown.module.scss";
 
 BaseDropdown.defaultProps = defaultProps;
@@ -55,7 +55,9 @@ function BaseDropdown ({
 
         if (dropdown) {
             const hideDropdown = ({ target }) => {
-                if (!dropdown.contains(target)) {
+                const isClickOutside = !dropdown.contains(target);
+
+                if (isClickOutside) {
                     onClose();
                 }
             };
@@ -63,7 +65,7 @@ function BaseDropdown ({
             document.addEventListener("click", hideDropdown);
             return () => document.removeEventListener("click", hideDropdown);
         }
-    }, [dropdownRef]);
+    }, [dropdownRef, onClose]);
 
     useEffect(() => {
         const element = elementRef.current;

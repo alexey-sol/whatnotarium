@@ -1,4 +1,9 @@
-import { bool, object, oneOf, string } from "prop-types";
+import {
+    bool,
+    object,
+    oneOf,
+    string
+} from "prop-types";
 
 export const defaultProps = {
     isFixed: false,

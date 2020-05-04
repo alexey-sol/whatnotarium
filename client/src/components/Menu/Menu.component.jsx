@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import ActionsMenu from "components/ActionsMenu";
 import Navbar from "components/Navbar";
@@ -29,6 +29,8 @@ function Menu () {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
+    const showUserMenu = useCallback(() => setUserMenuIsShown(true), []);
+
     const renderUserMenu = () => (
         <UserMenu
             onClose={() => setUserMenuIsShown(false)}
@@ -37,7 +39,7 @@ function Menu () {
 
     const renderCommonMenu = () => (
         <div className={styles.commonMenu}>
-            <ActionsMenu showUserMenu={() => setUserMenuIsShown(true)} />
+            <ActionsMenu showUserMenu={showUserMenu} />
             <Navbar />
         </div>
     );

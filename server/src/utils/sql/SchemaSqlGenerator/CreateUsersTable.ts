@@ -1,4 +1,4 @@
-import { USERS } from "#utils/const/dbTableNames";
+import { USERS } from "#utils/const/database/tableNames";
 import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateUsersTable extends SchemaSqlGenerator<unknown> {

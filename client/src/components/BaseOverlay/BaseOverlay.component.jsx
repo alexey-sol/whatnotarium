@@ -26,14 +26,14 @@ function BaseOverlay ({ children, onClose, rootClassName }) {
         </div>
     );
 
-    const onKeydown = (event) => {
-        if (event.key === "Escape") onClose();
-    };
-
     useEffect(() => {
+        const onKeydown = (event) => {
+            if (event.key === "Escape") onClose();
+        };
+
         document.addEventListener("keydown", onKeydown);
         return () => document.removeEventListener("keydown", onKeydown);
-    }, [children]);
+    }, [onClose]);
 
     return ReactDOM.createPortal(
         overlayElement,

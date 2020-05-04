@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -7,36 +13,41 @@ import {
     NotificationIconButton,
     SearchIconButton,
     UserIconButton
-} from "components/common/IconButton";
+} from "components/IconButton";
 
-import { SignInDialog, SignUpDialog } from "components/common/Dialog";
-import { propTypes } from "./ActionsMenu.props";
+import { SignInDialog, SignUpDialog } from "components/Dialog";
+import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./ActionsMenu.module.scss";
 
+ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
 
 function ActionsMenu ({ currentUser, showUserMenu }) {
-    const [signInDialogIsShown, setSignInDialogIsShown] = useState(false);
-    const [signUpDialogIsShown, setSignUpDialogIsShown] = useState(false);
+    const [signInIsShown, setSignInIsShown] = useState(false);
+    const [signUpIsShown, setSignUpIsShown] = useState(false);
 
     const userIconButtonRef = useRef(null);
-
-    const showSignInDialog = useCallback(() => {
-        setSignInDialogIsShown(true);
-    }, [currentUser]);
+    const showSignInDialog = useCallback(() => setSignInIsShown(true), []);
 
     const handleClickOnUserButton = (currentUser)
         ? showUserMenu
         : showSignInDialog;
 
-    const hideDialogs = () => {
-        if (signInDialogIsShown) setSignInDialogIsShown(false);
-        if (signUpDialogIsShown) setSignUpDialogIsShown(false);
-    };
+    const hideSignIn = useCallback(() => setSignInIsShown(false), []);
+    const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
 
     useEffect(() => {
-        if (currentUser) hideDialogs();
+        const hasUser = currentUser?.id;
+
+        const hideDialogs = () => {
+            setSignInIsShown(false);
+            setSignUpIsShown(false);
+        };
+
+        if (hasUser) {
+            hideDialogs();
+        }
     }, [currentUser]);
 
     return (
@@ -75,14 +86,18 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
                 </span>
             </div>
 
-            {signInDialogIsShown && <SignInDialog
-                onClose={() => setSignInDialogIsShown(false)}
-                showSignUpDialog={() => setSignUpDialogIsShown(true)}
-            />}
+            {signInIsShown && (
+                <SignInDialog
+                    onClose={hideSignIn}
+                    showSignUpDialog={() => setSignUpIsShown(true)}
+                />
+            )}
 
-            {signUpDialogIsShown && <SignUpDialog
-                onClose={() => setSignUpDialogIsShown(false)}
-            />}
+            {signUpIsShown && (
+                <SignUpDialog
+                    onClose={hideSignUp}
+                />
+            )}
         </div>
     );
 }

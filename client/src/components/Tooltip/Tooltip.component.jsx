@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import { defaultProps, propTypes } from "./Tooltip.props";
 import classnames from "classnames";
-import getPopupCoords from "common/utils/getPopupCoords";
+import getPopupCoords from "utils/helpers/getPopupCoords";
 import styles from "./Tooltip.module.scss";
 
 Tooltip.defaultProps = defaultProps;
@@ -20,7 +20,12 @@ const tooltipWidthsInPx = {
     large: 180
 };
 
-function Tooltip ({ elementRef, isFixed, text, width }) {
+function Tooltip ({
+    elementRef,
+    isFixed,
+    text,
+    width
+}) {
     const [coords, setCoords] = useState(INITIAL_COORDS);
     const [tooltipIsShown, setTooltipIsShown] = useState(false);
 
@@ -59,7 +64,7 @@ function Tooltip ({ elementRef, isFixed, text, width }) {
 
             setCoords(newCoords);
         }
-    }, [elementRef]);
+    }, [elementRef, tooltipWidth]);
 
     useEffect(() => {
         const element = elementRef.current;
@@ -77,7 +82,7 @@ function Tooltip ({ elementRef, isFixed, text, width }) {
                 element.removeEventListener("mouseleave", hideTooltip);
             };
         }
-    }, [x, y]);
+    }, [elementRef, x, y]);
 
     const portal = ReactDOM.createPortal(
         tooltipElement,

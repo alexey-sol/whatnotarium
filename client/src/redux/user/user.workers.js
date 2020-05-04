@@ -18,15 +18,17 @@ import {
     signOut,
     signUp,
     updateProfile
-} from "common/utils/api";
+} from "utils/api";
 
-import getErrorFromResponse from "common/utils/getErrorFromResponse";
+import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
 function * doCheckSession () {
     try {
         const currentUser = yield checkSession();
         yield put(checkSessionSuccess(currentUser));
-    } catch (errorResponse) {}
+    } catch (errorResponse) {
+        console.error(errorResponse);
+    }
 }
 
 function * doSignIn ({ payload }) {

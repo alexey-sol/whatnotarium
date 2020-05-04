@@ -8,8 +8,8 @@ export const defaultProps = {
 export const propTypes = {
     currentUser: object,
     onClose: func,
-    resetUserError: func.isRequired,
-    signInStart: func.isRequired,
+    onResetUserError: func.isRequired,
+    onSignInStart: func.isRequired,
     showSignUpDialog: func.isRequired,
     userError: object
 };

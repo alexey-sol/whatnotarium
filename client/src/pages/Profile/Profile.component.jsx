@@ -23,7 +23,7 @@ function Profile () {
                 styles.tab,
                 (tabName === currentTab) ? styles.active : ""
             )}
-            key={index}
+            key={index} // eslint-disable-line
             onClick={() => setCurrentTab(tabName)}
         >
             <span className={styles.tabTitle}>

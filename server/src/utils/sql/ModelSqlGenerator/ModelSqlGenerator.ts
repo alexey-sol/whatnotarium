@@ -18,7 +18,7 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     abstract generate (input?: InputType): SqlQueryPayload;
 
     protected abstract getText (
-        props?: InputType | DbQueryFilter<InputType>
+        input?: InputType | DbQueryFilter<InputType>
     ): string;
 
     protected getValues (input: InputType): string[];

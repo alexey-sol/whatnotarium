@@ -2,15 +2,15 @@ import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { BackIconButton } from "components/common/IconButton";
-import { PROFILE } from "common/constants/pathnames";
-import { signOutStart } from "redux/user/user.actions";
+import { BackIconButton } from "components/IconButton";
+import { PROFILE } from "utils/const/pathnames";
 import { propTypes } from "./UserMenu.props";
+import { signOutStart } from "redux/user/user.actions";
 import styles from "./UserMenu.module.scss";
 
 UserMenu.propTypes = propTypes;
 
-function UserMenu ({ history, onClose, signOutStart }) {
+function UserMenu ({ history, onClose, onSignOutStart }) {
     const containerRef = useRef(null);
 
     const redirectToProfile = () => {
@@ -19,7 +19,7 @@ function UserMenu ({ history, onClose, signOutStart }) {
     };
 
     const signOut = () => {
-        signOutStart();
+        onSignOutStart();
         onClose();
     };
 
@@ -78,7 +78,7 @@ function UserMenu ({ history, onClose, signOutStart }) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    signOutStart: () => dispatch(signOutStart())
+    onSignOutStart: () => dispatch(signOutStart())
 });
 
 const ConnectedUserMenu = connect(

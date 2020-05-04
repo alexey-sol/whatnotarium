@@ -1,9 +1,9 @@
 import React from "react";
 import classnames from "classnames";
 
-import { CloseIconButton } from "components/common/IconButton";
-import { defaultProps, propTypes } from "./BaseDialog.props";
+import { CloseIconButton } from "components/IconButton";
 import BaseOverlay from "components/BaseOverlay";
+import { defaultProps, propTypes } from "./BaseDialog.props";
 import styles from "./BaseDialog.module.scss";
 
 BaseDialog.defaultProps = defaultProps;
@@ -36,9 +36,11 @@ function BaseDialog ({
                     onClick={onClose}
                 />
 
-                {title && <div className={styles.title}>
-                    {title}
-                </div>}
+                {title && (
+                    <div className={styles.title}>
+                        {title}
+                    </div>
+                )}
 
                 {children}
             </div>

@@ -5,6 +5,6 @@ function * rootSaga () {
     yield all([
         call(userSagas)
     ]);
-};
+}
 
 export default rootSaga;

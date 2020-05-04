@@ -1,0 +1,20 @@
+import {
+    CONFIRM_PASSWORD_EMPTY,
+    CONFIRM_PASSWORD_NOT_MATCH
+} from "utils/const/validationErrors";
+
+function validateConfirmPassword (password = "", confirmPassword = "") {
+    if (!password) {
+        return null;
+    }
+
+    if (confirmPassword.length === 0) {
+        return CONFIRM_PASSWORD_EMPTY;
+    } else if (password !== confirmPassword) {
+        return CONFIRM_PASSWORD_NOT_MATCH;
+    } else {
+        return null;
+    }
+}
+
+export default validateConfirmPassword;

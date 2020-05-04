@@ -3,7 +3,7 @@ import chaiAsPromised from "chai-as-promised";
 import proxyquire from "proxyquire";
 import sinon from "sinon";
 
-import { USERS } from "#utils/const/dbTableNames";
+import { USERS } from "#utils/const/database/tableNames";
 import generateFakeUserProps from "#utils/test/generateFakeUserProps";
 
 chai.use(chaiAsPromised);
