@@ -54,8 +54,10 @@ $footer-content-bg-color: $color-secondary;
 
 $header-bg-color: $color-primary;
 
-$icon-color: $color-quaternary;
-$icon-color--hover: $color-tertiary;
+$icon-color-dark: white;
+$icon-color-dark--hover: $gray--lighten;
+$icon-color-light: $color-quaternary;
+$icon-color-light--hover: $color-tertiary;
 
 $input-bg-color: white;
 $input-border-color: $gray--dark;
@@ -74,6 +76,13 @@ $logo-text-color: white;
 $menu-item-bg-color: $color-quaternary;
 $menu-item-bg-color--hover: $color-tertiary;
 $menu-item-color: white;
+
+$popup-bg-color--error: #ff8888;
+$popup-text-color--error: white;
+$popup-bg-color--success: lightgreen;
+$popup-text-color--success: white;
+$popup-bg-color--warning: orange;
+$popup-text-color--warning: white;
 
 $profile-tab-color: $gray;
 $profile-tab-color--active: $gray--darken;
@@ -96,5 +105,6 @@ $footer-height: 12rem;
 $header-height: 4rem;
 $grid-width: 85rem;
 $menu-width: 17.4rem;
+$popup-height: $header-height;
 
 // Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361

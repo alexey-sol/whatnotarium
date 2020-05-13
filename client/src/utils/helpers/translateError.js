@@ -11,7 +11,9 @@ import {
 } from "utils/const/validationErrors";
 
 import {
+    ALREADY_EXISTS,
     EMAIL_OCCUPIED,
+    INTERNAL_SERVER_ERROR,
     INVALID_CREDENTIALS,
     INVALID_PASSWORD,
     NO_USER_FOUND
@@ -19,10 +21,13 @@ import {
 
 function translateError (error) {
     if (!error) {
-        return null;
+        return "";
     }
 
     switch (error) {
+        case ALREADY_EXISTS:
+        case EMAIL_OCCUPIED:
+            return "Такой email уже занят";
         case CONFIRM_PASSWORD_EMPTY:
             return "Пожалуйста, введите пароль еще раз";
         case CONFIRM_PASSWORD_NOT_MATCH:
@@ -31,8 +36,8 @@ function translateError (error) {
             return "Пожалуйста, укажите email";
         case EMAIL_INVALID:
             return "Указан некорректный email";
-        case EMAIL_OCCUPIED:
-            return "Такой email уже занят";
+        case INTERNAL_SERVER_ERROR:
+            return "Что-то пошло не так";
         case INVALID_CREDENTIALS:
             return "Неверные учетные данные";
         case INVALID_PASSWORD:
@@ -50,7 +55,7 @@ function translateError (error) {
         case PASSWORD_TOO_WEAK:
             return "Пожалуйста, придумайте пароль посложнее (*)";
         default:
-            return "Что-то пошло не так";
+            return error;
     }
 }
 

@@ -6,8 +6,8 @@ import isEmptyObject from "utils/helpers/isEmptyObject";
 import translateError from "utils/helpers/translateError";
 
 function useAuthentication ({
-    initialProps = {},
     initialErrors = {},
+    initialProps = {},
     resetReducerError,
     sendProps,
     validateProp

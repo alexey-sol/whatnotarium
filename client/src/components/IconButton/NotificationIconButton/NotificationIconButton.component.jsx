@@ -2,18 +2,20 @@ import React from "react";
 
 import { Notification as NotificationIcon } from "components/Icon";
 import IconButton from "components/BaseIconButton";
-import { propTypes } from "../IconButton.props";
+import { defaultProps, propTypes } from "../IconButton.props";
 
+NotificationIconButton.defaultProps = defaultProps;
 NotificationIconButton.propTypes = propTypes;
 
-function NotificationIconButton ({ onClick, ...rest }) {
+function NotificationIconButton ({ onClick, size, ...rest }) {
     return (
         <IconButton
             {...rest}
             onClick={onClick}
+            size={size}
             title="Уведомления"
         >
-            <NotificationIcon />
+            <NotificationIcon size={size} />
         </IconButton>
     );
 }

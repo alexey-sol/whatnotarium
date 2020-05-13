@@ -2,18 +2,20 @@ import React from "react";
 
 import { Search as SearchIcon } from "components/Icon";
 import IconButton from "components/BaseIconButton";
-import { propTypes } from "../IconButton.props";
+import { defaultProps, propTypes } from "../IconButton.props";
 
+SearchIconButton.defaultProps = defaultProps;
 SearchIconButton.propTypes = propTypes;
 
-function SearchIconButton ({ onClick, ...rest }) {
+function SearchIconButton ({ onClick, size, ...rest }) {
     return (
         <IconButton
             {...rest}
             onClick={onClick}
+            size={size}
             title="Поиск"
         >
-            <SearchIcon />
+            <SearchIcon size={size} />
         </IconButton>
     );
 }

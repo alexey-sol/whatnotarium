@@ -1,21 +1,20 @@
 import { Redirect } from "react-router";
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { CURRENT_PASSWORD, EMAIL } from "utils/const/userData";
+import { EMAIL, PASSWORD } from "utils/const/userData";
+import { OUT_OF_FIELD } from "utils/const/fieldErrors";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
+import Popup from "components/Popup";
 import SignInContext from "context/SignInContext";
 import { defaultProps, propTypes } from "./SignInContent.props";
 import { resetUserError, signInStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
-
-import {
-    validateCurrentPassword,
-    validateEmail
-} from "utils/validators/Validator";
+import { validateEmail, validatePassword } from "utils/validators/Validator";
+import formatReducerError from "utils/helpers/formatReducerError";
 
 import styles from "./SignInContent.module.scss";
 import useAuthentication from "utils/hooks/useAuthentication.jsx";
@@ -24,8 +23,8 @@ SignInContent.defaultProps = defaultProps;
 SignInContent.propTypes = propTypes;
 
 const initialProps = {
-    currentPassword: "",
-    email: ""
+    email: "",
+    password: ""
 };
 
 function SignInContent ({
@@ -38,17 +37,17 @@ function SignInContent ({
 
     const initialErrors = {
         ...initialProps,
-        email: userError?.message?.email
+        ...formatReducerError(userError)
     };
 
     const validateProp = (stateName, credentials) => {
-        const { currentPassword, email } = credentials;
+        const { email, password } = credentials;
 
         switch (stateName) {
-            case CURRENT_PASSWORD:
-                return validateCurrentPassword(currentPassword);
             case EMAIL:
                 return validateEmail(email);
+            case PASSWORD:
+                return validatePassword(password);
             default:
                 return null;
         }
@@ -70,25 +69,28 @@ function SignInContent ({
     } = useAuthentication(useAuthenticationOptions);
 
     const {
-        currentPassword,
-        email
+        email,
+        password
     } = props;
 
     const {
-        currentPassword: currentPasswordError,
-        email: emailError
+        email: emailError,
+        password: passwordError,
+        [OUT_OF_FIELD]: outOfFieldError
     } = errors;
 
-    const handleClickOnSignUp = (event) => {
+    const hidePopup = useCallback(() => onResetUserError(), [onResetUserError]);
+
+    const handleClickOnSignUp = useCallback((event) => {
         event.preventDefault();
 
         if (onClose) onClose();
         showSignUp();
-    };
+    }, [onClose, showSignUp]);
 
-    const signInUsingYandex = () => {
+    const signInUsingYandex = useCallback(() => {
         console.log("signInUsingYandex");
-    };
+    }, []);
 
     useEffect(() => {
         return () => onResetUserError();
@@ -110,13 +112,13 @@ function SignInContent ({
                 />
 
                 <Input
-                    error={currentPasswordError}
+                    error={passwordError}
                     hasFixedTooltip
                     label="Пароль"
-                    name={CURRENT_PASSWORD}
+                    name={PASSWORD}
                     onChange={handleInputChange}
                     type="password"
-                    value={currentPassword}
+                    value={password}
                 />
 
                 <BaseButton
@@ -156,6 +158,14 @@ function SignInContent ({
                     </ul>
                 </div>
             </div>
+
+            {Boolean(outOfFieldError) && (
+                <Popup
+                    onClose={hidePopup}
+                    text={outOfFieldError}
+                    theme="error"
+                />
+            )}
         </div>
     );
 

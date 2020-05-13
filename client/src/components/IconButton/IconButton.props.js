@@ -1,5 +1,10 @@
-import { func } from "prop-types";
+import { func, number } from "prop-types";
+
+export const defaultProps = {
+    size: 24
+};
 
 export const propTypes = {
-    onClick: func.isRequired
+    onClick: func.isRequired,
+    size: number
 };

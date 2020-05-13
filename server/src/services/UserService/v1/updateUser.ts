@@ -7,7 +7,6 @@ import UserError from "#utils/errors/UserError";
 import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
-    currentPassword?: string;
     email?: string;
     name?: string;
     newPassword?: string;

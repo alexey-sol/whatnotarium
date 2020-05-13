@@ -1,0 +1,46 @@
+@import "styles/style.scss";
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: $popup-height;
+    opacity: 0.9;
+    text-align: center;
+    animation-name: fade-in;
+    animation-duration: 0.1s;
+
+    &.successTheme {
+        background-color: $popup-bg-color--success;
+        color: $popup-text-color--success;
+    }
+
+    &.errorTheme {
+        background-color: $popup-bg-color--error;
+        color: $popup-text-color--error;
+    }
+
+    &.warningTheme {
+        background-color: $popup-bg-color--warning;
+        color: $popup-text-color--warning;
+    }
+
+    .text {
+        font-family: $font-family--normal;
+        font-size: $font-size--medium;
+        cursor: default;
+    }
+
+    .closeIconButton {
+        position: absolute;
+        right: 1.2rem;
+        box-sizing: border-box;
+        height: 100%;
+    }
+}

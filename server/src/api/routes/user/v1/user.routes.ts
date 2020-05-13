@@ -27,7 +27,7 @@ router.post(
 );
 
 router.put(
-    "/",
+    "/:id",
     middlewares.isAuthed,
     schemaValidation.putUser,
     dataValidation.putUser,

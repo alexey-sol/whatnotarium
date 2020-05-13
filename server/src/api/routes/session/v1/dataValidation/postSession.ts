@@ -11,7 +11,7 @@ const postSession: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    const { currentPassword, email } = body;
+    const { email, password } = body;
 
     try {
         const user = await User.findOne({
@@ -22,7 +22,7 @@ const postSession: RequestHandler = async (
             throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);
         }
 
-        const passwordIsValid = await isValidPassword(currentPassword, user);
+        const passwordIsValid = await isValidPassword(password, user);
 
         if (!passwordIsValid) {
             throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);

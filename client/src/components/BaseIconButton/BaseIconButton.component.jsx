@@ -13,6 +13,7 @@ function BaseIconButton ({
     disabled,
     onClick,
     size,
+    theme,
     title
 }) {
     const dynamicStyle = {
@@ -23,6 +24,7 @@ function BaseIconButton ({
 
     const containerClassName = classnames(
         styles.container,
+        styles[`${theme}Theme`],
         className,
         (disabled) ? styles.disabled : ""
     );

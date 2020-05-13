@@ -1,5 +1,5 @@
-import { RequestHandler } from "express";
 import { CONFLICT } from "http-status";
+import { RequestHandler } from "express";
 
 import { ALREADY_EXISTS } from "#utils/const/validationErrors";
 import User from "#models/User";

@@ -2,18 +2,20 @@ import React from "react";
 
 import { Back as BackIcon } from "components/Icon";
 import IconButton from "components/BaseIconButton";
-import { propTypes } from "../IconButton.props";
+import { defaultProps, propTypes } from "../IconButton.props";
 
+BackIconButton.defaultProps = defaultProps;
 BackIconButton.propTypes = propTypes;
 
-function BackIconButton ({ onClick, ...rest }) {
+function BackIconButton ({ onClick, size, ...rest }) {
     return (
         <IconButton
             {...rest}
             onClick={onClick}
+            size={size}
             title="Вернуться назад"
         >
-            <BackIcon />
+            <BackIcon size={size} />
         </IconButton>
     );
 }

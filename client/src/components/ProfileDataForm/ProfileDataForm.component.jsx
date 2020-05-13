@@ -9,6 +9,7 @@ import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { resetUserError, updateProfileStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 import { validateEmail, validateName } from "utils/validators/Validator";
+import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./ProfileDataForm.module.scss";
 import useAuthentication from "utils/hooks/useAuthentication.jsx";
 
@@ -28,8 +29,8 @@ function ProfileDataForm ({
     };
 
     const initialErrors = {
-        email: userError?.message?.email,
-        name: ""
+        name: "",
+        ...formatReducerError(userError, ["email"])
     };
 
     const validateProp = (stateName, props) => {

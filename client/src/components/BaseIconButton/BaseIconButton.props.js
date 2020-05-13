@@ -4,6 +4,7 @@ import {
     func,
     node,
     number,
+    oneOf,
     oneOfType,
     string
 } from "prop-types";
@@ -13,6 +14,7 @@ export const defaultProps = {
     className: "",
     disabled: false,
     size: 24,
+    theme: "light",
     title: ""
 };
 
@@ -29,6 +31,8 @@ export const propTypes = {
     onClick: func.isRequired,
 
     size: number,
+
+    theme: oneOf(["light", "dark"]),
 
     title: string
 };

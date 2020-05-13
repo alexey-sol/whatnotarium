@@ -1,5 +1,5 @@
 import { Redirect } from "react-router";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -10,9 +10,11 @@ import {
     PASSWORD
 } from "utils/const/userData";
 
+import { OUT_OF_FIELD } from "utils/const/fieldErrors";
 import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
+import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./SignUpContent.props";
 import { resetUserError, signUpStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
@@ -24,6 +26,7 @@ import {
     validateNewPassword
 } from "utils/validators/Validator";
 
+import formatReducerError from "utils/helpers/formatReducerError";
 import hints from "utils/resources/text/hints";
 import styles from "./SignUpContent.module.scss";
 import useAuthentication from "utils/hooks/useAuthentication.jsx";
@@ -46,7 +49,7 @@ function SignUpContent ({
 }) {
     const initialErrors = {
         ...initialProps,
-        email: userError?.message?.email
+        ...formatReducerError(userError)
     };
 
     const validateProp = (stateName, credentials) => {
@@ -102,12 +105,15 @@ function SignUpContent ({
         confirmPassword: confirmPasswordError,
         email: emailError,
         name: nameError,
-        password: passwordError
+        password: passwordError,
+        [OUT_OF_FIELD]: outOfFieldError
     } = errors;
 
     const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
         ? hints.weakPassword
         : "";
+
+    const hidePopup = useCallback(() => onResetUserError(), [onResetUserError]);
 
     useEffect(() => {
         return () => onResetUserError();
@@ -161,6 +167,14 @@ function SignUpContent ({
                 theme="dark"
                 title="Готово"
             />
+
+            {Boolean(outOfFieldError) && (
+                <Popup
+                    onClose={hidePopup}
+                    text={outOfFieldError}
+                    theme="error"
+                />
+            )}
         </form>
     );
 

@@ -2,18 +2,20 @@ import React from "react";
 
 import { Close as CloseIcon } from "components/Icon";
 import IconButton from "components/BaseIconButton";
-import { propTypes } from "../IconButton.props";
+import { defaultProps, propTypes } from "../IconButton.props";
 
+CloseIconButton.defaultProps = defaultProps;
 CloseIconButton.propTypes = propTypes;
 
-function CloseIconButton ({ onClick, ...rest }) {
+function CloseIconButton ({ onClick, size, ...rest }) {
     return (
         <IconButton
             {...rest}
             onClick={onClick}
+            size={size}
             title="Закрыть"
         >
-            <CloseIcon />
+            <CloseIcon size={size} />
         </IconButton>
     );
 }

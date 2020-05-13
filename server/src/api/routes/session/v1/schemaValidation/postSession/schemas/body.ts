@@ -1,12 +1,11 @@
 import Joi from "@hapi/joi";
 
 export default Joi.object({
-    currentPassword: Joi
+    email: Joi
         .string()
         .required(),
 
-    email: Joi
+    password: Joi
         .string()
-        .email({ minDomainSegments: 2 })
         .required()
 });

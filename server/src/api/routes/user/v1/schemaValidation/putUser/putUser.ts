@@ -10,7 +10,7 @@ const putUser: RequestHandler = async (
 ): Promise<void> => {
     const {
         error: bodyError
-    } = bodySchema.validate(body);
+    } = bodySchema.validate(body, { stripUnknown: true });
 
     if (bodyError) {
         return next(bodyError);

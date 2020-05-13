@@ -1,4 +1,3 @@
-export const CURRENT_PASSWORD = "currentPassword";
 export const EMAIL = "email";
 export const ID = "id";
 export const NAME = "name";

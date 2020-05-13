@@ -1,8 +1,12 @@
 import { object } from "prop-types";
 
-import { propTypes as iconButtonPropTypes } from "../IconButton.props";
+import {
+    defaultProps as iconButtonDefaultProps,
+    propTypes as iconButtonPropTypes
+} from "../IconButton.props";
 
 export const defaultProps = {
+    ...iconButtonDefaultProps,
     currentUser: null
 };
 

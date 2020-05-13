@@ -20,11 +20,11 @@ const putUser: RequestHandler = async (
             throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
         }
 
-        const { currentPassword, newPassword } = body;
+        const { newPassword, password } = body;
 
-        if (currentPassword && newPassword) {
+        if (password && newPassword) {
             const passwordIsValid = await isValidPassword(
-                currentPassword,
+                password,
                 user
             );
 

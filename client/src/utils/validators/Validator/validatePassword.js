@@ -1,6 +1,6 @@
 import { PASSWORD_EMPTY } from "utils/const/validationErrors";
 
-function validateCurrentPassword (password = "") {
+function validatePassword (password = "") {
     if (password.length === 0) {
         return PASSWORD_EMPTY;
     } else {
@@ -8,4 +8,4 @@ function validateCurrentPassword (password = "") {
     }
 }
 
-export default validateCurrentPassword;
+export default validatePassword;

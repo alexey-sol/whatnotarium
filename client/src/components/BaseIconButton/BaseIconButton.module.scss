@@ -9,12 +9,27 @@
         opacity: 0.5;
     }
 
-    svg {
-        fill: $icon-color;
-        transition: .1s ease;
-    
-        &:hover {
-            fill: $icon-color--hover;
+    &.lightTheme {
+        svg {
+            fill: $icon-color-light;
+        
+            &:hover {
+                fill: $icon-color-light--hover;
+            }
         }
+    }
+
+    &.darkTheme {
+        svg {
+            fill: $icon-color-dark;
+        
+            &:hover {
+                fill: $icon-color-dark--hover;
+            }
+        }
+    }
+
+    svg {
+        transition: .1s ease;
     }
 }

@@ -16,6 +16,7 @@ function UserIconButton ({
     currentUser,
     location,
     onClick,
+    size,
     ...rest
 }) {
     const username = currentUser?.name;
@@ -29,9 +30,10 @@ function UserIconButton ({
             {...rest}
             disabled={isSignInPage}
             onClick={onClick}
+            size={size}
             title={title}
         >
-            <UserIcon />
+            <UserIcon size={size} />
         </IconButton>
     );
 }

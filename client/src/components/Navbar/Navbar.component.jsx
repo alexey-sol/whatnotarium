@@ -3,6 +3,8 @@ import React from "react";
 
 import styles from "./Navbar.module.scss";
 
+import Popup from "components/Popup";
+
 function Navbar () {
     return (
         <div className={styles.container}>
