@@ -5,17 +5,16 @@ import { createStructuredSelector } from "reselect";
 
 import { EMAIL, PASSWORD } from "utils/const/userData";
 import { OUT_OF_FIELD } from "utils/const/fieldErrors";
+import { SignInContext } from "components/ActionsMenu";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import Popup from "components/Popup";
-import SignInContext from "context/SignInContext";
 import { defaultProps, propTypes } from "./SignInContent.props";
 import { resetUserError, signInStart } from "redux/user/user.actions";
 import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
 import { validateEmail, validatePassword } from "utils/validators/Validator";
 import formatReducerError from "utils/helpers/formatReducerError";
-
 import styles from "./SignInContent.module.scss";
 import useAuthentication from "utils/hooks/useAuthentication.jsx";
 

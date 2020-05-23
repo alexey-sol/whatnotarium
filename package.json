@@ -1,12 +1,13 @@
 {
   "name": "geek-regime",
   "version": "1.0.0",
-  "scripts": {
-    "client": "cd ./client && npm start",
-    "server": "cd ./server && npm start"
-  },
-  "description": "A collective blog on entertaining topics",
+  "description": "A collective blog on geek-wise stuff",
   "author": "Alexey Soloviev",
+  "scripts": {
+    "start": "docker-compose -f docker-compose.yml -f docker-compose.production.yml up --detach",
+    "dev": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up",
+    "down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down"
+  },
   "license": "ISC",
   "dependencies": {}
 }

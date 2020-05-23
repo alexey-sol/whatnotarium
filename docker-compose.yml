@@ -1,30 +1,20 @@
 version: "3.3"
 services:
     client:
-        build: ./client
-        command: npm start
-        volumes:
-            - ./client:/app
-            - geek-regime-client:/app/node_modules
         networks:
             - geek-regime
-        ports:
-            - 10000:3000
         depends_on:
             - server
             - postgres
             - redis
     server:
-        build: ./server
-        command: npm start
-        volumes:
-            - ./server:/app
-            - geek-regime-server:/app/node_modules
         networks:
             - geek-regime
         depends_on:
             - postgres
             - redis
+        ports:
+            - ${PORT}:${PORT}
         environment:
             - HOST
             - PORT
@@ -62,10 +52,6 @@ networks:
     geek-regime:
         driver: bridge
 volumes:
-    geek-regime-client:
-        driver: local
-    geek-regime-server:
-        driver: local
     postgres-data:
         driver: local
     redis-data:

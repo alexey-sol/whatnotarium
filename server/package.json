@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon src/index.ts",
+    "start": "npx ts-node src/index.ts",
+    "dev": "npx nodemon src/index.ts",
     "test": "env NODE_ENV=test nyc ts-mocha -p tsconfig.json"
   },
   "author": "Alexey Soloviev",

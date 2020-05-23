@@ -1,4 +1,5 @@
 import React, {
+    createContext,
     useCallback,
     useEffect,
     useRef,
@@ -16,10 +17,12 @@ import {
 } from "components/IconButton";
 
 import { SignInDialog, SignUpDialog } from "components/Dialog";
-import SignInContext from "context/SignInContext";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./ActionsMenu.module.scss";
+
+export const SignInContext = createContext({});
+// TODO: still doesn't work
 
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;

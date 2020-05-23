@@ -1,0 +1,29 @@
+version: "3.3"
+services:
+    client:
+        build:
+            context: ./client
+            dockerfile: Dockerfile.development
+        command: npm start
+        ports:
+            - 10000:3000
+        volumes:
+            - ./client:/app
+            - geek-regime-client:/app/node_modules
+        environment:
+            - NODE_ENV=development
+    server:
+        build:
+            context: ./server
+            dockerfile: Dockerfile.development
+        command: npm run dev
+        volumes:
+            - ./server:/app
+            - geek-regime-server:/app/node_modules
+        environment:
+            - NODE_ENV=development
+volumes:
+    geek-regime-client:
+        driver: local
+    geek-regime-server:
+        driver: local
