@@ -11,7 +11,7 @@ export const defaultProps = {
 };
 
 export const propTypes = {
-    elementRef: object.isRequired,
+    elemRef: object.isRequired,
     isFixed: bool,
     text: string.isRequired,
     width: oneOf(["small", "medium", "large"])

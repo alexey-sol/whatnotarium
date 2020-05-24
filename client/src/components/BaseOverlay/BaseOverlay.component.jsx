@@ -16,7 +16,7 @@ function BaseOverlay ({ children, onClose, rootClassName }) {
         if (targetIsRoot) onClose();
     };
 
-    const overlayElement = (
+    const overlayElem = (
         <div
             className={classnames(rootClassName, styles.root)}
             onMouseDown={handleMouseDownOnRoot}
@@ -36,7 +36,7 @@ function BaseOverlay ({ children, onClose, rootClassName }) {
     }, [onClose]);
 
     return ReactDOM.createPortal(
-        overlayElement,
+        overlayElem,
         document.body
     );
 }

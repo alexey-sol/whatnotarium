@@ -1,5 +1,4 @@
 import React, {
-    createContext,
     useCallback,
     useEffect,
     useRef,
@@ -20,9 +19,6 @@ import { SignInDialog, SignUpDialog } from "components/Dialog";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./ActionsMenu.module.scss";
-
-export const SignInContext = createContext({});
-// TODO: still doesn't work
 
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
@@ -92,14 +88,10 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
             </div>
 
             {signInIsShown && (
-                <SignInContext.Provider
-                    value={{
-                        onClose: hideSignIn,
-                        showSignUp
-                    }}
-                >
-                    <SignInDialog onClose={hideSignIn} />
-                </SignInContext.Provider>
+                <SignInDialog
+                    onClose={hideSignIn}
+                    showSignUp={showSignUp}
+                />
             )}
 
             {signUpIsShown && (

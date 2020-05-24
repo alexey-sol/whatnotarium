@@ -4,11 +4,11 @@ import { connect } from "react-redux";
 
 import { PROFILE, SIGN_IN } from "utils/const/pathnames";
 import { PrivateRoute } from "components/Route";
-import Aside from "components/Aside";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
 import Header from "components/Header";
 import Main from "components/Main";
+import Nav from "components/Nav";
 import Spinner from "components/Spinner";
 import { checkSessionStart } from "redux/user/user.actions";
 import { propTypes } from "./App.props";
@@ -53,7 +53,7 @@ function App ({ onCheckSessionStart }) {
                 </Switch>
             </Main>
 
-            <Aside />
+            <Nav />
             <Footer />
         </div>
     );

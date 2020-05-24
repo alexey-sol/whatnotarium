@@ -8,9 +8,9 @@ Main.propTypes = propTypes;
 
 function Main ({ children }) {
     return (
-        <div className={styles.container}>
+        <main className={styles.container}>
             { children }
-        </div>
+        </main>
     );
 }
 

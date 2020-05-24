@@ -4,11 +4,11 @@ import styles from "./Footer.module.scss";
 
 function Footer () {
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
+        <footer className={styles.container}>
+            <section className={styles.content}>
                 Footer
-            </div>
-        </div>
+            </section>
+        </footer>
     );
 }
 

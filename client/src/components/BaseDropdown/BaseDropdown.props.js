@@ -21,7 +21,7 @@ export const propTypes = {
 
     className: string,
 
-    elementRef: object.isRequired,
+    elemRef: object.isRequired,
 
     isFixed: bool,
 

@@ -26,10 +26,6 @@ body {
     &::-webkit-scrollbar-thumb {
         background-color: $scrollbar-thumb-bg-color;
     }
-    
-    @media screen and (max-width: 800px) {
-        // padding: 10px;
-    }
 }
 
 a {
@@ -50,11 +46,23 @@ p {
 
 .container {
     display: grid;
-    grid-template-columns: auto $grid-width auto;
-    grid-template-rows: $header-height auto $footer-height;
     grid-template-areas:
         "header header header"
-        ". main aside"
+        ". main nav"
         "footer footer footer";
+    grid-template-rows: $header-height 1fr $footer-height;
+    grid-template-columns: 20% 1fr 20%;
     min-height: 100vh; // makes the footer sticky
+
+    @media screen and (max-width: 1024px) {
+        & {
+            grid-template-areas:
+                "header"
+                "nav"
+                "main"
+                "footer";
+            grid-template-rows: $header-height $nav-height--small 1fr $footer-height;
+            grid-template-columns: 1fr;
+        }
+    }
 }

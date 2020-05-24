@@ -10,13 +10,13 @@
         height: 3rem;
         padding: 0;
         border-bottom: 1px solid $profile-tab-border-color;
-        margin: 0;
         list-style-type: none;
 
         .tab {
             position: relative;
             top: 0.1rem;
             box-sizing: border-box;
+            white-space: nowrap;
             color: $profile-tab-color;
             cursor: pointer;
             transition: .1s ease;
@@ -39,6 +39,6 @@
 
     .tabContent {
         display: flex;
-        padding-top: 3rem;
+        padding-top: 3vh;
     }
 }

@@ -5,8 +5,8 @@ import styles from "./Header.module.scss";
 
 function Header () {
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
+        <header className={styles.container}>
+            <section className={styles.content}>
                 <div className={styles.logo}>
                     <Link
                         title="На главную"
@@ -15,8 +15,8 @@ function Header () {
                         Geek Regime
                     </Link>
                 </div>
-            </div>
-        </div>
+            </section>
+        </header>
     );
 }
 

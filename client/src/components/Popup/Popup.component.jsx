@@ -15,7 +15,7 @@ function Popup ({ onClose, text, theme }) {
         styles[`${theme}Theme`]
     );
 
-    const tooltipElement = (
+    const tooltipElem = (
         <div className={popupClassName}>
             <span className={styles.text}>
                 {text}
@@ -31,7 +31,7 @@ function Popup ({ onClose, text, theme }) {
     );
 
     return ReactDOM.createPortal(
-        tooltipElement,
+        tooltipElem,
         document.body
     );
 }

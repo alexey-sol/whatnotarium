@@ -23,7 +23,7 @@ export default filterFalsyValues;
 function filterOutArray (
     array: unknown[]
 ): unknown[] {
-    return array.filter((element: unknown) => Boolean(element));
+    return array.filter((elem: unknown) => Boolean(elem));
 }
 
 function filterOutObject (

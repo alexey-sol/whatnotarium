@@ -1,10 +1,11 @@
 @import "styles/style.scss";
 
 .container {
+    grid-area: actions-menu;
     display: flex;
+    box-sizing: border-box;
     align-items: center;
     justify-content: flex-end;
-    box-sizing: border-box;
     width: 100%;
     height: $actions-menu-height;
 
@@ -15,7 +16,30 @@
 
     .iconButton {
         &:not(:first-of-type) {
-            margin-left: 1rem;
+            margin-left: 0.7vw;
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        & {
+            justify-content: flex-end;
+            height: auto;
+
+            .content {
+                margin-right: 0;
+            }
+
+            .iconButton {
+                svg {
+                    width: 1.8rem;
+                    height: 1.8rem;
+                    fill: $icon-color-dark;
+                
+                    &:hover {
+                        fill: $icon-color-dark--hover;
+                    }
+                }
+            }
         }
     }
 }

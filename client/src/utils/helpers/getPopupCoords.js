@@ -1,24 +1,24 @@
 function getPopupCoords (
-    anchorElement,
-    popupElement,
+    anchorElem,
+    popupElem,
     options = {}
 ) {
     const {
-        gapBetweenElementAndPopup = 5,
-        popupWidth = getOffsetWidth(popupElement)
+        gapBetweenElemAndPopup = 5,
+        popupWidth = getOffsetWidth(popupElem)
     } = options;
 
-    const elementBounds = anchorElement.getBoundingClientRect();
+    const elemBounds = anchorElem.getBoundingClientRect();
 
     const {
         height,
         width,
         x,
         y
-    } = elementBounds;
+    } = elemBounds;
 
     const calculatedX = x + width / 2 - popupWidth / 2;
-    const calculatedY = y + height + gapBetweenElementAndPopup;
+    const calculatedY = y + height + gapBetweenElemAndPopup;
 
     return {
         x: calculatedX,
@@ -28,8 +28,8 @@ function getPopupCoords (
 
 export default getPopupCoords;
 
-function getOffsetWidth (element) {
-    return (element)
-        ? element.offsetWidth
+function getOffsetWidth (elem) {
+    return (elem)
+        ? elem.offsetWidth
         : 0;
 }

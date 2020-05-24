@@ -1,6 +1,9 @@
 @import "styles/style.scss";
 
 .container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: .1s ease;
     cursor: pointer;
 

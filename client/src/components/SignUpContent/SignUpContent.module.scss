@@ -2,11 +2,11 @@
 
 .container {
     display: flex;
-    flex-direction: column;
     box-sizing: border-box;
-    padding: 0 3rem;
+    flex-direction: column;
+    min-width: 30rem;
 
     .signUpButton {
-        margin-top: 3rem;
+        margin-top: 5vh;
     }
 }

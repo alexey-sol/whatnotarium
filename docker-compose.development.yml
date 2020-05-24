@@ -12,6 +12,7 @@ services:
             - geek-regime-client:/app/node_modules
         environment:
             - NODE_ENV=development
+        stdin_open: true
     server:
         build:
             context: ./server

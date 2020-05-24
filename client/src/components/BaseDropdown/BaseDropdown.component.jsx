@@ -17,7 +17,7 @@ const INITIAL_COORDS = {
 function BaseDropdown ({
     children,
     className,
-    elementRef,
+    elemRef,
     isFixed,
     onClose
 }) {
@@ -40,7 +40,7 @@ function BaseDropdown ({
         (isFixed) ? styles.fixed : ""
     );
 
-    const dropdownElement = (
+    const dropdownElem = (
         <div
             className={dropdownClassName}
             ref={dropdownRef}
@@ -68,17 +68,17 @@ function BaseDropdown ({
     }, [dropdownRef, onClose]);
 
     useEffect(() => {
-        const element = elementRef.current;
+        const elem = elemRef.current;
         const dropdown = dropdownRef.current;
 
-        if (element && dropdown) {
-            const newCoords = getPopupCoords(element, dropdown);
+        if (elem && dropdown) {
+            const newCoords = getPopupCoords(elem, dropdown);
             setCoords(newCoords);
         }
-    }, [elementRef, dropdownRef]);
+    }, [elemRef, dropdownRef]);
 
     return ReactDOM.createPortal(
-        dropdownElement,
+        dropdownElem,
         document.body
     );
 }

@@ -7,10 +7,9 @@
 
     .content {
         display: flex;
-        flex: 1;
         box-sizing: border-box;
+        flex: 1;
         height: 100%;
-        padding-left: 50px;
         background-color: $footer-content-bg-color;
     }
 }

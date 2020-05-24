@@ -21,7 +21,7 @@ const tooltipWidthsInPx = {
 };
 
 function Tooltip ({
-    elementRef,
+    elemRef,
     isFixed,
     text,
     width
@@ -43,7 +43,7 @@ function Tooltip ({
         (isFixed) ? styles.fixed : ""
     );
 
-    const tooltipElement = (
+    const tooltipElem = (
         <div
             className={tooltipClassName}
             style={positionStyle}
@@ -55,37 +55,37 @@ function Tooltip ({
     );
 
     useEffect(() => {
-        const element = elementRef.current;
+        const elem = elemRef.current;
 
-        if (element) {
-            const newCoords = getPopupCoords(element, null, {
+        if (elem) {
+            const newCoords = getPopupCoords(elem, null, {
                 popupWidth: tooltipWidth
             });
 
             setCoords(newCoords);
         }
-    }, [elementRef, tooltipWidth]);
+    }, [elemRef, tooltipWidth]);
 
     useEffect(() => {
-        const element = elementRef.current;
+        const elem = elemRef.current;
         const tooltipHasCoords = Boolean(x && y);
 
-        if (element && tooltipHasCoords) {
+        if (elem && tooltipHasCoords) {
             const showTooltip = () => setTooltipIsShown(true);
             const hideTooltip = () => setTooltipIsShown(false);
 
-            element.addEventListener("mouseenter", showTooltip);
-            element.addEventListener("mouseleave", hideTooltip);
+            elem.addEventListener("mouseenter", showTooltip);
+            elem.addEventListener("mouseleave", hideTooltip);
 
             return () => {
-                element.removeEventListener("mouseenter", showTooltip);
-                element.removeEventListener("mouseleave", hideTooltip);
+                elem.removeEventListener("mouseenter", showTooltip);
+                elem.removeEventListener("mouseleave", hideTooltip);
             };
         }
-    }, [elementRef, x, y]);
+    }, [elemRef, x, y]);
 
     const portal = ReactDOM.createPortal(
-        tooltipElement,
+        tooltipElem,
         document.body
     );
 

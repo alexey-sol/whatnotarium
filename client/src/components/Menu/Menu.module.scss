@@ -3,11 +3,31 @@
 .container {
     position: fixed;
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     padding-right: 1rem;
 
     .commonMenu {
+        display: grid;
+        grid-template-areas:
+            "actions-menu"
+            "navbar";
+        width: 100%;
         animation-name: fade-in;
         animation-duration: 0.1s;
+    }
+
+    @media screen and (max-width: 1024px) {
+        & {
+            position: static;
+            flex-direction: row;
+            align-items: center;
+            width: 100%;
+            margin-top: 0 !important;
+
+            .commonMenu {
+                grid-template-areas: "navbar actions-menu";
+            }
+        }
     }
 }

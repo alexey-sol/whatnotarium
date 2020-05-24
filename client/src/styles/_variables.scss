@@ -1,5 +1,7 @@
-$font-family--normal: "Open Sans Condensed", sans-serif;
+$font-family--caption: "Roboto", "Helvetica", "Arial", sans-serif;
 $font-family--logo: "Bree Serif", "Helvetica", "Arial", sans-serif;
+$font-family--normal: "Open Sans Condensed", "Helvetica", "Arial", sans-serif;
+$font-family--undertone: "Roboto", "Helvetica", "Arial", sans-serif;
 
 $font-size--smallest: 1rem;
 $font-size--smaller: 1.2rem;
@@ -10,8 +12,8 @@ $font-size--larger: 2.2rem;
 $font-size--largest: 3.2rem;
 
 $gray--darkest: #141414;
-$gray--darken: #6c6c6c;
-$gray--dark: #9d9d9d;
+$gray--darken: #636363;
+$gray--dark: #818181;
 $gray: #bcbcbc;
 $gray--light: #e1e1e1;
 $gray--lighten: #f3f3f3;
@@ -25,7 +27,9 @@ $color-quaternary: #663939;
 $color-error: red;
 
 $selection-bg-color: $color-primary;
+$text-color--caption: $gray--darkest;
 $text-color--normal: $gray--darkest;
+$text-color--undertone: $gray--dark;
 
 $scrollbar-thumb-bg-color: $gray;
 $scrollbar-track-bg-color: $gray--lightest;
@@ -103,8 +107,8 @@ $user-menu-last-item-bg-color--hover: #f8deaa;
 $actions-menu-height: 5rem;
 $footer-height: 12rem;
 $header-height: 4rem;
-$grid-width: 85rem;
 $menu-width: 17.4rem;
+$nav-height--small: 3rem;
 $popup-height: $header-height;
 
 // Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361

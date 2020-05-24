@@ -9,9 +9,9 @@
     .container {
         position: relative;
         display: flex;
-        justify-content: center;
         box-sizing: border-box;
-        padding: 5rem;
+        justify-content: center;
+        padding: 10vh 0;
         background-color: $base-dialog-bg-color;
 
         &.autoWidth {
@@ -35,6 +35,15 @@
             color: $base-dialog-title-text-color;
             font-size: $font-size--larger;
             user-select: none;
+        }
+    }
+
+    @media screen and (max-width: 640px) {
+        .container {
+            &.fixedWidth {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }

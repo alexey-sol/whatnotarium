@@ -1,11 +1,10 @@
 import { Redirect } from "react-router";
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { EMAIL, PASSWORD } from "utils/const/userData";
 import { OUT_OF_FIELD } from "utils/const/fieldErrors";
-import { SignInContext } from "components/ActionsMenu";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
@@ -28,12 +27,12 @@ const initialProps = {
 
 function SignInContent ({
     currentUser,
+    onClose,
     onResetUserError,
     onSignInStart,
+    showSignUp,
     userError
 }) {
-    const { onClose, showSignUp } = useContext(SignInContext);
-
     const initialErrors = {
         ...initialProps,
         ...formatReducerError(userError)

@@ -1,0 +1,21 @@
+@import "styles/style.scss";
+
+.container {
+    display: grid;
+
+    .postList {
+        display: grid;
+        box-sizing: border-box;
+        grid-template-columns: minmax(30rem, 1fr);
+        row-gap: 4vh;
+        padding: 0;
+        margin: 0;
+
+        .postItem {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+    }
+}
