@@ -1,15 +1,18 @@
+import { Link } from "react-router-dom";
 import React from "react";
 
-import { propTypes } from "./PostPreview.props";
+import { POST } from "utils/const/pathnames";
 import DateFormatter from "utils/formatters/DateFormatter";
+import { propTypes } from "./PostPreview.props";
 import styles from "./PostPreview.module.scss";
 
 PostPreview.propTypes = propTypes;
 
 function PostPreview ({
     author,
-    content,
+    body,
     createdAt,
+    id,
     title,
     updatedAt
 }) {
@@ -18,13 +21,19 @@ function PostPreview ({
 
     return (
         <article className={styles.container}>
-            <header className={styles.title}>
-                {title}
-            </header>
+            <Link
+                className={styles.content}
+                title="Развернуть статью"
+                to={`${POST}/${id}`}
+            >
+                <header className={styles.title}>
+                    {title}
+                </header>
 
-            <section className={styles.content}>
-                {content}
-            </section>
+                <section className={styles.body}>
+                    {body}
+                </section>
+            </Link>
 
             <section className={styles.metadata}>
                 <img

@@ -1,14 +1,14 @@
 import { createSelector } from "reselect";
 
-const selectUser = ({ user }) => user;
+const getUser = ({ user }) => user;
 
 const selectCurrentUser = createSelector(
-    [selectUser],
+    [getUser],
     ({ currentUser }) => currentUser
 );
 
 const selectUserError = createSelector(
-    [selectUser],
+    [getUser],
     ({ error }) => error
 );
 

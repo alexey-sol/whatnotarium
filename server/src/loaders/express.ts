@@ -10,6 +10,7 @@ import Version from "#utils/helpers/Version";
 import initMorgan from "./helpers/initMorgan";
 import initSession from "./helpers/initSession";
 import middlewares from "#api/middlewares";
+import postRouter from "#api/routes/post/v1";
 import sessionRouter from "#api/routes/session/v1";
 import userRouter from "#api/routes/user/v1";
 
@@ -34,6 +35,7 @@ export default function (options: Options): express.Application {
     app.use(compression());
     app.use(express.static(publicDirPath));
     app.use(middlewares.clearUserlessCookie);
+    app.use(`${apiRoute}/post`, postRouter);
     app.use(`${apiRoute}/user`, userRouter);
     app.use(`${apiRoute}/session`, sessionRouter);
     app.use(middlewares.logError);

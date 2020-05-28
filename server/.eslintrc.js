@@ -49,6 +49,7 @@ module.exports = {
         "import/prefer-default-export": 0,
         "import/order": 0,
         "indent": ["error", 4, { "SwitchCase": 1 }],
+        "no-await-in-loop": 0,
         "no-confusing-arrow": 0,
         "no-else-return": 0,
         "no-restricted-syntax": 0,

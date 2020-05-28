@@ -16,9 +16,12 @@ import {
     checkSession,
     signIn,
     signOut,
-    signUp,
+    signUp
+} from "utils/api/session";
+
+import {
     updateProfile
-} from "utils/api";
+} from "utils/api/user";
 
 import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 

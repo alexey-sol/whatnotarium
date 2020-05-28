@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
+import postReducer from "./post/post.reducer";
 import userReducer from "./user/user.reducer";
 
 const persistConfig = {
@@ -13,6 +14,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+    post: postReducer,
     user: userReducer
 });
 

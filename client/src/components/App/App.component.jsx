@@ -2,7 +2,13 @@ import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
 
-import { PROFILE, SIGN_IN } from "utils/const/pathnames";
+import {
+    DRAFT,
+    POST,
+    PROFILE,
+    SIGN_IN
+} from "utils/const/pathnames";
+
 import { PrivateRoute } from "components/Route";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
@@ -14,7 +20,9 @@ import { checkSessionStart } from "redux/user/user.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 
+const DraftEditor = lazy(() => import("pages/DraftEditor"));
 const Home = lazy(() => import("pages/Home"));
+const Post = lazy(() => import("pages/Post"));
 const Profile = lazy(() => import("pages/Profile"));
 const SignIn = lazy(() => import("pages/SignIn"));
 
@@ -44,9 +52,24 @@ function App ({ onCheckSessionStart }) {
                                 path={SIGN_IN}
                             />
 
+                            <Route
+                                component={Post}
+                                path={`${POST}/:id`}
+                            />
+
                             <PrivateRoute
                                 component={Profile}
                                 path={PROFILE}
+                            />
+
+                            <PrivateRoute
+                                component={DraftEditor}
+                                path={`${DRAFT}`}
+                            />
+
+                            <PrivateRoute
+                                component={DraftEditor}
+                                path={`${POST}/:id/edit`}
                             />
                         </Suspense>
                     </ErrorBoundary>
