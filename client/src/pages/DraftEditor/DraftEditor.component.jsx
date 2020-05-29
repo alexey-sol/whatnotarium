@@ -2,10 +2,18 @@ import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { defaultProps, propTypes } from "./DraftEditor.props";
-import { createPostStart, getPostStart } from "redux/post/post.actions";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import {
+    createPostStart,
+    getPostStart,
+    updatePostStart
+} from "redux/post/post.actions";
+
+import { POST } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
+import { defaultProps, propTypes } from "./DraftEditor.props";
+import { resetPost } from "redux/post/post.actions";
+import { selectCurrentUser } from "redux/user/user.selectors";
+import { selectPost } from "redux/post/post.selectors";
 import styles from "./DraftEditor.module.scss";
 
 DraftEditor.defaultProps = defaultProps;
@@ -13,20 +21,17 @@ DraftEditor.propTypes = propTypes;
 
 function DraftEditor ({
     currentUser,
+    history,
     match,
     onCreatePostStart,
     onGetPostStart,
+    onResetPost,
+    onUpdatePostStart,
     post,
     postError // TODO: show popup
 }) {
     const id = match.params.id && +match.params.id;
-
-    const [currentPost, setCurrentPost] = useState({
-        ...post,
-        body: post.body || "",
-        title: post.title || "",
-        userId: currentUser.id
-    });
+    const [currentPost, setCurrentPost] = useState(null);
 
     const handleChange = useCallback(({ target }) => {
         const { name, value } = target;
@@ -35,28 +40,51 @@ function DraftEditor ({
             ...currentPost,
             [name]: value
         });
-    }, [post]);
+    }, [currentPost]);
 
-    const handleSubmit = useCallback(event => {
+    const createOrUpdatePost = (event) => {
         event.preventDefault();
-        onCreatePostStart(currentPost);
-    }, [post]); // TODO: it's object
+
+        const shouldCreateNewPost = !id;
+
+        if (shouldCreateNewPost) {
+            onCreatePostStart(currentPost);
+        } else {
+            onUpdatePostStart(currentPost);
+        }
+    };
+
+    const shouldFetchPost = id && !post && !currentPost;
+    const shouldSetCurrentPost = Boolean(post && !currentPost);
+
+    // const shouldRedirect = Boolean(currentPost && !post);
 
     useEffect(() => {
-        if (id) {
+        // if (shouldRedirect) {
+        //     history.push(`${POST}/${id}`);
+        // }
+    }, [id]);
+
+    useEffect(() => {
+        if (shouldFetchPost) {
             onGetPostStart(id);
         }
-    }, [id]); // can be undefined if "/draft"
+
+        if (shouldSetCurrentPost) {
+            setCurrentPost(post);
+            onResetPost();
+        }
+    }, [id, onGetPostStart, onResetPost, shouldFetchPost, shouldSetCurrentPost, post]);
 
     return (
         <article className={styles.container}>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={createOrUpdatePost}>
                 <header className={styles.title}>
                     <input
                         name="title"
                         onChange={handleChange}
                         type="text"
-                        value={currentPost.title}
+                        value={currentPost?.title ?? ""}
                     />
                 </header>
 
@@ -65,7 +93,7 @@ function DraftEditor ({
                         name="body"
                         onChange={handleChange}
                         type="text"
-                        value={currentPost.body}
+                        value={currentPost?.body || ""}
                     />
                 </section>
 
@@ -79,12 +107,12 @@ function DraftEditor ({
 
             <section className={styles.metadata}>
                 <img
-                    alt={currentPost.userId}
+                    alt={currentPost?.userId}
                     src=""
                 />
 
                 <span>
-                    {currentPost.userId}
+                    {currentPost?.userId}
                 </span>
 
                 <span className={styles.date}>
@@ -96,12 +124,15 @@ function DraftEditor ({
 }
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
+    currentUser: selectCurrentUser,
+    post: selectPost
 });
 
 const mapDispatchToProps = (dispatch) => ({
     onCreatePostStart: (props) => dispatch(createPostStart(props)),
-    onGetPostStart: (id) => dispatch(getPostStart(id))
+    onGetPostStart: (id) => dispatch(getPostStart(id)),
+    onResetPost: () => dispatch(resetPost()),
+    onUpdatePostStart: (props) => dispatch(updatePostStart(props))
 });
 
 const ConnectedDraftEditor = connect(

@@ -5,6 +5,7 @@ import {
     GET_POST_SUCCESS,
     GET_POSTS_FAILURE,
     GET_POSTS_SUCCESS,
+    RESET_POST,
     RESET_POST_ERROR,
     UPDATE_POST_FAILURE,
     UPDATE_POST_SUCCESS
@@ -43,6 +44,12 @@ function postReducer (state = INITIAL_STATE, action = {}) {
                 ...state,
                 posts: payload,
                 error: null
+            };
+
+        case RESET_POST:
+            return {
+                ...state,
+                post: null
             };
 
         case RESET_POST_ERROR:

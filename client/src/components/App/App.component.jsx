@@ -38,9 +38,9 @@ function App ({ onCheckSessionStart }) {
             <Header />
 
             <Main>
-                <Switch>
-                    <ErrorBoundary>
-                        <Suspense fallback={<Spinner />}>
+                <ErrorBoundary>
+                    <Suspense fallback={<Spinner />}>
+                        <Switch>
                             <Route
                                 component={Home}
                                 exact
@@ -50,11 +50,6 @@ function App ({ onCheckSessionStart }) {
                             <Route
                                 component={SignIn}
                                 path={SIGN_IN}
-                            />
-
-                            <Route
-                                component={Post}
-                                path={`${POST}/:id`}
                             />
 
                             <PrivateRoute
@@ -71,9 +66,14 @@ function App ({ onCheckSessionStart }) {
                                 component={DraftEditor}
                                 path={`${POST}/:id/edit`}
                             />
-                        </Suspense>
-                    </ErrorBoundary>
-                </Switch>
+
+                            <Route
+                                component={Post}
+                                path={`${POST}/:id`}
+                            />
+                        </Switch>
+                    </Suspense>
+                </ErrorBoundary>
             </Main>
 
             <Nav />

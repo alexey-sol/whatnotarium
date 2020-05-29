@@ -64,10 +64,10 @@ function * doGetPosts ({ payload }) {
 }
 
 function * doUpdatePost ({ payload }) {
-    const { id, ...props } = payload;
+    const { id, ...restProps } = payload;
 
     try {
-        const post = yield updatePost(id, props);
+        const post = yield updatePost(id, restProps);
         yield put(updatePostSuccess(post));
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);

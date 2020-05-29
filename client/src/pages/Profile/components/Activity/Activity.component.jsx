@@ -2,11 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { defaultProps, propTypes } from "./Activity.props";
+import { propTypes } from "./Activity.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./Activity.module.scss";
 
-Activity.defaultProps = defaultProps;
 Activity.propTypes = propTypes;
 
 function Activity ({ currentUser }) {

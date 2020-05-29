@@ -1,7 +1,10 @@
+import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
+import { POST } from "utils/const/pathnames";
+import BaseButton from "components/BaseButton";
 import { getPostStart } from "redux/post/post.actions";
 import { defaultProps, propTypes } from "./Post.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
@@ -28,11 +31,12 @@ function Post ({
         updatedAt
     } = post || {};
 
-    const userIsAuthor = author?.id === currentUser?.id;
-
     useEffect(() => {
         onGetPostStart(id);
     }, [id]);
+
+    const userIsAuthor = author?.id === currentUser?.id;
+    const shouldRenderControls = Boolean(userIsAuthor && id);
 
     return (
         <article className={styles.container}>
@@ -58,6 +62,16 @@ function Post ({
                     {updatedAt}
                 </span>
             </section>
+
+            {shouldRenderControls && (
+                <section className={styles.controls}>
+                    <Link to={`${POST}/${id}/edit`}>
+                        <BaseButton
+                            title="Редактировать"
+                        />
+                    </Link>
+                </section>
+            )}
         </article>
     );
 }

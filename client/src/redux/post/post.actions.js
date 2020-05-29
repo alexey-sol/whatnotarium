@@ -11,6 +11,7 @@ import {
     GET_POSTS_FAILURE,
     GET_POSTS_START,
     GET_POSTS_SUCCESS,
+    RESET_POST,
     RESET_POST_ERROR,
     UPDATE_POST_FAILURE,
     UPDATE_POST_START,
@@ -101,6 +102,12 @@ function getPostsSuccess (posts) {
     };
 }
 
+function resetPost () {
+    return {
+        type: RESET_POST
+    };
+}
+
 function resetPostError () {
     return {
         type: RESET_POST_ERROR
@@ -141,6 +148,7 @@ export {
     getPostsFailure,
     getPostsStart,
     getPostsSuccess,
+    resetPost,
     resetPostError,
     updatePostFailure,
     updatePostStart,

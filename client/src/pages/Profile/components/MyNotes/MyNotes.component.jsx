@@ -2,11 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { defaultProps, propTypes } from "./MyNotes.props";
+import { propTypes } from "./MyNotes.props";
 import { selectCurrentUser } from "redux/user/user.selectors";
 import styles from "./MyNotes.module.scss";
 
-MyNotes.defaultProps = defaultProps;
 MyNotes.propTypes = propTypes;
 
 function MyNotes ({ currentUser }) {
