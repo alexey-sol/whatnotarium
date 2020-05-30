@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { BackIconButton } from "components/IconButton";
 import { PROFILE } from "utils/const/pathnames";
 import { propTypes } from "./UserMenu.props";
-import { signOutStart } from "redux/user/user.actions";
+import { signOutStart } from "redux/session/session.actions";
 import styles from "./UserMenu.module.scss";
 
 UserMenu.propTypes = propTypes;

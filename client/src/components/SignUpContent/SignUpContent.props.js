@@ -2,12 +2,12 @@ import { func, object } from "prop-types";
 
 export const defaultProps = {
     currentUser: null,
-    userError: null
+    sessionError: null
 };
 
 export const propTypes = {
     currentUser: object,
-    onResetUserError: func.isRequired,
+    onClearError: func.isRequired,
     onSignUpStart: func.isRequired,
-    userError: object
+    sessionError: object
 };

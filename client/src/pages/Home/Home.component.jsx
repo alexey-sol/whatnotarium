@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 import Posts from "components/Posts";
 import { defaultProps, propTypes } from "./Home.props";
 import { getPostsStart } from "redux/post/post.actions";
-import { selectPosts } from "redux/post/post.selectors";
+import { selectGottenPosts } from "redux/post/post.selectors";
 // import styles from "./Home.module.scss";
 
 Home.defaultProps = defaultProps;
@@ -24,7 +24,7 @@ function Home ({ onGetPostsStart, posts }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    posts: selectPosts
+    posts: selectGottenPosts
 });
 
 const mapDispatchToProps = (dispatch) => ({

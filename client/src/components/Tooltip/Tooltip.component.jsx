@@ -55,7 +55,7 @@ function Tooltip ({
     );
 
     useEffect(() => {
-        const elem = elemRef.current;
+        const elem = elemRef?.current;
 
         if (elem) {
             const newCoords = getPopupCoords(elem, null, {
@@ -64,10 +64,10 @@ function Tooltip ({
 
             setCoords(newCoords);
         }
-    }, [elemRef, tooltipWidth]);
+    }, [elemRef, tooltipWidth]); // TODO: it's object
 
     useEffect(() => {
-        const elem = elemRef.current;
+        const elem = elemRef?.current;
         const tooltipHasCoords = Boolean(x && y);
 
         if (elem && tooltipHasCoords) {

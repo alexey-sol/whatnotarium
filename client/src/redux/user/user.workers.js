@@ -1,23 +1,9 @@
 import { put } from "redux-saga/effects";
 
 import {
-    checkSessionSuccess,
-    signInFailure,
-    signInSuccess,
-    signOutFailure,
-    signOutSuccess,
-    signUpFailure,
-    signUpSuccess,
     updateProfileFailure,
     updateProfileSuccess
 } from "./user.actions";
-
-import {
-    checkSession,
-    signIn,
-    signOut,
-    signUp
-} from "utils/api/session";
 
 import {
     updateProfile
@@ -25,46 +11,7 @@ import {
 
 import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
-function * doCheckSession () {
-    try {
-        const currentUser = yield checkSession();
-        yield put(checkSessionSuccess(currentUser));
-    } catch (errorResponse) {
-        console.error(errorResponse);
-    }
-}
-
-function * doSignIn ({ payload }) {
-    try {
-        const currentUser = yield signIn(payload);
-        yield put(signInSuccess(currentUser));
-    } catch (errorResponse) {
-        const error = getErrorFromResponse(errorResponse);
-        yield put(signInFailure(error));
-    }
-}
-
-function * doSignOut () {
-    try {
-        yield signOut();
-        yield put(signOutSuccess());
-    } catch (errorResponse) {
-        const error = getErrorFromResponse(errorResponse);
-        yield put(signOutFailure(error));
-    }
-}
-
-function * doSignUp ({ payload }) {
-    try {
-        const currentUser = yield signUp(payload);
-        yield put(signUpSuccess(currentUser));
-    } catch (errorResponse) {
-        const error = getErrorFromResponse(errorResponse);
-        yield put(signUpFailure(error));
-    }
-}
-
-function * doUpdateProfile ({ payload }) {
+export function * doUpdateProfile ({ payload }) {
     const { id, ...props } = payload;
 
     try {
@@ -75,11 +22,3 @@ function * doUpdateProfile ({ payload }) {
         yield put(updateProfileFailure(error));
     }
 }
-
-export {
-    doCheckSession,
-    doSignIn,
-    doSignOut,
-    doSignUp,
-    doUpdateProfile
-};

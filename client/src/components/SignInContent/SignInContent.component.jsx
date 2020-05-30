@@ -9,9 +9,9 @@ import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
 import Popup from "components/Popup";
+import { clearError, signInStart } from "redux/session/session.actions";
 import { defaultProps, propTypes } from "./SignInContent.props";
-import { resetUserError, signInStart } from "redux/user/user.actions";
-import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
+import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 import { validateEmail, validatePassword } from "utils/validators/Validator";
 import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./SignInContent.module.scss";
@@ -27,15 +27,15 @@ const initialProps = {
 
 function SignInContent ({
     currentUser,
+    onClearError,
     onClose,
-    onResetUserError,
     onSignInStart,
-    showSignUp,
-    userError
+    sessionError,
+    showSignUp
 }) {
     const initialErrors = {
         ...initialProps,
-        ...formatReducerError(userError)
+        ...formatReducerError(sessionError)
     };
 
     const validateProp = (stateName, credentials) => {
@@ -54,7 +54,7 @@ function SignInContent ({
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: onResetUserError,
+        resetReducerError: onClearError,
         sendProps: onSignInStart,
         validateProp
     };
@@ -77,7 +77,7 @@ function SignInContent ({
         [OUT_OF_FIELD]: outOfFieldError
     } = errors;
 
-    const hidePopup = useCallback(() => onResetUserError(), [onResetUserError]);
+    const hidePopup = useCallback(() => onClearError(), [onClearError]);
 
     const handleClickOnSignUp = useCallback((event) => {
         event.preventDefault();
@@ -91,8 +91,8 @@ function SignInContent ({
     }, []);
 
     useEffect(() => {
-        return () => onResetUserError();
-    }, [onResetUserError]);
+        return () => onClearError();
+    }, [onClearError]);
 
     const component = (
         <div className={styles.container}>
@@ -174,11 +174,11 @@ function SignInContent ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    userError: selectUserError
+    sessionError: selectError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onResetUserError: () => dispatch(resetUserError()),
+    onClearError: () => dispatch(clearError()),
     onSignInStart: (credentials) => dispatch(signInStart(credentials))
 });
 

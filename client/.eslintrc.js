@@ -54,7 +54,7 @@ module.exports = {
         "no-use-before-define": 0,
         "quotes": [2, "double"],
         "lines-between-class-members": ["error", "always", { exceptAfterSingleLine: true }],
-        "max-len": ["error", { "code": 80 }],
+        "max-len": ["error", { "code": 90 }],
         "no-console": 0,
         "no-else-return": 0,
         "no-unused-expressions": 0,

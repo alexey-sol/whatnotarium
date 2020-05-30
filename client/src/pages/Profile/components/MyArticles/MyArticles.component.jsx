@@ -4,8 +4,8 @@ import { createStructuredSelector } from "reselect";
 
 import { defaultProps, propTypes } from "./MyArticles.props";
 import { getPostsStart } from "redux/post/post.actions";
-import { selectCurrentUser } from "redux/user/user.selectors";
-import { selectPosts } from "redux/post/post.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectGottenPosts } from "redux/post/post.selectors";
 import Posts from "components/Posts";
 import styles from "./MyArticles.module.scss";
 
@@ -27,7 +27,7 @@ function MyArticles ({ currentUser, onGetPostsStart, posts }) {
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    posts: selectPosts
+    posts: selectGottenPosts
 });
 
 const mapDispatchToProps = (dispatch) => ({

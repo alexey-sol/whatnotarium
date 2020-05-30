@@ -7,9 +7,8 @@ import { POST } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
 import { getPostStart } from "redux/post/post.actions";
 import { defaultProps, propTypes } from "./Post.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
-import { selectPost } from "redux/post/post.selectors";
-// import DateFormatter from "utils/formatters/DateFormatter";
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectGottenPost } from "redux/post/post.selectors";
 import styles from "./Post.module.scss";
 
 Post.defaultProps = defaultProps;
@@ -33,7 +32,7 @@ function Post ({
 
     useEffect(() => {
         onGetPostStart(id);
-    }, [id]);
+    }, [id, onGetPostStart]);
 
     const userIsAuthor = author?.id === currentUser?.id;
     const shouldRenderControls = Boolean(userIsAuthor && id);
@@ -78,7 +77,7 @@ function Post ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    post: selectPost
+    post: selectGottenPost
 });
 
 const mapDispatchToProps = (dispatch) => ({

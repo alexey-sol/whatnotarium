@@ -1,18 +1,20 @@
 import { func, object } from "prop-types";
 
 export const defaultProps = {
+    gottenPostError: null,
     post: null,
-    postError: null
+    updatedPostError: null
 };
 
 export const propTypes = {
     currentUser: object.isRequired,
+    gottenPostError: object,
     history: object.isRequired,
     match: object.isRequired,
     onCreatePostStart: func.isRequired,
     onGetPostStart: func.isRequired,
-    onResetPost: func.isRequired,
+    onUpdatePostReset: func.isRequired,
     onUpdatePostStart: func.isRequired,
     post: object,
-    postError: object
+    updatedPostError: object
 };

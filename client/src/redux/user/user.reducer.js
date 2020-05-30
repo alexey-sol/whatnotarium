@@ -1,57 +1,25 @@
-import {
-    CHECK_SESSION_FAILURE,
-    CHECK_SESSION_SUCCESS,
-    RESET_USER_ERROR,
-    SIGN_IN_FAILURE,
-    SIGN_IN_SUCCESS,
-    SIGN_OUT_FAILURE,
-    SIGN_OUT_SUCCESS,
-    SIGN_UP_FAILURE,
-    SIGN_UP_SUCCESS,
-    UPDATE_PROFILE_FAILURE,
-    UPDATE_PROFILE_SUCCESS
-} from "./user.types";
+import makeFailure from "utils/redux/makeFailure";
+import makeSuccess from "utils/redux/makeSuccess";
+import types from "./user.types";
 
-const INITIAL_STATE = {
-    currentUser: null,
-    error: null
-};
-
-function userReducer (state = INITIAL_STATE, action = {}) {
+function userReducer (state = {}, action = {}) {
     const { payload, type } = action;
+    const actionFailure = makeFailure(type);
+    const actionSuccess = makeSuccess(type);
 
     switch (type) {
-        case CHECK_SESSION_FAILURE:
-        case SIGN_IN_FAILURE:
-        case SIGN_OUT_FAILURE:
-        case SIGN_UP_FAILURE:
-        case UPDATE_PROFILE_FAILURE:
+        case types.UPDATE_PROFILE_FAILURE:
+        case types.UPDATE_PROFILE_SUCCESS:
             return {
                 ...state,
-                error: payload
+                [type]: payload
             };
 
-        case CHECK_SESSION_SUCCESS:
-        case SIGN_IN_SUCCESS:
-        case UPDATE_PROFILE_SUCCESS:
-        case SIGN_UP_SUCCESS:
+        case types.UPDATE_PROFILE_RESET:
             return {
                 ...state,
-                currentUser: payload,
-                error: null
-            };
-
-        case SIGN_OUT_SUCCESS:
-            return {
-                ...state,
-                currentUser: null,
-                error: null
-            };
-
-        case RESET_USER_ERROR:
-            return {
-                ...state,
-                error: null
+                [actionFailure]: null,
+                [actionSuccess]: null
             };
 
         default:

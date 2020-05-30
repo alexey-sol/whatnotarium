@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import { SIGN_IN } from "utils/const/pathnames";
 import { defaultProps, propTypes } from "./Route.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
 
 PrivateRoute.defaultProps = defaultProps;
 PrivateRoute.propTypes = propTypes;

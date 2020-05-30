@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { propTypes } from "./MyNotes.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./MyNotes.module.scss";
 
 MyNotes.propTypes = propTypes;

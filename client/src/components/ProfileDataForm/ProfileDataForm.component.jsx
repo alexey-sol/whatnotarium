@@ -6,9 +6,10 @@ import { EMAIL, NAME } from "utils/const/userData";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
-import { resetUserError, updateProfileStart } from "redux/user/user.actions";
-import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectUpdatedProfileError } from "redux/user/user.selectors";
 import { validateEmail, validateName } from "utils/validators/Validator";
+import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./ProfileDataForm.module.scss";
 import useAuthentication from "utils/hooks/useAuthentication.jsx";
@@ -18,9 +19,9 @@ ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,
-    onResetUserError,
+    onClearError,
     onUpdateProfileStart,
-    userError
+    updatedProfileError
 }) {
     const initialProps = {
         email: currentUser?.email,
@@ -30,7 +31,7 @@ function ProfileDataForm ({
 
     const initialErrors = {
         name: "",
-        ...formatReducerError(userError, ["email"])
+        ...formatReducerError(updatedProfileError, ["email"])
     };
 
     const validateProp = (stateName, props) => {
@@ -49,7 +50,7 @@ function ProfileDataForm ({
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: onResetUserError,
+        resetReducerError: onClearError,
         sendProps: onUpdateProfileStart,
         validateProp
     };
@@ -69,8 +70,8 @@ function ProfileDataForm ({
     } = errors;
 
     useEffect(() => {
-        return () => onResetUserError();
-    }, [onResetUserError]);
+        return () => onClearError();
+    }, [onClearError]);
 
     return (
         <form
@@ -106,11 +107,11 @@ function ProfileDataForm ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    userError: selectUserError
+    updatedProfileError: selectUpdatedProfileError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onResetUserError: () => dispatch(resetUserError()),
+    onClearError: () => dispatch(updateProfileReset()),
     onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
 });
 

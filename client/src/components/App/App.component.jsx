@@ -16,7 +16,7 @@ import Header from "components/Header";
 import Main from "components/Main";
 import Nav from "components/Nav";
 import Spinner from "components/Spinner";
-import { checkSessionStart } from "redux/user/user.actions";
+import { checkSessionStart } from "redux/session/session.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 

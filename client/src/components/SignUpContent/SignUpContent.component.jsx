@@ -16,8 +16,8 @@ import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./SignUpContent.props";
-import { resetUserError, signUpStart } from "redux/user/user.actions";
-import { selectCurrentUser, selectUserError } from "redux/user/user.selectors";
+import { clearError, signUpStart } from "redux/session/session.actions";
+import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 
 import {
     validateConfirmPassword,
@@ -43,13 +43,13 @@ const initialProps = {
 
 function SignUpContent ({
     currentUser,
-    onResetUserError,
+    onClearError,
     onSignUpStart,
-    userError
+    sessionError
 }) {
     const initialErrors = {
         ...initialProps,
-        ...formatReducerError(userError)
+        ...formatReducerError(sessionError)
     };
 
     const validateProp = (stateName, credentials) => {
@@ -77,7 +77,7 @@ function SignUpContent ({
     const useAuthenticationOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: onResetUserError,
+        resetReducerError: onClearError,
         sendProps: onSignUpStart,
         validateProp
     };
@@ -113,11 +113,11 @@ function SignUpContent ({
         ? hints.weakPassword
         : "";
 
-    const hidePopup = useCallback(() => onResetUserError(), [onResetUserError]);
+    const hidePopup = useCallback(() => onClearError(), [onClearError]);
 
     useEffect(() => {
-        return () => onResetUserError();
-    }, [onResetUserError]);
+        return () => onClearError();
+    }, [onClearError]);
 
     const component = (
         <form
@@ -185,11 +185,11 @@ function SignUpContent ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    userError: selectUserError
+    sessionError: selectError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onResetUserError: () => dispatch(resetUserError()),
+    onClearError: () => dispatch(clearError()),
     onSignUpStart: (credentials) => dispatch(signUpStart(credentials))
 });
 

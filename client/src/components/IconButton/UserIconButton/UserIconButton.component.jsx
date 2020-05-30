@@ -7,7 +7,7 @@ import { SIGN_IN } from "utils/const/pathnames";
 import { User as UserIcon } from "components/Icon";
 import IconButton from "components/BaseIconButton";
 import { defaultProps, propTypes } from "./UserIconButton.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
 
 UserIconButton.defaultProps = defaultProps;
 UserIconButton.propTypes = propTypes;

@@ -1,18 +1,20 @@
 import { createSelector } from "reselect";
 
+import types from "./user.types";
+
+const {
+    UPDATE_PROFILE_FAILURE,
+    UPDATE_PROFILE_SUCCESS
+} = types;
+
 const getUser = ({ user }) => user;
 
-const selectCurrentUser = createSelector(
+export const selectUpdatedProfile = createSelector(
     [getUser],
-    ({ currentUser }) => currentUser
+    ({ [UPDATE_PROFILE_SUCCESS]: result }) => result
 );
 
-const selectUserError = createSelector(
+export const selectUpdatedProfileError = createSelector(
     [getUser],
-    ({ error }) => error
+    ({ [UPDATE_PROFILE_FAILURE]: result }) => result
 );
-
-export {
-    selectCurrentUser,
-    selectUserError
-};

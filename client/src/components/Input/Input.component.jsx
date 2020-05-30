@@ -63,7 +63,7 @@ function Input ({
 
             {errorTooltipText && (
                 <Tooltip
-                    elementRef={errorSpanRef}
+                    elemRef={errorSpanRef}
                     isFixed={hasFixedTooltip}
                     text={errorTooltipText}
                 />

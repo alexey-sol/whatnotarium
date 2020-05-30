@@ -17,7 +17,7 @@ import {
 
 import { SignInDialog, SignUpDialog } from "components/Dialog";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
-import { selectCurrentUser } from "redux/user/user.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./ActionsMenu.module.scss";
 
 ActionsMenu.defaultProps = defaultProps;

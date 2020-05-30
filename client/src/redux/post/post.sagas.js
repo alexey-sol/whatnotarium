@@ -5,14 +5,6 @@ import {
 } from "redux-saga/effects";
 
 import {
-    CREATE_POST_START,
-    DELETE_POST_START,
-    GET_POST_START,
-    GET_POSTS_START,
-    UPDATE_POST_START
-} from "./post.types";
-
-import {
     doCreatePost,
     doDeletePost,
     doGetPost,
@@ -20,24 +12,26 @@ import {
     doUpdatePost
 } from "./post.workers";
 
+import types from "./post.types";
+
 function * onCreatePostStart () {
-    yield takeLatest(CREATE_POST_START, doCreatePost);
+    yield takeLatest(types.CREATE_POST_START, doCreatePost);
 }
 
 function * onDeletePostStart () {
-    yield takeLatest(DELETE_POST_START, doDeletePost);
+    yield takeLatest(types.DELETE_POST_START, doDeletePost);
 }
 
 function * onGetPostStart () {
-    yield takeLatest(GET_POST_START, doGetPost);
+    yield takeLatest(types.GET_POST_START, doGetPost);
 }
 
 function * onGetPostsStart () {
-    yield takeLatest(GET_POSTS_START, doGetPosts);
+    yield takeLatest(types.GET_POSTS_START, doGetPosts);
 }
 
 function * onUpdatePostStart () {
-    yield takeLatest(UPDATE_POST_START, doUpdatePost);
+    yield takeLatest(types.UPDATE_POST_START, doUpdatePost);
 }
 
 function * postSagas () {
