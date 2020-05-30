@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -7,20 +8,28 @@ import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUpdatedProfileError } from "redux/user/user.selectors";
-import { validateEmail, validateName } from "utils/validators/Validator";
+
+import {
+    selectUpdatedProfile,
+    selectUpdatedProfileError
+} from "redux/user/user.selectors";
+
+import { setCurrentUser } from "redux/session/session.actions";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
+import { validateEmail, validateName } from "utils/validators/Validator";
 import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./ProfileDataForm.module.scss";
-import useAuthentication from "utils/hooks/useAuthentication.jsx";
+import useForm from "utils/hooks/useForm.jsx";
 
 ProfileDataForm.defaultProps = defaultProps;
 ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,
-    onClearError,
+    onSetCurrentUser,
+    onUpdateProfileReset,
     onUpdateProfileStart,
+    updatedProfile,
     updatedProfileError
 }) {
     const initialProps = {
@@ -47,10 +56,10 @@ function ProfileDataForm ({
         }
     };
 
-    const useAuthenticationOptions = {
+    const useFormOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: onClearError,
+        resetReducerError: onUpdateProfileReset,
         sendProps: onUpdateProfileStart,
         validateProp
     };
@@ -60,7 +69,7 @@ function ProfileDataForm ({
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(useAuthenticationOptions);
+    } = useForm(useFormOptions);
 
     const { email, name } = props;
 
@@ -70,8 +79,22 @@ function ProfileDataForm ({
     } = errors;
 
     useEffect(() => {
-        return () => onClearError();
-    }, [onClearError]);
+        const shouldUpdateCurrentUser = Boolean(
+            updatedProfile &&
+            !_.isEqual(currentUser, updatedProfile)
+        );
+
+        if (shouldUpdateCurrentUser) {
+            onSetCurrentUser(updatedProfile);
+        }
+
+        return () => onUpdateProfileReset();
+    }, [
+        currentUser,
+        onSetCurrentUser,
+        onUpdateProfileReset,
+        updatedProfile
+    ]);
 
     return (
         <form
@@ -107,11 +130,13 @@ function ProfileDataForm ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
+    updatedProfile: selectUpdatedProfile,
     updatedProfileError: selectUpdatedProfileError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onClearError: () => dispatch(updateProfileReset()),
+    onSetCurrentUser: () => dispatch(setCurrentUser()),
+    onUpdateProfileReset: () => dispatch(updateProfileReset()),
     onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
 });
 

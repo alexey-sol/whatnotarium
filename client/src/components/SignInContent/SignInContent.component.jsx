@@ -15,7 +15,7 @@ import { selectCurrentUser, selectError } from "redux/session/session.selectors"
 import { validateEmail, validatePassword } from "utils/validators/Validator";
 import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./SignInContent.module.scss";
-import useAuthentication from "utils/hooks/useAuthentication.jsx";
+import useForm from "utils/hooks/useForm.jsx";
 
 SignInContent.defaultProps = defaultProps;
 SignInContent.propTypes = propTypes;
@@ -51,7 +51,7 @@ function SignInContent ({
         }
     };
 
-    const useAuthenticationOptions = {
+    const useFormOptions = {
         initialErrors,
         initialProps,
         resetReducerError: onClearError,
@@ -64,7 +64,7 @@ function SignInContent ({
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(useAuthenticationOptions);
+    } = useForm(useFormOptions);
 
     const {
         email,

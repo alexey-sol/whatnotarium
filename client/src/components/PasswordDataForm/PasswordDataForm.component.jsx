@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -7,7 +8,13 @@ import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUpdatedProfileError } from "redux/user/user.selectors";
+
+import {
+    selectUpdatedProfile,
+    selectUpdatedProfileError
+} from "redux/user/user.selectors";
+
+import { setCurrentUser } from "redux/session/session.actions";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 
 import {
@@ -19,15 +26,17 @@ import {
 import formatReducerError from "utils/helpers/formatReducerError";
 import hints from "utils/resources/text/hints";
 import styles from "./PasswordDataForm.module.scss";
-import useAuthentication from "utils/hooks/useAuthentication.jsx";
+import useForm from "utils/hooks/useForm.jsx";
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;
 
 function PasswordDataForm ({
     currentUser,
-    onClearError,
+    onSetCurrentUser,
+    onUpdateProfileReset,
     onUpdateProfileStart,
+    updatedProfile,
     updatedProfileError
 }) {
     const initialProps = {
@@ -62,10 +71,10 @@ function PasswordDataForm ({
         }
     };
 
-    const useAuthenticationOptions = {
+    const useFormOptions = {
         initialErrors,
         initialProps,
-        resetReducerError: onClearError,
+        resetReducerError: onUpdateProfileReset,
         sendProps: onUpdateProfileStart,
         validateProp
     };
@@ -76,7 +85,7 @@ function PasswordDataForm ({
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(useAuthenticationOptions);
+    } = useForm(useFormOptions);
 
     const {
         confirmNewPassword,
@@ -99,8 +108,22 @@ function PasswordDataForm ({
         : "";
 
     useEffect(() => {
-        return () => onClearError();
-    }, [onClearError]);
+        const shouldUpdateCurrentUser = Boolean(
+            updatedProfile &&
+            !_.isEqual(currentUser, updatedProfile)
+        );
+
+        if (shouldUpdateCurrentUser) {
+            onSetCurrentUser(updatedProfile);
+        }
+
+        return () => onUpdateProfileReset();
+    }, [
+        currentUser,
+        onSetCurrentUser,
+        onUpdateProfileReset,
+        updatedProfile
+    ]);
 
     return (
         <form
@@ -146,11 +169,13 @@ function PasswordDataForm ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
+    updatedProfile: selectUpdatedProfile,
     updatedProfileError: selectUpdatedProfileError
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onClearError: () => dispatch(updateProfileReset()),
+    onSetCurrentUser: (updatedData) => dispatch(setCurrentUser(updatedData)),
+    onUpdateProfileReset: () => dispatch(updateProfileReset()),
     onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
 });
 

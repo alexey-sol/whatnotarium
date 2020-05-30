@@ -5,7 +5,7 @@ import filterFalsyValues from "utils/helpers/filterFalsyValues";
 import isEmptyObject from "utils/helpers/isEmptyObject";
 import translateError from "utils/helpers/translateError";
 
-function useAuthentication ({
+function useForm ({
     initialErrors = {},
     initialProps = {},
     resetReducerError,
@@ -108,4 +108,4 @@ function useAuthentication ({
     };
 }
 
-export default useAuthentication;
+export default useForm;

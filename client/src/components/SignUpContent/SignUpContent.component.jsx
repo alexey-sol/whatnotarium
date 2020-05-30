@@ -29,7 +29,7 @@ import {
 import formatReducerError from "utils/helpers/formatReducerError";
 import hints from "utils/resources/text/hints";
 import styles from "./SignUpContent.module.scss";
-import useAuthentication from "utils/hooks/useAuthentication.jsx";
+import useForm from "utils/hooks/useForm.jsx";
 
 SignUpContent.defaultProps = defaultProps;
 SignUpContent.propTypes = propTypes;
@@ -74,7 +74,7 @@ function SignUpContent ({
         }
     };
 
-    const useAuthenticationOptions = {
+    const useFormOptions = {
         initialErrors,
         initialProps,
         resetReducerError: onClearError,
@@ -88,7 +88,7 @@ function SignUpContent ({
         errors,
         handleInputChange,
         handleSubmit
-    } = useAuthentication(useAuthenticationOptions);
+    } = useForm(useFormOptions);
 
     const {
         confirmPassword,
