@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 
 import {
     createPostStart,
+    deletePostStart,
     getPostStart,
     updatePostReset,
     updatePostStart
@@ -12,14 +13,20 @@ import {
 import { POST } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
 import { defaultProps, propTypes } from "./DraftEditor.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
 
 import {
+    selectDeletedPost,
+    selectDeletedPostError,
     selectGottenPost,
     selectGottenPostError,
     selectUpdatedPost,
     selectUpdatedPostError
 } from "redux/post/post.selectors";
+
+import {
+    selectDeletedPostPending,
+    selectUpdatedPostPending
+} from "redux/pending/pending.selectors";
 
 import styles from "./DraftEditor.module.scss";
 
@@ -27,17 +34,20 @@ DraftEditor.defaultProps = defaultProps;
 DraftEditor.propTypes = propTypes;
 
 function DraftEditor ({
-    currentUser,
+    deletedPost,
+    deletedPostError,
+    deletedPostPending,
     gottenPost,
-    gottenPostError, // TODO: show popup. Maybe globally?
+    gottenPostError, // TODO: show popup
     history,
     match,
     onCreatePostStart,
+    onDeletePostStart,
     onGetPostStart,
-    onUpdatePostReset,
     onUpdatePostStart,
     updatedPost,
-    updatedPostError // TODO: show popup
+    updatedPostError,
+    updatedPostPending
 }) {
     const { push } = history;
     const id = match.params.id && +match.params.id;
@@ -65,24 +75,26 @@ function DraftEditor ({
     };
 
     const shouldFetchPost = id && !post;
-    const updateIsSuccessful = Boolean(updatedPost);
+    const deleteIsSuccessOrFail = Boolean(deletedPost || deletedPostError);
+    const updateIsSuccessOrFail = Boolean(updatedPost || updatedPostError);
 
-    const clearUpdatedPostAndRedirect = useCallback(() => {
-        onUpdatePostReset();
+    const redirect = useCallback(() => {
         push(`${POST}/${id}`);
-    }, [id, onUpdatePostReset, push]);
+    }, [id, push]);
 
     useEffect(() => {
-        if (updateIsSuccessful) {
-            clearUpdatedPostAndRedirect(); // TODO: popup success
+        if (deleteIsSuccessOrFail || updateIsSuccessOrFail) {
+            redirect();
         }
-    }, [clearUpdatedPostAndRedirect, updateIsSuccessful]);
+    }, [redirect, deleteIsSuccessOrFail, updateIsSuccessOrFail]);
 
     useEffect(() => {
         if (shouldFetchPost) {
             onGetPostStart(id);
         }
     }, [id, onGetPostStart, shouldFetchPost]);
+
+    const pending = deletedPostPending?.pending || updatedPostPending?.pending;
 
     return (
         <article className={styles.container}>
@@ -105,12 +117,23 @@ function DraftEditor ({
                     />
                 </section>
 
-                <BaseButton
-                    className={styles.saveButton}
-                    theme="dark"
-                    title="Сохранить"
-                    type="submit"
-                />
+                <section className={styles.controls}>
+                    <BaseButton
+                        disabled={pending}
+                        theme="light"
+                        title="Сохранить"
+                        type="submit"
+                    />
+
+                    <BaseButton
+                        disabled={pending}
+                        onClick={() => onDeletePostStart(id)}
+                        theme="dark"
+                        title="Удалить"
+                        type="button"
+                    />
+                </section>
+
             </form>
 
             <section className={styles.metadata}>
@@ -132,15 +155,19 @@ function DraftEditor ({
 }
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
+    deletedPost: selectDeletedPost,
+    deletedPostError: selectDeletedPostError,
+    deletedPostPending: selectDeletedPostPending,
     gottenPost: selectGottenPost,
     gottenPostError: selectGottenPostError,
     updatedPost: selectUpdatedPost,
-    updatedPostError: selectUpdatedPostError
+    updatedPostError: selectUpdatedPostError,
+    updatedPostPending: selectUpdatedPostPending
 });
 
 const mapDispatchToProps = (dispatch) => ({
     onCreatePostStart: (props) => dispatch(createPostStart(props)),
+    onDeletePostStart: (id) => dispatch(deletePostStart(id)),
     onGetPostStart: (id) => dispatch(getPostStart(id)),
     onUpdatePostReset: () => dispatch(updatePostReset()),
     onUpdatePostStart: (props) => dispatch(updatePostStart(props))

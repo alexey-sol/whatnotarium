@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import getActionNames from "utils/redux/getActionNames";
 import postTypes from "../post/post.types";
-// import userTypes from "../user/user.types";
+import userTypes from "../user/user.types";
 
 const {
     CREATE_POST,
@@ -12,29 +12,38 @@ const {
     UPDATE_POST
 } = getActionNames(postTypes);
 
+const {
+    UPDATE_PROFILE
+} = getActionNames(userTypes);
+
 const getPending = ({ pending }) => pending;
 
-export const selectCreatedPost = createSelector(
+export const selectCreatedPostPending = createSelector(
     [getPending],
     ({ [CREATE_POST]: result }) => result
 );
 
-export const selectDeletedPost = createSelector(
+export const selectDeletedPostPending = createSelector(
     [getPending],
     ({ [DELETE_POST]: result }) => result
 );
 
-export const selectGottenPost = createSelector(
+export const selectGottenPostPending = createSelector(
     [getPending],
     ({ [GET_POST]: result }) => result
 );
 
-export const selectGottenPosts = createSelector(
+export const selectGottenPostsPending = createSelector(
     [getPending],
     ({ [GET_POSTS]: result }) => result
 );
 
-export const selectUpdatedPost = createSelector(
+export const selectUpdatedPostPending = createSelector(
     [getPending],
     ({ [UPDATE_POST]: result }) => result
+);
+
+export const selectUpdatedProfilePending = createSelector(
+    [getPending],
+    ({ [UPDATE_PROFILE]: result }) => result
 );

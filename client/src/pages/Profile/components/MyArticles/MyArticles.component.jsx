@@ -13,10 +13,13 @@ MyArticles.defaultProps = defaultProps;
 MyArticles.propTypes = propTypes;
 
 function MyArticles ({ currentUser, onGetPostsStart, posts }) {
+    const { id: userId } = currentUser || {};
+
     useEffect(() => {
-        const { id: userId } = currentUser || {};
-        onGetPostsStart({ userId }); // limit, offset
-    }, []);
+        if (userId) {
+            onGetPostsStart({ userId }); // TODO: limit, offset
+        }
+    }, [onGetPostsStart, userId]);
 
     return (
         <div className={styles.container}>

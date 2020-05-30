@@ -1,10 +1,12 @@
-import { array, func } from "prop-types";
+import { array, func, object } from "prop-types";
 
 export const defaultProps = {
-    posts: []
+    posts: [],
+    postsPending: {}
 };
 
 export const propTypes = {
     onGetPostsStart: func.isRequired,
-    posts: array
+    posts: array,
+    postsPending: object
 };

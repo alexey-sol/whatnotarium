@@ -1,5 +1,4 @@
-import _ from "lodash";
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
@@ -14,7 +13,7 @@ import {
     selectUpdatedProfileError
 } from "redux/user/user.selectors";
 
-import { setCurrentUser } from "redux/session/session.actions";
+import { selectUpdatedProfilePending } from "redux/pending/pending.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 
 import {
@@ -33,13 +32,12 @@ PasswordDataForm.propTypes = propTypes;
 
 function PasswordDataForm ({
     currentUser,
-    onSetCurrentUser,
     onUpdateProfileReset,
     onUpdateProfileStart,
-    updatedProfile,
-    updatedProfileError
+    updatedProfileError,
+    updatedProfilePending
 }) {
-    const initialProps = {
+    const initialFields = {
         confirmNewPassword: "",
         id: currentUser?.id,
         newPassword: "",
@@ -52,12 +50,12 @@ function PasswordDataForm ({
         ...formatReducerError(updatedProfileError, ["password"])
     };
 
-    const validateProp = (stateName, props) => {
+    const validateField = (stateName, fields) => {
         const {
             confirmNewPassword,
             newPassword,
             password
-        } = props;
+        } = fields;
 
         switch (stateName) {
             case CONFIRM_NEW_PASSWORD:
@@ -73,16 +71,16 @@ function PasswordDataForm ({
 
     const useFormOptions = {
         initialErrors,
-        initialProps,
+        initialFields,
         resetReducerError: onUpdateProfileReset,
-        sendProps: onUpdateProfileStart,
-        validateProp
+        sendFields: onUpdateProfileStart,
+        validateField
     };
 
     const {
-        props,
         errorCodes,
         errors,
+        fields,
         handleInputChange,
         handleSubmit
     } = useForm(useFormOptions);
@@ -91,7 +89,7 @@ function PasswordDataForm ({
         confirmNewPassword,
         newPassword,
         password
-    } = props;
+    } = fields;
 
     const {
         newPassword: passwordErrorCode
@@ -107,23 +105,7 @@ function PasswordDataForm ({
         ? hints.weakPassword
         : "";
 
-    useEffect(() => {
-        const shouldUpdateCurrentUser = Boolean(
-            updatedProfile &&
-            !_.isEqual(currentUser, updatedProfile)
-        );
-
-        if (shouldUpdateCurrentUser) {
-            onSetCurrentUser(updatedProfile);
-        }
-
-        return () => onUpdateProfileReset();
-    }, [
-        currentUser,
-        onSetCurrentUser,
-        onUpdateProfileReset,
-        updatedProfile
-    ]);
+    const { pending } = updatedProfilePending;
 
     return (
         <form
@@ -161,6 +143,7 @@ function PasswordDataForm ({
 
             <BaseButton
                 className={styles.updatePasswordDataButton}
+                disabled={pending}
                 title="Изменить пароль"
             />
         </form>
@@ -170,13 +153,13 @@ function PasswordDataForm ({
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
     updatedProfile: selectUpdatedProfile,
-    updatedProfileError: selectUpdatedProfileError
+    updatedProfileError: selectUpdatedProfileError,
+    updatedProfilePending: selectUpdatedProfilePending
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onSetCurrentUser: (updatedData) => dispatch(setCurrentUser(updatedData)),
     onUpdateProfileReset: () => dispatch(updateProfileReset()),
-    onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
+    onUpdateProfileStart: (props) => dispatch(updateProfileStart(props))
 });
 
 const ConnectedPasswordDataForm = connect(

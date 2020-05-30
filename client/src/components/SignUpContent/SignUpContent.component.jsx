@@ -34,7 +34,7 @@ import useForm from "utils/hooks/useForm.jsx";
 SignUpContent.defaultProps = defaultProps;
 SignUpContent.propTypes = propTypes;
 
-const initialProps = {
+const initialFields = {
     confirmPassword: "",
     email: "",
     name: "",
@@ -48,11 +48,11 @@ function SignUpContent ({
     sessionError
 }) {
     const initialErrors = {
-        ...initialProps,
+        ...initialFields,
         ...formatReducerError(sessionError)
     };
 
-    const validateProp = (stateName, credentials) => {
+    const validateField = (stateName, credentials) => {
         const {
             confirmPassword,
             email,
@@ -76,16 +76,16 @@ function SignUpContent ({
 
     const useFormOptions = {
         initialErrors,
-        initialProps,
+        initialFields,
         resetReducerError: onClearError,
-        sendProps: onSignUpStart,
-        validateProp
+        sendFields: onSignUpStart,
+        validateField
     };
 
     const {
-        props,
         errorCodes,
         errors,
+        fields,
         handleInputChange,
         handleSubmit
     } = useForm(useFormOptions);
@@ -95,7 +95,7 @@ function SignUpContent ({
         email,
         name,
         password
-    } = props;
+    } = fields;
 
     const {
         password: passwordErrorCode

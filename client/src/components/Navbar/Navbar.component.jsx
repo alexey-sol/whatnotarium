@@ -1,12 +1,33 @@
+import { DRAFT } from "utils/const/pathnames";
 import { Link } from "react-router-dom";
 import React from "react";
-
+import classnames from "classnames";
+import { connect } from "react-redux";
+import { defaultProps, propTypes } from "./Navbar.props";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./Navbar.module.scss";
 
-function Navbar () {
+Navbar.defaultProps = defaultProps;
+Navbar.propTypes = propTypes;
+
+function Navbar ({ currentUser }) {
+    const isAuthed = Boolean(currentUser);
+
     return (
         <div className={styles.container}>
             <ul className={styles.list}>
+                {isAuthed && (
+                    <li className={classnames(styles.item, styles.prominent)}>
+                        <Link
+                            title="Написать статью"
+                            to={DRAFT}
+                        >
+                            Написать статью
+                        </Link>
+                    </li>
+                )}
+
                 <li className={styles.item}>
                     <Link
                         title="Статьи"
@@ -38,4 +59,12 @@ function Navbar () {
     );
 }
 
-export default Navbar;
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser
+});
+
+const ConnectedNavbar = connect(
+    mapStateToProps
+)(Navbar);
+
+export default ConnectedNavbar;

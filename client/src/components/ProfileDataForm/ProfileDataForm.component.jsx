@@ -1,5 +1,4 @@
-import _ from "lodash";
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -7,14 +6,14 @@ import { EMAIL, NAME } from "utils/const/userData";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
 
 import {
     selectUpdatedProfile,
     selectUpdatedProfileError
 } from "redux/user/user.selectors";
 
-import { setCurrentUser } from "redux/session/session.actions";
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectUpdatedProfilePending } from "redux/pending/pending.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 import { validateEmail, validateName } from "utils/validators/Validator";
 import formatReducerError from "utils/helpers/formatReducerError";
@@ -26,13 +25,12 @@ ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,
-    onSetCurrentUser,
     onUpdateProfileReset,
     onUpdateProfileStart,
-    updatedProfile,
-    updatedProfileError
+    updatedProfileError,
+    updatedProfilePending
 }) {
-    const initialProps = {
+    const initialFields = {
         email: currentUser?.email,
         id: currentUser?.id,
         name: currentUser?.name
@@ -43,8 +41,8 @@ function ProfileDataForm ({
         ...formatReducerError(updatedProfileError, ["email"])
     };
 
-    const validateProp = (stateName, props) => {
-        const { email, name } = props;
+    const validateField = (stateName, fields) => {
+        const { email, name } = fields;
 
         switch (stateName) {
             case EMAIL:
@@ -58,43 +56,27 @@ function ProfileDataForm ({
 
     const useFormOptions = {
         initialErrors,
-        initialProps,
+        initialFields,
         resetReducerError: onUpdateProfileReset,
-        sendProps: onUpdateProfileStart,
-        validateProp
+        sendFields: onUpdateProfileStart,
+        validateField
     };
 
     const {
-        props,
         errors,
+        fields,
         handleInputChange,
         handleSubmit
     } = useForm(useFormOptions);
 
-    const { email, name } = props;
+    const { email, name } = fields;
 
     const {
         email: emailError,
         name: nameError
     } = errors;
 
-    useEffect(() => {
-        const shouldUpdateCurrentUser = Boolean(
-            updatedProfile &&
-            !_.isEqual(currentUser, updatedProfile)
-        );
-
-        if (shouldUpdateCurrentUser) {
-            onSetCurrentUser(updatedProfile);
-        }
-
-        return () => onUpdateProfileReset();
-    }, [
-        currentUser,
-        onSetCurrentUser,
-        onUpdateProfileReset,
-        updatedProfile
-    ]);
+    const { pending } = updatedProfilePending;
 
     return (
         <form
@@ -121,6 +103,7 @@ function ProfileDataForm ({
 
             <BaseButton
                 className={styles.updateProfileDataButton}
+                disabled={pending}
                 theme="dark"
                 title="Сохранить"
             />
@@ -131,13 +114,13 @@ function ProfileDataForm ({
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
     updatedProfile: selectUpdatedProfile,
-    updatedProfileError: selectUpdatedProfileError
+    updatedProfileError: selectUpdatedProfileError,
+    updatedProfilePending: selectUpdatedProfilePending
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onSetCurrentUser: () => dispatch(setCurrentUser()),
     onUpdateProfileReset: () => dispatch(updateProfileReset()),
-    onUpdateProfileStart: (params) => dispatch(updateProfileStart(params))
+    onUpdateProfileStart: (props) => dispatch(updateProfileStart(props))
 });
 
 const ConnectedProfileDataForm = connect(

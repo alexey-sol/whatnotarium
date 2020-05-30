@@ -32,6 +32,14 @@
         &:not(:first-of-type) {
             margin-top: 0.3rem;
         }
+
+        &.prominent {
+            background-color: $menu-prominent-item-bg-color;
+
+            &:hover {
+                background-color: $menu-prominent-item-bg-color--hover;
+            }
+        }
     }
 
     a {

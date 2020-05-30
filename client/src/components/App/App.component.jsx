@@ -59,7 +59,7 @@ function App ({ onCheckSessionStart }) {
 
                             <PrivateRoute
                                 component={DraftEditor}
-                                path={`${DRAFT}`}
+                                path={DRAFT}
                             />
 
                             <PrivateRoute

@@ -2,14 +2,14 @@ import { func, object } from "prop-types";
 
 export const defaultProps = {
     currentUser: null,
-    updatedProfileError: null,
-    updatedProfilePending: {}
+    updatedProfile: null,
+    updatedProfileError: null
 };
 
 export const propTypes = {
     currentUser: object,
+    onSetCurrentUser: func.isRequired,
     onUpdateProfileReset: func.isRequired,
-    onUpdateProfileStart: func.isRequired,
-    updatedProfileError: object,
-    updatedProfilePending: object
+    updatedProfile: object,
+    updatedProfileError: object
 };

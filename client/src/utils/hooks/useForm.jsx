@@ -7,21 +7,21 @@ import translateError from "utils/helpers/translateError";
 
 function useForm ({
     initialErrors = {},
-    initialProps = {},
+    initialFields = {},
     resetReducerError,
-    sendProps,
-    validateProp
+    sendFields,
+    validateField
 }) {
-    const [props, setProps] = useState(initialProps);
+    const [fields, setFields] = useState(initialFields);
     const [errors, setErrors] = useState(initialErrors);
-    const [errorCodes, setErrorCodes] = useState(initialProps);
+    const [errorCodes, setErrorCodes] = useState(initialFields);
     const errorValues = [...Object.values(initialErrors)];
 
-    const validate = (propsToCheck) => {
+    const validate = (fieldsToCheck) => {
         const newErrorCodes = {};
 
-        for (const stateName of Object.keys(propsToCheck)) {
-            const errorCode = validateProp(stateName, propsToCheck);
+        for (const stateName of Object.keys(fieldsToCheck)) {
+            const errorCode = validateField(stateName, fieldsToCheck);
 
             if (errorCode) {
                 newErrorCodes[stateName] = errorCode;
@@ -69,28 +69,28 @@ function useForm ({
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const validationErrors = validate(props);
+        const validationErrors = validate(fields);
         setUpdatedErrors(validationErrors);
 
         if (!validationErrors) {
-            sendProps(props);
+            sendFields(fields);
         }
     };
 
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
 
-        const newProps = {
-            ...props,
+        const newFields = {
+            ...fields,
             [name]: value
         };
 
-        setProps(newProps);
+        setFields(newFields);
 
         const hasValidationErrors = !isEmptyObject(filterFalsyValues(errors));
 
         if (hasValidationErrors) {
-            const updatedErrors = validate(newProps);
+            const updatedErrors = validate(newFields);
             setUpdatedErrors(updatedErrors);
         }
     };
@@ -100,7 +100,7 @@ function useForm ({
     }, [...errorValues, setUpdatedErrors]); // eslint-disable-line
 
     return {
-        props,
+        fields,
         errorCodes,
         errors,
         handleInputChange,
