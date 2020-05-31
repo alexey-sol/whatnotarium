@@ -1,5 +1,12 @@
 import types from "./post.types";
 
+export function clearAllErrors (error) {
+    return {
+        payload: error,
+        type: types.CLEAR_ALL_ERRORS
+    };
+}
+
 export function createPostFailure (error) {
     return {
         payload: error,

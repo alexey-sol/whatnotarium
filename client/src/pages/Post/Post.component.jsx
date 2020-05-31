@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -7,33 +7,35 @@ import { POST } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
 import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./Post.props";
-import { deletePostReset, getPostStart, updatePostReset } from "redux/post/post.actions";
-import { selectCurrentUser } from "redux/session/session.selectors";
 
 import {
-    selectDeletedPost,
-    selectDeletedPostError,
+    clearAllErrors,
+    getPostStart,
+    updatePostReset
+} from "redux/post/post.actions";
+
+import {
     selectGottenPost,
-    selectUpdatedPost,
-    selectUpdatedPostError
+    selectGottenPostError,
+    selectUpdatedPost
 } from "redux/post/post.selectors";
 
+import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./Post.module.scss";
+import translateError from "utils/helpers/translateError";
 
 Post.defaultProps = defaultProps;
 Post.propTypes = propTypes;
 
 function Post ({
     currentUser,
-    deletedPost,
-    deletedPostError,
     match,
-    onDeletePostReset,
+    onClearAllErrors,
     onGetPostStart,
     onUpdatePostReset,
     post,
-    updatedPost,
-    updatedPostError
+    postError,
+    updatedPost
 }) {
     const id = +match.params.id;
 
@@ -45,46 +47,20 @@ function Post ({
         updatedAt
     } = post || {};
 
-    const postIsDeleted = Boolean(deletedPost || deletedPostError);
-    const [postDeletedIsShown, setPostDeletedIsShown] = useState(postIsDeleted);
-
-    const postIsUpdated = Boolean(updatedPost || updatedPostError);
-    const [postUpdatedIsShown, setPostUpdatedIsShown] = useState(postIsUpdated);
+    const clearState = useCallback(() => onUpdatePostReset(), [onUpdatePostReset]);
 
     useEffect(() => {
         onGetPostStart(id);
 
         return () => {
-            onDeletePostReset();
-            onUpdatePostReset();
+            clearState();
+            onClearAllErrors();
         };
-    }, [
-        id,
-        onDeletePostReset,
-        onGetPostStart,
-        onUpdatePostReset
-    ]);
+    }, [clearState, onClearAllErrors, onGetPostStart, id]);
 
     const userIsAuthor = author?.id === currentUser?.id;
     const shouldRenderControls = Boolean(userIsAuthor && id);
-
-    const postDeletedPopupText = (deletedPost)
-        ? "Статья удалена"
-        : "Ошибка при удалении статьи";
-
-    const postDeletedPopupTheme = (deletedPost)
-        ? "success"
-        : "error";
-
-    const postUpdatedPopupText = (updatedPost)
-        ? "Статья сохранена успешно"
-        : "Ошибка при сохранении статьи";
-
-    const postUpdatedPopupTheme = (updatedPost)
-        ? "success"
-        : "error";
-
-    // TODO: fix a bug. Update post. Then click "edit" in Post component.
+    const updateIsSucceeded = Boolean(updatedPost);
 
     return (
         <article className={styles.container}>
@@ -113,7 +89,10 @@ function Post ({
 
             {shouldRenderControls && (
                 <section className={styles.controls}>
-                    <Link to={`${POST}/${id}/edit`}>
+                    <Link
+                        onClick={clearState}
+                        to={`${POST}/${id}/edit`}
+                    >
                         <BaseButton
                             title="Редактировать"
                         />
@@ -121,19 +100,19 @@ function Post ({
                 </section>
             )}
 
-            {postDeletedIsShown && (
+            {updateIsSucceeded && (
                 <Popup
-                    onClose={() => setPostDeletedIsShown(false)}
-                    text={postDeletedPopupText}
-                    theme={postDeletedPopupTheme}
+                    onClose={clearState}
+                    text="Статья сохранена успешно"
+                    theme="success"
                 />
             )}
 
-            {postUpdatedIsShown && (
+            {Boolean(postError) && (
                 <Popup
-                    onClose={() => setPostUpdatedIsShown(false)}
-                    text={postUpdatedPopupText}
-                    theme={postUpdatedPopupTheme}
+                    onClose={clearAllErrors}
+                    text={translateError(postError)}
+                    theme="error"
                 />
             )}
         </article>
@@ -142,15 +121,13 @@ function Post ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    deletedPost: selectDeletedPost,
-    deletedPostError: selectDeletedPostError,
     post: selectGottenPost,
-    updatedPost: selectUpdatedPost,
-    updatedPostError: selectUpdatedPostError
+    postError: selectGottenPostError,
+    updatedPost: selectUpdatedPost
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onDeletePostReset: () => dispatch(deletePostReset()),
+    onClearAllErrors: () => dispatch(clearAllErrors()),
     onGetPostStart: (id) => dispatch(getPostStart(id)),
     onUpdatePostReset: () => dispatch(updatePostReset())
 });

@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
 import Activity from "./components/Activity";
 import MyArticles from "./components/MyArticles";
 import MyNotes from "./components/MyNotes";
+import Popup from "components/Popup";
 import Settings from "./components/Settings";
+import { defaultProps, propTypes } from "./Profile.props";
+import { createPostReset, deletePostReset } from "redux/post/post.actions";
+import { selectCreatedPost, selectDeletedPost } from "redux/post/post.selectors";
 import styles from "./Profile.module.scss";
 
 const tabNames = [
@@ -14,8 +20,25 @@ const tabNames = [
     "Настройки"
 ];
 
-function Profile () {
+Profile.defaultProps = defaultProps;
+Profile.propTypes = propTypes;
+
+function Profile ({
+    createdPost,
+    deletedPost,
+    onCreatePostReset,
+    onDeletePostReset
+}) {
     const [currentTab, setCurrentTab] = useState(tabNames[0]);
+
+    const clearState = useCallback(() => {
+        onCreatePostReset();
+        onDeletePostReset();
+    }, [onCreatePostReset, onDeletePostReset]);
+
+    useEffect(() => {
+        return () => clearState();
+    }, [clearState]);
 
     const tabs = tabNames.map((tabName, index) => (
         <li
@@ -37,6 +60,9 @@ function Profile () {
     const tabIsMyNotes = currentTab === tabNames[2];
     const tabIsSettings = currentTab === tabNames[3];
 
+    const creationIsSucceeded = Boolean(createdPost);
+    const deletionIsSucceeded = Boolean(deletedPost);
+
     return (
         <div className={styles.container}>
             <ul className={styles.tabsList}>
@@ -49,8 +75,39 @@ function Profile () {
                 {tabIsMyNotes && <MyNotes />}
                 {tabIsSettings && <Settings />}
             </div>
+
+            {creationIsSucceeded && (
+                <Popup
+                    onClose={clearState}
+                    text="Статья сохранена успешно"
+                    theme="success"
+                />
+            )}
+
+            {deletionIsSucceeded && (
+                <Popup
+                    onClose={clearState}
+                    text="Статья удалена"
+                    theme="success"
+                />
+            )}
         </div>
     );
 }
 
-export default Profile;
+const mapStateToProps = createStructuredSelector({
+    createdPost: selectCreatedPost,
+    deletedPost: selectDeletedPost
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    onCreatePostReset: () => dispatch(createPostReset()),
+    onDeletePostReset: () => dispatch(deletePostReset())
+});
+
+const ConnectedProfile = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Profile);
+
+export default ConnectedProfile;

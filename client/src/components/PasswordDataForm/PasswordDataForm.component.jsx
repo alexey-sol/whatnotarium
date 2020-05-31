@@ -20,7 +20,7 @@ import {
     validateConfirmPassword,
     validateNewPassword,
     validatePassword
-} from "utils/validators/Validator";
+} from "utils/validators/UserValidator";
 
 import formatReducerError from "utils/helpers/formatReducerError";
 import hints from "utils/resources/text/hints";

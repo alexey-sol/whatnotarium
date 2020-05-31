@@ -6,6 +6,7 @@ import {
     NAME_EMPTY,
     NAME_TOO_LONG,
     NAME_TOO_SHORT,
+    NOT_FOUND,
     PASSWORD_EMPTY,
     PASSWORD_TOO_WEAK
 } from "utils/const/validationErrors";
@@ -15,16 +16,42 @@ import {
     EMAIL_OCCUPIED,
     INTERNAL_SERVER_ERROR,
     INVALID_CREDENTIALS,
-    INVALID_PASSWORD,
-    NO_USER_FOUND
+    INVALID_PASSWORD
 } from "utils/const/serverErrors";
+
+import { POST_ERROR, USER_ERROR } from "utils/const/errorNames";
 
 function translateError (error) {
     if (!error) {
         return "";
     }
 
-    switch (error) {
+    const { message, name } = error;
+
+    if (name === POST_ERROR) {
+        return translatePostError(message);
+    } else if (name === USER_ERROR) {
+        return translateUserError(message);
+    } else {
+        return translateCommonError(message);
+    }
+}
+
+export default translateError;
+
+function translatePostError (message) {
+    switch (message) {
+        case ALREADY_EXISTS:
+            return "Статья с таким ID уже есть";
+        case NOT_FOUND:
+            return "Статья не найдена";
+        default:
+            return message;
+    }
+}
+
+function translateUserError (message) {
+    switch (message) {
         case ALREADY_EXISTS:
         case EMAIL_OCCUPIED:
             return "Такой email уже занят";
@@ -36,8 +63,6 @@ function translateError (error) {
             return "Пожалуйста, укажите email";
         case EMAIL_INVALID:
             return "Указан некорректный email";
-        case INTERNAL_SERVER_ERROR:
-            return "Что-то пошло не так";
         case INVALID_CREDENTIALS:
             return "Неверные учетные данные";
         case INVALID_PASSWORD:
@@ -48,15 +73,20 @@ function translateError (error) {
             return "Имя слишком длинное";
         case NAME_TOO_SHORT:
             return "Имя слишком короткое";
-        case NO_USER_FOUND:
-            return "Пользователь не найден";
         case PASSWORD_EMPTY:
             return "Пожалуйста, введите пароль";
         case PASSWORD_TOO_WEAK:
             return "Пожалуйста, придумайте пароль посложнее (*)";
         default:
-            return error;
+            return message;
     }
 }
 
-export default translateError;
+function translateCommonError (message) {
+    switch (message) {
+        case INTERNAL_SERVER_ERROR:
+            return "Что-то полшло не так";
+        default:
+            return message;
+    }
+}

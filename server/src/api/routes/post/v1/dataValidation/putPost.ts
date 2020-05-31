@@ -6,7 +6,7 @@ import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 
 const putPost: RequestHandler = async (
-    { body, ip, params },
+    { ip, params },
     response,
     next
 ): Promise<void> => {

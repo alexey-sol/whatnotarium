@@ -3,11 +3,19 @@ import {
     PASSWORD_TOO_WEAK
 } from "utils/const/validationErrors";
 
+import { USER_ERROR } from "utils/const/errorNames";
+
 function validateNewPassword (password = "") {
     if (password.length === 0) {
-        return PASSWORD_EMPTY;
+        return {
+            message: PASSWORD_EMPTY,
+            name: USER_ERROR
+        };
     } else if (password.length < 6) {
-        return PASSWORD_TOO_WEAK;
+        return {
+            message: PASSWORD_TOO_WEAK,
+            name: USER_ERROR
+        };
     } else {
         return null;
     }

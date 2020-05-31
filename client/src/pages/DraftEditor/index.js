@@ -1,1 +1,1 @@
-export { default } from "./DraftEditor.component";
+export { default } from "./DraftEditor.container";

@@ -3,15 +3,23 @@ import {
     CONFIRM_PASSWORD_NOT_MATCH
 } from "utils/const/validationErrors";
 
+import { USER_ERROR } from "utils/const/errorNames";
+
 function validateConfirmPassword (password = "", confirmPassword = "") {
     if (!password) {
         return null;
     }
 
     if (confirmPassword.length === 0) {
-        return CONFIRM_PASSWORD_EMPTY;
+        return {
+            message: CONFIRM_PASSWORD_EMPTY,
+            name: USER_ERROR
+        };
     } else if (password !== confirmPassword) {
-        return CONFIRM_PASSWORD_NOT_MATCH;
+        return {
+            message: CONFIRM_PASSWORD_NOT_MATCH,
+            name: USER_ERROR
+        };
     } else {
         return null;
     }

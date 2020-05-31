@@ -46,7 +46,7 @@ function useForm ({
         return translatedErrors;
     };
 
-    const setUpdatedErrors = useCallback((newErrors) => {
+    const setUpdatedErrors = useCallback(newErrors => {
         const updateErrorsState = (updatedErrors) => {
             const newErrorsState = deriveNewErrorsState(updatedErrors);
             setErrorCodes(newErrorsState);

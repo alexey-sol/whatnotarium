@@ -2,12 +2,29 @@ import makeFailure from "utils/redux/makeFailure";
 import makeSuccess from "utils/redux/makeSuccess";
 import types from "./post.types";
 
+function getNewStateWithoutErrors (state) {
+    const newState = {};
+
+    Object.entries(state).forEach(([key, value]) => {
+        const isFailure = key.endsWith("_FAILURE");
+
+        if (!isFailure) {
+            newState[key] = value;
+        }
+    });
+
+    return newState;
+}
+
 function postReducer (state = {}, action = {}) {
     const { payload, type } = action;
     const actionFailure = makeFailure(type);
     const actionSuccess = makeSuccess(type);
 
     switch (type) {
+        case types.CLEAR_ALL_ERRORS:
+            return getNewStateWithoutErrors(state);
+
         case types.CREATE_POST_FAILURE:
         case types.CREATE_POST_SUCCESS:
         case types.DELETE_POST_FAILURE:

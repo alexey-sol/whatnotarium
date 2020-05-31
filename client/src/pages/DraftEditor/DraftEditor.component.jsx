@@ -1,46 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
-import {
-    createPostStart,
-    deletePostStart,
-    getPostStart,
-    updatePostReset,
-    updatePostStart
-} from "redux/post/post.actions";
-
-import { POST } from "utils/const/pathnames";
+import { POST, PROFILE } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
+import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./DraftEditor.props";
 
-import {
-    selectDeletedPost,
-    selectDeletedPostError,
-    selectGottenPost,
-    selectGottenPostError,
-    selectUpdatedPost,
-    selectUpdatedPostError
-} from "redux/post/post.selectors";
-
-import {
-    selectDeletedPostPending,
-    selectUpdatedPostPending
-} from "redux/pending/pending.selectors";
-
 import styles from "./DraftEditor.module.scss";
+import translateError from "utils/helpers/translateError";
 
 DraftEditor.defaultProps = defaultProps;
 DraftEditor.propTypes = propTypes;
 
 function DraftEditor ({
+    createdPost,
+    createdPostError,
+    createdPostPending,
+    currentUser,
     deletedPost,
     deletedPostError,
     deletedPostPending,
     gottenPost,
-    gottenPostError, // TODO: show popup
+    gottenPostError,
     history,
     match,
+    onClearAllErrors,
     onCreatePostStart,
     onDeletePostStart,
     onGetPostStart,
@@ -51,6 +34,8 @@ function DraftEditor ({
 }) {
     const { push } = history;
     const id = match.params.id && +match.params.id;
+    const shouldClearStateForNewDraft = !id && Boolean(gottenPost);
+
     const [post, setPost] = useState(updatedPost || gottenPost);
 
     const handleChange = useCallback(({ target }) => {
@@ -66,27 +51,55 @@ function DraftEditor ({
         event.preventDefault();
 
         const shouldCreateNewPost = !id;
+        const postWithUserId = {
+            ...post,
+            userId: currentUser.id
+        };
 
         if (shouldCreateNewPost) {
-            onCreatePostStart(post);
+            onCreatePostStart(postWithUserId);
         } else {
-            onUpdatePostStart(post);
+            onUpdatePostStart(postWithUserId);
         }
     };
 
-    const shouldFetchPost = id && !post;
-    const deleteIsSuccessOrFail = Boolean(deletedPost || deletedPostError);
-    const updateIsSuccessOrFail = Boolean(updatedPost || updatedPostError);
-
-    const redirect = useCallback(() => {
+    const redirectToPost = useCallback(() => {
         push(`${POST}/${id}`);
     }, [id, push]);
 
+    const redirectToProfile = useCallback(() => {
+        push(PROFILE);
+    }, [push]);
+
+    const creationIsSucceeded = Boolean(createdPost);
+    const deletionIsSucceeded = Boolean(deletedPost);
+    const updateIsSucceded = Boolean(updatedPost);
+
+    const shouldFetchPost = id && !post;
+    const shouldRedirectToPost = Boolean(id) && updateIsSucceded;
+    const shouldRedirectToProfile = Boolean(deletionIsSucceeded || creationIsSucceeded);
+
     useEffect(() => {
-        if (deleteIsSuccessOrFail || updateIsSuccessOrFail) {
-            redirect();
+        if (shouldClearStateForNewDraft) {
+            setPost({});
         }
-    }, [redirect, deleteIsSuccessOrFail, updateIsSuccessOrFail]);
+    }, [shouldClearStateForNewDraft]);
+
+    useEffect(() => {
+        if (shouldRedirectToPost) {
+            redirectToPost();
+        } else if (shouldRedirectToProfile) {
+            redirectToProfile();
+        }
+
+        return () => onClearAllErrors();
+    }, [
+        onClearAllErrors,
+        redirectToPost,
+        redirectToProfile,
+        shouldRedirectToPost,
+        shouldRedirectToProfile
+    ]);
 
     useEffect(() => {
         if (shouldFetchPost) {
@@ -94,7 +107,18 @@ function DraftEditor ({
         }
     }, [id, onGetPostStart, shouldFetchPost]);
 
-    const pending = deletedPostPending?.pending || updatedPostPending?.pending;
+
+    const pending =
+        createdPostPending?.pending ||
+        deletedPostPending?.pending ||
+        updatedPostPending?.pending;
+
+    const failedRequestMessage = translateError(
+        createdPostError ||
+        deletedPostError ||
+        gottenPostError ||
+        updatedPostError
+    );
 
     return (
         <article className={styles.container}>
@@ -150,32 +174,15 @@ function DraftEditor ({
                     {post?.updatedAt}
                 </span>
             </section>
+
+            {Boolean(failedRequestMessage) && (
+                <Popup
+                    onClose={onClearAllErrors}
+                    text={failedRequestMessage}
+                    theme="error"
+                />
+            )}
         </article>
     );
 }
-
-const mapStateToProps = createStructuredSelector({
-    deletedPost: selectDeletedPost,
-    deletedPostError: selectDeletedPostError,
-    deletedPostPending: selectDeletedPostPending,
-    gottenPost: selectGottenPost,
-    gottenPostError: selectGottenPostError,
-    updatedPost: selectUpdatedPost,
-    updatedPostError: selectUpdatedPostError,
-    updatedPostPending: selectUpdatedPostPending
-});
-
-const mapDispatchToProps = (dispatch) => ({
-    onCreatePostStart: (props) => dispatch(createPostStart(props)),
-    onDeletePostStart: (id) => dispatch(deletePostStart(id)),
-    onGetPostStart: (id) => dispatch(getPostStart(id)),
-    onUpdatePostReset: () => dispatch(updatePostReset()),
-    onUpdatePostStart: (props) => dispatch(updatePostStart(props))
-});
-
-const ConnectedDraftEditor = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(DraftEditor);
-
-export default ConnectedDraftEditor;
+export default DraftEditor;

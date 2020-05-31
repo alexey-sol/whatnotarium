@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { EMAIL, PASSWORD } from "utils/const/userData";
-import { OUT_OF_FIELD } from "utils/const/fieldErrors";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
@@ -12,9 +11,9 @@ import Popup from "components/Popup";
 import { clearError, signInStart } from "redux/session/session.actions";
 import { defaultProps, propTypes } from "./SignInContent.props";
 import { selectCurrentUser, selectError } from "redux/session/session.selectors";
-import { validateEmail, validatePassword } from "utils/validators/Validator";
-import formatReducerError from "utils/helpers/formatReducerError";
+import { validateEmail, validatePassword } from "utils/validators/UserValidator";
 import styles from "./SignInContent.module.scss";
+import translateError from "utils/helpers/translateError";
 import useForm from "utils/hooks/useForm.jsx";
 
 SignInContent.defaultProps = defaultProps;
@@ -33,10 +32,7 @@ function SignInContent ({
     sessionError,
     showSignUp
 }) {
-    const initialErrors = {
-        ...initialFields,
-        ...formatReducerError(sessionError)
-    };
+    const outOfFieldsError = translateError(sessionError);
 
     const validateField = (stateName, credentials) => {
         const { email, password } = credentials;
@@ -52,7 +48,7 @@ function SignInContent ({
     };
 
     const useFormOptions = {
-        initialErrors,
+        initialErrors: initialFields,
         initialFields,
         resetReducerError: onClearError,
         sendFields: onSignInStart,
@@ -73,11 +69,10 @@ function SignInContent ({
 
     const {
         email: emailError,
-        password: passwordError,
-        [OUT_OF_FIELD]: outOfFieldError
+        password: passwordError
     } = errors;
 
-    const hidePopup = useCallback(() => onClearError(), [onClearError]);
+    const clearState = useCallback(() => onClearError(), [onClearError]);
 
     const handleClickOnSignUp = useCallback((event) => {
         event.preventDefault();
@@ -157,10 +152,10 @@ function SignInContent ({
                 </div>
             </div>
 
-            {Boolean(outOfFieldError) && (
+            {Boolean(outOfFieldsError) && (
                 <Popup
-                    onClose={hidePopup}
-                    text={outOfFieldError}
+                    onClose={clearState}
+                    text={outOfFieldsError}
                     theme="error"
                 />
             )}

@@ -1,10 +1,8 @@
-import { OUT_OF_FIELD } from "utils/const/fieldErrors";
-
 function formatReducerError (error, fieldNames = []) {
-    let key = OUT_OF_FIELD;
+    let key = null;
 
     if (!error) {
-        return getObjectEnsuringConstantDepsSize(key);
+        return null;
     }
 
     const { message = "" } = error;
@@ -22,14 +20,8 @@ function formatReducerError (error, fieldNames = []) {
     }
 
     return {
-        [key]: error?.message
+        [key]: error
     };
 }
 
 export default formatReducerError;
-
-function getObjectEnsuringConstantDepsSize (key) {
-    return {
-        [key]: ""
-    };
-}

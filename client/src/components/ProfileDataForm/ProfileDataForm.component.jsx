@@ -15,7 +15,7 @@ import {
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectUpdatedProfilePending } from "redux/pending/pending.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
-import { validateEmail, validateName } from "utils/validators/Validator";
+import { validateEmail, validateName } from "utils/validators/UserValidator";
 import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./ProfileDataForm.module.scss";
 import useForm from "utils/hooks/useForm.jsx";
