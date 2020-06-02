@@ -64,7 +64,7 @@ function Tooltip ({
 
             setCoords(newCoords);
         }
-    }, [elemRef, tooltipWidth]); // TODO: it's object
+    }, [elemRef, tooltipWidth]);
 
     useEffect(() => {
         const elem = elemRef?.current;

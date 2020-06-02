@@ -13,6 +13,7 @@
     height: $popup-height;
     opacity: 0.9;
     text-align: center;
+    user-select: none;
     animation: fade-in 0.1s;
 
     &.successTheme {

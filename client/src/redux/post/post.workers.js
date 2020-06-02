@@ -5,10 +5,10 @@ import {
     createPostSuccess,
     deletePostFailure,
     deletePostSuccess,
-    getPostFailure,
-    getPostSuccess,
-    getPostsFailure,
-    getPostsSuccess,
+    fetchPostFailure,
+    fetchPostSuccess,
+    fetchPostsFailure,
+    fetchPostsSuccess,
     updatePostFailure,
     updatePostSuccess
 } from "./post.actions";
@@ -16,8 +16,8 @@ import {
 import {
     createPost,
     deletePost,
-    getPost,
-    getPosts,
+    fetchPost,
+    fetchPosts,
     updatePost
 } from "utils/api/post";
 
@@ -43,23 +43,23 @@ function * doDeletePost ({ payload: id }) {
     }
 }
 
-function * doGetPost ({ payload: id }) {
+function * doFetchPost ({ payload: id }) {
     try {
-        const post = yield getPost(id);
-        yield put(getPostSuccess(post));
+        const post = yield fetchPost(id);
+        yield put(fetchPostSuccess(post));
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
-        yield put(getPostFailure(error));
+        yield put(fetchPostFailure(error));
     }
 }
 
-function * doGetPosts ({ payload }) {
+function * doFetchPosts ({ payload }) {
     try {
-        const posts = yield getPosts(payload);
-        yield put(getPostsSuccess(posts));
+        const posts = yield fetchPosts(payload);
+        yield put(fetchPostsSuccess(posts));
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
-        yield put(getPostsFailure(error));
+        yield put(fetchPostsFailure(error));
     }
 }
 
@@ -78,7 +78,7 @@ function * doUpdatePost ({ payload }) {
 export {
     doCreatePost,
     doDeletePost,
-    doGetPost,
-    doGetPosts,
+    doFetchPost,
+    doFetchPosts,
     doUpdatePost
 };

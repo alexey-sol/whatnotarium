@@ -7,8 +7,8 @@ import {
 import {
     doCreatePost,
     doDeletePost,
-    doGetPost,
-    doGetPosts,
+    doFetchPost,
+    doFetchPosts,
     doUpdatePost
 } from "./post.workers";
 
@@ -22,12 +22,12 @@ function * onDeletePostStart () {
     yield takeLatest(types.DELETE_POST_START, doDeletePost);
 }
 
-function * onGetPostStart () {
-    yield takeLatest(types.GET_POST_START, doGetPost);
+function * onFetchPostStart () {
+    yield takeLatest(types.FETCH_POST_START, doFetchPost);
 }
 
-function * onGetPostsStart () {
-    yield takeLatest(types.GET_POSTS_START, doGetPosts);
+function * onFetchPostsStart () {
+    yield takeLatest(types.FETCH_POSTS_START, doFetchPosts);
 }
 
 function * onUpdatePostStart () {
@@ -38,8 +38,8 @@ function * postSagas () {
     yield all([
         call(onCreatePostStart),
         call(onDeletePostStart),
-        call(onGetPostStart),
-        call(onGetPostsStart),
+        call(onFetchPostStart),
+        call(onFetchPostsStart),
         call(onUpdatePostStart)
     ]);
 }

@@ -1,6 +1,6 @@
 import superagent from "superagent";
 
-async function getPost (id) {
+async function fetchPost (id) {
     const response = await superagent
         .get(`/api/v1/post/${id}`)
         .set("Content-Type", "application/json");
@@ -8,4 +8,4 @@ async function getPost (id) {
     return response?.body;
 }
 
-export default getPost;
+export default fetchPost;

@@ -5,37 +5,38 @@ import { createStructuredSelector } from "reselect";
 import Posts from "components/Posts";
 import Spinner from "components/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
-import { getPostsStart } from "redux/post/post.actions";
-import { selectGottenPosts } from "redux/post/post.selectors";
-import { selectGottenPostsPending } from "redux/pending/pending.selectors";
-import styles from "./Home.module.scss";
+import { fetchPostsStart } from "redux/post/post.actions";
+import { selectFetchedPosts, selectPosts } from "redux/post/post.selectors";
 
 Home.defaultProps = defaultProps;
 Home.propTypes = propTypes;
 
-function Home ({ onGetPostsStart, posts, postsPending }) {
+function Home ({ fetchedPosts, onFetchPostsStart, posts }) {
     useEffect(() => {
-        onGetPostsStart();
-    }, [onGetPostsStart]);
+        // onFetchPostsStart(); // TODO: didInvalidate checking or sth?
+    }, []);
 
-    const { pending } = postsPending;
+    const { isFetching } = fetchedPosts;
+    const postsArray = Object.values(posts);
+
+    // TODO: error on fetching?
 
     return (
         <div>
-            {pending
+            {isFetching
                 ? <Spinner />
-                : <Posts posts={posts} />}
+                : <Posts posts={postsArray} />}
         </div>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
-    posts: selectGottenPosts,
-    postsPending: selectGottenPostsPending
+    fetchedPosts: selectFetchedPosts,
+    posts: selectPosts
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onGetPostsStart: () => dispatch(getPostsStart())
+    onFetchPostsStart: () => dispatch(fetchPostsStart())
 });
 
 const ConnectedHome = connect(

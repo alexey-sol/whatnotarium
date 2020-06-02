@@ -1,68 +1,47 @@
 import { createSelector } from "reselect";
 
-import types from "./post.types";
+import findFetchedStateValue from "utils/helpers/findFetchedStateValue";
 
 const getPost = ({ post }) => post;
 
-const {
-    CREATE_POST_FAILURE,
-    CREATE_POST_SUCCESS,
-    DELETE_POST_FAILURE,
-    DELETE_POST_SUCCESS,
-    GET_POST_FAILURE,
-    GET_POST_SUCCESS,
-    GET_POSTS_FAILURE,
-    GET_POSTS_SUCCESS,
-    UPDATE_POST_FAILURE,
-    UPDATE_POST_SUCCESS
-} = types;
+export const findAffectedPost = createSelector(
+    [getPost],
+    ({ createdPost, deletedPost, updatedPost }) => {
+        return findFetchedStateValue(createdPost, deletedPost, updatedPost);
+    }
+);
 
 export const selectCreatedPost = createSelector(
     [getPost],
-    ({ [CREATE_POST_SUCCESS]: result }) => result
-);
-
-export const selectCreatedPostError = createSelector(
-    [getPost],
-    ({ [CREATE_POST_FAILURE]: result }) => result
+    ({ createdPost }) => createdPost
 );
 
 export const selectDeletedPost = createSelector(
     [getPost],
-    ({ [DELETE_POST_SUCCESS]: result }) => result
+    ({ deletedPost }) => deletedPost
 );
 
-export const selectDeletedPostError = createSelector(
+export const selectFetchedPost = createSelector(
     [getPost],
-    ({ [DELETE_POST_FAILURE]: result }) => result
+    ({ fetchedPost }) => fetchedPost
 );
 
-export const selectGottenPost = createSelector(
+export const selectFetchedPosts = createSelector(
     [getPost],
-    ({ [GET_POST_SUCCESS]: result }) => result
+    ({ fetchedPosts }) => fetchedPosts
 );
 
-export const selectGottenPostError = createSelector(
+export const selectPost = createSelector(
     [getPost],
-    ({ [GET_POST_FAILURE]: result }) => result
+    ({ post }) => post
 );
 
-export const selectGottenPosts = createSelector(
+export const selectPosts = createSelector(
     [getPost],
-    ({ [GET_POSTS_SUCCESS]: result }) => result
-);
-
-export const selectGottenPostsError = createSelector(
-    [getPost],
-    ({ [GET_POSTS_FAILURE]: result }) => result
+    ({ posts }) => posts
 );
 
 export const selectUpdatedPost = createSelector(
     [getPost],
-    ({ [UPDATE_POST_SUCCESS]: result }) => result
-);
-
-export const selectUpdatedPostError = createSelector(
-    [getPost],
-    ({ [UPDATE_POST_FAILURE]: result }) => result
+    ({ updatedPost }) => updatedPost
 );

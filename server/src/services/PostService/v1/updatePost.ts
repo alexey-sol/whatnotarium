@@ -2,6 +2,8 @@ import { NOT_FOUND } from "#utils/const/validationErrors";
 import FormattedProps from "#types/post/FormattedProps";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
+import PostWithAuthor from "#types/post/PostWithAuthor";
+import User from "#models/User";
 
 interface Props {
     body?: string;
@@ -11,7 +13,7 @@ interface Props {
 export default async function (
     id: number,
     props: Props
-): Promise<Post> | never {
+): Promise<PostWithAuthor> | never {
     const post = await Post.findById(id);
 
     if (!post) {
@@ -29,5 +31,12 @@ export default async function (
         updatedAt: new Date()
     };
 
-    return post.updateAttributes(updatedProps);
+    const updatedPost = await post.updateAttributes(updatedProps);
+
+    const postWithAuthor = { // TODO: include filter
+        ...updatedPost,
+        author: await User.findById(post.userId) as User
+    };
+
+    return postWithAuthor;
 }

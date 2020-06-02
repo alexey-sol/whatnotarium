@@ -1,54 +1,175 @@
-import makeFailure from "utils/redux/makeFailure";
-import makeSuccess from "utils/redux/makeSuccess";
+import _ from "lodash";
+
 import types from "./post.types";
 
-function getNewStateWithoutErrors (state) {
-    const newState = {};
-
-    Object.entries(state).forEach(([key, value]) => {
-        const isFailure = key.endsWith("_FAILURE");
-
-        if (!isFailure) {
-            newState[key] = value;
-        }
-    });
-
-    return newState;
-}
-
-function postReducer (state = {}, action = {}) {
+function postReducer (state = getInitialState(), action = {}) {
     const { payload, type } = action;
-    const actionFailure = makeFailure(type);
-    const actionSuccess = makeSuccess(type);
 
     switch (type) {
-        case types.CLEAR_ALL_ERRORS:
-            return getNewStateWithoutErrors(state);
-
         case types.CREATE_POST_FAILURE:
-        case types.CREATE_POST_SUCCESS:
-        case types.DELETE_POST_FAILURE:
-        case types.DELETE_POST_SUCCESS:
-        case types.GET_POST_FAILURE:
-        case types.GET_POST_SUCCESS:
-        case types.GET_POSTS_FAILURE:
-        case types.GET_POSTS_SUCCESS:
-        case types.UPDATE_POST_FAILURE:
-        case types.UPDATE_POST_SUCCESS:
             return {
                 ...state,
-                [type]: payload
+                createdPost: {
+                    error: payload,
+                    isFetching: false,
+                    item: null
+                }
             };
 
         case types.CREATE_POST_RESET:
+            return {
+                ...state,
+                createdPost: {
+                    error: null,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.CREATE_POST_SUCCESS:
+            return {
+                ...state,
+                createdPost: {
+                    error: null,
+                    isFetching: false,
+                    item: payload
+                }
+            };
+
+        case types.DELETE_POST_FAILURE:
+            return {
+                ...state,
+                deletedPost: {
+                    error: payload,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
         case types.DELETE_POST_RESET:
-        case types.GET_POST_RESET:
-        case types.GET_POSTS_RESET:
+            return {
+                ...state,
+                deletedPost: {
+                    error: null,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.DELETE_POST_SUCCESS:
+            return {
+                ...state,
+                deletedPost: {
+                    error: null,
+                    isFetching: false,
+                    item: payload
+                },
+                post: null,
+                posts: {
+                    ..._.omit(state.posts, payload.id)
+                }
+            };
+
+        case types.FETCH_POST_FAILURE:
+            return {
+                ...state,
+                fetchedPost: {
+                    error: payload,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.FETCH_POST_RESET:
+            return {
+                ...state,
+                fetchedPost: {
+                    error: null,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.FETCH_POST_SUCCESS:
+            return {
+                ...state,
+                fetchedPost: {
+                    error: null,
+                    isFetching: false,
+                    item: payload
+                }
+            };
+
+        case types.FETCH_POSTS_FAILURE:
+            return {
+                ...state,
+                fetchedPosts: {
+                    error: payload,
+                    isFetching: false,
+                    items: []
+                }
+            };
+
+        case types.FETCH_POSTS_RESET:
+            return {
+                ...state,
+                fetchedPosts: {
+                    error: null,
+                    isFetching: false,
+                    items: []
+                }
+            };
+
+        case types.FETCH_POSTS_SUCCESS:
+            return {
+                ...state,
+                fetchedPosts: {
+                    error: null,
+                    isFetching: false,
+                    items: payload
+                },
+                posts: _.mapKeys(payload, "id")
+            };
+
+        case types.GET_POST:
+            return {
+                ...state,
+                post: state.posts[payload]
+            };
+
+        case types.UPDATE_POST_FAILURE:
+            return {
+                ...state,
+                updatedPost: {
+                    error: payload,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
         case types.UPDATE_POST_RESET:
             return {
                 ...state,
-                [actionFailure]: null,
-                [actionSuccess]: null
+                updatedPost: {
+                    error: null,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.UPDATE_POST_SUCCESS:
+            return {
+                ...state,
+                updatedPost: {
+                    error: null,
+                    isFetching: false,
+                    item: payload
+                },
+                post: payload,
+                posts: {
+                    ...state.posts,
+                    [payload.id]: payload
+                }
             };
 
         default:
@@ -57,3 +178,35 @@ function postReducer (state = {}, action = {}) {
 }
 
 export default postReducer;
+
+function getInitialState () {
+    return {
+        createdPost: {
+            error: null,
+            isFetching: false,
+            item: null
+        },
+        deletedPost: {
+            error: null,
+            isFetching: false,
+            item: null
+        },
+        fetchedPost: {
+            error: null,
+            isFetching: false,
+            item: null
+        },
+        fetchedPosts: {
+            error: null,
+            isFetching: false,
+            items: []
+        },
+        post: null,
+        posts: {}, // TODO: maybe use Map?
+        updatedPost: {
+            error: null,
+            isFetching: false,
+            item: null
+        }
+    };
+}

@@ -72,7 +72,7 @@ function SignInContent ({
         password: passwordError
     } = errors;
 
-    const clearState = useCallback(() => onClearError(), [onClearError]);
+    const clearStorage = useCallback(() => onClearError(), [onClearError]);
 
     const handleClickOnSignUp = useCallback((event) => {
         event.preventDefault();
@@ -154,7 +154,7 @@ function SignInContent ({
 
             {Boolean(outOfFieldsError) && (
                 <Popup
-                    onClose={clearState}
+                    onClose={clearStorage}
                     text={outOfFieldsError}
                     theme="error"
                 />

@@ -17,10 +17,11 @@ import Main from "components/Main";
 import Nav from "components/Nav";
 import Spinner from "components/Spinner";
 import { checkSessionStart } from "redux/session/session.actions";
+import { fetchPostsStart } from "redux/post/post.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 
-const DraftEditor = lazy(() => import("pages/DraftEditor"));
+const Draft = lazy(() => import("pages/Draft"));
 const Home = lazy(() => import("pages/Home"));
 const Post = lazy(() => import("pages/Post"));
 const Profile = lazy(() => import("pages/Profile"));
@@ -28,10 +29,11 @@ const SignIn = lazy(() => import("pages/SignIn"));
 
 App.propTypes = propTypes;
 
-function App ({ onCheckSessionStart }) {
+function App ({ onCheckSessionStart, onFetchPostsStart }) {
     useEffect(() => {
         onCheckSessionStart();
-    }, [onCheckSessionStart]);
+        onFetchPostsStart();
+    }, [onCheckSessionStart, onFetchPostsStart]);
 
     return (
         <div className={styles.container}>
@@ -58,12 +60,12 @@ function App ({ onCheckSessionStart }) {
                             />
 
                             <PrivateRoute
-                                component={DraftEditor}
+                                component={Draft}
                                 path={DRAFT}
                             />
 
                             <PrivateRoute
-                                component={DraftEditor}
+                                component={Draft}
                                 path={`${POST}/:id/edit`}
                             />
 
@@ -83,7 +85,8 @@ function App ({ onCheckSessionStart }) {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    onCheckSessionStart: () => dispatch(checkSessionStart())
+    onCheckSessionStart: () => dispatch(checkSessionStart()),
+    onFetchPostsStart: () => dispatch(fetchPostsStart())
 });
 
 const ConnectedApp = connect(

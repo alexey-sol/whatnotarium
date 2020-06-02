@@ -3,6 +3,7 @@
 .button {
     display: flex;
     box-sizing: border-box;
+    align-items: center;
     justify-content: center;
     height: 5rem;
     padding: 0 3.5rem 0 3.5rem;
@@ -15,6 +16,7 @@
 
     &.disabled {
         opacity: 0.5;
+        cursor: default;
     }
 
     &.autoWidth {
@@ -30,7 +32,7 @@
         background-color: $base-button-bg-color-light;
         color: $base-button-text-color-light;
 
-        &:hover {
+         &:not(.disabled):hover {
             background-color: $base-button-bg-color-light--hover;
         }
     }
@@ -40,7 +42,7 @@
         background-color: $base-button-bg-color-dark;
         color: $base-button-text-color-dark;
 
-        &:hover {
+         &:not(.disabled):hover {
             background-color: $base-button-bg-color-dark--hover;
         }
     }

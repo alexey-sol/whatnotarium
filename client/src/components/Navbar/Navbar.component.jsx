@@ -1,24 +1,33 @@
-import { DRAFT } from "utils/const/pathnames";
 import { Link } from "react-router-dom";
 import React from "react";
-import classnames from "classnames";
 import { connect } from "react-redux";
-import { defaultProps, propTypes } from "./Navbar.props";
 import { createStructuredSelector } from "reselect";
+import classnames from "classnames";
+
+import { DRAFT } from "utils/const/pathnames";
+import { defaultProps, propTypes } from "./Navbar.props";
+import { findAffectedPost } from "redux/post/post.selectors";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./Navbar.module.scss";
 
 Navbar.defaultProps = defaultProps;
 Navbar.propTypes = propTypes;
 
-function Navbar ({ currentUser }) {
+function Navbar ({ affectedPost, currentUser }) {
     const isAuthed = Boolean(currentUser);
+    const writePostIsDisabled = Boolean(affectedPost.item);
+
+    const writePostItemClassName = classnames(
+        styles.item,
+        styles.prominent,
+        (writePostIsDisabled) ? styles.disabled : ""
+    );
 
     return (
         <div className={styles.container}>
             <ul className={styles.list}>
                 {isAuthed && (
-                    <li className={classnames(styles.item, styles.prominent)}>
+                    <li className={writePostItemClassName}>
                         <Link
                             title="Написать статью"
                             to={DRAFT}
@@ -60,6 +69,7 @@ function Navbar ({ currentUser }) {
 }
 
 const mapStateToProps = createStructuredSelector({
+    affectedPost: findAffectedPost,
     currentUser: selectCurrentUser
 });
 

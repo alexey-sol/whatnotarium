@@ -2,43 +2,5 @@
 
 .container {
     display: flex;
-    flex-direction: column;
-
-    .tabsList {
-        display: flex;
-        box-sizing: border-box;
-        height: 3rem;
-        padding: 0;
-        border-bottom: 1px solid $profile-tab-border-color;
-        list-style-type: none;
-
-        .tab {
-            position: relative;
-            top: 0.1rem;
-            box-sizing: border-box;
-            white-space: nowrap;
-            color: $profile-tab-color;
-            cursor: pointer;
-            transition: .1s ease;
-
-            &:not(:first-of-type) {
-                margin-left: 2rem;
-            }
-
-            &.active {
-                border-bottom: 1px solid $profile-tab-border-color--active;
-                color: $profile-tab-color--active;
-            }
-
-            .tabTitle {
-                font-family: $font-family--normal;
-                font-size: $font-size--medium;
-            }
-        }
-    }
-
-    .tabContent {
-        display: flex;
-        padding-top: 3vh;
-    }
+    box-sizing: border-box;
 }

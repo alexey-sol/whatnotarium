@@ -1,12 +1,5 @@
 import types from "./post.types";
 
-export function clearAllErrors (error) {
-    return {
-        payload: error,
-        type: types.CLEAR_ALL_ERRORS
-    };
-}
-
 export function createPostFailure (error) {
     return {
         payload: error,
@@ -61,57 +54,70 @@ export function deletePostSuccess (id) {
     };
 }
 
-export function getPostFailure (error) {
+export function fetchPostFailure (error) {
     return {
         payload: error,
-        type: types.GET_POST_FAILURE
+        type: types.FETCH_POST_FAILURE
     };
 }
 
-export function getPostReset () {
+export function fetchPostReset () {
     return {
-        type: types.GET_POST_RESET
+        type: types.FETCH_POST_RESET
     };
 }
 
-export function getPostStart (id) {
+export function fetchPostStart (id) {
     return {
         payload: id,
-        type: types.GET_POST_START
+        type: types.FETCH_POST_START
     };
 }
 
-export function getPostSuccess (post) {
+export function fetchPostSuccess (post) {
     return {
         payload: post,
-        type: types.GET_POST_SUCCESS
+        type: types.FETCH_POST_SUCCESS
     };
 }
 
-export function getPostsFailure (error) {
+export function fetchPostsFailure (error) {
     return {
         payload: error,
-        type: types.GET_POSTS_FAILURE
+        type: types.FETCH_POSTS_FAILURE
     };
 }
 
-export function getPostsReset () {
+export function fetchPostsReset () {
     return {
-        type: types.GET_POSTS_RESET
+        type: types.FETCH_POSTS_RESET
     };
 }
 
-export function getPostsStart (filter) {
+export function fetchPostsStart (filter) {
     return {
         payload: filter,
-        type: types.GET_POSTS_START
+        type: types.FETCH_POSTS_START
     };
 }
 
-export function getPostsSuccess (posts) {
+export function fetchPostsSuccess (posts) {
     return {
         payload: posts,
-        type: types.GET_POSTS_SUCCESS
+        type: types.FETCH_POSTS_SUCCESS
+    };
+}
+
+export function getPost (id) {
+    return {
+        payload: id,
+        type: types.GET_POST
+    };
+}
+
+export function getPosts () { // TODO: filter?
+    return {
+        type: types.GET_POSTS
     };
 }
 

@@ -24,6 +24,11 @@
         transition: .1s ease;
         user-select: none;
 
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
         &:hover {
             width: $menu-width;
             background-color: $menu-item-bg-color--hover;

@@ -7,8 +7,8 @@ import userTypes from "../user/user.types";
 const {
     CREATE_POST,
     DELETE_POST,
-    GET_POST,
-    GET_POSTS,
+    FETCH_POST,
+    FETCH_POSTS,
     UPDATE_POST
 } = getActionNames(postTypes);
 
@@ -28,14 +28,14 @@ export const selectDeletedPostPending = createSelector(
     ({ [DELETE_POST]: result }) => result
 );
 
-export const selectGottenPostPending = createSelector(
+export const selectFetchedPostPending = createSelector(
     [getPending],
-    ({ [GET_POST]: result }) => result
+    ({ [FETCH_POST]: result }) => result
 );
 
-export const selectGottenPostsPending = createSelector(
+export const selectFetchedPostsPending = createSelector(
     [getPending],
-    ({ [GET_POSTS]: result }) => result
+    ({ [FETCH_POSTS]: result }) => result
 );
 
 export const selectUpdatedPostPending = createSelector(
