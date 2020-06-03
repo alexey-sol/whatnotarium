@@ -28,6 +28,7 @@ import {
     selectUpdatedPost
 } from "redux/post/post.selectors";
 
+import findModifiedStateItem from "utils/redux/findModifiedStateItem";
 import translateError from "utils/helpers/translateError";
 
 DraftEditorContainer.defaultProps = defaultProps;
@@ -82,22 +83,16 @@ function DraftEditorContainer ({
         }
     };
 
-    const didCreationFail = Boolean(createdPost?.error);
-    const didDeletionFail = Boolean(deletedPost?.error);
-    const didUpdateFail = Boolean(updatedPost?.error);
+    const modifiedPost = findModifiedStateItem(createdPost, deletedPost, updatedPost);
+    const requestDidFail = Boolean(modifiedPost.error);
 
-    const clearStorageIfNeeded = useCallback(() => {
-        if (didCreationFail) onCreatePostReset();
-        if (didDeletionFail) onDeletePostReset();
-        if (didUpdateFail) onUpdatePostReset();
-    }, [
-        didCreationFail,
-        didDeletionFail,
-        didUpdateFail,
-        onCreatePostReset,
-        onDeletePostReset,
-        onUpdatePostReset
-    ]);
+    const clearPostStateIfNeeded = useCallback(() => {
+        if (requestDidFail) {
+            onCreatePostReset();
+            onDeletePostReset();
+            onUpdatePostReset();
+        }
+    }, [requestDidFail, onCreatePostReset, onDeletePostReset, onUpdatePostReset]);
 
     const deletePost = useCallback(() => onDeletePostStart(id), [id, onDeletePostStart]);
 
@@ -164,7 +159,7 @@ function DraftEditorContainer ({
             deletePost={deletePost}
             handleChange={handleChange}
             handleSubmit={createOrUpdatePost}
-            hidePopup={clearStorageIfNeeded}
+            hidePopup={clearPostStateIfNeeded}
             isFetching={isFetching}
             popupText={failedRequestMessage}
             post={currentPost}

@@ -32,9 +32,9 @@ export function clearError () {
     };
 }
 
-export function setCurrentUser (error) {
+export function setCurrentUser (payload) {
     return {
-        payload: error,
+        payload,
         type: types.SET_CURRENT_USER
     };
 }

@@ -6,34 +6,52 @@ import ProfileContent from "./ProfileContent.component";
 import { defaultProps, propTypes } from "./ProfileContent.container.props";
 import { deletePostReset } from "redux/post/post.actions";
 import { selectDeletedPost } from "redux/post/post.selectors";
+import { selectUpdatedProfile } from "redux/user/user.selectors";
+import { setCurrentUser } from "redux/session/session.actions";
+import { updateProfileReset } from "redux/user/user.actions";
+import findModifiedStateItem from "utils/redux/findModifiedStateItem";
 
 ProfileContentContainer.defaultProps = defaultProps;
 ProfileContentContainer.propTypes = propTypes;
 
-function ProfileContentContainer ({ deletedPost, onDeletePostReset }) {
-    const didDeletionSucceed = Boolean(deletedPost.item);
+function ProfileContentContainer ({
+    deletedPost,
+    onDeletePostReset,
+    onSetCurrentUser,
+    onUpdatedProfileReset,
+    updatedProfile
+}) {
+    const modifiedItem = findModifiedStateItem(deletedPost, updatedProfile);
+    const newProfile = updatedProfile.item;
+    const postIsDeleted = Boolean(deletedPost.item);
+    const profileIsUpdated = Boolean(newProfile);
 
-    const clearStorageIfNeeded = useCallback(() => {
-        if (didDeletionSucceed) onDeletePostReset();
-    }, [didDeletionSucceed, onDeletePostReset]);
+    const clearStateIfNeeded = useCallback(() => {
+        if (postIsDeleted) onDeletePostReset();
+        if (profileIsUpdated) onUpdatedProfileReset();
+    }, [postIsDeleted, profileIsUpdated, onDeletePostReset, onUpdatedProfileReset]);
 
-    const popupText = (deletedPost.item)
+    useEffect(() => {
+        if (newProfile) {
+            onSetCurrentUser(newProfile);
+        }
+
+        return () => {
+            clearStateIfNeeded();
+        };
+    }, [clearStateIfNeeded, onSetCurrentUser, newProfile]);
+
+    const popupText = (modifiedItem.item)
         ? "Сохранено"
-        : deletedPost.error?.message;
+        : modifiedItem.error?.message;
 
-    const popupTheme = (deletedPost.item)
+    const popupTheme = (modifiedItem.item)
         ? "success"
         : "error";
 
-    useEffect(() => {
-        return () => {
-            clearStorageIfNeeded();
-        };
-    }, [clearStorageIfNeeded]);
-
     return (
         <ProfileContent
-            hidePopup={clearStorageIfNeeded}
+            hidePopup={clearStateIfNeeded}
             popupText={popupText}
             popupTheme={popupTheme}
         />
@@ -41,11 +59,14 @@ function ProfileContentContainer ({ deletedPost, onDeletePostReset }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    deletedPost: selectDeletedPost
+    deletedPost: selectDeletedPost,
+    updatedProfile: selectUpdatedProfile
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onDeletePostReset: () => dispatch(deletePostReset())
+    onDeletePostReset: () => dispatch(deletePostReset()),
+    onSetCurrentUser: (props) => dispatch(setCurrentUser(props)),
+    onUpdatedProfileReset: () => dispatch(updateProfileReset())
 });
 
 const ConnectedProfileContent = connect(

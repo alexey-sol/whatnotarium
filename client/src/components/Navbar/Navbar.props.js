@@ -1,11 +1,15 @@
 import { object } from "prop-types";
 
 export const defaultProps = {
-    affectedPost: {},
-    currentUser: null
+    createdPost: {},
+    currentUser: null,
+    deletedPost: {},
+    updatedPost: {}
 };
 
 export const propTypes = {
-    affectedPost: object,
-    currentUser: object
+    createdPost: object,
+    currentUser: object,
+    deletedPost: object,
+    updatedPost: object
 };

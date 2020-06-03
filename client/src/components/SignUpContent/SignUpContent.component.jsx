@@ -108,7 +108,7 @@ function SignUpContent ({
         ? hints.weakPassword
         : "";
 
-    const clearStorage = useCallback(() => onClearError(), [onClearError]);
+    const clearSessionState = useCallback(() => onClearError(), [onClearError]);
 
     useEffect(() => {
         return () => onClearError();
@@ -165,7 +165,7 @@ function SignUpContent ({
 
             {Boolean(outOfFieldsError) && (
                 <Popup
-                    onClose={clearStorage}
+                    onClose={clearSessionState}
                     text={outOfFieldsError}
                     theme="error"
                 />

@@ -26,6 +26,16 @@ function postReducer (state = getInitialState(), action = {}) {
                 }
             };
 
+        case types.CREATE_POST_START:
+            return {
+                ...state,
+                createdPost: {
+                    error: null,
+                    isFetching: true,
+                    item: null
+                }
+            };
+
         case types.CREATE_POST_SUCCESS:
             return {
                 ...state,
@@ -52,6 +62,16 @@ function postReducer (state = getInitialState(), action = {}) {
                 deletedPost: {
                     error: null,
                     isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.DELETE_POST_START:
+            return {
+                ...state,
+                deletedPost: {
+                    error: null,
+                    isFetching: true,
                     item: null
                 }
             };
@@ -90,6 +110,16 @@ function postReducer (state = getInitialState(), action = {}) {
                 }
             };
 
+        case types.FETCH_POST_START:
+            return {
+                ...state,
+                fetchedPost: {
+                    error: null,
+                    isFetching: true,
+                    item: null
+                }
+            };
+
         case types.FETCH_POST_SUCCESS:
             return {
                 ...state,
@@ -116,6 +146,16 @@ function postReducer (state = getInitialState(), action = {}) {
                 fetchedPosts: {
                     error: null,
                     isFetching: false,
+                    items: []
+                }
+            };
+
+        case types.FETCH_POSTS_START:
+            return {
+                ...state,
+                fetchedPosts: {
+                    error: null,
+                    isFetching: true,
                     items: []
                 }
             };
@@ -153,6 +193,16 @@ function postReducer (state = getInitialState(), action = {}) {
                 updatedPost: {
                     error: null,
                     isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.UPDATE_POST_START:
+            return {
+                ...state,
+                updatedPost: {
+                    error: null,
+                    isFetching: true,
                     item: null
                 }
             };

@@ -6,14 +6,8 @@ import { EMAIL, NAME } from "utils/const/userData";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
-
-import {
-    selectUpdatedProfile,
-    selectUpdatedProfileError
-} from "redux/user/user.selectors";
-
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUpdatedProfilePending } from "redux/pending/pending.selectors";
+import { selectUpdatedProfile } from "redux/user/user.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 import { validateEmail, validateName } from "utils/validators/UserValidator";
 import formatReducerError from "utils/helpers/formatReducerError";
@@ -27,9 +21,10 @@ function ProfileDataForm ({
     currentUser,
     onUpdateProfileReset,
     onUpdateProfileStart,
-    updatedProfileError,
-    updatedProfilePending
+    updatedProfile
 }) {
+    const { error, isFetching } = updatedProfile;
+
     const initialFields = {
         email: currentUser?.email,
         id: currentUser?.id,
@@ -38,7 +33,7 @@ function ProfileDataForm ({
 
     const initialErrors = {
         name: "",
-        ...formatReducerError(updatedProfileError, ["email"])
+        ...formatReducerError(error, ["email"])
     };
 
     const validateField = (stateName, fields) => {
@@ -76,8 +71,6 @@ function ProfileDataForm ({
         name: nameError
     } = errors;
 
-    const { pending } = updatedProfilePending;
-
     return (
         <form
             className={styles.container}
@@ -103,7 +96,7 @@ function ProfileDataForm ({
 
             <BaseButton
                 className={styles.updateProfileDataButton}
-                disabled={pending}
+                disabled={isFetching}
                 theme="dark"
                 title="Сохранить"
             />
@@ -113,9 +106,7 @@ function ProfileDataForm ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    updatedProfile: selectUpdatedProfile,
-    updatedProfileError: selectUpdatedProfileError,
-    updatedProfilePending: selectUpdatedProfilePending
+    updatedProfile: selectUpdatedProfile
 });
 
 const mapDispatchToProps = (dispatch) => ({

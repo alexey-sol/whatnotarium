@@ -1,14 +1,15 @@
 import { func, object } from "prop-types";
 
 export const defaultProps = {
-    affectedPost: {},
+    createdPost: {},
     currentUser: null,
     fetchedPosts: {},
-    post: null
+    post: null,
+    updatedPost: {}
 };
 
 export const propTypes = {
-    affectedPost: object,
+    createdPost: object,
     currentUser: object,
     fetchedPosts: object,
     history: object,
@@ -16,5 +17,6 @@ export const propTypes = {
     onCreatePostReset: func.isRequired,
     onGetPost: func.isRequired,
     onUpdatePostReset: func.isRequired,
-    post: object
+    post: object,
+    updatedPost: object
 };

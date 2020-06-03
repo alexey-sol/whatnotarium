@@ -1,25 +1,56 @@
-import makeFailure from "utils/redux/makeFailure";
-import makeSuccess from "utils/redux/makeSuccess";
 import types from "./user.types";
 
-function userReducer (state = {}, action = {}) {
+const INITIAL_STATE = {
+    updatedProfile: {
+        error: null,
+        isFetching: false,
+        item: null
+    },
+    users: {}
+};
+
+function userReducer (state = INITIAL_STATE, action = {}) {
     const { payload, type } = action;
-    const actionFailure = makeFailure(type);
-    const actionSuccess = makeSuccess(type);
 
     switch (type) {
         case types.UPDATE_PROFILE_FAILURE:
-        case types.UPDATE_PROFILE_SUCCESS:
             return {
                 ...state,
-                [type]: payload
+                updatedProfile: {
+                    error: payload,
+                    isFetching: false,
+                    item: null
+                }
             };
 
         case types.UPDATE_PROFILE_RESET:
             return {
                 ...state,
-                [actionFailure]: null,
-                [actionSuccess]: null
+                updatedProfile: {
+                    error: null,
+                    isFetching: false,
+                    item: null
+                }
+            };
+
+        case types.UPDATE_PROFILE_START:
+            return {
+                ...state,
+                updatedProfile: {
+                    error: null,
+                    isFetching: true,
+                    item: null
+                }
+            };
+
+        case types.UPDATE_PROFILE_SUCCESS:
+            return {
+                ...state,
+                updatedProfile: {
+                    error: null,
+                    isFetching: false,
+                    item: payload
+                }
             };
 
         default:

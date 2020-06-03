@@ -1,11 +1,11 @@
 import { func, object } from "prop-types";
 
 export const defaultProps = {
-    createdPost: null,
-    deletedPost: null,
+    createdPost: {},
+    deletedPost: {},
     fetchedPosts: {},
     post: null,
-    updatedPost: null
+    updatedPost: {}
 };
 
 export const propTypes = {

@@ -1,15 +1,6 @@
 import { createSelector } from "reselect";
 
-import findFetchedStateValue from "utils/helpers/findFetchedStateValue";
-
 const getPost = ({ post }) => post;
-
-export const findAffectedPost = createSelector(
-    [getPost],
-    ({ createdPost, deletedPost, updatedPost }) => {
-        return findFetchedStateValue(createdPost, deletedPost, updatedPost);
-    }
-);
 
 export const selectCreatedPost = createSelector(
     [getPost],

@@ -1,10 +1,13 @@
 import { func, object } from "prop-types";
 
 export const defaultProps = {
-    deletedPost: {}
+    deletedPost: {},
+    updatedProfile: {}
 };
 
 export const propTypes = {
     deletedPost: object,
-    onDeletePostReset: func.isRequired
+    onDeletePostReset: func.isRequired,
+    onSetCurrentUser: func.isRequired,
+    updatedProfile: object
 };

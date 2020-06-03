@@ -25,7 +25,7 @@ function DraftEditor ({
                         name="title"
                         onChange={handleChange}
                         type="text"
-                        value={post?.title ?? ""}
+                        value={post?.title || ""}
                     />
                 </header>
 

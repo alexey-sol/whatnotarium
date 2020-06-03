@@ -14,18 +14,20 @@ import {
 } from "redux/post/post.actions";
 
 import {
-    findAffectedPost,
+    selectCreatedPost,
     selectFetchedPosts,
-    selectPost
+    selectPost,
+    selectUpdatedPost
 } from "redux/post/post.selectors";
 
 import { selectCurrentUser } from "redux/session/session.selectors";
+import findModifiedStateItem from "utils/redux/findModifiedStateItem";
 
 PostDetailsContainer.defaultProps = defaultProps;
 PostDetailsContainer.propTypes = propTypes;
 
 function PostDetailsContainer ({
-    affectedPost,
+    createdPost,
     currentUser,
     fetchedPosts,
     history,
@@ -33,30 +35,24 @@ function PostDetailsContainer ({
     onCreatePostReset,
     onGetPost,
     onUpdatePostReset,
-    post
+    post,
+    updatedPost
 }) {
     const { push } = history;
     const { items } = fetchedPosts;
     const id = +match.params.id;
 
+    const modifiedPost = findModifiedStateItem(createdPost, updatedPost);
+    const hasModifiedPost = Boolean(modifiedPost.item);
+
     const redirectToDraft = useCallback(() => push(`${POST}/${id}/edit`), [id, push]);
 
-    const popupText = (affectedPost.item)
-        ? "Сохранено"
-        : affectedPost.error?.message;
-
-    const popupTheme = (affectedPost.item)
-        ? "success"
-        : "error";
-
-    const hasAffectedPost = Boolean(affectedPost.item);
-
-    const clearStorageIfNeeded = useCallback(() => {
-        if (hasAffectedPost) {
+    const clearPostStateIfNeeded = useCallback(() => {
+        if (hasModifiedPost) {
             onCreatePostReset();
             onUpdatePostReset();
         }
-    }, [hasAffectedPost, onCreatePostReset, onUpdatePostReset]);
+    }, [hasModifiedPost, onCreatePostReset, onUpdatePostReset]);
 
     const shouldGetPost = items?.length > 0 && !post;
 
@@ -66,14 +62,22 @@ function PostDetailsContainer ({
         }
 
         return () => {
-            clearStorageIfNeeded();
+            clearPostStateIfNeeded();
         };
-    }, [clearStorageIfNeeded, id, onGetPost, shouldGetPost]);
+    }, [clearPostStateIfNeeded, id, onGetPost, shouldGetPost]);
+
+    const popupText = (modifiedPost.item)
+        ? "Сохранено"
+        : modifiedPost.error?.message;
+
+    const popupTheme = (modifiedPost.item)
+        ? "success"
+        : "error";
 
     return (
         <PostDetails
             handleClickOnEditButton={redirectToDraft}
-            hidePopup={clearStorageIfNeeded}
+            hidePopup={clearPostStateIfNeeded}
             popupText={popupText}
             popupTheme={popupTheme}
             post={post}
@@ -83,10 +87,11 @@ function PostDetailsContainer ({
 }
 
 const mapStateToProps = createStructuredSelector({
-    affectedPost: findAffectedPost,
+    createdPost: selectCreatedPost,
     currentUser: selectCurrentUser,
     fetchedPosts: selectFetchedPosts,
-    post: selectPost
+    post: selectPost,
+    updatedPost: selectUpdatedPost
 });
 
 const mapDispatchToProps = (dispatch) => ({

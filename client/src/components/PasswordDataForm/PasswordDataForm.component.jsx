@@ -1,19 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
 import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-
-import {
-    selectUpdatedProfile,
-    selectUpdatedProfileError
-} from "redux/user/user.selectors";
-
-import { selectUpdatedProfilePending } from "redux/pending/pending.selectors";
+import { selectUpdatedProfile } from "redux/user/user.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 
 import {
@@ -34,9 +29,10 @@ function PasswordDataForm ({
     currentUser,
     onUpdateProfileReset,
     onUpdateProfileStart,
-    updatedProfileError,
-    updatedProfilePending
+    updatedProfile
 }) {
+    const { error, isFetching } = updatedProfile;
+
     const initialFields = {
         confirmNewPassword: "",
         id: currentUser?.id,
@@ -47,7 +43,7 @@ function PasswordDataForm ({
     const initialErrors = {
         confirmNewPassword: "",
         newPassword: "",
-        ...formatReducerError(updatedProfileError, ["password"])
+        ...formatReducerError(error, ["password"])
     };
 
     const validateField = (stateName, fields) => {
@@ -105,8 +101,6 @@ function PasswordDataForm ({
         ? hints.weakPassword
         : "";
 
-    const { pending } = updatedProfilePending;
-
     return (
         <form
             className={styles.container}
@@ -143,7 +137,7 @@ function PasswordDataForm ({
 
             <BaseButton
                 className={styles.updatePasswordDataButton}
-                disabled={pending}
+                disabled={isFetching}
                 title="Изменить пароль"
             />
         </form>
@@ -152,9 +146,7 @@ function PasswordDataForm ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    updatedProfile: selectUpdatedProfile,
-    updatedProfileError: selectUpdatedProfileError,
-    updatedProfilePending: selectUpdatedProfilePending
+    updatedProfile: selectUpdatedProfile
 });
 
 const mapDispatchToProps = (dispatch) => ({

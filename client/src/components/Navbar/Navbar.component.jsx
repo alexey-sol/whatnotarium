@@ -6,21 +6,34 @@ import classnames from "classnames";
 
 import { DRAFT } from "utils/const/pathnames";
 import { defaultProps, propTypes } from "./Navbar.props";
-import { findAffectedPost } from "redux/post/post.selectors";
+
+import {
+    selectCreatedPost,
+    selectDeletedPost,
+    selectUpdatedPost
+} from "redux/post/post.selectors";
+
 import { selectCurrentUser } from "redux/session/session.selectors";
+import findModifiedStateItem from "utils/redux/findModifiedStateItem";
 import styles from "./Navbar.module.scss";
 
 Navbar.defaultProps = defaultProps;
 Navbar.propTypes = propTypes;
 
-function Navbar ({ affectedPost, currentUser }) {
+function Navbar ({
+    createdPost,
+    currentUser,
+    deletedPost,
+    updatedPost
+}) {
     const isAuthed = Boolean(currentUser);
-    const writePostIsDisabled = Boolean(affectedPost.item);
+    const modifiedPost = findModifiedStateItem(createdPost, deletedPost, updatedPost);
+    const shouldDisableWritePost = Boolean(modifiedPost.item);
 
     const writePostItemClassName = classnames(
         styles.item,
         styles.prominent,
-        (writePostIsDisabled) ? styles.disabled : ""
+        (shouldDisableWritePost) ? styles.disabled : ""
     );
 
     return (
@@ -69,8 +82,10 @@ function Navbar ({ affectedPost, currentUser }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    affectedPost: findAffectedPost,
-    currentUser: selectCurrentUser
+    createdPost: selectCreatedPost,
+    currentUser: selectCurrentUser,
+    deletedPost: selectDeletedPost,
+    updatedPost: selectUpdatedPost
 });
 
 const ConnectedNavbar = connect(
