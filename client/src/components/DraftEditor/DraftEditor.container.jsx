@@ -58,9 +58,7 @@ function DraftEditorContainer ({
     const [currentPost, setCurrentPost] = useState(post);
     const id = paramId || currentPost?.id;
 
-    const handleChange = useCallback(({ target }) => {
-        const { name, value } = target;
-
+    const handleChange = useCallback(({ name, value }) => {
         setCurrentPost({
             ...currentPost,
             [name]: value
@@ -68,7 +66,9 @@ function DraftEditorContainer ({
     }, [currentPost]);
 
     const createOrUpdatePost = (event) => {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
 
         const shouldCreateNewPost = !id;
         const postWithUserId = {

@@ -28,15 +28,18 @@ function PostDetails ({
     const shouldRenderControls = Boolean(userIsAuthor && id);
     const popupIsShown = Boolean(popupText);
 
+    const bodyHTML = { __html: body };
+
     return (
         <article className={styles.container}>
             <header className={styles.title}>
                 {title}
             </header>
 
-            <section className={styles.body}>
-                {body}
-            </section>
+            <section
+                className={styles.body}
+                dangerouslySetInnerHTML={bodyHTML}
+            />
 
             <section className={styles.metadata}>
                 <img

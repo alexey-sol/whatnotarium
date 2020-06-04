@@ -29,6 +29,7 @@ function Navbar ({
     const isAuthed = Boolean(currentUser);
     const modifiedPost = findModifiedStateItem(createdPost, deletedPost, updatedPost);
     const shouldDisableWritePost = Boolean(modifiedPost.item);
+    // TODO: or if in Draft alraedy
 
     const writePostItemClassName = classnames(
         styles.item,

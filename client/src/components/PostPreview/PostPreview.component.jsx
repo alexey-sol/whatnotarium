@@ -19,6 +19,8 @@ function PostPreview ({
     const formattedUpdatedAt = new DateFormatter(updatedAt)
         .formatByPattern("YYYY, MMM DD");
 
+    const bodyHTML = { __html: body };
+
     return (
         <article className={styles.container}>
             <Link
@@ -30,9 +32,10 @@ function PostPreview ({
                     {title}
                 </header>
 
-                <section className={styles.body}>
-                    {body}
-                </section>
+                <section
+                    className={styles.body}
+                    dangerouslySetInnerHTML={bodyHTML}
+                />
             </Link>
 
             <section className={styles.metadata}>
