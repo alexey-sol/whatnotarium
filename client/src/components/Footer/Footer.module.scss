@@ -2,14 +2,19 @@
 
 .container {
     grid-area: footer;
-    display: flex;
-    box-sizing: border-box;
+    z-index: 1;
+    display: grid;
+    grid-template-areas: ". content .";
+    grid-template-rows: auto;
+    grid-template-columns: 20% 1fr 20%;
+    background-color: $footer-content-bg-color;
 
     .content {
+        grid-area: content;
         display: flex;
+        align-items: center;
         box-sizing: border-box;
-        flex: 1;
-        height: 100%;
-        background-color: $footer-content-bg-color;
+        padding: 2rem 3vw;
+        color: set-text-color($footer-content-bg-color);
     }
 }

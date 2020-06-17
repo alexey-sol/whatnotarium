@@ -41,7 +41,7 @@ function PostDetails ({
     const avatarPlaceholderElem = (
         <AvatarPlaceholder
             fill="#455a64"
-            size="50"
+            size={50}
         />
     );
 

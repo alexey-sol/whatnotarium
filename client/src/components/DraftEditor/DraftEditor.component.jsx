@@ -76,6 +76,8 @@ function DraftEditor ({
     const formattedUpdatedAt = new DateFormatter(post?.updatedAt)
         .formatByPattern("YYYY, MMM DD");
 
+    const deleteButtonIsDisabled = isPending || !post?.id;
+
     return (
         <article className={styles.container}>
             {!editor && (
@@ -123,7 +125,7 @@ function DraftEditor ({
 
                     <section className={styles.controls}>
                         <BaseButton
-                            disabled={isPending}
+                            disabled={deleteButtonIsDisabled}
                             onClick={deletePost}
                             theme="dark"
                             title="Удалить"

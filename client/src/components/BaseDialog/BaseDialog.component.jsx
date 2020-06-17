@@ -34,6 +34,7 @@ function BaseDialog ({
                 <CloseIconButton
                     className={styles.closeIconButton}
                     onClick={onClose}
+                    size={16}
                 />
 
                 {title && (

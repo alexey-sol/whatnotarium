@@ -57,4 +57,12 @@
             }
         }
     }
+
+    @media screen and (max-width: 1024px) {
+        & {
+            position: absolute;
+            top: $nav-height--small;
+            right: 0;
+        }
+    }
 }

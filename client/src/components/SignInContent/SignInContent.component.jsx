@@ -144,6 +144,7 @@ function SignInContent ({
                         <li>
                             <BaseButton
                                 onClick={signInUsingYandex}
+                                disabled
                                 title="Яндекс"
                                 width="full"
                             />

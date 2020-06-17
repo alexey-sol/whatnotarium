@@ -54,14 +54,16 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
     return (
         <div className={styles.container}>
             <div className={styles.content}>
-                <span className={styles.iconButton}>
-                    <SearchIconButton
-                        className={styles.iconButton}
-                        onClick={() => console.log("Click on search icon")}
-                    />
-                </span>
+                {false && (
+                    <span className={styles.iconButton}>
+                        <SearchIconButton
+                            className={styles.iconButton}
+                            onClick={() => console.log("Click on search icon")}
+                        />
+                    </span>
+                )}
 
-                {currentUser && (
+                {false && currentUser && (
                     <span className={styles.iconButton}>
                         <BookmarkIconButton
                             className={styles.iconButton}
@@ -70,7 +72,7 @@ function ActionsMenu ({ currentUser, showUserMenu }) {
                     </span>
                 )}
 
-                {currentUser && (
+                {false && currentUser && (
                     <span className={styles.iconButton}>
                         <NotificationIconButton
                             className={styles.iconButton}

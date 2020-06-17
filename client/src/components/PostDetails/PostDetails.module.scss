@@ -37,7 +37,7 @@
             display: flex;
             box-sizing: border-box;
 
-            img {
+            :first-child {
                 display: flex;
                 box-sizing: border-box;
                 align-items: center;

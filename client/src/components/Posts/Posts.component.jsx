@@ -8,7 +8,9 @@ Posts.defaultProps = defaultProps;
 Posts.propTypes = propTypes;
 
 function Posts ({ posts }) {
-    const postElems = posts.map(post => (
+    const reversedPosts = posts.reverse();
+
+    const postElems = reversedPosts.map(post => (
         <li
             className={styles.postItem}
             key={post.id}
