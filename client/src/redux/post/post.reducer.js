@@ -11,7 +11,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 createdPost: {
                     error: payload,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -21,7 +21,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 createdPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -31,7 +31,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 createdPost: {
                     error: null,
-                    isFetching: true,
+                    isPending: true,
                     item: null
                 }
             };
@@ -41,8 +41,13 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 createdPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: payload
+                },
+                post: payload,
+                posts: {
+                    ...state.posts,
+                    [payload.id]: payload
                 }
             };
 
@@ -51,7 +56,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 deletedPost: {
                     error: payload,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -61,7 +66,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 deletedPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -71,7 +76,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 deletedPost: {
                     error: null,
-                    isFetching: true,
+                    isPending: true,
                     item: null
                 }
             };
@@ -81,7 +86,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 deletedPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: payload
                 },
                 post: null,
@@ -95,7 +100,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPost: {
                     error: payload,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -105,7 +110,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -115,7 +120,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPost: {
                     error: null,
-                    isFetching: true,
+                    isPending: true,
                     item: null
                 }
             };
@@ -125,7 +130,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: payload
                 }
             };
@@ -135,7 +140,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPosts: {
                     error: payload,
-                    isFetching: false,
+                    isPending: false,
                     items: []
                 }
             };
@@ -145,7 +150,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPosts: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     items: []
                 }
             };
@@ -155,7 +160,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPosts: {
                     error: null,
-                    isFetching: true,
+                    isPending: true,
                     items: []
                 }
             };
@@ -165,7 +170,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 fetchedPosts: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     items: payload
                 },
                 posts: _.mapKeys(payload, "id")
@@ -182,7 +187,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 updatedPost: {
                     error: payload,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -192,7 +197,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 updatedPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -202,7 +207,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 updatedPost: {
                     error: null,
-                    isFetching: true,
+                    isPending: true,
                     item: null
                 }
             };
@@ -212,7 +217,7 @@ function postReducer (state = getInitialState(), action = {}) {
                 ...state,
                 updatedPost: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: payload
                 },
                 post: payload,
@@ -233,29 +238,29 @@ function getInitialState () {
     return {
         createdPost: {
             error: null,
-            isFetching: false,
+            isPending: false,
             item: null
         },
         deletedPost: {
             error: null,
-            isFetching: false,
+            isPending: false,
             item: null
         },
         fetchedPost: {
             error: null,
-            isFetching: false,
+            isPending: false,
             item: null
         },
         fetchedPosts: {
             error: null,
-            isFetching: false,
+            isPending: false,
             items: []
         },
         post: null,
         posts: {}, // TODO: maybe use Map?
         updatedPost: {
             error: null,
-            isFetching: false,
+            isPending: false,
             item: null
         }
     };

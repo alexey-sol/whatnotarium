@@ -31,7 +31,7 @@ function PasswordDataForm ({
     onUpdateProfileStart,
     updatedProfile
 }) {
-    const { error, isFetching } = updatedProfile;
+    const { error, isPending } = updatedProfile;
 
     const initialFields = {
         confirmNewPassword: "",
@@ -137,7 +137,7 @@ function PasswordDataForm ({
 
             <BaseButton
                 className={styles.updatePasswordDataButton}
-                disabled={isFetching}
+                disabled={isPending}
                 title="Изменить пароль"
             />
         </form>

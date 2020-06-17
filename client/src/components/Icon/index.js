@@ -1,3 +1,4 @@
+export { default as AvatarPlaceholder } from "./AvatarPlaceholder.component";
 export { default as Back } from "./Back.component";
 export { default as Bookmark } from "./Bookmark.component";
 export { default as Close } from "./Close.component";

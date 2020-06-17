@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React from "react";
 
+import { AvatarPlaceholder } from "components/Icon";
 import { POST } from "utils/const/pathnames";
 import DateFormatter from "utils/formatters/DateFormatter";
 import { propTypes } from "./PostPreview.props";
@@ -21,6 +22,20 @@ function PostPreview ({
 
     const bodyHTML = { __html: body };
 
+    const avatarImgElem = (
+        <img
+            alt={author.name}
+            src={author.avatarUrl}
+        />
+    );
+
+    const avatarPlaceholderElem = (
+        <AvatarPlaceholder
+            fill="#455a64"
+            size="50"
+        />
+    );
+
     return (
         <article className={styles.container}>
             <Link
@@ -39,10 +54,11 @@ function PostPreview ({
             </Link>
 
             <section className={styles.metadata}>
-                <img
-                    alt={author.name}
-                    src={author.imageUrl}
-                />
+                <div className={styles.avatar}>
+                    {(author.avatarUrl)
+                        ? avatarImgElem
+                        : avatarPlaceholderElem}
+                </div>
 
                 <span>
                     {author.name}

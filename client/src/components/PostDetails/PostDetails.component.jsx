@@ -1,5 +1,6 @@
 import React from "react";
 
+import { AvatarPlaceholder } from "components/Icon";
 import BaseButton from "components/BaseButton";
 import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
@@ -30,6 +31,20 @@ function PostDetails ({
 
     const bodyHTML = { __html: body };
 
+    const avatarImgElem = (
+        <img
+            alt={author?.name}
+            src={author?.avatarUrl}
+        />
+    );
+
+    const avatarPlaceholderElem = (
+        <AvatarPlaceholder
+            fill="#455a64"
+            size="50"
+        />
+    );
+
     return (
         <article className={styles.container}>
             <header className={styles.title}>
@@ -42,10 +57,11 @@ function PostDetails ({
             />
 
             <section className={styles.metadata}>
-                <img
-                    alt={author?.name}
-                    src=""
-                />
+                <div className={styles.avatar}>
+                    {(author?.avatarUrl)
+                        ? avatarImgElem
+                        : avatarPlaceholderElem}
+                </div>
 
                 <span>
                     {author?.name}

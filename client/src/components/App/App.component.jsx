@@ -23,6 +23,7 @@ import styles from "./App.module.scss";
 
 const Draft = lazy(() => import("pages/Draft"));
 const Home = lazy(() => import("pages/Home"));
+const Page404 = lazy(() => import("pages/Page404"));
 const Post = lazy(() => import("pages/Post"));
 const Profile = lazy(() => import("pages/Profile"));
 const SignIn = lazy(() => import("pages/SignIn"));
@@ -73,6 +74,8 @@ function App ({ onCheckSessionStart, onFetchPostsStart }) {
                                 component={Post}
                                 path={`${POST}/:id`}
                             />
+
+                            <Route component={Page404} />
                         </Switch>
                     </Suspense>
                 </ErrorBoundary>

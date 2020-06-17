@@ -6,7 +6,7 @@ import {
 } from "prop-types";
 
 export const defaultProps = {
-    isFetching: false,
+    isPending: false,
     popupText: "",
     post: {}
 };
@@ -16,7 +16,7 @@ export const propTypes = {
     handleChange: func.isRequired,
     handleSubmit: func.isRequired,
     hidePopup: func.isRequired,
-    isFetching: bool,
+    isPending: bool,
     popupText: string,
     post: object
 };

@@ -3,7 +3,7 @@ import types from "./user.types";
 const INITIAL_STATE = {
     updatedProfile: {
         error: null,
-        isFetching: false,
+        isPending: false,
         item: null
     },
     users: {}
@@ -18,7 +18,7 @@ function userReducer (state = INITIAL_STATE, action = {}) {
                 ...state,
                 updatedProfile: {
                     error: payload,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -28,7 +28,7 @@ function userReducer (state = INITIAL_STATE, action = {}) {
                 ...state,
                 updatedProfile: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: null
                 }
             };
@@ -38,7 +38,7 @@ function userReducer (state = INITIAL_STATE, action = {}) {
                 ...state,
                 updatedProfile: {
                     error: null,
-                    isFetching: true,
+                    isPending: true,
                     item: null
                 }
             };
@@ -48,7 +48,7 @@ function userReducer (state = INITIAL_STATE, action = {}) {
                 ...state,
                 updatedProfile: {
                     error: null,
-                    isFetching: false,
+                    isPending: false,
                     item: payload
                 }
             };

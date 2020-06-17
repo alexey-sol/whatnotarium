@@ -1,8 +1,6 @@
 @import "styles/style.scss";
 
 html {
-    color: $text-color--normal;
-    font-family: $font-family--normal;
     font-size: 10px;
 }
 
@@ -13,6 +11,9 @@ body {
     overflow-y: scroll;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: $text-color--normal;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
 
     &::-webkit-scrollbar {
         width: 1rem;
@@ -32,12 +33,12 @@ a {
     text-decoration: none;
 }
 
-a, p {
-    font-size: $font-size--medium;
-}
-
 p {
     margin: 0;
+
+    &:not(:last-of-type) {
+        margin-bottom: 1rem;
+    }
 }
 
 ::selection {

@@ -23,7 +23,7 @@ function ProfileDataForm ({
     onUpdateProfileStart,
     updatedProfile
 }) {
-    const { error, isFetching } = updatedProfile;
+    const { error, isPending } = updatedProfile;
 
     const initialFields = {
         email: currentUser?.email,
@@ -96,7 +96,7 @@ function ProfileDataForm ({
 
             <BaseButton
                 className={styles.updateProfileDataButton}
-                disabled={isFetching}
+                disabled={isPending}
                 theme="dark"
                 title="Сохранить"
             />

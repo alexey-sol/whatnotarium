@@ -65,7 +65,7 @@ function BaseDropdown ({
             document.addEventListener("click", hideDropdown);
             return () => document.removeEventListener("click", hideDropdown);
         }
-    }, [dropdownRef, onClose]);
+    }, [onClose]);
 
     useEffect(() => {
         const elem = elemRef.current;

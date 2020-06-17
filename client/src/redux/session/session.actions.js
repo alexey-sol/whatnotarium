@@ -100,9 +100,9 @@ export function signUpStart (credentials) {
     };
 }
 
-export function signUpSuccess ({ currentUser, additionalData }) {
+export function signUpSuccess (currentUser) {
     return {
-        payload: { currentUser, additionalData },
+        payload: currentUser,
         type: types.SIGN_UP_SUCCESS
     };
 }

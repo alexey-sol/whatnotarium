@@ -10,7 +10,7 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                 digest VARCHAR(255) NOT NULL,
                 iterations INTEGER NOT NULL,
                 key_length INTEGER NOT NULL,
-                user_id INTEGER NOT NULL REFERENCES ${USERS} (id)
+                user_id INTEGER UNIQUE NOT NULL REFERENCES ${USERS} (id)
                     ON DELETE CASCADE
             );
         `;

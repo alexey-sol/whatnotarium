@@ -1,0 +1,12 @@
+@import "styles/style.scss";
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 1.5rem;
+
+    .header {
+        font-family: $font-family--caption;
+        font-size: $font-size--large;
+    }
+}

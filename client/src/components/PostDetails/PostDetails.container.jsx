@@ -54,7 +54,7 @@ function PostDetailsContainer ({
         }
     }, [hasModifiedPost, onCreatePostReset, onUpdatePostReset]);
 
-    const shouldGetPost = items?.length > 0 && !post;
+    const shouldGetPost = items?.length > 0 && id;
 
     useEffect(() => {
         if (shouldGetPost) {

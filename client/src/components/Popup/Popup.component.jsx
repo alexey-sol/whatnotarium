@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
 import { CloseIconButton } from "components/IconButton";
@@ -10,10 +10,18 @@ Popup.defaultProps = defaultProps;
 Popup.propTypes = propTypes;
 
 function Popup ({ onClose, text, theme }) {
+    // TODO: add custom timeout
+    const timeoutInMs = 3000;
+    const timerRef = useRef(null);
+
     const popupClassName = classnames(
         styles.container,
         styles[`${theme}Theme`]
     );
+
+    useEffect(() => {
+        timerRef.current = setTimeout(onClose, timeoutInMs);
+    }, [onClose]);
 
     const tooltipElem = (
         <div className={popupClassName}>

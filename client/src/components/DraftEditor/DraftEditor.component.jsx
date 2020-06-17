@@ -1,9 +1,9 @@
 
 import { Editor } from "@tinymce/tinymce-react";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import classnames from "classnames";
 
-import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
+import { POST_TITLE_LENGTH } from "utils/const/limits";
 import BaseButton from "components/BaseButton";
 import DateFormatter from "utils/formatters/DateFormatter";
 import DOMPurify from "dompurify";
@@ -14,7 +14,11 @@ import StringFormatter from "utils/formatters/StringFormatter";
 import { defaultProps, propTypes } from "./DraftEditor.component.props";
 import styles from "./DraftEditor.module.scss";
 
+const POST_BODY_LENGTH = Infinity;
+
 const tinyApiKey = process.env.REACT_APP_TINY_API_KEY;
+
+let charCount = 0;
 
 DraftEditor.defaultProps = defaultProps;
 DraftEditor.propTypes = propTypes;
@@ -24,11 +28,10 @@ function DraftEditor ({
     hidePopup,
     handleChange,
     handleSubmit,
-    isFetching,
+    isPending,
     popupText,
     post
 }) {
-    const countRef = useRef(null);
     const [editor, setEditor] = useState(null);
 
     const editorContainerClassName = classnames(
@@ -40,26 +43,38 @@ function DraftEditor ({
     // TODO: dialog on delete
     // autosave on unmount?
 
-    const handleTitleChange = useCallback(({ target }) => {
-        handleChange(target);
-    }, [handleChange]);
-
-    const handleBodyChange = useCallback(content => {
-        handleChange({
-            name: "body",
-            value: DOMPurify.sanitize(content)
-        });
-    }, [handleChange]);
-
-    const formattedUpdatedAt = new DateFormatter(post?.updatedAt)
-        .formatByPattern("YYYY, MMM DD");
-
     const plainText = new StringFormatter(post?.body)
         .removeHtmlTags()
         .removeLineBreaks()
         .string;
 
     const charsRemainingForBody = POST_BODY_LENGTH - plainText.length;
+
+    charCount = plainText.length;
+
+    const handleTitleChange = useCallback(({ target }) => {
+        handleChange(target);
+    }, [handleChange]);
+
+    const handleBodyChange = useCallback(content => { // TODO: on copy/paste?
+        let cutContent = "";
+
+        // if (plainText.length < POST_BODY_LENGTH) {
+        // }
+
+        if (plainText.length > POST_BODY_LENGTH) {
+            const lastIndex = POST_BODY_LENGTH - 1;
+            cutContent = content.slice(0, lastIndex);
+        }
+
+        handleChange({
+            name: "body",
+            value: DOMPurify.sanitize(cutContent || content)
+        });
+    }, [handleChange, plainText]);
+
+    const formattedUpdatedAt = new DateFormatter(post?.updatedAt)
+        .formatByPattern("YYYY, MMM DD");
 
     return (
         <article className={styles.container}>
@@ -75,6 +90,7 @@ function DraftEditor ({
                     <header className={styles.title}>
                         <Input
                             className={styles.input}
+                            max={POST_TITLE_LENGTH}
                             name="title"
                             onChange={handleTitleChange}
                             rootClassName={styles.inputContainer}
@@ -98,14 +114,16 @@ function DraftEditor ({
                             {`Изменено: ${formattedUpdatedAt}`}
                         </span>
 
-                        <span className={styles.charsCount}>
-                            {`${charsRemainingForBody} символов осталось`}
-                        </span>
+                        {false && (
+                            <span className={styles.charsCount}>
+                                {`${charsRemainingForBody} символов осталось`}
+                            </span>
+                        )}
                     </section>
 
                     <section className={styles.controls}>
                         <BaseButton
-                            disabled={isFetching}
+                            disabled={isPending}
                             onClick={deletePost}
                             theme="dark"
                             title="Удалить"
@@ -113,7 +131,7 @@ function DraftEditor ({
                         />
 
                         <BaseButton
-                            disabled={isFetching}
+                            disabled={isPending}
                             theme="light"
                             title="Сохранить"
                             type="submit"
@@ -162,6 +180,20 @@ function getEditorInitOptions (setEditor) {
         resize: false,
         setup: (editor) => {
             editor.on("init", () => setEditor(editor));
+            editor.on("paste", (event) => { // TODO!
+                // https://stackoverflow.com/questions/15573561/javascript-prevent-copy-pasting-beyond-character-limit-in-textarea
+            });
+            editor.on("keydown", (event) => {
+                const isPrintableChar = event.which >= 0x20;
+
+                if (!isPrintableChar) {
+                    return;
+                }
+
+                if (charCount >= POST_BODY_LENGTH) {
+                    event.preventDefault();
+                }
+            });
         },
         statusbar: false,
         toolbar

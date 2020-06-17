@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
 import { POST, PROFILE } from "utils/const/pathnames";
+import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
 import DraftEditor from "./DraftEditor.component";
 
 import {
@@ -56,7 +57,7 @@ function DraftEditorContainer ({
     const paramId = match.params.id && +match.params.id;
 
     const [currentPost, setCurrentPost] = useState(post);
-    const id = paramId || currentPost?.id;
+    const id = paramId || currentPost?.id || createdPost?.item?.id;
 
     const handleChange = useCallback(({ name, value }) => {
         setCurrentPost({
@@ -142,11 +143,10 @@ function DraftEditorContainer ({
         }
     }, [id, onGetPost, shouldFetchPost]);
 
-
-    const isFetching =
-        createdPost.isFetching ||
-        deletedPost.isFetching ||
-        updatedPost.isFetching;
+    const isPending =
+        createdPost.isPending ||
+        deletedPost.isPending ||
+        updatedPost.isPending;
 
     const failedRequestMessage = translateError(
         createdPost.error ||
@@ -160,7 +160,7 @@ function DraftEditorContainer ({
             handleChange={handleChange}
             handleSubmit={createOrUpdatePost}
             hidePopup={clearPostStateIfNeeded}
-            isFetching={isFetching}
+            isPending={isPending}
             popupText={failedRequestMessage}
             post={currentPost}
         />

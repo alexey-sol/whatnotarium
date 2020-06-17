@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import Posts from "components/Posts";
-import Spinner from "components/Spinner";
+import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/post/post.actions";
 import { selectFetchedPosts, selectPosts } from "redux/post/post.selectors";
@@ -16,18 +16,20 @@ function Home ({ fetchedPosts, onFetchPostsStart, posts }) {
         // onFetchPostsStart(); // TODO: didInvalidate checking or sth?
     }, []);
 
-    const { isFetching } = fetchedPosts;
+    const { isPending } = fetchedPosts;
     const postsArray = Object.values(posts);
 
-    // TODO: error on fetching?
+    const propsFromHome = {
+        isPending,
+        posts: postsArray
+    };
 
-    return (
-        <div>
-            {isFetching
-                ? <Spinner />
-                : <Posts posts={postsArray} />}
-        </div>
+    const HomeWithSpinner = WithSpinner(
+        Posts,
+        propsFromHome
     );
+
+    return <HomeWithSpinner />;
 }
 
 const mapStateToProps = createStructuredSelector({
