@@ -21,6 +21,13 @@ function Popup ({ onClose, text, theme }) {
 
     useEffect(() => {
         timerRef.current = setTimeout(onClose, timeoutInMs);
+
+        const onKeydown = (event) => {
+            if (event.key === "Escape") onClose();
+        };
+
+        document.addEventListener("keydown", onKeydown);
+        return () => document.removeEventListener("keydown", onKeydown);
     }, [onClose]);
 
     const tooltipElem = (

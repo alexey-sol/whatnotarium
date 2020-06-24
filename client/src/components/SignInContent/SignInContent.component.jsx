@@ -116,8 +116,8 @@ function SignInContent ({
 
                 <BaseButton
                     className={styles.signInButton}
+                    text="Войти"
                     theme="dark"
-                    title="Войти"
                 />
             </form>
 
@@ -145,7 +145,7 @@ function SignInContent ({
                             <BaseButton
                                 onClick={signInUsingYandex}
                                 disabled
-                                title="Яндекс"
+                                text="Яндекс"
                                 width="full"
                             />
                         </li>

@@ -1,9 +1,9 @@
 
 import { Editor } from "@tinymce/tinymce-react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import classnames from "classnames";
 
-import { POST_TITLE_LENGTH } from "utils/const/limits";
+import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
 import BaseButton from "components/BaseButton";
 import DateFormatter from "utils/formatters/DateFormatter";
 import DOMPurify from "dompurify";
@@ -11,14 +11,11 @@ import Input from "components/Input";
 import Popup from "components/Popup";
 import Spinner from "components/Spinner";
 import StringFormatter from "utils/formatters/StringFormatter";
+import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./DraftEditor.component.props";
 import styles from "./DraftEditor.module.scss";
 
-const POST_BODY_LENGTH = Infinity;
-
 const tinyApiKey = process.env.REACT_APP_TINY_API_KEY;
-
-let charCount = 0;
 
 DraftEditor.defaultProps = defaultProps;
 DraftEditor.propTypes = propTypes;
@@ -33,50 +30,46 @@ function DraftEditor ({
     post
 }) {
     const [editor, setEditor] = useState(null);
+    const [bodyLength, setBodyLength] = useState(0);
+
+    const charsCountRef = useRef(null);
 
     const editorContainerClassName = classnames(
         styles.editorContainer,
         (editor) ? styles.fadedIn : styles.hidden
     );
 
-    // TODO: (validation) set max length for title and body inputs
-    // TODO: dialog on delete
-    // autosave on unmount?
-
-    const plainText = new StringFormatter(post?.body)
-        .removeHtmlTags()
-        .removeLineBreaks()
-        .string;
-
-    const charsRemainingForBody = POST_BODY_LENGTH - plainText.length;
-
-    charCount = plainText.length;
-
     const handleTitleChange = useCallback(({ target }) => {
         handleChange(target);
     }, [handleChange]);
 
-    const handleBodyChange = useCallback(content => { // TODO: on copy/paste?
-        let cutContent = "";
+    const handleBodyChange = useCallback(content => {
+        const plainText = new StringFormatter(content)
+            .removeHtmlTags()
+            .removeLineBreaks()
+            .string;
 
-        // if (plainText.length < POST_BODY_LENGTH) {
-        // }
-
-        if (plainText.length > POST_BODY_LENGTH) {
-            const lastIndex = POST_BODY_LENGTH - 1;
-            cutContent = content.slice(0, lastIndex);
-        }
+        setBodyLength(plainText.length);
 
         handleChange({
             name: "body",
-            value: DOMPurify.sanitize(cutContent || content)
+            value: DOMPurify.sanitize(content)
         });
-    }, [handleChange, plainText]);
+    }, [handleChange]);
 
     const formattedUpdatedAt = new DateFormatter(post?.updatedAt)
         .formatByPattern("YYYY, MMM DD");
 
+    const bodyLengthIsTooLong = bodyLength > POST_BODY_LENGTH;
+    const bodyDidChange = bodyLength > 0;
     const deleteButtonIsDisabled = isPending || !post?.id;
+    const saveButtonIsDisabled = isPending || bodyLengthIsTooLong || !bodyDidChange;
+
+    const charsCountClassName = classnames(
+        styles.charsCount,
+        (bodyDidChange > 0) ? "" : styles.hidden,
+        (bodyLengthIsTooLong) ? styles.bodyError : ""
+    );
 
     return (
         <article className={styles.container}>
@@ -116,26 +109,27 @@ function DraftEditor ({
                             {`Изменено: ${formattedUpdatedAt}`}
                         </span>
 
-                        {false && (
-                            <span className={styles.charsCount}>
-                                {`${charsRemainingForBody} символов осталось`}
-                            </span>
-                        )}
+                        <span
+                            className={charsCountClassName}
+                            ref={charsCountRef}
+                        >
+                            {`${bodyLength}/${POST_BODY_LENGTH} символов введено`}
+                        </span>
                     </section>
 
                     <section className={styles.controls}>
                         <BaseButton
                             disabled={deleteButtonIsDisabled}
                             onClick={deletePost}
+                            text="Удалить"
                             theme="dark"
-                            title="Удалить"
                             type="button"
                         />
 
                         <BaseButton
-                            disabled={isPending}
+                            disabled={saveButtonIsDisabled}
+                            text="Сохранить"
                             theme="light"
-                            title="Сохранить"
                             type="submit"
                         />
                     </section>
@@ -146,6 +140,14 @@ function DraftEditor ({
                         onClose={hidePopup}
                         text={popupText}
                         theme="error"
+                    />
+                )}
+
+                {bodyLengthIsTooLong && (
+                    <Tooltip
+                        elemRef={charsCountRef}
+                        text="Чтобы сохранить статью, пожалуйста, удалите лишние символы"
+                        width="large"
                     />
                 )}
             </section>
@@ -164,11 +166,11 @@ function getEditorInitOptions (setEditor) {
 
     const plugins = [
         "advlist autolink lists link image charmap print preview anchor",
-        "searchreplace visualblocks code fullscreen",
-        "insertdatetime media table paste code help wordcount"
+        "searchreplace visualblocks fullscreen",
+        "insertdatetime media table paste help wordcount"
     ];
 
-    const toolbar = `formatselect | bold italic underline code |
+    const toolbar = `formatselect | bold italic underline |
         alignleft aligncenter alignright alignjustify |
         bullist numlist | removeformat"`;
 
@@ -180,23 +182,7 @@ function getEditorInitOptions (setEditor) {
         min_width: 300,
         plugins,
         resize: false,
-        setup: (editor) => {
-            editor.on("init", () => setEditor(editor));
-            editor.on("paste", (event) => { // TODO!
-                // https://stackoverflow.com/questions/15573561/javascript-prevent-copy-pasting-beyond-character-limit-in-textarea
-            });
-            editor.on("keydown", (event) => {
-                const isPrintableChar = event.which >= 0x20;
-
-                if (!isPrintableChar) {
-                    return;
-                }
-
-                if (charCount >= POST_BODY_LENGTH) {
-                    event.preventDefault();
-                }
-            });
-        },
+        setup: (editor) => editor.on("init", () => setEditor(editor)),
         statusbar: false,
         toolbar
     };

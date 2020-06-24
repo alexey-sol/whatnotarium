@@ -97,8 +97,8 @@ function ProfileDataForm ({
             <BaseButton
                 className={styles.updateProfileDataButton}
                 disabled={isPending}
+                text="Сохранить"
                 theme="dark"
-                title="Сохранить"
             />
         </form>
     );

@@ -17,8 +17,8 @@ export const propTypes = {
     className: string,
     disabled: bool,
     onClick: func,
+    text: string.isRequired,
     theme: oneOf(["light", "dark"]),
-    title: string.isRequired,
     type: string,
     width: oneOf(["auto", "full"])
 };

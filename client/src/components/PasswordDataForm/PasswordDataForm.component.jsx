@@ -138,7 +138,7 @@ function PasswordDataForm ({
             <BaseButton
                 className={styles.updatePasswordDataButton}
                 disabled={isPending}
-                title="Изменить пароль"
+                text="Изменить пароль"
             />
         </form>
     );

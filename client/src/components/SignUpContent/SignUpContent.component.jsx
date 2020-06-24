@@ -159,8 +159,8 @@ function SignUpContent ({
 
             <BaseButton
                 className={styles.signUpButton}
+                text="Готово"
                 theme="dark"
-                title="Готово"
             />
 
             {Boolean(outOfFieldsError) && (

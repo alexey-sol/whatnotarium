@@ -11,8 +11,8 @@ function BaseButton ({
     className,
     disabled,
     onClick,
+    text,
     theme,
-    title,
     type,
     width,
     ...rest
@@ -33,7 +33,7 @@ function BaseButton ({
             onClick={onClick}
             type={type}
         >
-            {title}
+            {text}
         </button>
     );
 }

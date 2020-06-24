@@ -77,7 +77,7 @@ function PostDetails ({
                     <BaseButton
                         disabled={popupIsShown}
                         onClick={handleClickOnEditButton}
-                        title="Редактировать"
+                        text="Редактировать"
                     />
                 </section>
             )}
