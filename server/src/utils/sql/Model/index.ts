@@ -1,3 +1,4 @@
+export { default as countRecords } from "./countRecords";
 export { default as createRecord } from "./createRecord";
 export { default as destroyRecordById } from "./destroyRecordById";
 export { default as findAllRecords } from "./findAllRecords";

@@ -1,19 +1,23 @@
-import FormattedProps from "#types/hashOptions/FormattedProps";
-import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
+import Attributes from "#types/hashOptions/Attributes";
+import Item from "#types/hashOptions/Item";
 
-function isHashOptionsProps (
-    objectToCheck: FormattedProps
-): objectToCheck is HashOptionsProps {
+function isHashOptionsItem (
+    objectToCheck: Attributes
+): objectToCheck is Item {
     const {
+        createdAt,
         digest,
         id,
         iterations,
         keyLength,
         salt,
+        updatedAt,
         userId
     } = objectToCheck;
 
     return (
+        createdAt instanceof Date &&
+        updatedAt instanceof Date &&
         typeof digest === "string" &&
         typeof id === "number" &&
         typeof iterations === "number" &&
@@ -23,4 +27,4 @@ function isHashOptionsProps (
     );
 }
 
-export default isHashOptionsProps;
+export default isHashOptionsItem;

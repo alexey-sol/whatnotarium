@@ -11,7 +11,7 @@ class DropSchemaIfExists extends SchemaSqlGenerator<unknown> {
 
     protected getText (): string {
         return `
-            DROP SCHEMA IF EXISTS ${this.schemaName} CASCADE;
+            DROP SCHEMA IF EXISTS "${this.schemaName}" CASCADE;
         `;
     }
 }

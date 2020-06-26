@@ -1,4 +1,4 @@
-export const HASH_OPTIONS = "hash_options";
+export const HASH_OPTIONS = "hashOptions";
 export const POSTS = "posts";
-export const USER_PROFILES = "userProfiles";
+export const PROFILES = "profiles";
 export const USERS = "users";

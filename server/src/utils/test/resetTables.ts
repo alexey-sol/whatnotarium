@@ -1,4 +1,4 @@
-import createTablesIfNotExist from "#utils/sql/createTablesIfNotExist";
+import createTablesIfNotExist from "#utils/helpers/createTablesIfNotExist";
 import resetSchema from "#utils/test/resetSchema";
 
 async function resetTables (schemaName?: string): Promise<void> {

@@ -1,6 +1,6 @@
 import Indexer from "#types/Indexer";
 
-function IsObject (
+function isObject (
     objectToCheck: unknown
 ): objectToCheck is Indexer<unknown> {
     return (
@@ -9,4 +9,4 @@ function IsObject (
     );
 }
 
-export default IsObject;
+export default isObject;

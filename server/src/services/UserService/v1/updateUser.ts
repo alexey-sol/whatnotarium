@@ -1,7 +1,9 @@
 import { NOT_FOUND } from "#utils/const/validationErrors";
-import FormattedProps from "#types/user/FormattedProps";
+import Attributes from "#types/user/Attributes";
 import HashOptions from "#models/HashOptions";
 import HashPasswordOptions from "#types/HashPasswordOptions";
+import Profile from "#models/Profile";
+import ProfileError from "#utils/errors/ProfileError";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import hashPassword from "#utils/helpers/hashPassword";
@@ -22,27 +24,33 @@ export default async function (
         throw new UserError(NOT_FOUND, 404);
     }
 
+    const profile = await Profile.findOne({ // TODO: refactor, make "updateProfile" func
+        where: { userId: id }
+    });
+
+    if (!profile) {
+        throw new ProfileError(NOT_FOUND, 404);
+    }
+
     const {
         email,
         name,
         newPassword
     } = props;
 
-    const updatedProps: FormattedProps = {
-        email,
-        name,
-        updatedAt: new Date()
-    };
+    const userProps: Attributes = { email };
+    const profileProps = { name };
 
     if (newPassword) {
         const hashResult = await hashPassword(newPassword);
         const { hash } = hashResult;
 
         await updateHashOptions(user.id, hashResult);
-        updatedProps.password = hash;
+        userProps.password = hash;
     }
 
-    return user.updateAttributes(updatedProps);
+    await profile.updateAttributes(profileProps);
+    return user.updateAttributes(userProps);
 }
 
 async function updateHashOptions (

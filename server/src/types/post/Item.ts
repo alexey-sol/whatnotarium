@@ -1,4 +1,7 @@
-interface UserProps {
+import Author from "#types/Author";
+
+interface Item {
+    author: Author;
     body: string;
     createdAt: Date;
     id: number;
@@ -7,4 +10,4 @@ interface UserProps {
     userId: number;
 }
 
-export default UserProps;
+export default Item;

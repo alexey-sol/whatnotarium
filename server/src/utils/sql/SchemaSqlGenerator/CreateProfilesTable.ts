@@ -1,15 +1,13 @@
-import { HASH_OPTIONS, USERS } from "#utils/const/database/tableNames";
+import { PROFILES, USERS } from "#utils/const/database/tableNames";
 import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
-class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
+class CreateUsersTable extends SchemaSqlGenerator<unknown> {
     protected getText (): string {
         return `
-            CREATE TABLE IF NOT EXISTS "${HASH_OPTIONS}" (
+            CREATE TABLE IF NOT EXISTS "${PROFILES}" (
                 "id" SERIAL PRIMARY KEY,
-                "salt" VARCHAR(255) NOT NULL,
-                "digest" VARCHAR(255) NOT NULL,
-                "iterations" INTEGER NOT NULL,
-                "keyLength" INTEGER NOT NULL,
+                "name" VARCHAR(255) NOT NULL,
+                "picture" BYTEA,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "userId" INTEGER UNIQUE NOT NULL REFERENCES "${USERS}" ("id")
@@ -19,4 +17,4 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
     }
 }
 
-export default CreateHashOptionsTable;
+export default CreateUsersTable;

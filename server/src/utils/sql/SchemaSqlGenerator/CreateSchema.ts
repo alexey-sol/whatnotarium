@@ -11,7 +11,7 @@ class CreateSchema extends SchemaSqlGenerator<unknown> {
 
     protected getText (): string {
         return `
-            CREATE SCHEMA ${this.schemaName};
+            CREATE SCHEMA "${this.schemaName}";
         `;
     }
 }

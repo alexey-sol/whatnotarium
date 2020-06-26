@@ -11,34 +11,35 @@ import {
 
 import { CreateHashOptionsTable } from "#utils/sql/SchemaSqlGenerator";
 import { HASH_OPTIONS } from "#utils/const/database/tableNames";
-import { HashOptionsFormatter } from "#utils/formatters/ModelFormatter";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
+import Attributes from "#types/hashOptions/Attributes";
 import DbQueryFilter from "#types/DbQueryFilter";
-import FormattedProps from "#types/hashOptions/FormattedProps";
 import HashOptionsError from "#utils/errors/HashOptionsError";
-import HashOptionsProps from "#types/hashOptions/HashOptionsProps";
+import Item from "#types/hashOptions/Item";
 import Model from "#types/Model";
-import RawProps from "#types/hashOptions/RawProps";
-import formatDbQueryFilter from "#utils/formatters/formatDbQueryFilter";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
-import isHashOptionsProps from "#utils/typeGuards/isHashOptionsProps";
+import isHashOptionsItem from "#utils/typeGuards/isHashOptionsItem";
 
-class HashOptions implements Model<FormattedProps, HashOptions> {
-    static formatter = new HashOptionsFormatter();
+class HashOptions implements Model<Attributes, HashOptions> {
+    static tableName = HASH_OPTIONS;
 
+    createdAt: Date;
     digest: string;
     id: number;
     iterations: number;
     keyLength: number;
     salt: string;
+    updatedAt: Date;
     userId: number;
 
-    private constructor (props: HashOptionsProps) {
+    private constructor (props: Item) {
+        this.createdAt = props.createdAt;
         this.digest = props.digest;
         this.id = props.id;
         this.iterations = props.iterations;
         this.keyLength = props.keyLength;
         this.salt = props.salt;
+        this.updatedAt = props.updatedAt;
         this.userId = props.userId;
     }
 
@@ -47,13 +48,11 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     }
 
     static async create (
-        props: FormattedProps
+        props: Attributes
     ): Promise<HashOptions> | never {
-        const propsToDb = HashOptions.formatter.toDbCase(props);
-
-        const record = await createRecord<RawProps, HashOptionsProps>(
+        const record = await createRecord<Attributes, Item>(
             HASH_OPTIONS,
-            propsToDb
+            props
         );
 
         return HashOptions.formatPropsAndInstantiate(record);
@@ -62,20 +61,15 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     static async destroyById (
         id: number
     ): Promise<number | null> | never {
-        return destroyRecordById<HashOptionsProps>(HASH_OPTIONS, id);
+        return destroyRecordById<Item>(HASH_OPTIONS, id);
     }
 
     static async findAll (
-        filter?: DbQueryFilter<FormattedProps>
+        filter?: DbQueryFilter<Attributes>
     ): Promise<HashOptions[]> | never {
-        const updatedFilter = formatDbQueryFilter(
-            HashOptions.formatter,
-            filter
-        );
-
-        const records = await findAllRecords<FormattedProps, HashOptionsProps>(
+        const records = await findAllRecords<Attributes, Item>(
             HASH_OPTIONS,
-            updatedFilter
+            filter
         );
 
         return records.map(record => {
@@ -84,20 +78,15 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     }
 
     static async findOne (
-        filter: DbQueryFilter<FormattedProps>
+        filter: DbQueryFilter<Attributes>
     ): Promise<HashOptions | null> | never {
         if (!filter.where) {
             return null;
         }
 
-        const updatedFilter = formatDbQueryFilter(
-            HashOptions.formatter,
-            filter
-        );
-
-        const record = await findOneRecord<FormattedProps, HashOptionsProps>(
+        const record = await findOneRecord<Attributes, Item>(
             HASH_OPTIONS,
-            updatedFilter
+            filter
         );
 
         return (record)
@@ -108,7 +97,7 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     static async findById (
         id: number
     ): Promise<HashOptions | null> | never {
-        const record = await findRecordById<HashOptionsProps>(HASH_OPTIONS, id);
+        const record = await findRecordById<Item>(HASH_OPTIONS, id);
 
         return (record)
             ? HashOptions.formatPropsAndInstantiate(record)
@@ -120,29 +109,30 @@ class HashOptions implements Model<FormattedProps, HashOptions> {
     }
 
     async updateAttributes (
-        props: FormattedProps
+        props: Attributes
     ): Promise<HashOptions> | never {
-        const propsToDb = HashOptions.formatter.toDbCase(props);
+        const updatedProps = {
+            ...props,
+            updatedAt: new Date()
+        };
 
-        const record = await updateRecordAttributes<RawProps, HashOptionsProps>(
+        const record = await updateRecordAttributes<Attributes, Item>(
             HASH_OPTIONS,
             this.id,
-            propsToDb
+            updatedProps
         );
 
         return HashOptions.formatPropsAndInstantiate(record);
     }
 
     static formatPropsAndInstantiate (
-        props: RawProps
+        props: Attributes
     ): HashOptions | never {
-        const propsFromDb = HashOptions.formatter.fromDbCase(props);
-
-        if (!isHashOptionsProps(propsFromDb)) {
+        if (!isHashOptionsItem(props)) {
             throw new HashOptionsError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
-        return new HashOptions(propsFromDb);
+        return new HashOptions(props);
     }
 }
 

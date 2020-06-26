@@ -22,7 +22,7 @@ class FindById extends ModelSqlGenerator<unknown> {
     protected getText (): string {
         return `
             SELECT *
-            FROM ${this.tableName}
+            FROM "${this.tableName}"
             WHERE id = $1;
         `;
     }

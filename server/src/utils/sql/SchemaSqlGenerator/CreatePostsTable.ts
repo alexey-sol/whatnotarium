@@ -4,13 +4,13 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
     protected getText (): string {
         return `
-            CREATE TABLE IF NOT EXISTS ${POSTS} (
-                body TEXT,
-                id SERIAL PRIMARY KEY,
-                title VARCHAR(255),
-                created_at TIMESTAMP DEFAULT NOW() NOT NULL,
-                updated_at TIMESTAMP DEFAULT NOW() NOT NULL,
-                user_id INTEGER NOT NULL REFERENCES ${USERS} (id)
+            CREATE TABLE IF NOT EXISTS "${POSTS}" (
+                "id" SERIAL PRIMARY KEY,
+                "body" TEXT,
+                "title" VARCHAR(255),
+                "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
+                "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
+                "userId" INTEGER NOT NULL REFERENCES "${USERS}" ("id")
                     ON DELETE CASCADE
             );
         `;

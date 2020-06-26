@@ -1,6 +1,7 @@
 import { UNPROCESSABLE_ENTITY } from "http-status";
 
 import {
+    countRecords,
     createRecord,
     destroyRecordById,
     findAllRecords,
@@ -12,28 +13,30 @@ import {
 import { CreatePostsTable } from "#utils/sql/SchemaSqlGenerator";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { POSTS } from "#utils/const/database/tableNames";
-import { PostFormatter } from "#utils/formatters/ModelFormatter";
+import Attributes from "#types/post/Attributes";
+import Author from "#types/Author";
 import DbQueryFilter from "#types/DbQueryFilter";
-import FormattedProps from "#types/post/FormattedProps";
+import Include from "#types/Include";
+import Item from "#types/post/Item";
 import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
-import PostProps from "#types/post/PostProps";
-import RawProps from "#types/post/RawProps";
-import formatDbQueryFilter from "#utils/formatters/formatDbQueryFilter";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
-import isPostProps from "#utils/typeGuards/isPostProps";
+import isPostItem from "#utils/typeGuards/isPostItem";
+import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
 
-class Post implements Model<FormattedProps, Post> {
-    static formatter = new PostFormatter();
+class Post implements Model<Attributes, Post> {
+    static tableName = POSTS;
 
-    body: string
+    author: Author;
+    body: string;
     createdAt: Date;
-    id: number
+    id: number;
     title: string;
     updatedAt: Date;
     userId: number;
 
-    private constructor (props: PostProps) {
+    private constructor (props: Item) {
+        this.author = props.author;
         this.body = props.body;
         this.createdAt = props.createdAt;
         this.id = props.id;
@@ -47,59 +50,44 @@ class Post implements Model<FormattedProps, Post> {
     }
 
     static async create (
-        props: FormattedProps
+        props: Attributes
     ): Promise<Post> | never {
-        const {
-            createdAt = new Date(),
-            updatedAt = new Date()
-        } = props;
-
-        const propsToDb = Post.formatter.toDbCase({
-            ...props,
-            createdAt,
-            updatedAt
-        });
-
-        const record = await createRecord<RawProps, PostProps>(
-            POSTS,
-            propsToDb
-        );
-
+        const record = await createRecord<Attributes, Item>(POSTS, props);
         return Post.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (
         id: number
     ): Promise<number | null> | never {
-        return destroyRecordById<PostProps>(POSTS, id);
+        return destroyRecordById<Item>(POSTS, id);
+    }
+
+    static async count (
+        filter?: DbQueryFilter<Attributes>
+    ): Promise<number> | never {
+        const count = await countRecords<Attributes>(POSTS, filter);
+        return count;
     }
 
     static async findAll (
-        filter?: DbQueryFilter<FormattedProps>
+        filter?: DbQueryFilter<Attributes>
     ): Promise<Post[]> | never {
-        const updatedFilter = formatDbQueryFilter(Post.formatter, filter);
+        const records = await findAllRecords<Attributes, Item>(POSTS, filter);
 
-        const records = await findAllRecords<RawProps, PostProps>(
-            POSTS,
-            updatedFilter
-        );
-
-        return records.map(record => Post.formatPropsAndInstantiate(record));
+        return records.map(record => Post.formatPropsAndInstantiate(
+            record,
+            filter?.include
+        ));
     }
 
     static async findOne (
-        filter: DbQueryFilter<FormattedProps>
+        filter: DbQueryFilter<Attributes>
     ): Promise<Post | null> | never {
         if (!filter.where) {
             return null;
         }
 
-        const updatedFilter = formatDbQueryFilter(Post.formatter, filter);
-
-        const record = await findOneRecord<RawProps, PostProps>(
-            POSTS,
-            updatedFilter
-        );
+        const record = await findOneRecord<Attributes, Item>(POSTS, filter);
 
         return (record)
             ? Post.formatPropsAndInstantiate(record)
@@ -109,7 +97,7 @@ class Post implements Model<FormattedProps, Post> {
     static async findById (
         id: number
     ): Promise<Post | null> | never {
-        const record = await findRecordById<PostProps>(POSTS, id);
+        const record = await findRecordById<Item>(POSTS, id);
 
         return (record)
             ? Post.formatPropsAndInstantiate(record)
@@ -117,43 +105,39 @@ class Post implements Model<FormattedProps, Post> {
     }
 
     async save (): Promise<Post> | never {
-        return this.updateAttributes({
-            ...this,
-            updatedAt: new Date()
-        });
+        return this.updateAttributes(this);
     }
 
     async updateAttributes (
-        props: FormattedProps
+        props: Attributes
     ): Promise<Post> | never {
-        const {
-            updatedAt = new Date()
-        } = props;
-
-        const propsToDb = Post.formatter.toDbCase({
+        const updatedProps = {
             ...props,
-            updatedAt
-        });
+            updatedAt: new Date()
+        };
 
-        const record = await updateRecordAttributes<RawProps, PostProps>(
+        const record = await updateRecordAttributes<Attributes, Item>(
             POSTS,
             this.id,
-            propsToDb
+            updatedProps
         );
 
         return Post.formatPropsAndInstantiate(record);
     }
 
     static formatPropsAndInstantiate (
-        props: RawProps
+        props: Attributes,
+        include?: Include[]
     ): Post | never {
-        const propsFromDb = Post.formatter.fromDbCase(props);
+        const item = (include)
+            ? separateIncludedAttributes(props, include)
+            : props;
 
-        if (!isPostProps(propsFromDb)) {
+        if (!isPostItem(item)) {
             throw new PostError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
-        return new Post(propsFromDb);
+        return new Post(item as Item);
     }
 }
 

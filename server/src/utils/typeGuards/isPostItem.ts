@@ -1,10 +1,13 @@
-import FormattedProps from "#types/post/FormattedProps";
-import PostProps from "#types/post/PostProps";
+import Attributes from "#types/post/Attributes";
+import Author from "#types/Author";
+import isOfType from "./isOfType";
+import Item from "#types/post/Item";
 
-function isPostProps (
-    objectToCheck: FormattedProps
-): objectToCheck is PostProps {
+function isPostItem (
+    objectToCheck: Attributes
+): objectToCheck is Item {
     const {
+        author,
         body,
         createdAt,
         id,
@@ -16,6 +19,7 @@ function isPostProps (
     return (
         createdAt instanceof Date &&
         updatedAt instanceof Date &&
+        isOfType<Author>(author, "name") &&
         typeof body === "string" &&
         typeof id === "number" &&
         typeof title === "string" &&
@@ -23,4 +27,4 @@ function isPostProps (
     );
 }
 
-export default isPostProps;
+export default isPostItem;

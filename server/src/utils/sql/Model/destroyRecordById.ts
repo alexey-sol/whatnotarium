@@ -9,10 +9,8 @@ async function destroyRecordById<OutputType> (
         new DestroyById(tableName, id)
     );
 
-    const deletedRecord = queryPayload[0];
-    const deletedUserId = (deletedRecord as any)?.id || null;
-
-    return deletedUserId;
+    const deletedRecord = queryPayload[0] as any;
+    return deletedRecord?.id || null;
 }
 
 export default destroyRecordById;

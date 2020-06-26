@@ -33,7 +33,7 @@ describe("findRecordById", () => {
         expect(record).to.be.an("object");
         expect(record.createdAt).to.equal(userProps.createdAt);
         expect(record.email).to.equal(userProps.email);
-        expect(record.id).to.equal(userProps.id);
+        expect(record.id).toz.equal(userProps.id);
         expect(record.name).to.equal(userProps.name);
         expect(record.password).to.equal(userProps.password);
         expect(record.updatedAt).to.equal(userProps.updatedAt);

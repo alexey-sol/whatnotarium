@@ -1,5 +1,5 @@
 import ProcessManager from "#utils/helpers/ProcessManager";
-import createTablesIfNotExist from "#utils/sql/createTablesIfNotExist";
+import createTablesIfNotExist from "#utils/helpers/createTablesIfNotExist";
 import pool from "#connectionPool";
 
 export default async function (): Promise<void> {

@@ -27,7 +27,7 @@ class Create<InputType> extends ModelSqlGenerator<InputType> {
         const valuesClause = this.createValuesClause(props);
 
         return `
-            INSERT INTO ${this.tableName} (
+            INSERT INTO "${this.tableName}" (
                 ${insertIntoClause}
             )
             VALUES (
@@ -42,6 +42,7 @@ class Create<InputType> extends ModelSqlGenerator<InputType> {
     ): string {
         return Object
             .keys(props)
+            .map(prop => `"${prop}"`)
             .join(", ");
     }
 

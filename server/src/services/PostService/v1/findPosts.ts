@@ -1,37 +1,41 @@
+import { PROFILES } from "#utils/const/database/tableNames";
+import FetchedList from "#types/FetchedList";
 import Post from "#models/Post";
-import PostWithAuthor from "#types/post/PostWithAuthor";
-import User from "#models/User";
 
-interface Filter {
+type PostsList = FetchedList<Post>;
+
+interface Options {
     limit?: number;
     offset?: number;
     userId?: number;
 }
 
 export default async function (
-    filter?: Filter
-): Promise<PostWithAuthor[]> {
-    const { limit, offset, userId } = filter || {};
+    options: Options = {}
+): Promise<PostsList> {
+    const { limit, offset, userId } = options;
 
-    const formattedFilter = {
+    const include = [{
+        as: "author",
+        attributes: ["name", "picture"],
+        referencedKey: "userId",
+        ownKey: "userId",
+        tableName: PROFILES
+    }];
+
+    const filter = {
+        include,
         limit,
         offset,
-        where: { userId }
+        where: {}
     };
 
-    const posts = await Post.findAll(formattedFilter); // TODO: include filter
-
-    const postsWithAuthors = [];
-
-    for (const post of posts) {
-        const author = await User.findById(post.userId) as User;
-        // TODO: exlude user.password and post.userId
-
-        postsWithAuthors.push({
-            ...post,
-            author
-        });
+    if (userId) {
+        filter.where = { userId };
     }
 
-    return postsWithAuthors;
+    return {
+        items: await Post.findAll(filter),
+        totalCount: await Post.count()
+    };
 }

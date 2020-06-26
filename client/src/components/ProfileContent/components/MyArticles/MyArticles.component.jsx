@@ -13,8 +13,8 @@ MyArticles.defaultProps = defaultProps;
 MyArticles.propTypes = propTypes;
 
 function MyArticles ({ currentUser, posts }) {
-    const userPosts = _.pickBy(posts, ({ author }) => {
-        return author.id === currentUser.id;
+    const userPosts = _.pickBy(posts, ({ userId }) => {
+        return userId === currentUser.id;
     });
 
     return (

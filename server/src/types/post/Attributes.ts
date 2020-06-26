@@ -1,4 +1,7 @@
-interface FormattedProps {
+import Author from "#types/Author";
+
+interface Attributes {
+    author?: Author;
     body?: string;
     createdAt?: Date;
     id?: number;
@@ -7,4 +10,4 @@ interface FormattedProps {
     userId?: number;
 }
 
-export default FormattedProps;
+export default Attributes;

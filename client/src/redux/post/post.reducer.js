@@ -141,7 +141,8 @@ function postReducer (state = getInitialState(), action = {}) {
                 fetchedPosts: {
                     error: payload,
                     isPending: false,
-                    items: []
+                    items: [],
+                    totalCount: 0
                 }
             };
 
@@ -151,7 +152,8 @@ function postReducer (state = getInitialState(), action = {}) {
                 fetchedPosts: {
                     error: null,
                     isPending: false,
-                    items: []
+                    items: [],
+                    totalCount: 0
                 }
             };
 
@@ -161,7 +163,8 @@ function postReducer (state = getInitialState(), action = {}) {
                 fetchedPosts: {
                     error: null,
                     isPending: true,
-                    items: []
+                    items: [],
+                    totalCount: 0
                 }
             };
 
@@ -171,9 +174,10 @@ function postReducer (state = getInitialState(), action = {}) {
                 fetchedPosts: {
                     error: null,
                     isPending: false,
-                    items: payload
+                    items: payload.items,
+                    totalCount: payload.totalCount
                 },
-                posts: _.mapKeys(payload, "id")
+                posts: _.mapKeys(payload.items, "id")
             };
 
         case types.GET_POST:
@@ -254,10 +258,11 @@ function getInitialState () {
         fetchedPosts: {
             error: null,
             isPending: false,
-            items: []
+            items: [],
+            totalCount: 0
         },
         post: null,
-        posts: {}, // TODO: maybe use Map?
+        posts: {},
         updatedPost: {
             error: null,
             isPending: false,

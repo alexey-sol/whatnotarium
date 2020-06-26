@@ -21,7 +21,7 @@ class DestroyById extends ModelSqlGenerator<unknown> {
 
     protected getText (): string {
         return `
-            DELETE FROM ${this.tableName}
+            DELETE FROM "${this.tableName}"
             WHERE id = $1
             RETURNING *;
         `;

@@ -1,14 +1,13 @@
-import FormattedProps from "#types/user/FormattedProps";
-import UserProps from "#types/user/UserProps";
+import Attributes from "#types/user/Attributes";
+import Item from "#types/user/Item";
 
-function isUserProps (
-    objectToCheck: FormattedProps
-): objectToCheck is UserProps {
+function isUserItem (
+    objectToCheck: Attributes
+): objectToCheck is Item {
     const {
         createdAt,
         email,
         id,
-        name,
         password,
         updatedAt
     } = objectToCheck;
@@ -18,9 +17,8 @@ function isUserProps (
         updatedAt instanceof Date &&
         typeof email === "string" &&
         typeof id === "number" &&
-        typeof name === "string" &&
         Buffer.isBuffer(password)
     );
 }
 
-export default isUserProps;
+export default isUserItem;
