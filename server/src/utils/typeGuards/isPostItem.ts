@@ -1,5 +1,5 @@
 import Attributes from "#types/post/Attributes";
-import Author from "#types/Author";
+import Profile from "#types/Profile";
 import isOfType from "./isOfType";
 import Item from "#types/post/Item";
 
@@ -16,10 +16,14 @@ function isPostItem (
         userId
     } = objectToCheck;
 
+    const authorIsValid = (author)
+        ? isOfType<Profile>(author, "name")
+        : true;
+
     return (
         createdAt instanceof Date &&
         updatedAt instanceof Date &&
-        isOfType<Author>(author, "name") &&
+        authorIsValid &&
         typeof body === "string" &&
         typeof id === "number" &&
         typeof title === "string" &&

@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 
+import { PROFILES } from "#utils/const/database/tableNames";
 import RequestSession from "#utils/helpers/RequestSession";
 import User from "#models/User";
 import sendResponse from "#utils/http/sendResponse";
@@ -16,7 +17,16 @@ const getSession: RequestHandler = async (
         let user = null;
 
         if (sessionUser) {
-            user = await User.findById(sessionUser.id);
+            const include = [{
+                as: "profile",
+                attributes: ["name", "picture"],
+                referencedKey: "userId",
+                ownKey: "id",
+                tableName: PROFILES
+            }];
+
+            user = await User.findById(sessionUser.id, include);
+            delete user?.password;
         }
 
         sendResponse(response, user);

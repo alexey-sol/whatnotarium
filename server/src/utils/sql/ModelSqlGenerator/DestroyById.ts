@@ -20,9 +20,11 @@ class DestroyById extends ModelSqlGenerator<unknown> {
     }
 
     protected getText (): string {
+        const whereIdElement = this.createWhereIdClause();
+
         return `
             DELETE FROM "${this.tableName}"
-            WHERE id = $1
+            ${whereIdElement}
             RETURNING *;
         `;
     }

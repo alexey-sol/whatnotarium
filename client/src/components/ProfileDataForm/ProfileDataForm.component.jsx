@@ -28,7 +28,7 @@ function ProfileDataForm ({
     const initialFields = {
         email: currentUser?.email,
         id: currentUser?.id,
-        name: currentUser?.name
+        name: currentUser?.profile.name
     };
 
     const initialErrors = {

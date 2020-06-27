@@ -25,11 +25,12 @@ class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
         props: InputType
     ): string {
         const { setClause, andClause } = this.createClauses(props);
+        const whereIdElement = this.createWhereIdClause();
 
         return `
             UPDATE ${this.tableName}
             SET ${setClause}
-            WHERE id = $1
+            ${whereIdElement}
             AND (${andClause})
             RETURNING *;
         `;

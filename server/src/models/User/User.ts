@@ -14,11 +14,14 @@ import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/database/tableNames";
 import Attributes from "#types/user/Attributes";
 import DbQueryFilter from "#types/DbQueryFilter";
+import Include from "#types/Include";
 import Item from "#types/user/Item";
 import Model from "#types/Model";
+import Profile from "#types/Profile";
 import UserError from "#utils/errors/UserError";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserItem from "#utils/typeGuards/isUserItem";
+import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
 
 class User implements Model<Attributes, User> {
     static tableName = USERS;
@@ -27,6 +30,7 @@ class User implements Model<Attributes, User> {
     email: string;
     id: number;
     password: Buffer;
+    profile?: Profile;
     updatedAt: Date;
 
     private constructor (props: Item) {
@@ -35,6 +39,10 @@ class User implements Model<Attributes, User> {
         this.id = props.id;
         this.password = props.password;
         this.updatedAt = props.updatedAt;
+
+        if (props.profile) {
+            this.profile = props.profile;
+        }
     }
 
     static async up (): Promise<void> {
@@ -66,7 +74,10 @@ class User implements Model<Attributes, User> {
             filter
         );
 
-        return records.map(record => User.formatPropsAndInstantiate(record));
+        return records.map(record => User.formatPropsAndInstantiate(
+            record,
+            filter?.include
+        ));
     }
 
     static async findOne (
@@ -82,17 +93,18 @@ class User implements Model<Attributes, User> {
         );
 
         return (record)
-            ? User.formatPropsAndInstantiate(record)
+            ? User.formatPropsAndInstantiate(record, filter?.include)
             : null;
     }
 
     static async findById (
-        id: number
+        id: number,
+        include?: Include[]
     ): Promise<User | null> | never {
-        const record = await findRecordById<Item>(USERS, id);
+        const record = await findRecordById<Item>(USERS, id, include);
 
         return (record)
-            ? User.formatPropsAndInstantiate(record)
+            ? User.formatPropsAndInstantiate(record, include)
             : null;
     }
 
@@ -118,13 +130,18 @@ class User implements Model<Attributes, User> {
     }
 
     static formatPropsAndInstantiate (
-        props: Attributes
+        props: Attributes,
+        include?: Include[]
     ): User | never {
-        if (!isUserItem(props)) {
+        const item = (include)
+            ? separateIncludedAttributes(props, include)
+            : props;
+
+        if (!isUserItem(item)) {
             throw new UserError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
-        return new User(props);
+        return new User(item);
     }
 }
 

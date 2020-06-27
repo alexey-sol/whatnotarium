@@ -1,3 +1,4 @@
+import Include from "#types/Include";
 import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
@@ -11,7 +12,23 @@ class FindById extends ModelSqlGenerator<unknown> {
         super(tableName, recordId, queryName);
     }
 
-    generate (): SqlQueryPayload {
+    generate (include?: Include[]): SqlQueryPayload {
+        return (include)
+            ? this.createQueryPayloadWithInclude(include)
+            : this.createQueryPayload();
+    }
+
+    private createQueryPayloadWithInclude (
+        include?: Include[]
+    ): SqlQueryPayload {
+        return {
+            name: this.queryName,
+            text: this.getText(include),
+            values: this.getValues()
+        };
+    }
+
+    private createQueryPayload (): SqlQueryPayload {
         return {
             name: this.queryName,
             text: this.getText(),
@@ -19,11 +36,16 @@ class FindById extends ModelSqlGenerator<unknown> {
         };
     }
 
-    protected getText (): string {
+    protected getText (include?: Include[]): string {
+        const selectElement = this.createSelectClause(include);
+        const joinElement = this.createJoinClause(include);
+        const whereIdElement = this.createWhereIdClause();
+
         return `
-            SELECT *
+            ${selectElement}
             FROM "${this.tableName}"
-            WHERE id = $1;
+            ${joinElement}
+            ${whereIdElement}
         `;
     }
 }

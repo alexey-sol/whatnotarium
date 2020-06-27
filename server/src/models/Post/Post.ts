@@ -14,12 +14,12 @@ import { CreatePostsTable } from "#utils/sql/SchemaSqlGenerator";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { POSTS } from "#utils/const/database/tableNames";
 import Attributes from "#types/post/Attributes";
-import Author from "#types/Author";
 import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/post/Item";
 import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
+import Profile from "#types/Profile";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isPostItem from "#utils/typeGuards/isPostItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
@@ -27,7 +27,7 @@ import separateIncludedAttributes from "#utils/helpers/separateIncludedAttribute
 class Post implements Model<Attributes, Post> {
     static tableName = POSTS;
 
-    author: Author;
+    author?: Profile;
     body: string;
     createdAt: Date;
     id: number;
@@ -36,13 +36,16 @@ class Post implements Model<Attributes, Post> {
     userId: number;
 
     private constructor (props: Item) {
-        this.author = props.author;
         this.body = props.body;
         this.createdAt = props.createdAt;
         this.id = props.id;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;
+
+        if (props.author) {
+            this.author = props.author;
+        }
     }
 
     static async up (): Promise<void> {
@@ -90,17 +93,18 @@ class Post implements Model<Attributes, Post> {
         const record = await findOneRecord<Attributes, Item>(POSTS, filter);
 
         return (record)
-            ? Post.formatPropsAndInstantiate(record)
+            ? Post.formatPropsAndInstantiate(record, filter?.include)
             : null;
     }
 
     static async findById (
-        id: number
+        id: number,
+        include?: Include[]
     ): Promise<Post | null> | never {
-        const record = await findRecordById<Item>(POSTS, id);
+        const record = await findRecordById<Item>(POSTS, id, include);
 
         return (record)
-            ? Post.formatPropsAndInstantiate(record)
+            ? Post.formatPropsAndInstantiate(record, include)
             : null;
     }
 
@@ -137,7 +141,7 @@ class Post implements Model<Attributes, Post> {
             throw new PostError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }
 
-        return new Post(item as Item);
+        return new Post(item);
     }
 }
 

@@ -2,7 +2,6 @@ import DbQueryFilter from "#types/DbQueryFilter";
 import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import generateId from "#utils/helpers/generateId";
-import Include from "#root/src/types/Include";
 
 class FindAll<InputType> extends ModelSqlGenerator<InputType> {
     constructor (
@@ -15,7 +14,7 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
     generate (filter?: DbQueryFilter<InputType>): SqlQueryPayload {
         return (filter)
             ? this.createQueryPayloadWithFilter(filter)
-            : this.createQueryPayloadWithoutFilter();
+            : this.createQueryPayload();
     }
 
     private createQueryPayloadWithFilter (
@@ -31,7 +30,7 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
         };
     }
 
-    private createQueryPayloadWithoutFilter (): SqlQueryPayload {
+    private createQueryPayload (): SqlQueryPayload {
         return {
             name: this.queryName,
             text: this.getText()
@@ -53,7 +52,7 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
 
         const selectElement = this.createSelectClause(include);
         const joinElement = this.createJoinClause(include);
-        const whereElement = this.createWhereClause(attributes);
+        const whereAttributesElement = this.createWhereAttributesClause(attributes);
 
         const orderElement = (order)
             ? `ORDER BY ${order}`
@@ -71,68 +70,11 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
             ${selectElement}
             FROM "${this.tableName}"
             ${joinElement}
-            ${whereElement}
+            ${whereAttributesElement}
             ${orderElement}
             ${limitElement}
             ${offsetElement};
         `;
-    }
-
-    private createSelectClause (
-        include?: Include[]
-    ): string {
-        let selectElement = `SELECT "${this.tableName}".*`;
-
-        if (include) {
-            include.forEach(({ attributes, tableName }) => {
-                const values = attributes.map(column => {
-                    const columnToJoin = `${tableName}_${column}`;
-                    return `, "${tableName}"."${column}" as "${columnToJoin}"`;
-                });
-
-                selectElement += values.join("");
-            });
-        }
-
-        return selectElement;
-    }
-
-    private createJoinClause (
-        include?: Include[]
-    ): string {
-        let joinElement = "";
-
-        if (include) {
-            const values = include.map(({ ownKey, referencedKey, tableName }) => (
-                `LEFT JOIN "${tableName}" ` +
-                `ON "${this.tableName}"."${ownKey}" = "${tableName}"."${referencedKey}"`
-            ));
-
-            joinElement = values.join(" ");
-        }
-
-        return joinElement;
-    }
-
-    private createWhereClause (
-        attributes: string[]
-    ): string {
-        let whereElement = "";
-
-        if (attributes.length > 0) {
-            let count = this.offset;
-            const values = [];
-
-            for (const attribute of attributes) {
-                count += 1;
-                values.push(`"${this.tableName}"."${attribute}" = $${count}`);
-            }
-
-            const where = values.join(" AND ");
-            whereElement = `WHERE ${where}`;
-        }
-
-        return whereElement;
     }
 }
 
