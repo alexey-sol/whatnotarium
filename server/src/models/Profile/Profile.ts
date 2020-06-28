@@ -113,7 +113,7 @@ class Profile implements Model<Attributes, Profile> {
             props
         );
 
-        return Profile.formatPropsAndInstantiate(record);
+        return Profile.formatPropsAndInstantiate(record || this);
     }
 
     static formatPropsAndInstantiate (

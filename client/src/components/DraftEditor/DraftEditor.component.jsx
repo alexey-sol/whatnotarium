@@ -61,13 +61,14 @@ function DraftEditor ({
         .formatByPattern("YYYY, MMM DD");
 
     const bodyLengthIsTooLong = bodyLength > POST_BODY_LENGTH;
-    const bodyDidChange = bodyLength > 0;
+    // const bodyDidChange = bodyLength > 0;
     const deleteButtonIsDisabled = isPending || !post?.id;
-    const saveButtonIsDisabled = isPending || bodyLengthIsTooLong || !bodyDidChange;
+    const saveButtonIsDisabled = isPending || bodyLengthIsTooLong;
+    const shouldHideCharsCount = bodyLength > 0;
 
     const charsCountClassName = classnames(
         styles.charsCount,
-        (bodyDidChange > 0) ? "" : styles.hidden,
+        (shouldHideCharsCount) ? "" : styles.hidden,
         (bodyLengthIsTooLong) ? styles.bodyError : ""
     );
 

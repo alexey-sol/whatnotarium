@@ -82,7 +82,7 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     }
 
     protected createWhereIdClause (): string {
-        return `WHERE "${this.tableName}"."id" = $1;`;
+        return `WHERE "${this.tableName}"."id" = $1`;
     }
 
     protected getValues (input: InputType): string[];

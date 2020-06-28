@@ -26,6 +26,10 @@ function Tooltip ({
     text,
     width
 }) {
+    // TODO: need to detect zoom somehow and hide the tooltip in the case
+    // or recalculate its position.
+    // Position calculated via JS gets broken when zooming.
+
     const [coords, setCoords] = useState(INITIAL_COORDS);
     const [tooltipIsShown, setTooltipIsShown] = useState(false);
 
@@ -44,14 +48,16 @@ function Tooltip ({
     );
 
     const tooltipElem = (
-        <div
+        <section
             className={tooltipClassName}
             style={positionStyle}
         >
             <span className={styles.text}>
                 {text}
             </span>
-        </div>
+
+            <div className={styles.pointer} />
+        </section>
     );
 
     useEffect(() => {

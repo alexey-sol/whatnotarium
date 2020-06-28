@@ -4,6 +4,9 @@
     position: absolute;
     bottom: 0;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
     height: max-content;
     padding: 0.4rem 0.8rem;
@@ -29,6 +32,20 @@
         font-family: $font-family--normal;
         font-size: $font-size--smaller;
         cursor: default;
+    }
+
+    .pointer {
+        position: absolute;
+        top: -0.5rem;
+        z-index: 11;
+        box-sizing: border-box;
+        width: 1rem;
+        height: 1rem;
+        border: 1px solid $tooltip-border-color;
+        border-right: none;
+        border-bottom: none;
+        transform: rotate(45deg);
+        background-color: $tooltip-bg-color;
     }
 }
 

@@ -122,7 +122,7 @@ class HashOptions implements Model<Attributes, HashOptions> {
             updatedProps
         );
 
-        return HashOptions.formatPropsAndInstantiate(record);
+        return HashOptions.formatPropsAndInstantiate(record || this);
     }
 
     static formatPropsAndInstantiate (

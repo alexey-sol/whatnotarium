@@ -10,7 +10,6 @@ import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectUpdatedProfile } from "redux/user/user.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 import { validateEmail, validateName } from "utils/validators/UserValidator";
-import formatReducerError from "utils/helpers/formatReducerError";
 import styles from "./ProfileDataForm.module.scss";
 import useForm from "utils/hooks/useForm.jsx";
 
@@ -32,8 +31,7 @@ function ProfileDataForm ({
     };
 
     const initialErrors = {
-        name: "",
-        ...formatReducerError(error, ["email"])
+        name: ""
     };
 
     const validateField = (stateName, fields) => {

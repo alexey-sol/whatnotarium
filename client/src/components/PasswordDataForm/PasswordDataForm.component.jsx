@@ -17,7 +17,6 @@ import {
     validatePassword
 } from "utils/validators/UserValidator";
 
-import formatReducerError from "utils/helpers/formatReducerError";
 import hints from "utils/resources/text/hints";
 import styles from "./PasswordDataForm.module.scss";
 import useForm from "utils/hooks/useForm.jsx";
@@ -42,8 +41,7 @@ function PasswordDataForm ({
 
     const initialErrors = {
         confirmNewPassword: "",
-        newPassword: "",
-        ...formatReducerError(error, ["password"])
+        newPassword: ""
     };
 
     const validateField = (stateName, fields) => {

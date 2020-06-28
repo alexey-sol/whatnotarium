@@ -1,7 +1,7 @@
-import Profile from "#types/Profile";
+import UserProfile from "#types/UserProfile";
 
 interface Item {
-    author?: Profile;
+    author?: UserProfile;
     body: string;
     createdAt: Date;
     id: number;

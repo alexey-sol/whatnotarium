@@ -1,6 +1,6 @@
 import Attributes from "#types/user/Attributes";
 import Item from "#types/user/Item";
-import Profile from "#types/Profile";
+import UserProfile from "#types/UserProfile";
 import isOfType from "#utils/typeGuards/isOfType";
 
 function isUserItem (
@@ -16,7 +16,7 @@ function isUserItem (
     } = objectToCheck;
 
     const profileIsValid = (profile)
-        ? isOfType<Profile>(profile, "name")
+        ? isOfType<UserProfile>(profile, "name")
         : true;
 
     return (

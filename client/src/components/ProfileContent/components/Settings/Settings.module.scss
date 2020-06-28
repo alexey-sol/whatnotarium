@@ -6,13 +6,28 @@
     padding: 0;
 
     .forms {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-areas:
+            "profile-data-form profile-picture-form"
+            "profile-password-form .";
+        column-gap: 7rem;
     }
 
     .formContainer {
         &:not(:first-of-type) {
             margin-top: 3rem;
         }
+    }
+
+    .profileDataForm {
+        grid-area: profile-data-form;
+    }
+
+    .profilePictureForm {
+        grid-area: profile-picture-form;
+    }
+
+    .profilePasswordForm {
+        grid-area: profile-password-form;
     }
 }

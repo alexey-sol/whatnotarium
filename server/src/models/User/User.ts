@@ -1,6 +1,7 @@
 import { UNPROCESSABLE_ENTITY } from "http-status";
 
 import {
+    countRecords,
     createRecord,
     destroyRecordById,
     findAllRecords,
@@ -17,8 +18,8 @@ import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/user/Item";
 import Model from "#types/Model";
-import Profile from "#types/Profile";
 import UserError from "#utils/errors/UserError";
+import UserProfile from "#types/UserProfile";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserItem from "#utils/typeGuards/isUserItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
@@ -30,7 +31,7 @@ class User implements Model<Attributes, User> {
     email: string;
     id: number;
     password: Buffer;
-    profile?: Profile;
+    profile?: UserProfile;
     updatedAt: Date;
 
     private constructor (props: Item) {
@@ -64,6 +65,13 @@ class User implements Model<Attributes, User> {
         id: number
     ): Promise<number | null> | never {
         return destroyRecordById<Item>(USERS, id);
+    }
+
+    static async count (
+        filter?: DbQueryFilter<Attributes>
+    ): Promise<number> | never {
+        const count = await countRecords<Attributes>(USERS, filter);
+        return count;
     }
 
     static async findAll (
@@ -126,7 +134,7 @@ class User implements Model<Attributes, User> {
             updatedProps
         );
 
-        return User.formatPropsAndInstantiate(record);
+        return User.formatPropsAndInstantiate(record || this);
     }
 
     static formatPropsAndInstantiate (

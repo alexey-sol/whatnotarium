@@ -19,7 +19,7 @@ import Include from "#types/Include";
 import Item from "#types/post/Item";
 import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
-import Profile from "#types/Profile";
+import UserProfile from "#types/UserProfile";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isPostItem from "#utils/typeGuards/isPostItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
@@ -27,7 +27,7 @@ import separateIncludedAttributes from "#utils/helpers/separateIncludedAttribute
 class Post implements Model<Attributes, Post> {
     static tableName = POSTS;
 
-    author?: Profile;
+    author?: UserProfile;
     body: string;
     createdAt: Date;
     id: number;
@@ -126,7 +126,7 @@ class Post implements Model<Attributes, Post> {
             updatedProps
         );
 
-        return Post.formatPropsAndInstantiate(record);
+        return Post.formatPropsAndInstantiate(record || this);
     }
 
     static formatPropsAndInstantiate (

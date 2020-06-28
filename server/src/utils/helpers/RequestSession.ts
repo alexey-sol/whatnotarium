@@ -1,7 +1,7 @@
 import { Request } from "express";
 
 import SessionUser from "#types/SessionUser";
-import User from "#models/User";
+import UserItem from "#types/user/Item";
 import sessionConfig from "#config/session";
 
 class RequestSession {
@@ -11,7 +11,7 @@ class RequestSession {
         this.request = request;
     }
 
-    attachUserToSession (user: User): void {
+    attachUserToSession (user: UserItem): void {
         const { session } = this.request;
 
         if (session) {

@@ -8,6 +8,8 @@ import ProfileError from "#utils/errors/ProfileError";
 import User from "#models/User";
 import UserAttributes from "#types/user/Attributes";
 import UserError from "#utils/errors/UserError";
+import UserItem from "#types/user/Item";
+import complementUserItem from "#utils/helpers/complementUserItem";
 import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
@@ -20,7 +22,7 @@ interface Props {
 export default async function (
     id: number,
     props: Props
-): Promise<User> | never {
+): Promise<UserItem> | never {
     const user = await User.findById(id);
 
     if (!user) {
@@ -36,7 +38,6 @@ export default async function (
 
     const userProps: UserAttributes = { email };
     const shouldUpdatePassword = Boolean(newPassword);
-    const shouldUpdateProfile = Boolean(name || picture);
 
     if (shouldUpdatePassword) {
         const hashResult = await hashPassword(newPassword as string);
@@ -46,33 +47,35 @@ export default async function (
         userProps.password = hash;
     }
 
-    if (shouldUpdateProfile) {
-        const profileProps = { name, picture };
-        await updateProfile(user.id, profileProps);
-    }
+    const profile = await updateProfile({
+        name,
+        picture,
+        userId: user.id
+    });
 
-    return user.updateAttributes(userProps);
+    const updatedUser = await user.updateAttributes(userProps);
+
+    return complementUserItem(updatedUser, profile);
 }
 
 async function updateProfile (
-    userId: number,
-    profileProps: ProfileAttributes
-): Promise<void> | never {
+    props: ProfileAttributes
+): Promise<Profile> | never {
     const profile = await Profile.findOne({
-        where: { userId }
+        where: { userId: props.userId }
     });
 
     if (!profile) {
         throw new ProfileError(NOT_FOUND, 404);
     }
 
-    await profile.updateAttributes(profileProps);
+    return profile.updateAttributes(props);
 }
 
 async function updateHashOptions (
     userId: number,
     hashPasswordOptions: HashPasswordOptions
-): Promise<void> | never {
+): Promise<HashOptions> | never {
     const hashOptions = await HashOptions.findOne({
         where: { userId }
     });
@@ -81,5 +84,5 @@ async function updateHashOptions (
         throw new HashOptionsError(NOT_FOUND, 404);
     }
 
-    await hashOptions.updateAttributes(hashPasswordOptions);
+    return hashOptions.updateAttributes(hashPasswordOptions);
 }

@@ -85,7 +85,7 @@ function translateUserError (message) {
 function translateCommonError (message) {
     switch (message) {
         case INTERNAL_SERVER_ERROR:
-            return "Что-то полшло не так";
+            return "Что-то пошло не так";
         default:
             return message;
     }

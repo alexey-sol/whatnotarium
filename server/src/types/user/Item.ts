@@ -1,11 +1,11 @@
-import Profile from "#types/Profile";
+import UserProfile from "#types/UserProfile";
 
 interface Item {
     createdAt: Date;
     email: string;
     id: number;
     password: Buffer;
-    profile?: Profile;
+    profile?: UserProfile;
     updatedAt: Date;
 }
 

@@ -3,6 +3,8 @@ import HashOptionsAttributes from "#types/hashOptions/Attributes";
 import Profile from "#models/Profile";
 import ProfileAttributes from "#types/profile/Attributes";
 import User from "#models/User";
+import UserItem from "#types/user/Item";
+import complementUserItem from "#utils/helpers/complementUserItem";
 import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
@@ -13,7 +15,7 @@ interface Props {
 
 export default async function (
     props: Props
-): Promise<User> {
+): Promise<UserItem> {
     const { email, name, password } = props;
     const { hash, ...restOptions } = await hashPassword(password);
 
@@ -32,14 +34,7 @@ export default async function (
         userId: user.id
     });
 
-    user.profile = {
-        name: profile.name,
-        picture: profile.picture
-    };
-
-    delete user.password;
-
-    return user;
+    return complementUserItem(user, profile);
 }
 
 async function createHashOptions (

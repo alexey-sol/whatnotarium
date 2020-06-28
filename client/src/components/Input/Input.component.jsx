@@ -21,7 +21,6 @@ function Input ({
     ...rest
 }) {
     const errorSpanRef = useRef(null);
-
     const hasValue = value.length > 0;
 
     const inputClassName = classnames(

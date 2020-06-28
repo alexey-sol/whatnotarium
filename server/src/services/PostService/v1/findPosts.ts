@@ -1,8 +1,10 @@
 import { PROFILES } from "#utils/const/database/tableNames";
 import FetchedList from "#types/FetchedList";
 import Post from "#models/Post";
+import PostItem from "#types/post/Item";
+import complementPostItem from "#utils/helpers/complementPostItem";
 
-type PostsList = FetchedList<Post>;
+type PostItemsList = FetchedList<PostItem>;
 
 interface Options {
     limit?: number;
@@ -12,7 +14,7 @@ interface Options {
 
 export default async function (
     options: Options = {}
-): Promise<PostsList> {
+): Promise<PostItemsList> {
     const { limit, offset, userId } = options;
 
     const include = [{
@@ -34,8 +36,15 @@ export default async function (
         filter.where = { userId };
     }
 
+    const posts = await Post.findAll(filter);
+    const completedPosts = [];
+
+    for (const post of posts) {
+        completedPosts.push(await complementPostItem(post));
+    }
+
     return {
-        items: await Post.findAll(filter),
+        items: completedPosts,
         totalCount: await Post.count()
     };
 }

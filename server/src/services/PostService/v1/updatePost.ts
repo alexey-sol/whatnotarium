@@ -1,7 +1,8 @@
 import { NOT_FOUND } from "#utils/const/validationErrors";
-import Attributes from "#types/post/Attributes";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
+import PostItem from "#types/post/Item";
+import complementPostItem from "#utils/helpers/complementPostItem";
 
 interface Props {
     body?: string;
@@ -11,7 +12,7 @@ interface Props {
 export default async function (
     id: number,
     props: Props
-): Promise<Post> | never {
+): Promise<PostItem> | never {
     const post = await Post.findById(id);
 
     if (!post) {
@@ -23,11 +24,12 @@ export default async function (
         title
     } = props;
 
-    const updatedProps: Attributes = {
+    const updatedProps = {
         body,
         title,
         updatedAt: new Date()
     };
 
-    return post.updateAttributes(updatedProps);
+    const updatedPost = await post.updateAttributes(updatedProps);
+    return complementPostItem(updatedPost);
 }

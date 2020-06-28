@@ -10,6 +10,7 @@ import { selectUpdatedProfile } from "redux/user/user.selectors";
 import { setCurrentUser } from "redux/session/session.actions";
 import { updateProfileReset } from "redux/user/user.actions";
 import findModifiedStateItem from "utils/redux/findModifiedStateItem";
+import translateError from "utils/helpers/translateError";
 
 ProfileContentContainer.defaultProps = defaultProps;
 ProfileContentContainer.propTypes = propTypes;
@@ -23,13 +24,21 @@ function ProfileContentContainer ({
 }) {
     const modifiedItem = findModifiedStateItem(deletedPost, updatedProfile);
     const newProfile = updatedProfile.item;
-    const postIsDeleted = Boolean(deletedPost.item);
-    const profileIsUpdated = Boolean(newProfile);
 
+    const shouldResetDeletedPost = deletedPost.item;
+    const shouldResetUpdatedProfile = newProfile || updatedProfile.error;
+
+    // TODO: resetting is called twice. Fix it (component gets rerendered on
+    // update user even if there's nothing to update).
     const clearStateIfNeeded = useCallback(() => {
-        if (postIsDeleted) onDeletePostReset();
-        if (profileIsUpdated) onUpdatedProfileReset();
-    }, [postIsDeleted, profileIsUpdated, onDeletePostReset, onUpdatedProfileReset]);
+        if (shouldResetDeletedPost) onDeletePostReset();
+        if (shouldResetUpdatedProfile) onUpdatedProfileReset();
+    }, [
+        shouldResetDeletedPost,
+        shouldResetUpdatedProfile,
+        onDeletePostReset,
+        onUpdatedProfileReset
+    ]);
 
     useEffect(() => {
         if (newProfile) {
@@ -41,9 +50,11 @@ function ProfileContentContainer ({
         };
     }, [clearStateIfNeeded, onSetCurrentUser, newProfile]);
 
+    const outOfFieldsError = translateError(modifiedItem.error);
+
     const popupText = (modifiedItem.item)
         ? "Сохранено"
-        : modifiedItem.error?.message;
+        : outOfFieldsError;
 
     const popupTheme = (modifiedItem.item)
         ? "success"

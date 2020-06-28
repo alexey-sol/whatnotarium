@@ -4,7 +4,7 @@ import bodySchema from "./schemas/body";
 import paramsSchema from "./schemas/params";
 
 const putUser: RequestHandler = async (
-    { body, params },
+    { body, files, params },
     response,
     next
 ): Promise<void> => {

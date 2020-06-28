@@ -20,13 +20,13 @@ function PostDetails ({
     const {
         author,
         body,
-        postId,
+        id,
         title,
         updatedAt
     } = post || {};
 
     const userIsAuthor = post?.userId === userId;
-    const shouldRenderControls = Boolean(userIsAuthor && postId);
+    const shouldRenderControls = Boolean(userIsAuthor && id);
     const popupIsShown = Boolean(popupText);
 
     const bodyHTML = { __html: body };

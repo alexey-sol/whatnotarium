@@ -1,8 +1,9 @@
+import { NOT_FOUND } from "#utils/const/validationErrors";
 import { RequestHandler } from "express";
 
-import { PROFILES } from "#utils/const/database/tableNames";
 import RequestSession from "#utils/helpers/RequestSession";
-import User from "#models/User";
+import UserError from "#utils/errors/UserError";
+import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
 const getSession: RequestHandler = async (
@@ -17,16 +18,7 @@ const getSession: RequestHandler = async (
         let user = null;
 
         if (sessionUser) {
-            const include = [{
-                as: "profile",
-                attributes: ["name", "picture"],
-                referencedKey: "userId",
-                ownKey: "id",
-                tableName: PROFILES
-            }];
-
-            user = await User.findById(sessionUser.id, include);
-            delete user?.password;
+            user = await UserService.findUser(sessionUser.id);
         }
 
         sendResponse(response, user);

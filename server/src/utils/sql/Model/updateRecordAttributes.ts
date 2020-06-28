@@ -5,7 +5,7 @@ async function updateRecordAttributes<InputType, OutputType> (
     tableName: string,
     id: number,
     props: InputType
-): Promise<OutputType> | never {
+): Promise<OutputType | null> | never {
     const queryPayload = await generateSqlAndQuery<InputType, OutputType>(
         new UpdateAttributes(tableName, id),
         props
@@ -15,3 +15,5 @@ async function updateRecordAttributes<InputType, OutputType> (
 }
 
 export default updateRecordAttributes;
+
+// Returns null if there was nothing to update.
