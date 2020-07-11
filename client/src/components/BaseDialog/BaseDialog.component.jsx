@@ -27,7 +27,7 @@ function BaseDialog ({
             onClose={onClose}
             rootClassName={styles.root}
         >
-            <div
+            <section
                 className={containerClassName}
                 onClick={event => event.stopPropagation()}
             >
@@ -37,14 +37,14 @@ function BaseDialog ({
                     size={16}
                 />
 
-                {title && (
+                {Boolean(title) && (
                     <div className={styles.title}>
                         {title}
                     </div>
                 )}
 
                 {children}
-            </div>
+            </section>
         </BaseOverlay>
     );
 }

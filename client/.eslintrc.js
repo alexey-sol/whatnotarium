@@ -26,6 +26,18 @@ module.exports = {
         sourceType: "module",
     },
 
+    overrides: [
+        {
+            files: [
+                "**/*.test.js",
+                "**/*.test.jsx"
+            ],
+            env: {
+                jest: true
+            }
+        }
+    ],
+
     plugins: [
         "react",
         "react-hooks",

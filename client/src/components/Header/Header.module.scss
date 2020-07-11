@@ -15,13 +15,11 @@
     .content {
         grid-area: content;
         display: flex;
-        box-sizing: border-box;
         padding: 0 3vw;
     }
 
     .logo {
         display: flex;
-        box-sizing: border-box;
         font-family: $font-family--logo;
 
         &:hover {
@@ -39,7 +37,7 @@
             font-size: $font-size--larger;
             text-align: center;
             user-select: none;
-            transition: .1s ease;
+            transition: color 100ms ease;
         }
     }
 

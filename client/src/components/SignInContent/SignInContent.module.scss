@@ -2,13 +2,11 @@
 
 .container {
     display: flex;
-    box-sizing: border-box;
     flex-direction: column;
     width: 30rem;
 
     .form {
         display: flex;
-        box-sizing: border-box;
         flex-direction: column;
         min-width: 30rem;
 
@@ -24,7 +22,6 @@
             margin-top: 5vh;
 
             .oauthProvidersList {
-                box-sizing: border-box;
                 padding: 0;
                 margin: 0;
                 margin-top: 5vh;

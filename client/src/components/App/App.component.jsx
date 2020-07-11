@@ -30,7 +30,7 @@ const SignIn = lazy(() => import("pages/SignIn"));
 
 App.propTypes = propTypes;
 
-function App ({ onCheckSessionStart, onFetchPostsStart }) {
+export function App ({ onCheckSessionStart, onFetchPostsStart }) {
     useEffect(() => {
         onCheckSessionStart();
         onFetchPostsStart();

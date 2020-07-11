@@ -2,7 +2,6 @@
 
 .container {
     display: grid;
-    box-sizing: border-box;
     grid-template-rows: auto 1fr auto;
     grid-template-columns: minmax(30rem, 1fr);
     row-gap: 2rem;
@@ -14,7 +13,6 @@
     }
 
     .body {
-        box-sizing: border-box;
         max-height: 30rem;
         margin: 1rem 0;
         overflow-y: hidden;
@@ -22,7 +20,6 @@
 
     .metadata {
         display: grid;
-        box-sizing: border-box;
         grid-template-areas:
             "avatar username"
             "avatar date";
@@ -35,11 +32,9 @@
         .avatar {
             grid-area: avatar;
             display: flex;
-            box-sizing: border-box;
 
             :first-child {
                 display: flex;
-                box-sizing: border-box;
                 align-items: center;
                 width: 5rem;
                 height: 5rem;

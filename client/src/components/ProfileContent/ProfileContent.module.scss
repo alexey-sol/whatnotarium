@@ -6,7 +6,6 @@
 
     .tabsList {
         display: flex;
-        box-sizing: border-box;
         height: 3rem;
         padding: 0;
         border-bottom: 1px solid $profile-tab-border-color;
@@ -15,11 +14,9 @@
         .tab {
             position: relative;
             top: 0.1rem;
-            box-sizing: border-box;
             white-space: nowrap;
             color: $profile-tab-color;
             cursor: pointer;
-            transition: .1s ease;
 
             &:not(:first-of-type) {
                 margin-left: 2rem;

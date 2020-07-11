@@ -17,22 +17,22 @@ function BaseOverlay ({ children, onClose, rootClassName }) {
     };
 
     const overlayElem = (
-        <div
+        <section
             className={classnames(rootClassName, styles.root)}
             onMouseDown={handleMouseDownOnRoot}
             ref={rootRef}
         >
             {children}
-        </div>
+        </section>
     );
 
     useEffect(() => {
-        const onKeydown = (event) => {
+        const handleKeydown = (event) => {
             if (event.key === "Escape") onClose();
         };
 
-        document.addEventListener("keydown", onKeydown);
-        return () => document.removeEventListener("keydown", onKeydown);
+        document.addEventListener("keydown", handleKeydown);
+        return () => document.removeEventListener("keydown", handleKeydown);
     }, [onClose]);
 
     return ReactDOM.createPortal(

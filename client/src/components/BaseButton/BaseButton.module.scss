@@ -2,7 +2,6 @@
 
 .button {
     display: flex;
-    box-sizing: border-box;
     align-items: center;
     justify-content: center;
     height: 5rem;
@@ -11,7 +10,7 @@
     user-select: none;
     font-family: $font-family--normal;
     font-size: $font-size--medium;
-    transition: .1s ease;
+    transition: background-color 100ms ease;
     cursor: pointer;
 
     &.disabled {

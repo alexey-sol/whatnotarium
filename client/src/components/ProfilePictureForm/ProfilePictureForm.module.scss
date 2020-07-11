@@ -3,11 +3,10 @@
 .container {
     position: relative;
     display: flex;
-    box-sizing: border-box;
 
     .pictureContainer {
         user-select: none;
-        transition: opacity .1s ease;
+        transition: opacity 100ms ease;
 
         &:hover {
             opacity: 0.8;
@@ -19,7 +18,7 @@
         position: absolute;
         z-index: 1;
         right: -2rem;
-        transition: opacity .1s ease;
+        transition: opacity 100ms ease;
 
         &:hover {
             opacity: 0.6;

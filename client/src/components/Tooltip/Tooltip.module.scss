@@ -7,7 +7,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-sizing: border-box;
     height: max-content;
     padding: 0.4rem 0.8rem;
     border: 1px solid $tooltip-border-color;
@@ -38,7 +37,6 @@
         position: absolute;
         top: -0.5rem;
         z-index: 11;
-        box-sizing: border-box;
         width: 1rem;
         height: 1rem;
         border: 1px solid $tooltip-border-color;

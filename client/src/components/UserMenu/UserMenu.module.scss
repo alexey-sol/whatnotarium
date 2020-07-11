@@ -2,7 +2,6 @@
 
 .container {
     display: flex;
-    box-sizing: border-box;
     flex-direction: column;
     width: $menu-width;
     background-color: $user-menu-bg-color;
@@ -10,7 +9,6 @@
 
     .header {
         display: flex;
-        box-sizing: border-box;
         align-items: center;
         justify-content: flex-end;
         height: $actions-menu-height;
@@ -18,7 +16,6 @@
     }
 
     .list {
-        box-sizing: border-box;
         width: $menu-width;
         padding: 0;
         margin: 0;
@@ -27,7 +24,6 @@
 
         .item {
             display: flex;
-            box-sizing: border-box;
             align-items: center;
             justify-content: flex-end;
             width: 100%;
@@ -36,7 +32,7 @@
             background-color: $user-menu-item-bg-color;
             font-size: $font-size--medium;
             color: $user-menu-item-text-color;
-            transition: .1s ease;
+            transition: background-color 100ms ease;
             user-select: none;
             cursor: pointer;
 
