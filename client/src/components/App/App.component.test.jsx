@@ -1,5 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
+import toJson from "enzyme-to-json";
 
 import { App } from "./App.component";
 import Footer from "components/Footer";
@@ -7,18 +8,24 @@ import Header from "components/Header";
 import Main from "components/Main";
 import Nav from "components/Nav";
 
-it("should render child components", () => {
-    const mock = jest.fn();
+let wrapper = null;
 
-    const component = (
-        <App
-            onCheckSessionStart={mock}
-            onFetchPostsStart={mock}
-        />
+beforeEach(() => {
+    const mockProps = {
+        onCheckSessionStart: jest.fn(),
+        onFetchPostsStart: jest.fn()
+    };
+
+    wrapper = shallow(
+        <App {...mockProps} />
     );
+});
 
-    const wrapper = shallow(component);
+it("should render App", () => {
+    expect(toJson(wrapper)).toMatchSnapshot();
+});
 
+it("should render child components", () => {
     const header = wrapper.find(Header);
     const nav = wrapper.find(Nav);
     const main = wrapper.find(Main);

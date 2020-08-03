@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render App 1`] = `
+<div
+  className="container"
+>
+  <Header />
+  <Main>
+    <ErrorBoundary>
+      <Suspense
+        fallback={<Spinner />}
+      >
+        <Switch>
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            exact={true}
+            path="/"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/sign-in"
+          />
+          <Connect(PrivateRoute)
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/profile"
+          />
+          <Connect(PrivateRoute)
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/draft"
+          />
+          <Connect(PrivateRoute)
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/post/:id/edit"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/post/:id"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+          />
+        </Switch>
+      </Suspense>
+    </ErrorBoundary>
+  </Main>
+  <Nav />
+  <Footer />
+</div>
+`;

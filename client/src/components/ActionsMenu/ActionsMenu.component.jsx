@@ -23,7 +23,7 @@ import styles from "./ActionsMenu.module.scss";
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
 
-function ActionsMenu ({ currentUser, showUserMenu }) {
+export function ActionsMenu ({ currentUser, showUserMenu }) {
     const [signInIsShown, setSignInIsShown] = useState(false);
     const [signUpIsShown, setSignUpIsShown] = useState(false);
 
