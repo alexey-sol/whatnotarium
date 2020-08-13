@@ -23,9 +23,14 @@ import styles from "./ActionsMenu.module.scss";
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
 
-export function ActionsMenu ({ currentUser, showUserMenu }) {
-    const [signInIsShown, setSignInIsShown] = useState(false);
-    const [signUpIsShown, setSignUpIsShown] = useState(false);
+export function ActionsMenu ({
+    currentUser,
+    initialSignInIsShown,
+    initialSignUpIsShown,
+    showUserMenu
+}) {
+    const [signInIsShown, setSignInIsShown] = useState(initialSignInIsShown);
+    const [signUpIsShown, setSignUpIsShown] = useState(initialSignUpIsShown);
 
     const userIconButtonRef = useRef(null);
     const showSignInDialog = useCallback(() => setSignInIsShown(true), []);

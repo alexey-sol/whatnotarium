@@ -34,6 +34,9 @@ module.exports = {
             ],
             env: {
                 jest: true
+            },
+            "rules": {
+                "max-len": ["error", { "code": 120 }]
             }
         }
     ],
@@ -61,6 +64,7 @@ module.exports = {
         "jsx-a11y/no-noninteractive-element-interactions": 0,
         "jsx-a11y/no-static-element-interactions": 0,
         "jsx-a11y/label-has-for": [ 2, { "required": { "some": [ "nesting", "id" ] } }],
+        "linebreak-style": ["error", "windows"],
         "no-confusing-arrow": 0,
         "no-restricted-syntax": 0,
         "no-underscore-dangle": 0,
