@@ -2,8 +2,9 @@ import { combineReducers } from "redux";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-import postReducer from "./post/post.reducer";
+import postsReducer from "./posts/posts.reducer";
 import sessionReducer from "./session/session.reducer";
+import uiReducer from "./ui/ui.reducer";
 import userReducer from "./user/user.reducer";
 
 const persistConfig = {
@@ -15,8 +16,9 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-    post: postReducer,
+    posts: postsReducer,
     session: sessionReducer,
+    ui: uiReducer,
     user: userReducer
 });
 

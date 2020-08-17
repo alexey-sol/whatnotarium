@@ -17,7 +17,7 @@ import Main from "components/Main";
 import Nav from "components/Nav";
 import Spinner from "components/Spinner";
 import { checkSessionStart } from "redux/session/session.actions";
-import { fetchPostsStart } from "redux/post/post.actions";
+import { fetchPostsStart } from "redux/posts/posts.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 

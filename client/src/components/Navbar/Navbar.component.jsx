@@ -6,41 +6,29 @@ import classnames from "classnames";
 
 import { DRAFT } from "utils/const/pathnames";
 import { defaultProps, propTypes } from "./Navbar.props";
-
-import {
-    selectCreatedPost,
-    selectDeletedPost,
-    selectUpdatedPost
-} from "redux/post/post.selectors";
-
+// import { selectCurrentPost } from "redux/post/posts.selectors";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import findModifiedStateItem from "utils/redux/findModifiedStateItem";
 import styles from "./Navbar.module.scss";
 
 Navbar.defaultProps = defaultProps;
 Navbar.propTypes = propTypes;
 
-function Navbar ({
-    createdPost,
-    currentUser,
-    deletedPost,
-    updatedPost
-}) {
-    const isAuthed = Boolean(currentUser);
-    const modifiedPost = findModifiedStateItem(createdPost, deletedPost, updatedPost);
-    const shouldDisableWritePost = Boolean(modifiedPost.item);
+function Navbar ({ currentPost, currentUser }) {
+    const userIsAuthed = Boolean(currentUser);
+    // const postIsModified = Boolean(currentPost.actionType);
+    // const shouldDisableWritePost = postIsModified;
     // TODO: or if in Draft alraedy
 
     const writePostItemClassName = classnames(
         styles.item,
-        styles.prominent,
-        (shouldDisableWritePost) ? styles.disabled : ""
+        styles.prominent
+        // (shouldDisableWritePost) ? styles.disabled : ""
     );
 
     return (
         <div className={styles.container}>
             <ul className={styles.list}>
-                {isAuthed && (
+                {userIsAuthed && (
                     <li className={writePostItemClassName}>
                         <Link
                             title="Написать статью"
@@ -83,10 +71,8 @@ function Navbar ({
 }
 
 const mapStateToProps = createStructuredSelector({
-    createdPost: selectCreatedPost,
-    currentUser: selectCurrentUser,
-    deletedPost: selectDeletedPost,
-    updatedPost: selectUpdatedPost
+    // currentPost: selectCurrentPost,
+    currentUser: selectCurrentUser
 });
 
 const ConnectedNavbar = connect(

@@ -1,12 +1,12 @@
-import { func, object } from "prop-types";
+import { bool, func, object } from "prop-types";
 
 export const defaultProps = {
-    fetchedPosts: {},
+    isPending: false,
     posts: {}
 };
 
 export const propTypes = {
-    fetchedPosts: object,
+    isPending: bool,
     onFetchPostsStart: func.isRequired,
     posts: object
 };

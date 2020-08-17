@@ -1,47 +1,37 @@
-import types from "./post.types";
+import * as types from "./posts.types";
 
 export function createPostFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.CREATE_POST_FAILURE
     };
 }
 
-export function createPostReset () {
+export function createPostStart (props, cb) {
     return {
-        type: types.CREATE_POST_RESET
-    };
-}
-
-export function createPostStart (props) {
-    return {
+        cb,
         payload: props,
         type: types.CREATE_POST_START
     };
 }
 
-export function createPostSuccess (post) {
+export function createPostSuccess (item) {
     return {
-        payload: post,
+        payload: { item },
         type: types.CREATE_POST_SUCCESS
     };
 }
 
 export function deletePostFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.DELETE_POST_FAILURE
     };
 }
 
-export function deletePostReset () {
+export function deletePostStart (id, cb) {
     return {
-        type: types.DELETE_POST_RESET
-    };
-}
-
-export function deletePostStart (id) {
-    return {
+        cb,
         payload: id,
         type: types.DELETE_POST_START
     };
@@ -49,21 +39,15 @@ export function deletePostStart (id) {
 
 export function deletePostSuccess (id) {
     return {
-        payload: id,
+        payload: { item: id },
         type: types.DELETE_POST_SUCCESS
     };
 }
 
 export function fetchPostFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.FETCH_POST_FAILURE
-    };
-}
-
-export function fetchPostReset () {
-    return {
-        type: types.FETCH_POST_RESET
     };
 }
 
@@ -74,23 +58,17 @@ export function fetchPostStart (id) {
     };
 }
 
-export function fetchPostSuccess (post) {
+export function fetchPostSuccess (item) {
     return {
-        payload: post,
+        payload: { item },
         type: types.FETCH_POST_SUCCESS
     };
 }
 
 export function fetchPostsFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.FETCH_POSTS_FAILURE
-    };
-}
-
-export function fetchPostsReset () {
-    return {
-        type: types.FETCH_POSTS_RESET
     };
 }
 
@@ -101,49 +79,37 @@ export function fetchPostsStart (filter) {
     };
 }
 
-export function fetchPostsSuccess (posts) {
+export function fetchPostsSuccess ({ items, totalCount }) {
     return {
-        payload: posts,
+        payload: { items, totalCount },
         type: types.FETCH_POSTS_SUCCESS
     };
 }
 
-export function getPost (id) {
+export function resetPostsError () {
     return {
-        payload: id,
-        type: types.GET_POST
-    };
-}
-
-export function getPosts () { // TODO: filter?
-    return {
-        type: types.GET_POSTS
+        type: types.RESET_POSTS_ERROR
     };
 }
 
 export function updatePostFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.UPDATE_POST_FAILURE
     };
 }
 
-export function updatePostReset () {
+export function updatePostStart (props, cb) {
     return {
-        type: types.UPDATE_POST_RESET
-    };
-}
-
-export function updatePostStart (props) {
-    return {
+        cb,
         payload: props,
         type: types.UPDATE_POST_START
     };
 }
 
-export function updatePostSuccess (post) {
+export function updatePostSuccess (item) {
     return {
-        payload: post,
+        payload: { item },
         type: types.UPDATE_POST_SUCCESS
     };
 }

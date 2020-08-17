@@ -1,6 +1,13 @@
 
 import { Editor } from "@tinymce/tinymce-react";
-import React, { useCallback, useRef, useState } from "react";
+
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+
 import classnames from "classnames";
 
 import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
@@ -8,7 +15,6 @@ import BaseButton from "components/BaseButton";
 import DateFormatter from "utils/formatters/DateFormatter";
 import DOMPurify from "dompurify";
 import Input from "components/Input";
-import Popup from "components/Popup";
 import Spinner from "components/Spinner";
 import StringFormatter from "utils/formatters/StringFormatter";
 import Tooltip from "components/Tooltip";
@@ -22,13 +28,15 @@ DraftEditor.propTypes = propTypes;
 
 function DraftEditor ({
     deletePost,
-    hidePopup,
     handleChange,
     handleSubmit,
     isPending,
-    popupText,
     post
 }) {
+    // TODO: should I keep selectedPost state in this component?
+
+    // TODO: bug. select post -> написать статью -> create new post -> написать статью while popup is on -> type in something
+    // First keypress will be ignored
     const [editor, setEditor] = useState(null);
     const [bodyLength, setBodyLength] = useState(0);
 
@@ -72,11 +80,17 @@ function DraftEditor ({
         (bodyLengthIsTooLong) ? styles.bodyError : ""
     );
 
+    useEffect(() => {
+        const shouldResetContent = editor && !post?.body;
+
+        if (shouldResetContent) {
+            editor.setContent("");
+        }
+    }, [editor, post]);
+
     return (
         <article className={styles.container}>
-            {!editor && (
-                <Spinner />
-            )}
+            {!editor && <Spinner />}
 
             <section className={editorContainerClassName}>
                 <form
@@ -135,14 +149,6 @@ function DraftEditor ({
                         />
                     </section>
                 </form>
-
-                {Boolean(popupText) && (
-                    <Popup
-                        onClose={hidePopup}
-                        text={popupText}
-                        theme="error"
-                    />
-                )}
 
                 {bodyLengthIsTooLong && (
                     <Tooltip

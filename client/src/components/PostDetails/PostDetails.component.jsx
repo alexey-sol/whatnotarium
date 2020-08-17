@@ -2,7 +2,6 @@ import React from "react";
 
 import { AvatarPlaceholder } from "components/Icon";
 import BaseButton from "components/BaseButton";
-import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
 
@@ -11,9 +10,6 @@ PostDetails.propTypes = propTypes;
 
 function PostDetails ({
     handleClickOnEditButton,
-    hidePopup,
-    popupText,
-    popupTheme,
     post,
     userId
 }) {
@@ -27,7 +23,6 @@ function PostDetails ({
 
     const userIsAuthor = post?.userId === userId;
     const shouldRenderControls = Boolean(userIsAuthor && id);
-    const popupIsShown = Boolean(popupText);
 
     const bodyHTML = { __html: body };
 
@@ -75,19 +70,10 @@ function PostDetails ({
             {shouldRenderControls && (
                 <section className={styles.controls}>
                     <BaseButton
-                        disabled={popupIsShown}
                         onClick={handleClickOnEditButton}
                         text="Редактировать"
                     />
                 </section>
-            )}
-
-            {popupIsShown && (
-                <Popup
-                    onClose={hidePopup}
-                    text={popupText}
-                    theme={popupTheme}
-                />
             )}
         </article>
     );

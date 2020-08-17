@@ -1,17 +1,53 @@
 import React from "react";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
+import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./Main.props";
+import { hideNotification } from "redux/ui/ui.actions";
+import { selectNotification } from "redux/ui/ui.selectors";
 import styles from "./Main.module.scss";
 
 Main.defaultProps = defaultProps;
 Main.propTypes = propTypes;
 
-function Main ({ children }) {
+function Main ({
+    children,
+    onHideNotification,
+    notification
+}) {
+    const didErrorOccur = notification?.type === "error";
+
+    const popupTheme = (didErrorOccur)
+        ? "error"
+        : "success";
+
     return (
         <main className={styles.container}>
-            { children }
+            {children}
+
+            {Boolean(notification) && (
+                <Popup
+                    onClose={onHideNotification}
+                    text={notification?.text}
+                    theme={popupTheme}
+                />
+            )}
         </main>
     );
 }
 
-export default Main;
+const mapStateToProps = createStructuredSelector({
+    notification: selectNotification
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    onHideNotification: () => dispatch(hideNotification())
+});
+
+const ConnectedMain = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Main);
+
+export default ConnectedMain;

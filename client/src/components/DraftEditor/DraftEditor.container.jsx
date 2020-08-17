@@ -1,70 +1,63 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
 import { POST, PROFILE } from "utils/const/pathnames";
-import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
 import DraftEditor from "./DraftEditor.component";
 
 import {
-    createPostReset,
     createPostStart,
-    deletePostReset,
     deletePostStart,
-    fetchPostReset,
-    getPost,
-    updatePostReset,
     updatePostStart
-} from "redux/post/post.actions";
+} from "redux/posts/posts.actions";
 
 import { defaultProps, propTypes } from "./DraftEditor.container.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectIsPending } from "redux/ui/ui.selectors";
+import { selectPostById } from "redux/posts/posts.selectors";
+import { showNotification } from "redux/ui/ui.actions";
 
-import {
-    selectCreatedPost,
-    selectDeletedPost,
-    selectFetchedPosts,
-    selectPost,
-    selectUpdatedPost
-} from "redux/post/post.selectors";
-
-import findModifiedStateItem from "utils/redux/findModifiedStateItem";
-import translateError from "utils/helpers/translateError";
+const successNotification = {
+    text: "Готово",
+    type: "success"
+};
 
 DraftEditorContainer.defaultProps = defaultProps;
 DraftEditorContainer.propTypes = propTypes;
 
 function DraftEditorContainer ({
-    createdPost,
     currentUser,
-    deletedPost,
-    fetchedPosts,
     history,
+    isPending,
     match,
-    onCreatePostReset,
     onCreatePostStart,
-    onDeletePostReset,
     onDeletePostStart,
-    onGetPost,
-    onUpdatePostReset,
+    onShowNotification,
     onUpdatePostStart,
-    post,
-    updatedPost
+    post
 }) {
     const { push } = history;
-    const { items } = fetchedPosts;
     const paramId = match.params.id && +match.params.id;
+    const [selectedPost, setSelectedPost] = useState(post);
 
-    const [currentPost, setCurrentPost] = useState(post);
-    const id = paramId || currentPost?.id || createdPost?.item?.id;
+    const id = paramId || selectedPost?.id; // TODO: do I need selectedPost?.id
+
+    const redirectToPostAndShowSuccess = useCallback(postId => {
+        push(`${POST}/${postId}`);
+        onShowNotification(successNotification);
+    }, [onShowNotification, push]);
+
+    const redirectToProfileAndShowSuccess = useCallback(() => {
+        push(PROFILE);
+        onShowNotification(successNotification);
+    }, [onShowNotification, push]);
 
     const handleChange = useCallback(({ name, value }) => {
-        setCurrentPost({
-            ...currentPost,
+        setSelectedPost({
+            ...selectedPost,
             [name]: value
         });
-    }, [currentPost]);
+    }, [selectedPost]);
 
     const createOrUpdatePost = (event) => {
         if (event) {
@@ -73,118 +66,53 @@ function DraftEditorContainer ({
 
         const shouldCreateNewPost = !id;
         const postWithUserId = {
-            ...currentPost,
+            ...selectedPost,
             userId: currentUser.id
         };
 
         if (shouldCreateNewPost) {
-            onCreatePostStart(postWithUserId);
+            onCreatePostStart(postWithUserId, redirectToPostAndShowSuccess);
         } else {
-            onUpdatePostStart(postWithUserId);
+            onUpdatePostStart(postWithUserId, redirectToPostAndShowSuccess);
         }
     };
 
-    const modifiedPost = findModifiedStateItem(createdPost, deletedPost, updatedPost);
-    const requestDidFail = Boolean(modifiedPost.error);
+    const deletePost = useCallback(() => {
+        onDeletePostStart(id, redirectToProfileAndShowSuccess);
+    }, [id, onDeletePostStart, redirectToProfileAndShowSuccess]);
 
-    const clearPostStateIfNeeded = useCallback(() => {
-        if (requestDidFail) {
-            onCreatePostReset();
-            onDeletePostReset();
-            onUpdatePostReset();
-        }
-    }, [requestDidFail, onCreatePostReset, onDeletePostReset, onUpdatePostReset]);
-
-    const deletePost = useCallback(() => onDeletePostStart(id), [id, onDeletePostStart]);
-
-    const redirectToPost = useCallback(() => {
-        push(`${POST}/${id}`);
-    }, [id, push]);
-
-    const redirectToProfile = useCallback(() => {
-        push(PROFILE);
-    }, [push]);
-
-    const shouldFetchPost = id && !currentPost;
-    const shouldRedirectToPost = Boolean(createdPost.item || updatedPost.item);
-    const shouldRedirectToProfile = Boolean(deletedPost.item);
-    const shouldResetPostForNewDraft = !paramId && Boolean(post);
-
-    const shouldGetPost = items?.length > 0 && !post;
+    const shouldResetPostForNewDraft = !paramId && Boolean(selectedPost);
 
     useEffect(() => {
         if (shouldResetPostForNewDraft) {
-            setCurrentPost({});
+            setSelectedPost({});
         }
     }, [shouldResetPostForNewDraft]);
-
-    useEffect(() => {
-        if (shouldGetPost) {
-            onGetPost();
-        }
-
-        if (shouldRedirectToPost) {
-            redirectToPost();
-        } else if (shouldRedirectToProfile) {
-            redirectToProfile();
-        }
-    }, [
-        onGetPost,
-        redirectToPost,
-        redirectToProfile,
-        shouldGetPost,
-        shouldRedirectToPost,
-        shouldRedirectToProfile
-    ]);
-
-    useEffect(() => {
-        if (shouldFetchPost) {
-            onGetPost(id);
-        }
-    }, [id, onGetPost, shouldFetchPost]);
-
-    const isPending =
-        createdPost.isPending ||
-        deletedPost.isPending ||
-        updatedPost.isPending;
-
-    const failedRequestMessage = translateError(
-        createdPost.error ||
-        deletedPost.error ||
-        updatedPost.error
-    );
 
     return (
         <DraftEditor
             deletePost={deletePost}
             handleChange={handleChange}
             handleSubmit={createOrUpdatePost}
-            hidePopup={clearPostStateIfNeeded}
             isPending={isPending}
-            popupText={failedRequestMessage}
-            post={currentPost}
+            post={selectedPost}
         />
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    createdPost: selectCreatedPost,
-    currentUser: selectCurrentUser,
-    deletedPost: selectDeletedPost,
-    fetchedPosts: selectFetchedPosts,
-    post: selectPost,
-    updatedPost: selectUpdatedPost
-});
+const mapStateToProps = () => {
+    return (state, ownProps) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: selectIsPending(state),
+        post: selectPostById(state, +ownProps.match.params.id)
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
-    onCreatePostReset: () => dispatch(createPostReset()),
-    onCreatePostStart: (props) => dispatch(createPostStart(props)),
-    onDeletePostReset: () => dispatch(deletePostReset()),
-    onDeletePostStart: (id) => dispatch(deletePostStart(id)),
-    onFetchPostReset: () => dispatch(fetchPostReset()),
-    onGetPost: (id) => dispatch(getPost(id)),
-    onUpdatePostReset: () => dispatch(updatePostReset()),
-    onUpdatePostStart: (props) => dispatch(updatePostStart(props))
+    onCreatePostStart: (props, cb) => dispatch(createPostStart(props, cb)),
+    onDeletePostStart: (id, cb) => dispatch(deletePostStart(id, cb)),
+    onShowNotification: (notification) => dispatch(showNotification(notification)),
+    onUpdatePostStart: (props, cb) => dispatch(updatePostStart(props, cb))
 });
 
 const ConnectedDraftEditor = connect(

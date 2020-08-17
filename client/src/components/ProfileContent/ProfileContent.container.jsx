@@ -4,12 +4,12 @@ import { createStructuredSelector } from "reselect";
 
 import ProfileContent from "./ProfileContent.component";
 import { defaultProps, propTypes } from "./ProfileContent.container.props";
-import { deletePostReset } from "redux/post/post.actions";
-import { selectDeletedPost } from "redux/post/post.selectors";
+// import { deletePostReset } from "redux/posts/posts.actions";
+// import { selectDeletedPost } from "redux/posts/posts.selectors";
 import { selectUpdatedProfile } from "redux/user/user.selectors";
 import { setCurrentUser } from "redux/session/session.actions";
 import { updateProfileReset } from "redux/user/user.actions";
-import findModifiedStateItem from "utils/redux/findModifiedStateItem";
+// import findModifiedStateItem from "utils/redux/findModifiedStateItem";
 import translateError from "utils/helpers/translateError";
 
 ProfileContentContainer.defaultProps = defaultProps;
@@ -22,7 +22,7 @@ function ProfileContentContainer ({
     onUpdatedProfileReset,
     updatedProfile
 }) {
-    const modifiedItem = findModifiedStateItem(deletedPost, updatedProfile);
+    // const modifiedItem = findModifiedStateItem(deletedPost, updatedProfile);
     const newProfile = updatedProfile.item;
 
     const shouldResetDeletedPost = deletedPost.item;
@@ -50,32 +50,32 @@ function ProfileContentContainer ({
         };
     }, [clearStateIfNeeded, onSetCurrentUser, newProfile]);
 
-    const outOfFieldsError = translateError(modifiedItem.error);
+    // const outOfFieldsError = translateError(modifiedItem.error);
 
-    const popupText = (modifiedItem.item)
-        ? "Сохранено"
-        : outOfFieldsError;
+    // const popupText = (modifiedItem.item)
+    //     ? "Сохранено"
+    //     : outOfFieldsError;
 
-    const popupTheme = (modifiedItem.item)
-        ? "success"
-        : "error";
+    // const popupTheme = (modifiedItem.item)
+    //     ? "success"
+    //     : "error";
 
     return (
         <ProfileContent
             hidePopup={clearStateIfNeeded}
-            popupText={popupText}
-            popupTheme={popupTheme}
+            // popupText={popupText}
+            // popupTheme={popupTheme}
         />
     );
 }
 
 const mapStateToProps = createStructuredSelector({
-    deletedPost: selectDeletedPost,
+    // deletedPost: selectDeletedPost,
     updatedProfile: selectUpdatedProfile
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onDeletePostReset: () => dispatch(deletePostReset()),
+    // onDeletePostReset: () => dispatch(deletePostReset()),
     onSetCurrentUser: (props) => dispatch(setCurrentUser(props)),
     onUpdatedProfileReset: () => dispatch(updateProfileReset())
 });

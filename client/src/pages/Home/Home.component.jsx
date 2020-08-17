@@ -5,18 +5,22 @@ import { createStructuredSelector } from "reselect";
 import Posts from "components/Posts";
 import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Home.props";
-import { fetchPostsStart } from "redux/post/post.actions";
-import { selectFetchedPosts, selectPosts } from "redux/post/post.selectors";
+import { fetchPostsStart } from "redux/posts/posts.actions";
+import { selectIsPending } from "redux/ui/ui.selectors";
+import { selectPosts } from "redux/posts/posts.selectors";
 
 Home.defaultProps = defaultProps;
 Home.propTypes = propTypes;
 
-function Home ({ fetchedPosts, onFetchPostsStart, posts }) {
+function Home ({
+    isPending,
+    onFetchPostsStart,
+    posts
+}) {
     useEffect(() => {
         // onFetchPostsStart(); // TODO: didInvalidate checking or sth?
     }, []);
 
-    const { isPending } = fetchedPosts;
     const postsArray = Object.values(posts);
 
     const propsFromHome = {
@@ -33,7 +37,7 @@ function Home ({ fetchedPosts, onFetchPostsStart, posts }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    fetchedPosts: selectFetchedPosts,
+    isPending: selectIsPending,
     posts: selectPosts
 });
 

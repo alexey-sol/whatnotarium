@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import { defaultProps, propTypes } from "./MyArticles.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectPosts } from "redux/post/post.selectors";
+import { selectPosts } from "redux/posts/posts.selectors";
 import Posts from "components/Posts";
 import styles from "./MyArticles.module.scss";
 
