@@ -16,6 +16,7 @@ import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectIsPending } from "redux/ui/ui.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
 import { showNotification } from "redux/ui/ui.actions";
+import reloadCurrentRoute from "utils/helpers/reloadCurrentRoute";
 
 const successNotification = {
     text: "Готово",
@@ -40,7 +41,7 @@ function DraftEditorContainer ({
     const paramId = match.params.id && +match.params.id;
     const [selectedPost, setSelectedPost] = useState(post);
 
-    const id = paramId || selectedPost?.id; // TODO: do I need selectedPost?.id
+    const id = paramId || selectedPost?.id;
 
     const redirectToPostAndShowSuccess = useCallback(postId => {
         push(`${POST}/${postId}`);
@@ -81,13 +82,13 @@ function DraftEditorContainer ({
         onDeletePostStart(id, redirectToProfileAndShowSuccess);
     }, [id, onDeletePostStart, redirectToProfileAndShowSuccess]);
 
-    const shouldResetPostForNewDraft = !paramId && Boolean(selectedPost);
+    const shouldResetPostForNewDraft = !paramId && Boolean(selectedPost?.id);
 
     useEffect(() => {
         if (shouldResetPostForNewDraft) {
-            setSelectedPost({});
+            reloadCurrentRoute(history);
         }
-    }, [shouldResetPostForNewDraft]);
+    }, [history, shouldResetPostForNewDraft]);
 
     return (
         <DraftEditor

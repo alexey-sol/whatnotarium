@@ -6,30 +6,20 @@ import classnames from "classnames";
 
 import { DRAFT } from "utils/const/pathnames";
 import { defaultProps, propTypes } from "./Navbar.props";
-// import { selectCurrentPost } from "redux/post/posts.selectors";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./Navbar.module.scss";
 
 Navbar.defaultProps = defaultProps;
 Navbar.propTypes = propTypes;
 
-function Navbar ({ currentPost, currentUser }) {
+function Navbar ({ currentUser }) {
     const userIsAuthed = Boolean(currentUser);
-    // const postIsModified = Boolean(currentPost.actionType);
-    // const shouldDisableWritePost = postIsModified;
-    // TODO: or if in Draft alraedy
-
-    const writePostItemClassName = classnames(
-        styles.item,
-        styles.prominent
-        // (shouldDisableWritePost) ? styles.disabled : ""
-    );
 
     return (
         <div className={styles.container}>
             <ul className={styles.list}>
                 {userIsAuthed && (
-                    <li className={writePostItemClassName}>
+                    <li className={classnames(styles.item, styles.prominent)}>
                         <Link
                             title="Написать статью"
                             to={DRAFT}
@@ -71,7 +61,6 @@ function Navbar ({ currentPost, currentUser }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-    // currentPost: selectCurrentPost,
     currentUser: selectCurrentUser
 });
 

@@ -1,13 +1,6 @@
 
 import { Editor } from "@tinymce/tinymce-react";
-
-import React, {
-    useCallback,
-    useEffect,
-    useRef,
-    useState
-} from "react";
-
+import React, { useCallback, useRef, useState } from "react";
 import classnames from "classnames";
 
 import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
@@ -19,6 +12,7 @@ import Spinner from "components/Spinner";
 import StringFormatter from "utils/formatters/StringFormatter";
 import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./DraftEditor.component.props";
+import getMceEditorInitOptions from "utils/options/getMceEditorInitOptions";
 import styles from "./DraftEditor.module.scss";
 
 const tinyApiKey = process.env.REACT_APP_TINY_API_KEY;
@@ -33,14 +27,9 @@ function DraftEditor ({
     isPending,
     post
 }) {
-    // TODO: should I keep selectedPost state in this component?
-
-    // TODO: bug. select post -> написать статью -> create new post -> написать статью while popup is on -> type in something
-    // First keypress will be ignored
+    const charsCountRef = useRef(null);
     const [editor, setEditor] = useState(null);
     const [bodyLength, setBodyLength] = useState(0);
-
-    const charsCountRef = useRef(null);
 
     const editorContainerClassName = classnames(
         styles.editorContainer,
@@ -69,7 +58,6 @@ function DraftEditor ({
         .formatByPattern("YYYY, MMM DD");
 
     const bodyLengthIsTooLong = bodyLength > POST_BODY_LENGTH;
-    // const bodyDidChange = bodyLength > 0;
     const deleteButtonIsDisabled = isPending || !post?.id;
     const saveButtonIsDisabled = isPending || bodyLengthIsTooLong;
     const shouldHideCharsCount = bodyLength > 0;
@@ -79,14 +67,6 @@ function DraftEditor ({
         (shouldHideCharsCount) ? "" : styles.hidden,
         (bodyLengthIsTooLong) ? styles.bodyError : ""
     );
-
-    useEffect(() => {
-        const shouldResetContent = editor && !post?.body;
-
-        if (shouldResetContent) {
-            editor.setContent("");
-        }
-    }, [editor, post]);
 
     return (
         <article className={styles.container}>
@@ -113,7 +93,7 @@ function DraftEditor ({
                         <Editor
                             apiKey={tinyApiKey}
                             initialValue={post?.body || ""}
-                            init={getEditorInitOptions(setEditor)}
+                            init={getMceEditorInitOptions(setEditor)}
                             onEditorChange={handleBodyChange}
                             textareaName="body"
                         />
@@ -163,34 +143,3 @@ function DraftEditor ({
 }
 
 export default DraftEditor;
-
-function getEditorInitOptions (setEditor) {
-    const contentStyle = `body {
-        font-family: Roboto, Helvetica, Arial, sans-serif;
-        font-size: 16px;
-        color: #141414;
-    }`;
-
-    const plugins = [
-        "advlist autolink lists link image charmap print preview anchor",
-        "searchreplace visualblocks fullscreen",
-        "insertdatetime media table paste help wordcount"
-    ];
-
-    const toolbar = `formatselect | bold italic underline |
-        alignleft aligncenter alignright alignjustify |
-        bullist numlist | removeformat"`;
-
-    return {
-        content_style: contentStyle,
-        height: 500,
-        menubar: false,
-        min_height: 200,
-        min_width: 300,
-        plugins,
-        resize: false,
-        setup: (editor) => editor.on("init", () => setEditor(editor)),
-        statusbar: false,
-        toolbar
-    };
-}
