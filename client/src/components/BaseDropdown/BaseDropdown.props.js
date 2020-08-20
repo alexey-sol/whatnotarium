@@ -18,12 +18,8 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-
     className: string,
-
     elemRef: object.isRequired,
-
     isFixed: bool,
-
     onClose: func.isRequired
 };

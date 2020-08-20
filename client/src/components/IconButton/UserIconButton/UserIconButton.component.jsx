@@ -23,7 +23,8 @@ function UserIconButton ({
     const title = username || "Учетная запись";
 
     const { pathname } = location;
-    const isSignInPage = pathname === SIGN_IN;
+    const isSignInPage = pathname === `/${SIGN_IN}`;
+    // TODO: should this component be aware of sign in?
 
     return (
         <IconButton

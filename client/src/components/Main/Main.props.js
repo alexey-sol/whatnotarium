@@ -16,8 +16,6 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-
     onHideNotification: func.isRequired,
-
     notification: object
 };

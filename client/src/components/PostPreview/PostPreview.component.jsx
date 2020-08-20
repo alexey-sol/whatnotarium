@@ -41,7 +41,7 @@ function PostPreview ({
             <Link
                 className={styles.content}
                 title="Развернуть статью"
-                to={`${POST}/${id}`}
+                to={`/${POST}/${id}`}
             >
                 <header className={styles.title}>
                     {title}

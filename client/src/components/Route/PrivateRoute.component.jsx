@@ -17,7 +17,7 @@ function PrivateRoute ({
 }) {
     const renderComponent = (props) => (currentUser)
         ? <Component {...props} />
-        : <Redirect to={SIGN_IN} />;
+        : <Redirect to={`/${SIGN_IN}`} />;
 
     return (
         <Route

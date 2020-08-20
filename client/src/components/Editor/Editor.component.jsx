@@ -1,3 +1,27 @@
+import { Editor as MceEditor } from "@tinymce/tinymce-react";
+import React from "react";
+
+import { defaultProps, propTypes } from "./Editor.props";
+
+const tinyApiKey = process.env.REACT_APP_TINY_API_KEY;
+
+Editor.defaultProps = defaultProps;
+Editor.propTypes = propTypes;
+
+function Editor ({ content, handleChange, setEditor }) {
+    return (
+        <MceEditor
+            apiKey={tinyApiKey}
+            initialValue={content}
+            init={getMceEditorInitOptions(setEditor)}
+            onEditorChange={handleChange}
+            textareaName="body"
+        />
+    );
+}
+
+export default Editor;
+
 function getMceEditorInitOptions (setEditor) {
     const contentStyle = `body {
         font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -28,5 +52,3 @@ function getMceEditorInitOptions (setEditor) {
         toolbar
     };
 }
-
-export default getMceEditorInitOptions;

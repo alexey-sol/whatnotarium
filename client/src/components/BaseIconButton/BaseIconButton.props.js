@@ -23,16 +23,10 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-
     className: string,
-
     disabled: bool,
-
     onClick: func.isRequired,
-
     size: number,
-
     theme: oneOf(["light", "dark"]),
-
     title: string
 };

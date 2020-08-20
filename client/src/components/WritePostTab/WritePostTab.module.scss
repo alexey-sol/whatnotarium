@@ -1,0 +1,14 @@
+@import "styles/style.scss";
+
+.button {
+    width: 100%;
+    border: 0;
+    padding-left: 1.5rem;
+    background-color: transparent;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
+    color: $menu-item-color;
+    text-align: left;
+    outline: none;
+    cursor: pointer;
+}

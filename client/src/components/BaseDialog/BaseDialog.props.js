@@ -19,12 +19,8 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-
     className: string,
-
     onClose: func.isRequired,
-
     title: string,
-
     width: oneOf(["auto", "fixed"])
 };

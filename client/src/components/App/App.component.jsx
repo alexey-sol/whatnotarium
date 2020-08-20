@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import {
     DRAFT,
+    EDIT,
     POST,
     PROFILE,
     SIGN_IN
@@ -52,27 +53,27 @@ export function App ({ onCheckSessionStart, onFetchPostsStart }) {
 
                             <Route
                                 component={SignIn}
-                                path={SIGN_IN}
+                                path={`/${SIGN_IN}`}
                             />
 
                             <PrivateRoute
                                 component={Profile}
-                                path={PROFILE}
+                                path={`/${PROFILE}`}
                             />
 
                             <PrivateRoute
                                 component={Draft}
-                                path={DRAFT}
+                                path={`/${DRAFT}`}
                             />
 
                             <PrivateRoute
                                 component={Draft}
-                                path={`${POST}/:id/edit`}
+                                path={`/${POST}/:id/${EDIT}`}
                             />
 
                             <Route
                                 component={Post}
-                                path={`${POST}/:id`}
+                                path={`/${POST}/:id`}
                             />
 
                             <Route component={Page404} />

@@ -16,8 +16,6 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-
     onClose: func.isRequired,
-
     rootClassName: string
 };

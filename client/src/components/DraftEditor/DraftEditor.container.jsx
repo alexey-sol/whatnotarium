@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { POST, PROFILE } from "utils/const/pathnames";
+import { RESET_POST } from "utils/const/events";
 import DraftEditor from "./DraftEditor.component";
 
 import {
@@ -16,7 +17,7 @@ import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectIsPending } from "redux/ui/ui.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
 import { showNotification } from "redux/ui/ui.actions";
-import reloadCurrentRoute from "utils/helpers/reloadCurrentRoute";
+import pubsub from "utils/pubsub";
 
 const successNotification = {
     text: "Готово",
@@ -44,12 +45,12 @@ function DraftEditorContainer ({
     const id = paramId || selectedPost?.id;
 
     const redirectToPostAndShowSuccess = useCallback(postId => {
-        push(`${POST}/${postId}`);
+        push(`/${POST}/${postId}`);
         onShowNotification(successNotification);
     }, [onShowNotification, push]);
 
     const redirectToProfileAndShowSuccess = useCallback(() => {
-        push(PROFILE);
+        push(`/${PROFILE}`);
         onShowNotification(successNotification);
     }, [onShowNotification, push]);
 
@@ -86,7 +87,7 @@ function DraftEditorContainer ({
 
     useEffect(() => {
         if (shouldResetPostForNewDraft) {
-            reloadCurrentRoute(history);
+            pubsub.publish(RESET_POST);
         }
     }, [history, shouldResetPostForNewDraft]);
 
@@ -97,6 +98,7 @@ function DraftEditorContainer ({
             handleSubmit={createOrUpdatePost}
             isPending={isPending}
             post={selectedPost}
+            setSelectedPost={setSelectedPost}
         />
     );
 }

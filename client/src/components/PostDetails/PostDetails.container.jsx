@@ -20,7 +20,7 @@ function PostDetailsContainer ({
     const { push } = history;
     const id = +match.params.id;
 
-    const redirectToDraft = useCallback(() => push(`${POST}/${id}/edit`), [id, push]);
+    const redirectToDraft = useCallback(() => push(`/${POST}/${id}/edit`), [id, push]);
 
     return (
         <PostDetails

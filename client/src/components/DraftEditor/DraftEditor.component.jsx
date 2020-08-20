@@ -1,21 +1,26 @@
+import DOMPurify from "dompurify";
 
-import { Editor } from "@tinymce/tinymce-react";
-import React, { useCallback, useRef, useState } from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
+
 import classnames from "classnames";
 
 import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
+import { RESET_POST } from "utils/const/events";
 import BaseButton from "components/BaseButton";
 import DateFormatter from "utils/formatters/DateFormatter";
-import DOMPurify from "dompurify";
+import Editor from "components/Editor";
 import Input from "components/Input";
 import Spinner from "components/Spinner";
 import StringFormatter from "utils/formatters/StringFormatter";
 import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./DraftEditor.component.props";
-import getMceEditorInitOptions from "utils/options/getMceEditorInitOptions";
+import pubsub from "utils/pubsub";
 import styles from "./DraftEditor.module.scss";
-
-const tinyApiKey = process.env.REACT_APP_TINY_API_KEY;
 
 DraftEditor.defaultProps = defaultProps;
 DraftEditor.propTypes = propTypes;
@@ -25,7 +30,8 @@ function DraftEditor ({
     handleChange,
     handleSubmit,
     isPending,
-    post
+    post,
+    setSelectedPost
 }) {
     const charsCountRef = useRef(null);
     const [editor, setEditor] = useState(null);
@@ -68,6 +74,23 @@ function DraftEditor ({
         (bodyLengthIsTooLong) ? styles.bodyError : ""
     );
 
+    const resetPost = useCallback(() => {
+        // That's funny but the order here matters. Editor should be reset first.
+        // Otherwise editor content and title will be reset one by one, not
+        // simultaneously.
+
+        if (editor) {
+            editor.resetContent();
+        }
+
+        setSelectedPost(null);
+    }, [editor, setSelectedPost]);
+
+    useEffect(() => {
+        pubsub.subscribe(RESET_POST, resetPost);
+        return () => pubsub.unsubscribe(RESET_POST, resetPost);
+    }, [resetPost]);
+
     return (
         <article className={styles.container}>
             {!editor && <Spinner />}
@@ -91,11 +114,9 @@ function DraftEditor ({
 
                     <section className={styles.body}>
                         <Editor
-                            apiKey={tinyApiKey}
-                            initialValue={post?.body || ""}
-                            init={getMceEditorInitOptions(setEditor)}
-                            onEditorChange={handleBodyChange}
-                            textareaName="body"
+                            content={post?.body}
+                            handleChange={handleBodyChange}
+                            setEditor={setEditor}
                         />
                     </section>
 

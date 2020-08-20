@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
-import { DRAFT } from "utils/const/pathnames";
+import WritePostTab from "components/WritePostTab";
 import { defaultProps, propTypes } from "./Navbar.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./Navbar.module.scss";
@@ -20,12 +20,7 @@ function Navbar ({ currentUser }) {
             <ul className={styles.list}>
                 {userIsAuthed && (
                     <li className={classnames(styles.item, styles.prominent)}>
-                        <Link
-                            title="Написать статью"
-                            to={DRAFT}
-                        >
-                            Написать статью
-                        </Link>
+                        <WritePostTab />
                     </li>
                 )}
 
