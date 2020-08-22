@@ -1,12 +1,5 @@
-import { func, string } from "prop-types";
-
-export const defaultProps = {
-    popupText: "",
-    popupTheme: ""
-};
+import { object } from "prop-types";
 
 export const propTypes = {
-    hidePopup: func.isRequired,
-    popupText: string,
-    popupTheme: string
+    currentUser: object.isRequired
 };

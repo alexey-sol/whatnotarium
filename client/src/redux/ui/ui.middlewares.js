@@ -1,3 +1,4 @@
+import { ERROR } from "utils/const/notificationTypes";
 import { setPendingOff, setPendingOn, showNotification } from "./ui.actions";
 import translateError from "utils/helpers/translateError";
 
@@ -17,7 +18,7 @@ export const uiSplitter = ({ dispatch }) => (next) => (action) => {
     if (shouldShowError) {
         const notification = {
             text: translateError(payload.error),
-            type: "error"
+            type: ERROR
         };
 
         dispatch(showNotification(notification));

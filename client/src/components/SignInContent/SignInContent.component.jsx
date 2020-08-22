@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { EMAIL, PASSWORD } from "utils/const/userData";
+import { ERROR } from "utils/const/notificationTypes";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import Input from "components/Input";
@@ -157,7 +158,7 @@ function SignInContent ({
                 <Popup
                     onClose={clearSessionState}
                     text={outOfFieldsError}
-                    theme="error"
+                    theme={ERROR}
                 />
             )}
         </div>

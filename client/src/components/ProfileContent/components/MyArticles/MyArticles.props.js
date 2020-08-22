@@ -1,10 +1,10 @@
-import { object } from "prop-types";
+import { array, object } from "prop-types";
 
 export const defaultProps = {
-    posts: {}
+    userPosts: []
 };
 
 export const propTypes = {
     currentUser: object.isRequired,
-    posts: object
+    userPosts: array
 };

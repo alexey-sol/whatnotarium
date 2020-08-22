@@ -2,9 +2,9 @@ import * as types from "./posts.types";
 
 const INITIAL_STATE = {
     error: null,
-    items: {},
+    items: new Map(),
     totalCount: 0
-};
+}; // TODO: create a new item "postsByUser"? With userIds as keys.
 
 function postReducer (state = INITIAL_STATE, action = {}) {
     const { payload, type } = action;
@@ -13,7 +13,6 @@ function postReducer (state = INITIAL_STATE, action = {}) {
         case types.CREATE_POST_FAILURE:
         case types.DELETE_POST_FAILURE:
         case types.FETCH_POST_FAILURE:
-        case types.FETCH_POSTS_FAILURE:
         case types.UPDATE_POST_FAILURE:
             return {
                 ...state,
@@ -41,6 +40,13 @@ function postReducer (state = INITIAL_STATE, action = {}) {
                 ...state,
                 error: null,
                 items: payload.items
+            };
+
+        case types.FETCH_POSTS_FAILURE:
+            return {
+                ...state,
+                error: payload.error,
+                items: new Map()
             };
 
         case types.FETCH_POSTS_SUCCESS:

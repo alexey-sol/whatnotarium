@@ -1,5 +1,5 @@
 import * as types from "./posts.types";
-import convertItemsArrayToObject from "utils/redux/convertItemsArrayToObject";
+import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import updatePayloadForCreatedItem from "utils/redux/updatePayloadForCreatedItem";
 import updatePayloadForDeletedItem from "utils/redux/updatePayloadForDeletedItem";
 import updatePayloadForFetchedOrUpdatedItem from "utils/redux/updatePayloadForFetchedOrUpdatedItem";
@@ -11,7 +11,7 @@ export const postsNormalizer = () => (next) => (action) => {
     if (type === types.FETCH_POSTS_SUCCESS) {
         actionWithNormalizedPayload.payload = {
             ...payload,
-            items: convertItemsArrayToObject(payload.items)
+            items: convertItemsArrayToMap(payload.items)
         };
     }
 

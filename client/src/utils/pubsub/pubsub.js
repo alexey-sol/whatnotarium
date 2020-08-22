@@ -1,23 +1,29 @@
 const pubsub = {
-    events: {},
+    _events: {},
 
-    subscribe: (eventName, fn) => {
-        if (!pubsub.events[eventName]) {
-            pubsub.events[eventName] = [];
+    subscribe (eventName, fn) {
+        const shouldCreateNewList = !this._events[eventName];
+
+        if (shouldCreateNewList) {
+            this._events[eventName] = [];
         }
 
-        pubsub.events[eventName].push(fn);
+        this._events[eventName].push(fn);
     },
 
-    unsubscribe: (eventName, fn) => {
-        if (pubsub.events[eventName]) {
-            pubsub.events[eventName] = pubsub.events[eventName].filter(func => func !== fn);
+    unsubscribe (eventName, fn) {
+        const eventFns = this._events[eventName];
+
+        if (eventFns) {
+            this._events[eventName] = eventFns.filter(eventFn => eventFn !== fn);
         }
     },
 
-    publish: (eventName, data) => {
-        if (pubsub.events[eventName]) {
-            pubsub.events[eventName].forEach(func => func(data));
+    publish (eventName, data) {
+        const eventFns = this._events[eventName];
+
+        if (eventFns) {
+            eventFns.forEach(eventFn => eventFn(data));
         }
     }
 };

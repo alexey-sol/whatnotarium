@@ -21,11 +21,9 @@ function Home ({
         // onFetchPostsStart(); // TODO: didInvalidate checking or sth?
     }, []);
 
-    const postsArray = Object.values(posts);
-
     const propsFromHome = {
         isPending,
-        posts: postsArray
+        posts
     };
 
     const HomeWithSpinner = WithSpinner(

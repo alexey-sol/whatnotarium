@@ -26,6 +26,7 @@ import {
 } from "utils/validators/UserValidator";
 
 import hints from "utils/resources/text/hints";
+import phrases from "utils/resources/text/commonPhrases";
 import styles from "./SignUpContent.module.scss";
 import translateError from "utils/helpers/translateError";
 import useForm from "utils/hooks/useForm.jsx";
@@ -159,7 +160,7 @@ function SignUpContent ({
 
             <BaseButton
                 className={styles.signUpButton}
-                text="Готово"
+                text={phrases.done}
                 theme="dark"
             />
 

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
+import { ERROR, SUCCESS } from "utils/const/notificationTypes";
 import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./Main.props";
 import { hideNotification } from "redux/ui/ui.actions";
@@ -11,16 +12,12 @@ import styles from "./Main.module.scss";
 Main.defaultProps = defaultProps;
 Main.propTypes = propTypes;
 
-function Main ({
-    children,
-    onHideNotification,
-    notification
-}) {
-    const didErrorOccur = notification?.type === "error";
+function Main ({ children, onHideNotification, notification }) {
+    const didErrorOccur = notification?.type === ERROR;
 
     const popupTheme = (didErrorOccur)
-        ? "error"
-        : "success";
+        ? ERROR
+        : SUCCESS;
 
     return (
         <main className={styles.container}>

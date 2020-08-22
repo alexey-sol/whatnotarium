@@ -9,9 +9,12 @@ import styles from "./Popup.module.scss";
 Popup.defaultProps = defaultProps;
 Popup.propTypes = propTypes;
 
-function Popup ({ onClose, text, theme }) {
-    // TODO: add custom timeout
-    const timeoutInMs = 3000;
+function Popup ({
+    onClose,
+    text,
+    theme,
+    timeoutInMs
+}) {
     const timerRef = useRef(null);
 
     const popupClassName = classnames(
@@ -28,7 +31,7 @@ function Popup ({ onClose, text, theme }) {
 
         document.addEventListener("keydown", onKeydown);
         return () => document.removeEventListener("keydown", onKeydown);
-    }, [onClose]);
+    }, [onClose, timeoutInMs]);
 
     const tooltipElem = (
         <div className={popupClassName}>

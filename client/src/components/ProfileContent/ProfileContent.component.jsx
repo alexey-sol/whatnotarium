@@ -4,10 +4,9 @@ import classnames from "classnames";
 import Activity from "./components/Activity";
 import MyArticles from "./components/MyArticles";
 import MyNotes from "./components/MyNotes";
-import Popup from "components/Popup";
 import Settings from "./components/Settings";
+import { propTypes } from "./ProfileContent.component.props";
 import styles from "./ProfileContent.module.scss";
-import { defaultProps, propTypes } from "./ProfileContent.component.props";
 
 const tabNames = [
     "Активность",
@@ -16,14 +15,9 @@ const tabNames = [
     "Настройки"
 ];
 
-ProfileContent.defaultProps = defaultProps;
 ProfileContent.propTypes = propTypes;
 
-function ProfileContent ({
-    hidePopup,
-    popupText,
-    popupTheme
-}) {
+function ProfileContent ({ currentUser }) {
     const [currentTab, setCurrentTab] = useState(tabNames[0]);
 
     const tabs = tabNames.map((tabName, index) => (
@@ -41,12 +35,10 @@ function ProfileContent ({
         </li>
     ));
 
-    const tabIsActivity = currentTab === tabNames[0];
-    const tabIsMyArticles = currentTab === tabNames[1];
-    const tabIsMyNotes = currentTab === tabNames[2];
-    const tabIsSettings = currentTab === tabNames[3];
-
-    const popupIsShown = Boolean(popupText);
+    const activityIsSelected = currentTab === tabNames[0];
+    const myArticlesIsSelected = currentTab === tabNames[1];
+    const myNotesIsSelected = currentTab === tabNames[2];
+    const settingsIsSelected = currentTab === tabNames[3];
 
     return (
         <div className={styles.container}>
@@ -55,19 +47,11 @@ function ProfileContent ({
             </ul>
 
             <div className={styles.tabContent}>
-                {tabIsActivity && <Activity />}
-                {tabIsMyArticles && <MyArticles />}
-                {tabIsMyNotes && <MyNotes />}
-                {tabIsSettings && <Settings />}
+                {activityIsSelected && <Activity />}
+                {myArticlesIsSelected && <MyArticles currentUser={currentUser} />}
+                {myNotesIsSelected && <MyNotes />}
+                {settingsIsSelected && <Settings />}
             </div>
-
-            {popupIsShown && (
-                <Popup
-                    onClose={hidePopup}
-                    text={popupText}
-                    theme={popupTheme}
-                />
-            )}
         </div>
     );
 }

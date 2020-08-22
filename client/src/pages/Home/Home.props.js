@@ -1,4 +1,4 @@
-import { bool, func, object } from "prop-types";
+import { array, bool, func } from "prop-types";
 
 export const defaultProps = {
     isPending: false,
@@ -8,5 +8,5 @@ export const defaultProps = {
 export const propTypes = {
     isPending: bool,
     onFetchPostsStart: func.isRequired,
-    posts: object
+    posts: array
 };

@@ -1,33 +1,27 @@
-import _ from "lodash";
 import React from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { defaultProps, propTypes } from "./MyArticles.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectPosts } from "redux/posts/posts.selectors";
+import { selectUserPosts } from "redux/posts/posts.selectors";
 import Posts from "components/Posts";
 import styles from "./MyArticles.module.scss";
 
 MyArticles.defaultProps = defaultProps;
 MyArticles.propTypes = propTypes;
 
-function MyArticles ({ currentUser, posts }) {
-    const userPosts = _.pickBy(posts, ({ userId }) => {
-        return userId === currentUser.id;
-    });
-
+function MyArticles ({ userPosts }) {
     return (
         <div className={styles.container}>
-            <Posts posts={Object.values(userPosts)} />
+            <Posts posts={userPosts} />
         </div>
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    posts: selectPosts
-});
+const mapStateToProps = () => {
+    return (state, ownProps) => ({
+        userPosts: selectUserPosts(state, ownProps.currentUser.id)
+    });
+};
 
 const ConnectedMyArticles = connect(
     mapStateToProps

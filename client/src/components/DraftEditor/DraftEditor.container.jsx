@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import { POST, PROFILE } from "utils/const/pathnames";
 import { RESET_POST } from "utils/const/events";
+import { SUCCESS } from "utils/const/notificationTypes";
 import DraftEditor from "./DraftEditor.component";
 
 import {
@@ -17,11 +18,12 @@ import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectIsPending } from "redux/ui/ui.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
 import { showNotification } from "redux/ui/ui.actions";
+import phrases from "utils/resources/text/commonPhrases";
 import pubsub from "utils/pubsub";
 
 const successNotification = {
-    text: "Готово",
-    type: "success"
+    text: phrases.done,
+    type: SUCCESS
 };
 
 DraftEditorContainer.defaultProps = defaultProps;
@@ -89,7 +91,7 @@ function DraftEditorContainer ({
         if (shouldResetPostForNewDraft) {
             pubsub.publish(RESET_POST);
         }
-    }, [history, shouldResetPostForNewDraft]);
+    }, [shouldResetPostForNewDraft]);
 
     return (
         <DraftEditor
