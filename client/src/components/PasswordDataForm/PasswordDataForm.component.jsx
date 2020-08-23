@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
-import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
+// import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
@@ -17,7 +17,7 @@ import {
     validatePassword
 } from "utils/validators/UserValidator";
 
-import hints from "utils/resources/text/hints";
+import hints from "utils/resources/text/ru/hints";
 import styles from "./PasswordDataForm.module.scss";
 import useForm from "utils/hooks/useForm.jsx";
 
@@ -95,9 +95,9 @@ function PasswordDataForm ({
         password: passwordError
     } = errors;
 
-    const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
-        ? hints.weakPassword
-        : "";
+    // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
+    //     ? hints.weakPassword
+    //     : "";
 
     return (
         <form
@@ -115,7 +115,7 @@ function PasswordDataForm ({
 
             <Input
                 error={newPasswordError}
-                errorTooltipText={weakPasswordHint}
+                // errorTooltipText={weakPasswordHint}
                 hasFixedTooltip
                 label="Новый пароль"
                 name={NEW_PASSWORD}

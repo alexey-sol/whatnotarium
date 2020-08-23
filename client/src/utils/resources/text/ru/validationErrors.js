@@ -1,0 +1,9 @@
+export const CONFIRM_PASSWORD_EMPTY = "Пожалуйста, введите пароль еще раз";
+export const CONFIRM_PASSWORD_NOT_MATCH = "Пароли не совпадают";
+export const EMAIL_EMPTY = "Пожалуйста, укажите email";
+export const EMAIL_INVALID = "Указан некорректный email";
+export const NAME_EMPTY = "Указан некорректный email";
+export const NAME_TOO_LONG = "Имя слишком длинное";
+export const NAME_TOO_SHORT = "Имя слишком короткое";
+export const PASSWORD_EMPTY = "Пожалуйста, введите пароль";
+export const PASSWORD_TOO_WEAK = "Пожалуйста, придумайте пароль посложнее (*)";

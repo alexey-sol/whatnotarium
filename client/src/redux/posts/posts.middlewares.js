@@ -1,4 +1,5 @@
 import * as types from "./posts.types";
+import { POSTS_PREFIX } from "../../utils/const/actionTypeAffixes";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import updatePayloadForCreatedItem from "utils/redux/updatePayloadForCreatedItem";
 import updatePayloadForDeletedItem from "utils/redux/updatePayloadForDeletedItem";
@@ -20,8 +21,9 @@ export const postsNormalizer = () => (next) => (action) => {
 
 export const postsEnricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
+    const shouldIgnoreAction = payload?.error || !type.startsWith(POSTS_PREFIX);
 
-    if (payload?.error) {
+    if (shouldIgnoreAction) {
         return next(action);
     }
 

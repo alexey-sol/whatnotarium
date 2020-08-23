@@ -2,7 +2,7 @@ import types from "./session.types";
 
 export function checkSessionFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.CHECK_SESSION_FAILURE
     };
 }
@@ -13,9 +13,9 @@ export function checkSessionStart () {
     };
 }
 
-export function checkSessionSuccess (currentUser) {
+export function checkSessionSuccess (item) {
     return {
-        payload: currentUser,
+        payload: { item },
         type: types.CHECK_SESSION_SUCCESS
     };
 }
@@ -26,7 +26,7 @@ export function clearCurrentUser () {
     };
 }
 
-export function clearError () {
+export function clearError () { // TODO: reset
     return {
         type: types.CLEAR_ERROR
     };
@@ -41,14 +41,14 @@ export function setCurrentUser (payload) {
 
 export function setError (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.SET_ERROR
     };
 }
 
 export function signInFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.SIGN_IN_FAILURE
     };
 }
@@ -60,16 +60,16 @@ export function signInStart (credentials) {
     };
 }
 
-export function signInSuccess (currentUser) {
+export function signInSuccess (item) {
     return {
-        payload: currentUser,
+        payload: { item },
         type: types.SIGN_IN_SUCCESS
     };
 }
 
 export function signOutFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.SIGN_OUT_FAILURE
     };
 }
@@ -88,7 +88,7 @@ export function signOutSuccess () {
 
 export function signUpFailure (error) {
     return {
-        payload: error,
+        payload: { error },
         type: types.SIGN_UP_FAILURE
     };
 }
@@ -100,9 +100,9 @@ export function signUpStart (credentials) {
     };
 }
 
-export function signUpSuccess (currentUser) {
+export function signUpSuccess (item) {
     return {
-        payload: currentUser,
+        payload: { item },
         type: types.SIGN_UP_SUCCESS
     };
 }

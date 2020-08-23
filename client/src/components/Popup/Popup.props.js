@@ -5,13 +5,13 @@ import {
     string
 } from "prop-types";
 
-import { ERROR, SUCCESS, WARNING } from "utils/const/notificationTypes";
+import { ERROR, SUCCESS, WARNING } from "utils/const/notificationProps";
 
 export const defaultProps = {
     isFixed: false,
     text: "",
     theme: SUCCESS,
-    timeoutInMs: 3000
+    timeoutInMs: null
 };
 
 export const propTypes = {

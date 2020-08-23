@@ -10,7 +10,7 @@ import {
     PASSWORD
 } from "utils/const/userData";
 
-import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
+// import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
 import Input from "components/Input";
 import Popup from "components/Popup";
@@ -25,8 +25,8 @@ import {
     validateNewPassword
 } from "utils/validators/UserValidator";
 
-import hints from "utils/resources/text/hints";
-import phrases from "utils/resources/text/commonPhrases";
+import hints from "utils/resources/text/ru/hints";
+import phrases from "utils/resources/text/ru/commonPhrases";
 import styles from "./SignUpContent.module.scss";
 import translateError from "utils/helpers/translateError";
 import useForm from "utils/hooks/useForm.jsx";
@@ -105,9 +105,9 @@ function SignUpContent ({
         password: passwordError
     } = errors;
 
-    const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
-        ? hints.weakPassword
-        : "";
+    // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
+    //     ? hints.weakPassword
+    //     : "";
 
     const clearSessionState = useCallback(() => onClearError(), [onClearError]);
 
@@ -140,7 +140,7 @@ function SignUpContent ({
 
             <Input
                 error={passwordError}
-                errorTooltipText={weakPasswordHint}
+                // errorTooltipText={weakPasswordHint}
                 hasFixedTooltip
                 label="Пароль"
                 name={PASSWORD}

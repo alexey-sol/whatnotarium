@@ -1,23 +1,21 @@
-import { ERROR } from "utils/const/notificationTypes";
-import { setPendingOff, setPendingOn, showNotification } from "./ui.actions";
+import { DEFAULT_TIMEOUT_IN_MS, ERROR } from "utils/const/notificationProps";
+import { showNotification } from "./ui.actions";
+import sessionTypes from "redux/session/session.types";
 import translateError from "utils/helpers/translateError";
+import userTypes from "redux/user/user.types";
 
-export const uiSplitter = ({ dispatch }) => (next) => (action) => {
+export const uiMapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
-
-    const shouldSetPendingOn = type.endsWith("_START");
-    const shouldSetPendingOff = type.endsWith("_FAILURE") || type.endsWith("_SUCCESS");
     const shouldShowError = Boolean(payload?.error);
 
-    if (shouldSetPendingOn) {
-        dispatch(setPendingOn());
-    } else if (shouldSetPendingOff) {
-        dispatch(setPendingOff());
-    }
-
     if (shouldShowError) {
-        const notification = {
+        const shouldBePersistent = checkIfShouldBePersistent(type);
+
+        const notification = { // TODO: create Notification class
             text: translateError(payload.error),
+            timeoutInMs: (shouldBePersistent)
+                ? null
+                : DEFAULT_TIMEOUT_IN_MS,
             type: ERROR
         };
 
@@ -26,3 +24,11 @@ export const uiSplitter = ({ dispatch }) => (next) => (action) => {
 
     next(action);
 };
+
+function checkIfShouldBePersistent (type) {
+    return ( // TODO: check if is any session type?
+        type === sessionTypes.SIGN_IN_FAILURE ||
+        type === sessionTypes.SIGN_UP_FAILURE ||
+        type === userTypes.UPDATE_PROFILE_FAILURE
+    );
+}

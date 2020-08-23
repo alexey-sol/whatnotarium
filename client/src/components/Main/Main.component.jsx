@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { ERROR, SUCCESS } from "utils/const/notificationTypes";
+import { ERROR, SUCCESS } from "utils/const/notificationProps";
 import Popup from "components/Popup";
 import { defaultProps, propTypes } from "./Main.props";
 import { hideNotification } from "redux/ui/ui.actions";
@@ -26,8 +26,9 @@ function Main ({ children, onHideNotification, notification }) {
             {Boolean(notification) && (
                 <Popup
                     onClose={onHideNotification}
-                    text={notification?.text}
+                    text={notification.text}
                     theme={popupTheme}
+                    timeoutInMs={notification.timeoutInMs}
                 />
             )}
         </main>

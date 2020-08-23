@@ -1,79 +1,45 @@
+import { Form, Formik } from "formik";
 import { Redirect } from "react-router";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { EMAIL, PASSWORD } from "utils/const/userData";
-import { ERROR } from "utils/const/notificationTypes";
+import { HIDE_NOTIFICATION } from "utils/const/events";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
-import Input from "components/Input";
-import Popup from "components/Popup";
-import { clearError, signInStart } from "redux/session/session.actions";
+import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignInContent.props";
-import { selectCurrentUser, selectError } from "redux/session/session.selectors";
-import { validateEmail, validatePassword } from "utils/validators/UserValidator";
+import { selectCurrentUser, selectIsPending } from "redux/session/session.selectors";
+import { selectNotification } from "redux/ui/ui.selectors";
+import { signInStart } from "redux/session/session.actions";
+import pubsub from "utils/pubsub";
+import signInSchema from "utils/validators/shemas/signIn";
 import styles from "./SignInContent.module.scss";
-import translateError from "utils/helpers/translateError";
-import useForm from "utils/hooks/useForm.jsx";
 
 SignInContent.defaultProps = defaultProps;
 SignInContent.propTypes = propTypes;
 
-const initialFields = {
+const initialValues = {
     email: "",
     password: ""
 };
 
 function SignInContent ({
     currentUser,
-    onClearError,
+    isPending,
+    notification,
     onClose,
     onSignInStart,
-    sessionError,
     showSignUp
 }) {
-    const outOfFieldsError = translateError(sessionError);
-
-    const validateField = (stateName, credentials) => {
-        const { email, password } = credentials;
-
-        switch (stateName) {
-            case EMAIL:
-                return validateEmail(email);
-            case PASSWORD:
-                return validatePassword(password);
-            default:
-                return null;
+    const handleChangeWrapper = (event, cb) => {
+        if (notification) {
+            pubsub.publish(HIDE_NOTIFICATION);
         }
+
+        cb(event);
     };
-
-    const useFormOptions = {
-        initialErrors: initialFields,
-        initialFields,
-        resetReducerError: onClearError,
-        sendFields: onSignInStart,
-        validateField
-    };
-
-    const {
-        errors,
-        fields,
-        handleInputChange,
-        handleSubmit
-    } = useForm(useFormOptions);
-
-    const {
-        email,
-        password
-    } = fields;
-
-    const {
-        email: emailError,
-        password: passwordError
-    } = errors;
-
-    const clearSessionState = useCallback(() => onClearError(), [onClearError]);
 
     const handleClickOnSignUp = useCallback((event) => {
         event.preventDefault();
@@ -86,41 +52,40 @@ function SignInContent ({
         console.log("signInUsingYandex");
     }, []);
 
-    useEffect(() => {
-        return () => onClearError();
-    }, [onClearError]);
-
-    const component = (
+    const elem = (
         <div className={styles.container}>
-            <form
-                className={styles.form}
-                onSubmit={handleSubmit}
+            <Formik
+                initialValues={initialValues}
+                onSubmit={onSignInStart}
+                validateOnChange
+                validationSchema={signInSchema}
             >
-                <Input
-                    error={emailError}
-                    label="Email"
-                    name={EMAIL}
-                    onChange={handleInputChange}
-                    type="text"
-                    value={email}
-                />
+                {({ handleChange }) => (
+                    <Form className={styles.form}>
+                        <FormInput
+                            label="Email"
+                            name={EMAIL}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="text"
+                        />
 
-                <Input
-                    error={passwordError}
-                    hasFixedTooltip
-                    label="Пароль"
-                    name={PASSWORD}
-                    onChange={handleInputChange}
-                    type="password"
-                    value={password}
-                />
+                        <FormInput
+                            hasFixedTooltip
+                            label="Пароль"
+                            name={PASSWORD}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="password"
+                        />
 
-                <BaseButton
-                    className={styles.signInButton}
-                    text="Войти"
-                    theme="dark"
-                />
-            </form>
+                        <BaseButton
+                            className={styles.signInButton}
+                            disabled={isPending}
+                            text="Войти"
+                            theme="dark"
+                        />
+                    </Form>
+                )}
+            </Formik>
 
             <div className={styles.otherOptions}>
                 <p className={styles.signUpParagraph}>
@@ -153,29 +118,21 @@ function SignInContent ({
                     </ul>
                 </div>
             </div>
-
-            {Boolean(outOfFieldsError) && (
-                <Popup
-                    onClose={clearSessionState}
-                    text={outOfFieldsError}
-                    theme={ERROR}
-                />
-            )}
         </div>
     );
 
     return (currentUser)
         ? <Redirect to="/" />
-        : component;
+        : elem;
 }
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    sessionError: selectError
+    notification: selectNotification,
+    isPending: selectIsPending
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onClearError: () => dispatch(clearError()),
     onSignInStart: (credentials) => dispatch(signInStart(credentials))
 });
 

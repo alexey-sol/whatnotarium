@@ -9,17 +9,21 @@ export const selectError = createSelector(
     ({ error }) => error
 );
 
+export const selectIsPending = createSelector(
+    [getPosts],
+    ({ isPending }) => isPending
+);
+
 export const selectPostById = createSelector(
     [getPosts, getPostId],
     ({ items }, postId) => {
-        console.log(items);
         return items.get(postId);
     }
 );
 
 export const selectPosts = createSelector(
     [getPosts],
-    ({ items }) => (items.size > 0)
+    ({ items }) => (items?.size > 0)
         ? [...items.values()].reverse()
         : []
 );

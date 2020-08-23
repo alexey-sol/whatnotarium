@@ -5,7 +5,7 @@ import logger from "redux-logger";
 
 import { DEVELOPMENT } from "utils/const/nodeEnv";
 import { postsEnricher, postsNormalizer } from "./posts/posts.middlewares";
-import { uiSplitter } from "./ui/ui.middlewares";
+import { uiMapper } from "./ui/ui.middlewares";
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
 
@@ -14,7 +14,7 @@ const isDevelopment = process.env.NODE_ENV === DEVELOPMENT;
 
 const middlewares = [
     sagaMiddleware,
-    uiSplitter,
+    uiMapper,
     postsNormalizer,
     postsEnricher
 ];

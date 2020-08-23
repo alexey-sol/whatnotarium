@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:npm_and_yarn" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:dependabot" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:npm_and_yarn" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:server" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3e09de6d-c91a-47f9-8b3e-671db01cc1e0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/DraftEditor/DraftEditor.component.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DraftEditor/DraftEditor.component.props.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/DraftEditor/DraftEditor.container.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/DraftEditor/DraftEditor.container.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Main/Main.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Main/Main.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/PasswordDataForm/PasswordDataForm.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PasswordDataForm/PasswordDataForm.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Popup/Popup.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Popup/Popup.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Popup/Popup.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Popup/Popup.props.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/SignInContent/SignInContent.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SignInContent/SignInContent.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/SignInContent/SignInContent.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SignInContent/SignInContent.props.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/SignUpContent/SignUpContent.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SignUpContent/SignUpContent.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/pages/Home/Home.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/Home/Home.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/posts/posts.middlewares.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/posts/posts.middlewares.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/posts/posts.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/posts/posts.reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/posts/posts.selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/posts/posts.selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/posts/posts.types.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/posts/posts.types.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/session/session.actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/session/session.actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/session/session.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/session/session.reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/session/session.selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/session/session.selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/ui/ui.actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/ui/ui.actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/ui/ui.middlewares.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/ui/ui.middlewares.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/ui/ui.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/ui/ui.reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/ui/ui.selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/ui/ui.selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/ui/ui.types.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/ui/ui.types.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/const/events.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/const/events.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/const/notificationTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/const/notificationProps.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/const/serverErrors.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/const/validationErrors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/const/validationErrors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/helpers/translateError.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/helpers/translateError.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/resources/text/commonPhrases.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/resources/text/ru/commonPhrases.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/resources/text/hints.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/resources/text/ru/hints.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateConfirmPassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateConfirmPassword.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateEmail.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateEmail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateName.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateName.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateNewPassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validateNewPassword.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validatePassword.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/UserValidator/validatePassword.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1gSqYv1ZSIdcnkQegciG0UzCOCO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="js.linters.configure.manually.selectedeslint" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/client/src/redux/core" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="ts.external.directory.path" value="C:\Users\Администратор\Documents\Projects\geek-regime\server\node_modules\typescript\lib" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\redux\core" />
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\components" />
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\validators\shemas" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\resources\text\ru" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3e09de6d-c91a-47f9-8b3e-671db01cc1e0" name="Default Changelist" comment="" />
+      <created>1598118393092</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1598118393092</updated>
+      <workItem from="1598118395750" duration="731000" />
+      <workItem from="1598120307357" duration="228000" />
+      <workItem from="1598120552231" duration="11453000" />
+      <workItem from="1598167662169" duration="3225000" />
+      <workItem from="1598181241981" duration="2977000" />
+      <workItem from="1598184232510" duration="1473000" />
+      <workItem from="1598187370608" duration="40000" />
+      <workItem from="1598195508351" duration="4029000" />
+      <workItem from="1598204988912" duration="9777000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TerminalProjectNonSharedOptionsProvider">
+    <option name="shellPath" value="C:\Program Files\Git\bin\bash.exe" />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598214265735">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598214265735" />
+    <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1598121042000">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="261" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1598121042000" />
+    <state x="704" y="117" key="SettingsEditor" timestamp="1598196769814">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="704" y="117" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1598196769814" />
+    <state x="1017" y="170" width="585" height="801" key="find.popup" timestamp="1598212120024">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1017" y="170" width="585" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598212120024" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1598206499124">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598206499124" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598214838377">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598214838377" />
+  </component>
+</project>

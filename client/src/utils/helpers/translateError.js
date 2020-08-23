@@ -1,23 +1,10 @@
 import {
-    CONFIRM_PASSWORD_EMPTY,
-    CONFIRM_PASSWORD_NOT_MATCH,
-    EMAIL_EMPTY,
-    EMAIL_INVALID,
-    NAME_EMPTY,
-    NAME_TOO_LONG,
-    NAME_TOO_SHORT,
-    NOT_FOUND,
-    PASSWORD_EMPTY,
-    PASSWORD_TOO_WEAK
-} from "utils/const/validationErrors";
-
-import {
     ALREADY_EXISTS,
-    EMAIL_OCCUPIED,
     INTERNAL_SERVER_ERROR,
     INVALID_CREDENTIALS,
-    INVALID_PASSWORD
-} from "utils/const/serverErrors";
+    INVALID_PASSWORD,
+    NOT_FOUND
+} from "utils/const/validationErrors";
 
 import { POST_ERROR, USER_ERROR } from "utils/const/errorNames";
 
@@ -53,30 +40,11 @@ function translatePostError (message) {
 function translateUserError (message) {
     switch (message) {
         case ALREADY_EXISTS:
-        case EMAIL_OCCUPIED:
             return "Такой email уже занят";
-        case CONFIRM_PASSWORD_EMPTY:
-            return "Пожалуйста, введите пароль еще раз";
-        case CONFIRM_PASSWORD_NOT_MATCH:
-            return "Пароли не совпадают";
-        case EMAIL_EMPTY:
-            return "Пожалуйста, укажите email";
-        case EMAIL_INVALID:
-            return "Указан некорректный email";
         case INVALID_CREDENTIALS:
             return "Неверные учетные данные";
         case INVALID_PASSWORD:
             return "Неверный пароль";
-        case NAME_EMPTY:
-            return "Пожалуйста, укажите имя";
-        case NAME_TOO_LONG:
-            return "Имя слишком длинное";
-        case NAME_TOO_SHORT:
-            return "Имя слишком короткое";
-        case PASSWORD_EMPTY:
-            return "Пожалуйста, введите пароль";
-        case PASSWORD_TOO_WEAK:
-            return "Пожалуйста, придумайте пароль посложнее (*)";
         default:
             return message;
     }

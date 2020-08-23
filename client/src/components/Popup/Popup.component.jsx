@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 
 import { CloseIconButton } from "components/IconButton";
+import { HIDE_NOTIFICATION } from "utils/const/events";
 import { defaultProps, propTypes } from "./Popup.props";
 import classnames from "classnames";
+import pubsub from "utils/pubsub";
 import styles from "./Popup.module.scss";
 
 Popup.defaultProps = defaultProps;
@@ -23,14 +25,25 @@ function Popup ({
     );
 
     useEffect(() => {
-        timerRef.current = setTimeout(onClose, timeoutInMs);
+        if (timeoutInMs) {
+            timerRef.current = setTimeout(onClose, timeoutInMs);
+        }
 
         const onKeydown = (event) => {
             if (event.key === "Escape") onClose();
         };
 
         document.addEventListener("keydown", onKeydown);
-        return () => document.removeEventListener("keydown", onKeydown);
+        pubsub.subscribe(HIDE_NOTIFICATION, onClose);
+
+        return () => {
+            document.removeEventListener("keydown", onKeydown);
+            pubsub.unsubscribe(HIDE_NOTIFICATION, onClose);
+
+            if (timeoutInMs) {
+                clearTimeout(timerRef.current);
+            }
+        };
     }, [onClose, timeoutInMs]);
 
     const tooltipElem = (

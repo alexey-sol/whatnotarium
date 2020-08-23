@@ -6,8 +6,7 @@ import Posts from "components/Posts";
 import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
-import { selectIsPending } from "redux/ui/ui.selectors";
-import { selectPosts } from "redux/posts/posts.selectors";
+import { selectIsPending, selectPosts } from "redux/posts/posts.selectors";
 
 Home.defaultProps = defaultProps;
 Home.propTypes = propTypes;

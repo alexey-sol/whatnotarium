@@ -6,18 +6,6 @@ export function hideNotification () {
     };
 }
 
-export function setPendingOff () {
-    return {
-        type: types.SET_PENDING_OFF
-    };
-}
-
-export function setPendingOn () {
-    return {
-        type: types.SET_PENDING_ON
-    };
-}
-
 export function showNotification (item) {
     return {
         payload: { item },
