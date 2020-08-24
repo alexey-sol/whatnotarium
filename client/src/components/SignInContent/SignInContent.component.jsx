@@ -52,7 +52,7 @@ function SignInContent ({
         console.log("signInUsingYandex");
     }, []);
 
-    const elem = (
+    const elem = ( // TODO: does styles.form work?
         <div className={styles.container}>
             <Formik
                 initialValues={initialValues}
@@ -60,7 +60,7 @@ function SignInContent ({
                 validateOnChange
                 validationSchema={signInSchema}
             >
-                {({ handleChange }) => (
+                {({ errors, handleChange }) => (
                     <Form className={styles.form}>
                         <FormInput
                             label="Email"
@@ -79,7 +79,7 @@ function SignInContent ({
 
                         <BaseButton
                             className={styles.signInButton}
-                            disabled={isPending}
+                            disabled={isPending || Object.keys(errors).length > 0}
                             text="Войти"
                             theme="dark"
                         />

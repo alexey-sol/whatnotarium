@@ -1,6 +1,6 @@
+import * as sessionTypes from "redux/session/session.types";
 import { DEFAULT_TIMEOUT_IN_MS, ERROR } from "utils/const/notificationProps";
 import { showNotification } from "./ui.actions";
-import sessionTypes from "redux/session/session.types";
 import translateError from "utils/helpers/translateError";
 import userTypes from "redux/user/user.types";
 

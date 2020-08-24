@@ -1,4 +1,4 @@
-import types from "./session.types";
+import * as types from "./session.types";
 
 export function checkSessionFailure (error) {
     return {
@@ -20,15 +20,15 @@ export function checkSessionSuccess (item) {
     };
 }
 
-export function clearCurrentUser () {
+export function resetCurrentUser () {
     return {
-        type: types.CLEAR_CURRENT_USER
+        type: types.RESET_CURRENT_USER
     };
 }
 
-export function clearError () { // TODO: reset
+export function resetSessionError () {
     return {
-        type: types.CLEAR_ERROR
+        type: types.RESET_SESSION_ERROR
     };
 }
 
@@ -36,13 +36,6 @@ export function setCurrentUser (payload) {
     return {
         payload,
         type: types.SET_CURRENT_USER
-    };
-}
-
-export function setError (error) {
-    return {
-        payload: { error },
-        type: types.SET_ERROR
     };
 }
 

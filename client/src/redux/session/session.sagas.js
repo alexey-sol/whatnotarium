@@ -7,7 +7,7 @@ import {
     doSignUp
 } from "./session.workers";
 
-import types from "./session.types";
+import * as types from "./session.types";
 
 function * onCheckUserSessionStart () {
     yield takeLatest(types.CHECK_SESSION_START, doCheckSession);

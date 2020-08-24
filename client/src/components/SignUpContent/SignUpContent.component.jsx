@@ -1,5 +1,6 @@
+import { Form, Formik } from "formik";
 import { Redirect } from "react-router";
-import React, { useCallback, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -10,31 +11,24 @@ import {
     PASSWORD
 } from "utils/const/userData";
 
-// import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
-import Input from "components/Input";
-import Popup from "components/Popup";
+import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignUpContent.props";
-import { clearError, signUpStart } from "redux/session/session.actions";
-import { selectCurrentUser, selectError } from "redux/session/session.selectors";
-
-import {
-    validateConfirmPassword,
-    validateEmail,
-    validateName,
-    validateNewPassword
-} from "utils/validators/UserValidator";
+import { signUpStart } from "redux/session/session.actions";
+import { selectCurrentUser, selectIsPending } from "redux/session/session.selectors";
+import { selectNotification } from "redux/ui/ui.selectors";
 
 import hints from "utils/resources/text/ru/hints";
+import { HIDE_NOTIFICATION } from "utils/const/events";
 import phrases from "utils/resources/text/ru/commonPhrases";
+import pubsub from "utils/pubsub";
+import signUpSchema from "utils/validators/shemas/signUp";
 import styles from "./SignUpContent.module.scss";
-import translateError from "utils/helpers/translateError";
-import useForm from "utils/hooks/useForm.jsx";
 
 SignUpContent.defaultProps = defaultProps;
 SignUpContent.propTypes = propTypes;
 
-const initialFields = {
+const initialValues = {
     confirmPassword: "",
     email: "",
     name: "",
@@ -43,149 +37,87 @@ const initialFields = {
 
 function SignUpContent ({
     currentUser,
-    onClearError,
-    onSignUpStart,
-    sessionError
+    isPending,
+    notification,
+    onSignUpStart
 }) {
-    const outOfFieldsError = translateError(sessionError);
-
-    const validateField = (stateName, credentials) => {
-        const {
-            confirmPassword,
-            email,
-            name,
-            password
-        } = credentials;
-
-        switch (stateName) {
-            case CONFIRM_PASSWORD:
-                return validateConfirmPassword(password, confirmPassword);
-            case EMAIL:
-                return validateEmail(email);
-            case NAME:
-                return validateName(name);
-            case PASSWORD:
-                return validateNewPassword(password);
-            default:
-                return null;
-        }
-    };
-
-    const useFormOptions = {
-        initialErrors: initialFields,
-        initialFields,
-        resetReducerError: onClearError,
-        sendFields: onSignUpStart,
-        validateField
-    };
-
-    const {
-        errorCodes,
-        errors,
-        fields,
-        handleInputChange,
-        handleSubmit
-    } = useForm(useFormOptions);
-
-    const {
-        confirmPassword,
-        email,
-        name,
-        password
-    } = fields;
-
-    const {
-        password: passwordErrorCode
-    } = errorCodes;
-
-    const {
-        confirmPassword: confirmPasswordError,
-        email: emailError,
-        name: nameError,
-        password: passwordError
-    } = errors;
-
-    // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
+    // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK) // TODO
     //     ? hints.weakPassword
     //     : "";
 
-    const clearSessionState = useCallback(() => onClearError(), [onClearError]);
+    const handleChangeWrapper = (event, cb) => {
+        if (notification) {
+            pubsub.publish(HIDE_NOTIFICATION);
+        }
 
-    useEffect(() => {
-        return () => onClearError();
-    }, [onClearError]);
+        cb(event);
+    };
 
-    const component = (
-        <form
-            className={styles.container}
-            onSubmit={handleSubmit}
-        >
-            <Input
-                error={nameError}
-                label="Имя"
-                name={NAME}
-                onChange={handleInputChange}
-                type="text"
-                value={name}
-            />
+    const elem = (
+        <div className={styles.container}>
+            <Formik
+                initialValues={initialValues}
+                onSubmit={onSignUpStart}
+                validateOnChange
+                validationSchema={signUpSchema}
+            >
+                {({ errors, handleChange }) => (
+                    <Form className={styles.container}>
+                        <FormInput
+                            label="Имя"
+                            name={NAME}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="text"
+                        />
 
-            <Input
-                error={emailError}
-                label="Email"
-                name={EMAIL}
-                onChange={handleInputChange}
-                type="email"
-                value={email}
-            />
+                        <FormInput
+                            hasFixedTooltip
+                            label="Email"
+                            name={EMAIL}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="email"
+                        />
 
-            <Input
-                error={passwordError}
-                // errorTooltipText={weakPasswordHint}
-                hasFixedTooltip
-                label="Пароль"
-                name={PASSWORD}
-                onChange={handleInputChange}
-                type="password"
-                value={password}
-            />
+                        <FormInput
+                            hasFixedTooltip
+                            label="Пароль"
+                            name={PASSWORD}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="password"
+                        />
 
-            <Input
-                error={confirmPasswordError}
-                label="Пароль еще раз"
-                name={CONFIRM_PASSWORD}
-                onChange={handleInputChange}
-                type="password"
-                value={confirmPassword}
-            />
+                        <FormInput
+                            hasFixedTooltip
+                            label="Пароль еще раз"
+                            name={CONFIRM_PASSWORD}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="password"
+                        />
 
-            <BaseButton
-                className={styles.signUpButton}
-                text={phrases.done}
-                theme="dark"
-            />
-
-            {Boolean(outOfFieldsError) && (
-                <Popup
-                    onClose={clearSessionState}
-                    text={outOfFieldsError}
-                    theme="error"
-                />
-            )}
-        </form>
+                        <BaseButton
+                            className={styles.signUpButton}
+                            disabled={isPending || Object.keys(errors).length > 0}
+                            text={phrases.done}
+                            theme="dark"
+                        />
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 
     return (currentUser)
         ? <Redirect to="/" />
-        : component;
+        : elem;
 }
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    sessionError: selectError
+    isPending: selectIsPending,
+    notification: selectNotification
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onClearError: () => dispatch(clearError()),
     onSignUpStart: (credentials) => dispatch(signUpStart(credentials))
 });
 

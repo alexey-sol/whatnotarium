@@ -1,13 +1,14 @@
-import { func, object } from "prop-types";
+import { bool, func, object } from "prop-types";
 
 export const defaultProps = {
     currentUser: null,
-    sessionError: null
+    isPending: false,
+    notification: null
 };
 
 export const propTypes = {
     currentUser: object,
-    onClearError: func.isRequired,
-    onSignUpStart: func.isRequired,
-    sessionError: object
+    isPending: bool,
+    notification: object,
+    onSignUpStart: func.isRequired
 };

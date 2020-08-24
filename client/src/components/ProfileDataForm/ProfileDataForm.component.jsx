@@ -9,7 +9,7 @@ import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectUpdatedProfile } from "redux/user/user.selectors";
 import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
-import { validateEmail, validateName } from "utils/validators/UserValidator";
+// import { validateEmail, validateName } from "utils/validators/UserValidator";
 import styles from "./ProfileDataForm.module.scss";
 import useForm from "utils/hooks/useForm.jsx";
 
@@ -39,9 +39,9 @@ function ProfileDataForm ({
 
         switch (stateName) {
             case EMAIL:
-                return validateEmail(email);
+                // return validateEmail(email);
             case NAME:
-                return validateName(name);
+                // return validateName(name);
             default:
                 return null;
         }
