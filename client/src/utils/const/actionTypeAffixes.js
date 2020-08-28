@@ -4,4 +4,4 @@ export const SUCCESS_POSTFIX = "Success";
 
 export const POSTS_PREFIX = "[Posts]";
 export const SESSION_PREFIX = "[Session]";
-export const UI_PREFIX = "[UI]";
+export const USERS_PREFIX = "[Users]";

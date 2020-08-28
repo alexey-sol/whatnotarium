@@ -17,13 +17,13 @@ import pubsub from "utils/pubsub";
 import signInSchema from "utils/validators/shemas/signIn";
 import styles from "./SignInContent.module.scss";
 
-SignInContent.defaultProps = defaultProps;
-SignInContent.propTypes = propTypes;
-
 const initialValues = {
     email: "",
     password: ""
 };
+
+SignInContent.defaultProps = defaultProps;
+SignInContent.propTypes = propTypes;
 
 function SignInContent ({
     currentUser,

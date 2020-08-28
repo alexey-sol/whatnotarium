@@ -1,20 +1,20 @@
-import * as types from "./posts.types";
-import { POSTS_PREFIX } from "../../utils/const/actionTypeAffixes";
+import * as types from "./users.types";
+import { USERS_PREFIX } from "../../utils/const/actionTypeAffixes";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import updatePayloadForCreatedItem from "utils/redux/updatePayloadForCreatedItem";
 import updatePayloadForDeletedItem from "utils/redux/updatePayloadForDeletedItem";
 import updatePayloadForFetchedOrUpdatedItem from "utils/redux/updatePayloadForFetchedOrUpdatedItem";
 
-export const postsNormalizer = () => (next) => (action) => {
+export const usersNormalizer = () => (next) => (action) => {
     const { payload, type } = action;
     const actionWithNormalizedPayload = { ...action };
-    const shouldIgnoreAction = payload?.error || !type.startsWith(POSTS_PREFIX);
+    const shouldIgnoreAction = payload?.error || !type.startsWith(USERS_PREFIX);
 
     if (shouldIgnoreAction) {
         return next(action);
     }
 
-    if (type === types.FETCH_POSTS_SUCCESS) {
+    if (type === types.FETCH_USERS_SUCCESS) {
         actionWithNormalizedPayload.payload = {
             ...payload,
             items: convertItemsArrayToMap(payload.items)
@@ -24,9 +24,9 @@ export const postsNormalizer = () => (next) => (action) => {
     next(actionWithNormalizedPayload);
 };
 
-export const postsEnricher = ({ getState }) => (next) => (action) => {
+export const usersEnricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
-    const shouldIgnoreAction = payload?.error || !type.startsWith(POSTS_PREFIX);
+    const shouldIgnoreAction = payload?.error || !type.startsWith(USERS_PREFIX);
 
     if (shouldIgnoreAction) {
         return next(action);
@@ -34,20 +34,20 @@ export const postsEnricher = ({ getState }) => (next) => (action) => {
 
     const enrichedAction = { ...action };
 
-    if (type === types.CREATE_POST_SUCCESS) {
+    if (type === types.CREATE_USER_SUCCESS) {
         enrichedAction.payload = updatePayloadForCreatedItem(
             payload,
-            getState().posts
+            getState().users
         );
-    } else if (type === types.DELETE_POST_SUCCESS) {
+    } else if (type === types.DELETE_USER_SUCCESS) {
         enrichedAction.payload = updatePayloadForDeletedItem(
             payload,
-            getState().posts
+            getState().users
         );
-    } else if (type === types.FETCH_POST_SUCCESS || type === types.UPDATE_POST_SUCCESS) {
+    } else if (type === types.FETCH_USER_SUCCESS || type === types.UPDATE_USER_SUCCESS) { // TODO
         enrichedAction.payload = updatePayloadForFetchedOrUpdatedItem(
             payload,
-            getState().posts
+            getState().users
         );
     }
 

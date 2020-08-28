@@ -19,7 +19,7 @@ describe("User", async () => {
     beforeEach(() => resetTables());
 
     describe("create", () => {
-        it("should add new user to DB and return User instance", async () => {
+        it("should add new users to DB and return User instance", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             const user = await User.create({
@@ -40,7 +40,7 @@ describe("User", async () => {
     });
 
     describe("destroyById", () => {
-        it("should delete user from DB and return ID of deleted user", async () => {
+        it("should delete users from DB and return ID of deleted users", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             const user = await User.create({
@@ -55,7 +55,7 @@ describe("User", async () => {
             expect(result).to.be.a("number").equal(user.id);
         });
 
-        it("should return null if no user found in DB for given ID", async () => {
+        it("should return null if no users found in DB for given ID", async () => {
             const userId = faker.random.number({ min: 1 });
             const result = await User.destroyById(userId);
 
@@ -132,7 +132,7 @@ describe("User", async () => {
                 .that.does.not.deep.include(user3);
         });
 
-        it("should skip 1st user and fetch rest users from DB", async () => {
+        it("should skip 1st users and fetch rest users from DB", async () => {
             const user1 = await createFakeUser();
             const user2 = await createFakeUser();
             const user3 = await createFakeUser();
@@ -149,7 +149,7 @@ describe("User", async () => {
                 .that.does.not.deep.include(user1);
         });
 
-        it("should skip 1st user and fetch next 2 users (but not more) matching search condition " +
+        it("should skip 1st users and fetch next 2 users (but not more) matching search condition " +
         "from DB, in descending order by ID", async () => {
             await createFakeUser({
                 id: 1,
@@ -209,7 +209,7 @@ describe("User", async () => {
     });
 
     describe("findOne", () => {
-        it("should fetch user from DB that matches search condition", async () => {
+        it("should fetch users from DB that matches search condition", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             await User.create({
@@ -232,7 +232,7 @@ describe("User", async () => {
             expect(user!.updatedAt).instanceof(Date);
         });
 
-        it("should return null if no user matching search condition was found in DB", async () => {
+        it("should return null if no users matching search condition was found in DB", async () => {
             const id = faker.random.number({ min: 1 });
 
             const result = await User.findOne({
@@ -245,7 +245,7 @@ describe("User", async () => {
     });
 
     describe("formatPropsAndInstantiate", () => {
-        it("should return User instance if valid user props were given", async () => {
+        it("should return User instance if valid users props were given", async () => {
             const props = await generateFakeUserProps();
             props.createdAt = new Date();
             props.updatedAt = new Date();
@@ -262,7 +262,7 @@ describe("User", async () => {
             expect(user.updatedAt).instanceof(Date);
         });
 
-        it("should throw error if invalid user props were given", async () => {
+        it("should throw error if invalid users props were given", async () => {
             const propsWithoutDates = await generateFakeUserProps();
 
             return expect(() => User.formatPropsAndInstantiate(propsWithoutDates))

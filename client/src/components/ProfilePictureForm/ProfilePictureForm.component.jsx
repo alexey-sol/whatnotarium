@@ -6,24 +6,17 @@ import { AvatarPlaceholder } from "components/Icon";
 import { CloseIconButton } from "components/IconButton";
 import { defaultProps, propTypes } from "./ProfilePictureForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUpdatedProfile } from "redux/user/user.selectors";
-import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
+import { selectIsPending } from "redux/users/users.selectors";
+import { updateUserStart } from "redux/users/users.actions";
 import Tooltip from "components/Tooltip";
 import styles from "./ProfilePictureForm.module.scss";
 
 ProfilePictureForm.defaultProps = defaultProps;
 ProfilePictureForm.propTypes = propTypes;
 
-function ProfilePictureForm ({
-    currentUser,
-    onUpdateProfileReset,
-    onUpdateProfileStart,
-    updatedProfile
-}) {
+function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
     const fileInputRef = useRef(null);
     const pictureContainerRef = useRef(null);
-
-    const { error, isPending } = updatedProfile; // clear error on unmount
 
     const { name, picture } = currentUser?.profile;
 
@@ -44,7 +37,7 @@ function ProfilePictureForm ({
     const handleChosenFile = ({ target }) => {
         const { files } = target;
 
-        onUpdateProfileStart({
+        onUpdateUserStart({
             picture: files[0]
         });
     };
@@ -90,12 +83,11 @@ function ProfilePictureForm ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    updatedProfile: selectUpdatedProfile
+    isPending: selectIsPending
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onUpdateProfileReset: () => dispatch(updateProfileReset()),
-    onUpdateProfileStart: (props) => dispatch(updateProfileStart(props))
+    onUpdateUserStart: (props) => dispatch(updateUserStart(props))
 });
 
 const ConnectedProfilePictureForm = connect(

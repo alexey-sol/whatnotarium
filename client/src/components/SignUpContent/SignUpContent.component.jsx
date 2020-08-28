@@ -25,15 +25,15 @@ import pubsub from "utils/pubsub";
 import signUpSchema from "utils/validators/shemas/signUp";
 import styles from "./SignUpContent.module.scss";
 
-SignUpContent.defaultProps = defaultProps;
-SignUpContent.propTypes = propTypes;
-
 const initialValues = {
     confirmPassword: "",
     email: "",
     name: "",
     password: ""
 };
+
+SignUpContent.defaultProps = defaultProps;
+SignUpContent.propTypes = propTypes;
 
 function SignUpContent ({
     currentUser,
@@ -71,7 +71,6 @@ function SignUpContent ({
                         />
 
                         <FormInput
-                            hasFixedTooltip
                             label="Email"
                             name={EMAIL}
                             onChange={event => handleChangeWrapper(event, handleChange)}
@@ -79,7 +78,6 @@ function SignUpContent ({
                         />
 
                         <FormInput
-                            hasFixedTooltip
                             label="Пароль"
                             name={PASSWORD}
                             onChange={event => handleChangeWrapper(event, handleChange)}
@@ -87,7 +85,6 @@ function SignUpContent ({
                         />
 
                         <FormInput
-                            hasFixedTooltip
                             label="Пароль еще раз"
                             name={CONFIRM_PASSWORD}
                             onChange={event => handleChangeWrapper(event, handleChange)}

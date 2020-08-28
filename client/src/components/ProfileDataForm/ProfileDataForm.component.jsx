@@ -1,115 +1,88 @@
+import { Form, Formik } from "formik";
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { EMAIL, NAME } from "utils/const/userData";
+import { HIDE_NOTIFICATION } from "../../utils/const/events";
 import BaseButton from "components/BaseButton";
-import Input from "components/Input";
+import FormInput from "../FormInput";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUpdatedProfile } from "redux/user/user.selectors";
-import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
-// import { validateEmail, validateName } from "utils/validators/UserValidator";
+import { selectIsPending } from "redux/users/users.selectors";
+import { selectNotification } from "../../redux/ui/ui.selectors";
+import { updateUserStart } from "redux/users/users.actions";
+import pubsub from "../../utils/pubsub";
 import styles from "./ProfileDataForm.module.scss";
-import useForm from "utils/hooks/useForm.jsx";
+import updateProfileSchema from "../../utils/validators/shemas/updateProfile";
 
 ProfileDataForm.defaultProps = defaultProps;
 ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,
-    onUpdateProfileReset,
-    onUpdateProfileStart,
-    updatedProfile
+    isPending,
+    notification,
+    onUpdateUserStart
 }) {
-    const { error, isPending } = updatedProfile;
-
-    const initialFields = {
-        email: currentUser?.email,
-        id: currentUser?.id,
-        name: currentUser?.profile.name
+    const initialValues = {
+        email: currentUser.email,
+        id: currentUser.id,
+        name: currentUser.profile.name
     };
 
-    const initialErrors = {
-        name: ""
-    };
-
-    const validateField = (stateName, fields) => {
-        const { email, name } = fields;
-
-        switch (stateName) {
-            case EMAIL:
-                // return validateEmail(email);
-            case NAME:
-                // return validateName(name);
-            default:
-                return null;
+    const handleChangeWrapper = (event, cb) => {
+        if (notification) {
+            pubsub.publish(HIDE_NOTIFICATION);
         }
+
+        cb(event);
     };
-
-    const useFormOptions = {
-        initialErrors,
-        initialFields,
-        resetReducerError: onUpdateProfileReset,
-        sendFields: onUpdateProfileStart,
-        validateField
-    };
-
-    const {
-        errors,
-        fields,
-        handleInputChange,
-        handleSubmit
-    } = useForm(useFormOptions);
-
-    const { email, name } = fields;
-
-    const {
-        email: emailError,
-        name: nameError
-    } = errors;
 
     return (
-        <form
-            className={styles.container}
-            onSubmit={handleSubmit}
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onUpdateUserStart}
+            validateOnChange
+            validationSchema={updateProfileSchema}
         >
-            <Input
-                error={nameError}
-                label="Имя"
-                name={NAME}
-                onChange={handleInputChange}
-                type="text"
-                value={name}
-            />
+            {({ errors, handleChange }) => (
+                <Form className={styles.container}>
+                    <FormInput
+                        label="Имя"
+                        name={NAME}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
+                        type="text"
+                    />
 
-            <Input
-                error={emailError}
-                label="Email"
-                name={EMAIL}
-                onChange={handleInputChange}
-                type="email"
-                value={email}
-            />
+                    <FormInput
+                        hasFixedTooltip
+                        label="Email"
+                        name={EMAIL}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
+                        type="email"
+                    />
 
-            <BaseButton
-                className={styles.updateProfileDataButton}
-                disabled={isPending}
-                text="Сохранить"
-                theme="dark"
-            />
-        </form>
+                    <BaseButton
+                        className={styles.updateProfileDataButton}
+                        disabled={isPending || Object.keys(errors).length > 0}
+                        text="Сохранить"
+                        theme="dark"
+                    />
+                </Form>
+            )}
+        </Formik>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    updatedProfile: selectUpdatedProfile
+    isPending: selectIsPending,
+    notification: selectNotification
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onUpdateProfileReset: () => dispatch(updateProfileReset()),
-    onUpdateProfileStart: (props) => dispatch(updateProfileStart(props))
+    onUpdateUserStart: (props) => dispatch(updateUserStart(props))
 });
 
 const ConnectedProfileDataForm = connect(

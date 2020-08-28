@@ -1,3 +1,4 @@
+import { Form, Formik } from "formik";
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -5,151 +6,98 @@ import { createStructuredSelector } from "reselect";
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
 // import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import BaseButton from "components/BaseButton";
-import Input from "components/Input";
+import FormInput from "components/FormInput";
+import { HIDE_NOTIFICATION } from "utils/const/events";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUpdatedProfile } from "redux/user/user.selectors";
-import { updateProfileReset, updateProfileStart } from "redux/user/user.actions";
 
-import {
-    validateConfirmPassword,
-    validateNewPassword,
-    validatePassword
-} from "utils/validators/UserValidator";
+import { selectIsPending } from "redux/users/users.selectors";
+import { selectNotification } from "redux/ui/ui.selectors";
+import { updateUserStart } from "redux/users/users.actions";
 
-import hints from "utils/resources/text/ru/hints";
+// import hints from "utils/resources/text/ru/hints";
+import phrases from "../../utils/resources/text/ru/commonPhrases";
+import pubsub from "../../utils/pubsub";
 import styles from "./PasswordDataForm.module.scss";
-import useForm from "utils/hooks/useForm.jsx";
+import updatePasswordSchema from "../../utils/validators/shemas/updatePassword";
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;
 
 function PasswordDataForm ({
     currentUser,
-    onUpdateProfileReset,
-    onUpdateProfileStart,
-    updatedProfile
+    isPending,
+    notification,
+    onUpdateUserStart
 }) {
-    const { error, isPending } = updatedProfile;
-
-    const initialFields = {
-        confirmNewPassword: "",
-        id: currentUser?.id,
-        newPassword: "",
-        password: ""
-    };
-
-    const initialErrors = {
-        confirmNewPassword: "",
-        newPassword: ""
-    };
-
-    const validateField = (stateName, fields) => {
-        const {
-            confirmNewPassword,
-            newPassword,
-            password
-        } = fields;
-
-        switch (stateName) {
-            case CONFIRM_NEW_PASSWORD:
-                return validateConfirmPassword(newPassword, confirmNewPassword);
-            case NEW_PASSWORD:
-                return validateNewPassword(newPassword);
-            case PASSWORD:
-                return validatePassword(password);
-            default:
-                return null;
-        }
-    };
-
-    const useFormOptions = {
-        initialErrors,
-        initialFields,
-        resetReducerError: onUpdateProfileReset,
-        sendFields: onUpdateProfileStart,
-        validateField
-    };
-
-    const {
-        errorCodes,
-        errors,
-        fields,
-        handleInputChange,
-        handleSubmit
-    } = useForm(useFormOptions);
-
-    const {
-        confirmNewPassword,
-        newPassword,
-        password
-    } = fields;
-
-    const {
-        newPassword: passwordErrorCode
-    } = errorCodes;
-
-    const {
-        confirmNewPassword: confirmPasswordError,
-        newPassword: newPasswordError,
-        password: passwordError
-    } = errors;
-
     // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
     //     ? hints.weakPassword
     //     : "";
 
+    const initialValues = {
+        confirmNewPassword: "",
+        id: currentUser.id,
+        newPassword: "",
+        password: ""
+    };
+
+    const handleChangeWrapper = (event, cb) => {
+        if (notification) {
+            pubsub.publish(HIDE_NOTIFICATION);
+        }
+
+        cb(event);
+    };
+
     return (
-        <form
-            className={styles.container}
-            onSubmit={handleSubmit}
+        <Formik
+            initialValues={initialValues}
+            onSubmit={onUpdateUserStart} // TODO: relation "hashoptions" does not exist
+            validateOnChange
+            validationSchema={updatePasswordSchema}
         >
-            <Input
-                error={passwordError}
-                label="Текущий пароль"
-                name={PASSWORD}
-                onChange={handleInputChange}
-                type="password"
-                value={password}
-            />
+            {({ errors, handleChange }) => (
+                <Form className={styles.container}>
+                    <FormInput
+                        label="Текущий пароль"
+                        name={PASSWORD}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
+                        type="password"
+                    />
 
-            <Input
-                error={newPasswordError}
-                // errorTooltipText={weakPasswordHint}
-                hasFixedTooltip
-                label="Новый пароль"
-                name={NEW_PASSWORD}
-                onChange={handleInputChange}
-                type="password"
-                value={newPassword}
-            />
+                    <FormInput
+                        label="Новый пароль"
+                        name={NEW_PASSWORD}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
+                        type="password"
+                    />
 
-            <Input
-                error={confirmPasswordError}
-                label="Новый пароль еще раз"
-                name={CONFIRM_NEW_PASSWORD}
-                onChange={handleInputChange}
-                type="password"
-                value={confirmNewPassword}
-            />
+                    <FormInput
+                        label="Новый пароль еще раз"
+                        name={CONFIRM_NEW_PASSWORD}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
+                        type="password"
+                    />
 
-            <BaseButton
-                className={styles.updatePasswordDataButton}
-                disabled={isPending}
-                text="Изменить пароль"
-            />
-        </form>
+                    <BaseButton
+                        className={styles.updatePasswordDataButton}
+                        disabled={isPending || Object.keys(errors).length > 0}
+                        text="Изменить пароль"
+                    />
+                </Form>
+            )}
+        </Formik>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    updatedProfile: selectUpdatedProfile
+    isPending: selectIsPending,
+    notification: selectNotification
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onUpdateProfileReset: () => dispatch(updateProfileReset()),
-    onUpdateProfileStart: (props) => dispatch(updateProfileStart(props))
+    onUpdateUserStart: (props) => dispatch(updateUserStart(props))
 });
 
 const ConnectedPasswordDataForm = connect(

@@ -1,9 +1,9 @@
 import * as yup from "yup";
 
 import email from "../props/email";
-import password from "../props/password";
+import name from "../props/name";
 
 export default yup.object({
     email,
-    password
+    name
 });

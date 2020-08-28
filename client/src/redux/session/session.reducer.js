@@ -25,7 +25,6 @@ function userReducer (state = INITIAL_STATE, action = {}) {
         case types.SIGN_UP_SUCCESS:
             return {
                 ...state,
-                currentUser: payload.item,
                 error: null,
                 isPending: false
             };

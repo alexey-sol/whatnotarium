@@ -1,11 +1,5 @@
-import { func, object } from "prop-types";
-
-export const defaultProps = {
-    updatedProfile: {}
-};
+import { object } from "prop-types";
 
 export const propTypes = {
-    currentUser: object.isRequired,
-    onSetCurrentUser: func.isRequired,
-    updatedProfile: object
+    currentUser: object.isRequired
 };

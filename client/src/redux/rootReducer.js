@@ -4,14 +4,16 @@ import storage from "redux-persist/lib/storage";
 
 import postsReducer from "./posts/posts.reducer";
 import sessionReducer from "./session/session.reducer";
+import transformStateItemsMap from "utils/redux/transformStateItemsMap";
 import uiReducer from "./ui/ui.reducer";
-import userReducer from "./user/user.reducer";
+import usersReducer from "./users/users.reducer";
 
 const persistConfig = {
     key: "root",
     storage,
+    transforms: [transformStateItemsMap],
     whitelist: [
-        "user"
+        "users"
     ]
 };
 
@@ -19,7 +21,7 @@ const rootReducer = combineReducers({
     posts: postsReducer,
     session: sessionReducer,
     ui: uiReducer,
-    user: userReducer
+    users: usersReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

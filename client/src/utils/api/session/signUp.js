@@ -2,7 +2,7 @@ import superagent from "superagent";
 
 async function signUp (credentials) {
     const response = await superagent
-        .post("/api/v1/user")
+        .post("/api/v1/users")
         .set("Content-Type", "application/json")
         .send(credentials);
 
