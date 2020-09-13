@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 
 import querySchema from "./schemas/query";
 
-const getPosts: RequestHandler = async (
+const getUsers: RequestHandler = async (
     { query },
     response,
     next
@@ -16,4 +16,4 @@ const getPosts: RequestHandler = async (
     next();
 };
 
-export default getPosts;
+export default getUsers;

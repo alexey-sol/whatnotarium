@@ -12,7 +12,10 @@ const postSession: RequestHandler = async (
     const { email } = request.body;
 
     try {
-        const usersList = await UserService.findUsers({ email });
+        const usersList = await UserService.findUsers({
+            where: { email }
+        });
+
         const user = usersList.items[0];
         const session = new RequestSession(request);
 

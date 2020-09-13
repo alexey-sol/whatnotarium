@@ -1,7 +1,6 @@
 import { PROFILES } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import UserItem from "#types/user/Item";
-import complementUserItem from "#utils/helpers/complementUserItem";
 
 export default async function (
     id: number
@@ -14,9 +13,5 @@ export default async function (
         tableName: PROFILES
     }];
 
-    const user = await User.findById(id, include);
-
-    return (user)
-        ? complementUserItem(user)
-        : null;
+    return User.findById(id, include);
 }

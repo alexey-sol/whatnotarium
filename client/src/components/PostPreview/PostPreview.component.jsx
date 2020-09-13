@@ -17,7 +17,7 @@ function PostPreview ({
     title,
     updatedAt
 }) {
-    const formattedUpdatedAt = new DateFormatter(updatedAt)
+    const formattedCreatedAt = new DateFormatter(createdAt)
         .formatByPattern("YYYY, MMM DD");
 
     const bodyHTML = { __html: body };
@@ -65,7 +65,7 @@ function PostPreview ({
                 </span>
 
                 <span className={styles.date}>
-                    {formattedUpdatedAt}
+                    {formattedCreatedAt}
                 </span>
             </section>
         </article>

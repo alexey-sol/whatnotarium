@@ -90,7 +90,7 @@ export function App ({ onCheckSessionStart, onFetchPostsStart }) {
 
 const mapDispatchToProps = (dispatch) => ({
     onCheckSessionStart: () => dispatch(checkSessionStart()),
-    onFetchPostsStart: () => dispatch(fetchPostsStart())
+    onFetchPostsStart: (options) => dispatch(fetchPostsStart(options))
 });
 
 const ConnectedApp = connect(

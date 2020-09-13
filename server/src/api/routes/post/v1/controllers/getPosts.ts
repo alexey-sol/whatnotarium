@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
 
+import Attributes from "#types/post/Attributes";
 import PostService from "#services/PostService/v1";
+import convertPaginOptsToFilter from "#utils/helpers/convertPaginOptsToFilter";
 import sendResponse from "#utils/http/sendResponse";
 
 const getPosts: RequestHandler = async (
@@ -8,7 +10,9 @@ const getPosts: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    PostService.findPosts(query)
+    const filter = convertPaginOptsToFilter<Attributes>(query);
+
+    PostService.findPosts(filter)
         .then(posts => sendResponse(response, posts))
         .catch(next);
 };

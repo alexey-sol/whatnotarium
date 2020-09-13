@@ -15,7 +15,7 @@ export const selectIsPending = createSelector(
 export const selectPosts = createSelector(
     [getUsers],
     ({ items }) => (items?.size > 0)
-        ? [...items.values()].reverse()
+        ? [...items.values()]
         : []
 );
 

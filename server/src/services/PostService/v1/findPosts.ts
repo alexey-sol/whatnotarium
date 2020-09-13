@@ -1,22 +1,15 @@
 import { PROFILES } from "#utils/const/database/tableNames";
 import FetchedList from "#types/FetchedList";
 import Post from "#models/Post";
+import PostAttributes from "#types/post/Attributes";
 import PostItem from "#types/post/Item";
-import complementPostItem from "#utils/helpers/complementPostItem";
+import DbQueryFilter from "#types/DbQueryFilter";
 
 type PostItemsList = FetchedList<PostItem>;
 
-interface Options {
-    limit?: number;
-    offset?: number;
-    userId?: number;
-}
-
 export default async function (
-    options: Options = {}
+    filter: DbQueryFilter<PostAttributes> = {}
 ): Promise<PostItemsList> {
-    const { limit, offset, userId } = options;
-
     const include = [{
         as: "author",
         attributes: ["name", "picture"],
@@ -25,26 +18,14 @@ export default async function (
         tableName: PROFILES
     }];
 
-    const filter = {
+    const updatedFilter = {
+        ...filter,
         include,
-        limit,
-        offset,
-        where: {}
+        order: "\"createdAt\" DESC" // TODO: to const?
     };
 
-    if (userId) {
-        filter.where = { userId };
-    }
-
-    const posts = await Post.findAll(filter);
-    const completedPosts = [];
-
-    for (const post of posts) {
-        completedPosts.push(await complementPostItem(post));
-    }
-
     return {
-        items: completedPosts,
+        items: await Post.findAll(updatedFilter),
         totalCount: await Post.count()
     };
 }

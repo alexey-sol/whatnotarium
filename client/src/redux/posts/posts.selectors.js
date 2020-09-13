@@ -24,7 +24,7 @@ export const selectPostById = createSelector(
 export const selectPosts = createSelector(
     [getPosts],
     ({ items }) => (items?.size > 0)
-        ? [...items.values()].reverse()
+        ? [...items.values()]
         : []
 );
 

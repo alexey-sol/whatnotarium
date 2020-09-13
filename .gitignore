@@ -5,6 +5,8 @@
 .env.test.local
 .env.production.local
 .nyc_output
+.idea
+.vscode
 build
 coverage
 log

@@ -1,22 +1,15 @@
 import { PROFILES } from "#utils/const/database/tableNames";
+import DbQueryFilter from "#types/DbQueryFilter";
 import FetchedList from "#types/FetchedList";
 import User from "#models/User";
+import UserAttributes from "#types/user/Attributes";
 import UserItem from "#types/user/Item";
-import complementUserItem from "#utils/helpers/complementUserItem";
 
 type UserItemsList = FetchedList<UserItem>;
 
-interface Options {
-    email?: string;
-    limit?: number;
-    offset?: number;
-}
-
 export default async function (
-    options: Options = {}
+    filter: DbQueryFilter<UserAttributes> = {}
 ): Promise<UserItemsList> {
-    const { email, limit, offset } = options;
-
     const include = [{
         as: "profile",
         attributes: ["name", "picture"],
@@ -25,26 +18,14 @@ export default async function (
         tableName: PROFILES
     }];
 
-    const filter = {
+    const updatedFilter = {
+        ...filter,
         include,
-        limit,
-        offset,
-        where: {}
+        order: "\"createdAt\" DESC" // TODO: to const?
     };
 
-    if (email) {
-        filter.where = { email };
-    }
-
-    const users = await User.findAll(filter);
-    const completedUsers = [];
-
-    for (const user of users) {
-        completedUsers.push(await complementUserItem(user));
-    }
-
     return {
-        items: completedUsers,
+        items: await User.findAll(updatedFilter),
         totalCount: await User.count()
     };
 }

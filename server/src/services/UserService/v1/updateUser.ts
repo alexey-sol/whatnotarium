@@ -9,7 +9,6 @@ import User from "#models/User";
 import UserAttributes from "#types/user/Attributes";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
-import complementUserItem from "#utils/helpers/complementUserItem";
 import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
@@ -55,7 +54,10 @@ export default async function (
 
     const updatedUser = await user.updateAttributes(userProps);
 
-    return complementUserItem(updatedUser, profile);
+    return { // TODO: no need to return the whole object
+        ...updatedUser,
+        profile
+    };
 }
 
 async function updateProfile (

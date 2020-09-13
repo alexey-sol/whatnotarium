@@ -1,7 +1,6 @@
 import { PROFILES } from "#utils/const/database/tableNames";
 import Post from "#models/Post";
 import PostItem from "#types/post/Item";
-import complementPostItem from "#utils/helpers/complementPostItem";
 
 export default async function (
     id: number
@@ -14,9 +13,5 @@ export default async function (
         tableName: PROFILES
     }];
 
-    const post = await Post.findById(id, include);
-
-    return (post)
-        ? complementPostItem(post)
-        : null;
+    return Post.findById(id, include);
 }

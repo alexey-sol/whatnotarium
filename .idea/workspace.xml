@@ -44,39 +44,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3e09de6d-c91a-47f9-8b3e-671db01cc1e0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/client/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/PasswordDataForm/PasswordDataForm.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PasswordDataForm/PasswordDataForm.component.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/PasswordDataForm/PasswordDataForm.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PasswordDataForm/PasswordDataForm.props.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProfileContent/ProfileContent.container.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfileContent/ProfileContent.container.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProfileContent/ProfileContent.container.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfileContent/ProfileContent.container.props.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProfileDataForm/ProfileDataForm.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfileDataForm/ProfileDataForm.component.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProfileDataForm/ProfileDataForm.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfileDataForm/ProfileDataForm.props.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProfilePictureForm/ProfilePictureForm.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfilePictureForm/ProfilePictureForm.component.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/ProfilePictureForm/ProfilePictureForm.props.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfilePictureForm/ProfilePictureForm.props.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/SignInContent/SignInContent.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SignInContent/SignInContent.component.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/SignUpContent/SignUpContent.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/SignUpContent/SignUpContent.component.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/posts/posts.middlewares.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/posts/posts.middlewares.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/rootReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/rootReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/rootSaga.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/rootSaga.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/session/session.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/session/session.reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/store.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/ui/ui.middlewares.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/ui/ui.middlewares.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/user/user.actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/user/user.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/user/user.sagas.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.sagas.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/user/user.selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.selectors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/user/user.types.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.types.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/redux/user/user.workers.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.workers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/api/session/signUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/api/session/signUp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/api/user/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/api/users/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/api/user/updateProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/api/users/updateProfile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/const/actionTypeAffixes.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/const/actionTypeAffixes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/helpers/deriveNewErrorsState.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/hooks/useForm.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/shemas/signIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/shemas/signIn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/utils/validators/shemas/signUp.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/validators/shemas/signUp.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/User/User.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/User/User.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/App/App.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/App/App.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/PostPreview/PostPreview.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/PostPreview/PostPreview.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/ProfileContent/components/MyArticles/MyArticles.component.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/ProfileContent/components/MyArticles/MyArticles.component.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/posts/posts.selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/posts/posts.selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/redux/users/users.selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/redux/users/users.selectors.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/utils/api/post/fetchPosts.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/utils/api/post/fetchPosts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/api/routes/post/v1/controllers/getPosts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/api/routes/post/v1/controllers/getPosts.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/api/routes/post/v1/schemaValidation/getPosts/getPosts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/api/routes/post/v1/schemaValidation/getPosts/getPosts.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/api/routes/post/v1/schemaValidation/getPosts/schemas/query.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/api/routes/post/v1/schemaValidation/getPosts/schemas/query.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/api/routes/session/v1/controllers/postSession.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/api/routes/session/v1/controllers/postSession.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/api/routes/user/v1/controllers/getUsers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/api/routes/user/v1/controllers/getUsers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/api/routes/user/v1/schemaValidation/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/api/routes/user/v1/schemaValidation/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/PostService/v1/createPost.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/PostService/v1/createPost.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/PostService/v1/findPost.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/PostService/v1/findPost.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/PostService/v1/findPosts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/PostService/v1/findPosts.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/PostService/v1/updatePost.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/PostService/v1/updatePost.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/UserService/v1/createUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/UserService/v1/createUser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/UserService/v1/findUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/UserService/v1/findUser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/UserService/v1/findUsers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/UserService/v1/findUsers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/services/UserService/v1/updateUser.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/UserService/v1/updateUser.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/utils/helpers/complementPostItem.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/utils/helpers/complementUserItem.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +95,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js.linters.configure.manually.selectedeslint" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/client/src/utils/validators/props" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/server/src/api/routes/user/v1/schemaValidation" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -116,18 +107,21 @@
     <property name="ts.external.directory.path" value="C:\Users\Администратор\Documents\Projects\geek-regime\server\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\validators\props" />
-      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\validators\shemas" />
-      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\redux\session" />
-      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\redux\users" />
-      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\redux\core" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\resources\text\ru" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\server\src\api\routes\user\v1\schemaValidation" />
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\server\src\types" />
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\server\src\utils\helpers" />
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\validators\props" />
+      <recent name="C:\Users\Администратор\Documents\Projects\geek-regime\client\src\utils\validators\shemas" />
+    </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3e09de6d-c91a-47f9-8b3e-671db01cc1e0" name="Default Changelist" comment="" />
@@ -148,6 +142,9 @@
       <workItem from="1598300712968" duration="409000" />
       <workItem from="1598557441445" duration="3440000" />
       <workItem from="1598636172888" duration="8266000" />
+      <workItem from="1600014977948" duration="1248000" />
+      <workItem from="1600016447868" duration="598000" />
+      <workItem from="1600018592930" duration="7420000" />
     </task>
     <servers />
   </component>
@@ -155,7 +152,7 @@
     <option name="shellPath" value="C:\Program Files\Git\bin\bash.exe" />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="2" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -174,10 +171,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="691" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1598642523765" />
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598214265735">
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1600019531869">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598214265735" />
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600019531869" />
     <state x="740" y="261" key="FileChooserDialogImpl" timestamp="1598121042000">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -190,17 +187,21 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="681" y="261" width="540" height="524" key="StructurePopup/0.0.1920.1040@0.0.1920.1040" timestamp="1598639733415" />
-    <state x="1017" y="170" width="585" height="801" key="find.popup" timestamp="1598643752748">
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2" timestamp="1600019181335">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1017" y="170" width="585" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598643752748" />
+    <state x="552" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1600019181335" />
+    <state x="1017" y="170" width="585" height="801" key="find.popup" timestamp="1600027295731">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1017" y="170" width="585" height="801" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600027295731" />
     <state x="616" y="240" key="run.anything.popup" timestamp="1598206499124">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598206499124" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598644665795">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1600027510134">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1598644665795" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600027510134" />
   </component>
 </project>

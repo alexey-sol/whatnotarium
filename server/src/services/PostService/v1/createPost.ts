@@ -1,6 +1,5 @@
 import Post from "#models/Post";
 import PostItem from "#types/post/Item";
-import complementPostItem from "#utils/helpers/complementPostItem";
 
 interface Props {
     body: string;
@@ -11,6 +10,5 @@ interface Props {
 export default async function (
     props: Props
 ): Promise<PostItem> | never {
-    const post = await Post.create(props);
-    return complementPostItem(post);
+    return Post.create(props);
 }

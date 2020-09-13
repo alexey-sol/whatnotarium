@@ -1,10 +1,10 @@
 import superagent from "superagent";
 
-async function fetchPosts (filter) {
+async function fetchPosts (options) {
     const response = await superagent
         .get("/api/v1/post")
         .set("Content-Type", "application/json")
-        .query(filter);
+        .query(options);
 
     return response?.body;
 }

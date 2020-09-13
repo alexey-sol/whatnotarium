@@ -19,7 +19,7 @@ function MyArticles ({ userPosts }) {
 
 const mapStateToProps = () => {
     return (state, ownProps) => ({
-        userPosts: selectUserPosts(state, ownProps.currentUser.id)
+        userPosts: selectUserPosts(state, ownProps.currentUser.id) // TODO: maybe better to fetch posts?
     });
 };
 
