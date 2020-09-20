@@ -1,4 +1,5 @@
 import * as types from "./posts.types";
+import reduce from "utils/redux/reduce";
 
 const INITIAL_STATE = {
     error: null,
@@ -7,89 +8,53 @@ const INITIAL_STATE = {
     totalCount: 0
 }; // TODO: create a new item "postsByUser"? With userIds as keys.
 
-function postReducer (state = INITIAL_STATE, action = {}) {
-    const { payload, type } = action;
+export default reduce(INITIAL_STATE, {
+    [types.CREATE_POST_FAILURE]: onFail,
+    [types.CREATE_POST_START]: onStart,
+    [types.CREATE_POST_SUCCESS]: onSuccess,
+    [types.DELETE_POST_FAILURE]: onFail,
+    [types.DELETE_POST_START]: onStart,
+    [types.DELETE_POST_SUCCESS]: onSuccess,
+    [types.FETCH_POST_FAILURE]: onFail,
+    [types.FETCH_POST_START]: onStart,
+    [types.FETCH_POST_SUCCESS]: onSuccess,
+    [types.FETCH_POSTS_FAILURE]: onFail,
+    [types.FETCH_POSTS_START]: onStart,
+    [types.FETCH_POSTS_SUCCESS]: onSuccess,
+    [types.RESET_POSTS_ERROR]: onResetError,
+    [types.UPDATE_POST_FAILURE]: onFail,
+    [types.UPDATE_POST_START]: onStart,
+    [types.UPDATE_POST_SUCCESS]: onSuccess
+});
 
-    switch (type) {
-        case types.CREATE_POST_START:
-        case types.DELETE_POST_START:
-        case types.FETCH_POST_START:
-        case types.FETCH_POSTS_START:
-        case types.UPDATE_POST_START:
-            return {
-                ...state,
-                isPending: true
-            };
-
-        case types.CREATE_POST_FAILURE:
-        case types.DELETE_POST_FAILURE:
-        case types.FETCH_POST_FAILURE:
-        case types.UPDATE_POST_FAILURE:
-            return {
-                ...state,
-                error: payload.error,
-                isPending: false
-            };
-
-        case types.CREATE_POST_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items,
-                totalCount: payload.totalCount
-            };
-
-        case types.DELETE_POST_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items,
-                totalCount: payload.totalCount
-            };
-
-        case types.FETCH_POST_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items
-            };
-
-        case types.FETCH_POSTS_FAILURE:
-            return {
-                ...state,
-                error: payload.error,
-                isPending: false,
-                items: new Map()
-            };
-
-        case types.FETCH_POSTS_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items
-            };
-
-        case types.RESET_POSTS_ERROR:
-            return {
-                ...state,
-                error: null
-            };
-
-        case types.UPDATE_POST_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items
-            };
-
-        default:
-            return state;
-    }
+function onFail (state, { payload }) {
+    return {
+        ...state,
+        error: payload.error,
+        isPending: false
+    };
 }
 
-export default postReducer;
+function onResetError (state) {
+    return {
+        ...state,
+        error: null
+    };
+}
+
+function onStart (state) {
+    return {
+        ...state,
+        isPending: true
+    };
+}
+
+function onSuccess (state, { payload }) {
+    return {
+        ...state,
+        error: null,
+        isPending: false,
+        items: payload.items,
+        totalCount: payload.totalCount
+    };
+}

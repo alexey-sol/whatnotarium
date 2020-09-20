@@ -14,7 +14,7 @@ function UserMenu ({ history, onClose, onSignOutStart }) {
     const containerRef = useRef(null);
 
     const redirectToProfile = () => {
-        history.push(PROFILE);
+        history.push(`/${PROFILE}`);
         onClose();
     };
 
@@ -30,8 +30,7 @@ function UserMenu ({ history, onClose, onSignOutStart }) {
 
         const onMousedown = ({ target }) => {
             const container = containerRef.current;
-            const shouldCloseUserMenu = container &&
-                !container.contains(target);
+            const shouldCloseUserMenu = container && !container.contains(target);
 
             if (shouldCloseUserMenu) onClose();
         };

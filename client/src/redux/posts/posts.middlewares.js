@@ -1,9 +1,9 @@
 import * as types from "./posts.types";
-import { POSTS_PREFIX } from "../../utils/const/actionTypeAffixes";
+import { FAILURE_POSTFIX, POSTS_PREFIX, START_POSTFIX } from "../../utils/const/actionTypeAffixes";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import updatePayloadForCreatedItem from "utils/redux/updatePayloadForCreatedItem";
 import updatePayloadForDeletedItem from "utils/redux/updatePayloadForDeletedItem";
-import updatePayloadForFetchedOrUpdatedItem from "utils/redux/updatePayloadForFetchedOrUpdatedItem";
+import updatePayload from "utils/redux/updatePayload";
 
 export const postsNormalizer = () => (next) => (action) => {
     const { payload, type } = action;
@@ -26,30 +26,45 @@ export const postsNormalizer = () => (next) => (action) => {
 
 export const postsEnricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
-    const shouldIgnoreAction = payload?.error || !type.startsWith(POSTS_PREFIX);
+
+    const shouldIgnoreAction = (
+        payload?.error ||
+        !type.startsWith(POSTS_PREFIX) ||
+        type.endsWith(START_POSTFIX) ||
+        type.endsWith(FAILURE_POSTFIX)
+    );
 
     if (shouldIgnoreAction) {
         return next(action);
     }
 
     const enrichedAction = { ...action };
+    const isDeletion = type === types.DELETE_POST_SUCCESS;
 
-    if (type === types.CREATE_POST_SUCCESS) {
-        enrichedAction.payload = updatePayloadForCreatedItem(
-            payload,
-            getState().posts
-        );
-    } else if (type === types.DELETE_POST_SUCCESS) {
-        enrichedAction.payload = updatePayloadForDeletedItem(
-            payload,
-            getState().posts
-        );
-    } else if (type === types.FETCH_POST_SUCCESS || type === types.UPDATE_POST_SUCCESS) {
-        enrichedAction.payload = updatePayloadForFetchedOrUpdatedItem(
-            payload,
-            getState().posts
-        );
-    }
+    enrichedAction.payload = updatePayload(
+        payload,
+        getState().posts,
+        isDeletion
+    );
+
+
+    // if (type === types.CREATE_POST_SUCCESS) {
+    //     enrichedAction.payload = updatePayload(
+    //         payload,
+    //         getState().posts
+    //     );
+    // } else if (type === types.DELETE_POST_SUCCESS) {
+    //     enrichedAction.payload = updatePayload(
+    //         payload,
+    //         getState().posts,
+    //         true
+    //     );
+    // } else if (type === types.FETCH_POST_SUCCESS || type === types.UPDATE_POST_SUCCESS) {
+    //     enrichedAction.payload = updatePayload(
+    //         payload,
+    //         getState().posts
+    //     );
+    // }
 
     next(enrichedAction);
 };

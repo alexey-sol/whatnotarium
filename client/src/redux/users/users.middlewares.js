@@ -3,7 +3,7 @@ import { USERS_PREFIX } from "../../utils/const/actionTypeAffixes";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import updatePayloadForCreatedItem from "utils/redux/updatePayloadForCreatedItem";
 import updatePayloadForDeletedItem from "utils/redux/updatePayloadForDeletedItem";
-import updatePayloadForFetchedOrUpdatedItem from "utils/redux/updatePayloadForFetchedOrUpdatedItem";
+import updatePayload from "utils/redux/updatePayload";
 
 export const usersNormalizer = () => (next) => (action) => {
     const { payload, type } = action;
@@ -45,7 +45,7 @@ export const usersEnricher = ({ getState }) => (next) => (action) => {
             getState().users
         );
     } else if (type === types.FETCH_USER_SUCCESS || type === types.UPDATE_USER_SUCCESS) { // TODO
-        enrichedAction.payload = updatePayloadForFetchedOrUpdatedItem(
+        enrichedAction.payload = updatePayload(
             payload,
             getState().users
         );

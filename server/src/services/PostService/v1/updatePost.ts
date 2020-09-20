@@ -2,6 +2,7 @@ import { NOT_FOUND } from "#utils/const/validationErrors";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 import PostItem from "#types/post/Item";
+import complementPostItem from "#utils/helpers/complementPostItem";
 
 interface Props {
     body?: string;
@@ -29,5 +30,6 @@ export default async function (
         updatedAt: new Date()
     };
 
-    return post.updateAttributes(updatedProps);
+    const updatedPost = await post.updateAttributes(updatedProps);
+    return complementPostItem(updatedPost);
 }
