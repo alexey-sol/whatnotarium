@@ -1,9 +1,7 @@
 import * as types from "./users.types";
-import { USERS_PREFIX } from "../../utils/const/actionTypeAffixes";
+import { FAILURE_POSTFIX, START_POSTFIX, USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
-import updatePayloadForCreatedItem from "utils/redux/updatePayloadForCreatedItem";
-import updatePayloadForDeletedItem from "utils/redux/updatePayloadForDeletedItem";
-import updatePayload from "utils/redux/updatePayload";
+import complementPayload from "utils/redux/complementPayload";
 
 export const usersNormalizer = () => (next) => (action) => {
     const { payload, type } = action;
@@ -26,30 +24,26 @@ export const usersNormalizer = () => (next) => (action) => {
 
 export const usersEnricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
-    const shouldIgnoreAction = payload?.error || !type.startsWith(USERS_PREFIX);
+
+    const shouldIgnoreAction = (
+        payload?.error ||
+        !type.startsWith(USERS_PREFIX) ||
+        type.endsWith(START_POSTFIX) ||
+        type.endsWith(FAILURE_POSTFIX)
+    );
 
     if (shouldIgnoreAction) {
         return next(action);
     }
 
     const enrichedAction = { ...action };
+    const isDeletion = type === types.DELETE_USER_SUCCESS;
 
-    if (type === types.CREATE_USER_SUCCESS) {
-        enrichedAction.payload = updatePayloadForCreatedItem(
-            payload,
-            getState().users
-        );
-    } else if (type === types.DELETE_USER_SUCCESS) {
-        enrichedAction.payload = updatePayloadForDeletedItem(
-            payload,
-            getState().users
-        );
-    } else if (type === types.FETCH_USER_SUCCESS || type === types.UPDATE_USER_SUCCESS) { // TODO
-        enrichedAction.payload = updatePayload(
-            payload,
-            getState().users
-        );
-    }
+    enrichedAction.payload = complementPayload(
+        payload,
+        getState().users,
+        isDeletion
+    );
 
     next(enrichedAction);
 };

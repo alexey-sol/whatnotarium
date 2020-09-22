@@ -9,5 +9,6 @@ export const propTypes = {
     currentUser: object.isRequired,
     isPending: bool,
     notification: object,
+    onShowNotification: func.isRequired,
     onUpdateUserStart: func.isRequired
 };

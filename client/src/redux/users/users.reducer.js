@@ -1,4 +1,5 @@
 import * as types from "./users.types";
+import reduce from "utils/redux/reduce";
 
 const INITIAL_STATE = {
     error: null,
@@ -7,89 +8,54 @@ const INITIAL_STATE = {
     totalCount: 0
 };
 
-function usersReducer (state = INITIAL_STATE, action = {}) {
-    const { payload, type } = action;
+export default reduce(INITIAL_STATE, {
+    [types.CREATE_USER_FAILURE]: onFailure,
+    [types.CREATE_USER_START]: onStart,
+    [types.CREATE_USER_SUCCESS]: onSuccess,
+    [types.DELETE_USER_FAILURE]: onFailure,
+    [types.DELETE_USER_START]: onStart,
+    [types.DELETE_USER_SUCCESS]: onSuccess,
+    [types.FETCH_USER_FAILURE]: onFailure,
+    [types.FETCH_USER_START]: onStart,
+    [types.FETCH_USER_SUCCESS]: onSuccess,
+    [types.FETCH_USERS_FAILURE]: onFailure,
+    [types.FETCH_USERS_START]: onStart,
+    [types.FETCH_USERS_SUCCESS]: onSuccess,
+    [types.RESET_USERS_ERROR]: onResetError,
+    [types.SET_USER]: onSuccess,
+    [types.UPDATE_USER_FAILURE]: onFailure,
+    [types.UPDATE_USER_START]: onStart,
+    [types.UPDATE_USER_SUCCESS]: onSuccess
+});
 
-    switch (type) {
-        case types.CREATE_USER_START:
-        case types.DELETE_USER_START:
-        case types.FETCH_USER_START:
-        case types.FETCH_USERS_START:
-        case types.UPDATE_USER_START:
-            return {
-                ...state,
-                isPending: true
-            };
-
-        case types.CREATE_USER_FAILURE:
-        case types.DELETE_USER_FAILURE:
-        case types.FETCH_USER_FAILURE:
-        case types.UPDATE_USER_FAILURE:
-            return {
-                ...state,
-                error: payload.error,
-                isPending: false
-            };
-
-        case types.CREATE_USER_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items,
-                totalCount: payload.totalCount
-            };
-
-        case types.DELETE_USER_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items,
-                totalCount: payload.totalCount
-            };
-
-        case types.FETCH_USER_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items
-            };
-
-        case types.FETCH_USERS_FAILURE:
-            return {
-                ...state,
-                error: payload.error,
-                isPending: false,
-                items: new Map()
-            };
-
-        case types.FETCH_USERS_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items
-            };
-
-        case types.RESET_USERS_ERROR:
-            return {
-                ...state,
-                error: null
-            };
-
-        case types.UPDATE_USER_SUCCESS:
-            return {
-                ...state,
-                error: null,
-                isPending: false,
-                items: payload.items
-            };
-
-        default:
-            return state;
-    }
+function onFailure (state, { payload }) {
+    return {
+        ...state,
+        error: payload.error,
+        isPending: false
+    };
 }
 
-export default usersReducer;
+function onResetError (state) {
+    return {
+        ...state,
+        error: null
+    };
+}
+
+function onStart (state) {
+    return {
+        ...state,
+        isPending: true
+    };
+}
+
+function onSuccess (state, { payload }) {
+    return {
+        ...state,
+        error: null,
+        isPending: false,
+        items: payload.items,
+        totalCount: payload.totalCount
+    };
+}

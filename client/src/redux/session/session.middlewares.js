@@ -1,6 +1,7 @@
 import * as types from "redux/session/session.types";
 import * as usersTypes from "redux/users/users.types";
 import { setCurrentUser } from "redux/session/session.actions";
+import { setUser } from "redux/users/users.actions";
 
 export const sessionMapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
@@ -12,6 +13,7 @@ export const sessionMapper = ({ dispatch }) => (next) => (action) => {
 
     if (checkIfShouldSetCurrentUser(type)) {
         dispatch(setCurrentUser(payload));
+        dispatch(setUser(payload));
     }
 
     next(action);

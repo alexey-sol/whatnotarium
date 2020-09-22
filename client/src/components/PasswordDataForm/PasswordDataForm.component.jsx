@@ -1,25 +1,32 @@
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
 // import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
+import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
+import { HIDE_NOTIFICATION } from "utils/const/events";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
-import { HIDE_NOTIFICATION } from "utils/const/events";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-
 import { selectIsPending } from "redux/users/users.selectors";
 import { selectNotification } from "redux/ui/ui.selectors";
+import { showNotification } from "redux/ui/ui.actions";
 import { updateUserStart } from "redux/users/users.actions";
 
 // import hints from "utils/resources/text/ru/hints";
-import phrases from "../../utils/resources/text/ru/commonPhrases";
-import pubsub from "../../utils/pubsub";
+import phrases from "utils/resources/text/ru/commonPhrases";
+import pubsub from "utils/pubsub";
 import styles from "./PasswordDataForm.module.scss";
-import updatePasswordSchema from "../../utils/validators/shemas/updatePassword";
+import updatePasswordSchema from "utils/validators/shemas/updatePassword";
+
+const successNotification = {
+    text: phrases.done,
+    timeoutInMs: DEFAULT_TIMEOUT_IN_MS,
+    type: SUCCESS
+};
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;
@@ -28,6 +35,7 @@ function PasswordDataForm ({
     currentUser,
     isPending,
     notification,
+    onShowNotification,
     onUpdateUserStart
 }) {
     // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK)
@@ -41,6 +49,10 @@ function PasswordDataForm ({
         password: ""
     };
 
+    const showSuccess = useCallback(() => {
+        onShowNotification(successNotification);
+    }, [onShowNotification]);
+
     const handleChangeWrapper = (event, cb) => {
         if (notification) {
             pubsub.publish(HIDE_NOTIFICATION);
@@ -52,7 +64,7 @@ function PasswordDataForm ({
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={onUpdateUserStart} // TODO: relation "hashoptions" does not exist
+            onSubmit={props => onUpdateUserStart(props, showSuccess)}
             validateOnChange
             validationSchema={updatePasswordSchema}
         >
@@ -97,6 +109,7 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    onShowNotification: (notification) => dispatch(showNotification(notification)),
     onUpdateUserStart: (props) => dispatch(updateUserStart(props))
 });
 

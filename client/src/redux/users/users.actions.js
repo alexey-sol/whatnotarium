@@ -1,5 +1,12 @@
 import * as types from "./users.types";
 
+export function setUser (payload) {
+    return {
+        payload,
+        type: types.SET_USER
+    };
+}
+
 export function updateUserFailure (error) {
     return {
         payload: { error },
@@ -7,9 +14,10 @@ export function updateUserFailure (error) {
     };
 }
 
-export function updateUserStart (params) {
+export function updateUserStart (props, cb) {
     return {
-        payload: params,
+        cb,
+        payload: props,
         type: types.UPDATE_USER_START
     };
 }

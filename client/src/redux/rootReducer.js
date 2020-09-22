@@ -13,7 +13,7 @@ const persistConfig = {
     storage,
     transforms: [transformStateItemsMap],
     whitelist: [
-        "users"
+        // "users" // TODO: what should I persist?
     ]
 };
 
