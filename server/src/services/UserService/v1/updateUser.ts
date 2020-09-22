@@ -41,9 +41,9 @@ export default async function (
 
     if (shouldUpdatePassword) {
         const hashResult = await hashPassword(newPassword as string);
-        const { hash } = hashResult;
+        const { hash, ...options } = hashResult;
 
-        await updateHashOptions(user.id, hashResult);
+        await updateHashOptions(user.id, options);
         userProps.password = hash;
     }
 

@@ -28,7 +28,7 @@ class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
         const whereIdElement = this.createWhereIdClause();
 
         return `
-            UPDATE ${this.tableName}
+            UPDATE "${this.tableName}"
             SET ${setClause}
             ${whereIdElement}
             AND (${andClause})
