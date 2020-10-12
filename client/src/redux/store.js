@@ -4,7 +4,7 @@ import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
 
 import { DEVELOPMENT } from "utils/const/nodeEnv";
-import { postsEnricher, postsNormalizer } from "./posts/posts.middlewares";
+import { postsEnricher, postsMapper, postsNormalizer } from "./posts/posts.middlewares";
 import { sessionMapper } from "redux/session/session.middlewares";
 import { uiMapper } from "./ui/ui.middlewares";
 import { usersEnricher, usersNormalizer } from "./users/users.middlewares";
@@ -21,7 +21,8 @@ const middlewares = [
     usersNormalizer,
     usersEnricher,
     postsNormalizer,
-    postsEnricher
+    postsEnricher,
+    postsMapper
 ];
 
 if (isDevelopment) {

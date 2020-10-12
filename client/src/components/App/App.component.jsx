@@ -1,6 +1,7 @@
 import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import {
     DRAFT,
@@ -18,8 +19,9 @@ import Main from "components/Main";
 import Nav from "components/Nav";
 import Spinner from "components/Spinner";
 import { checkSessionStart } from "redux/session/session.actions";
+import { defaultProps, propTypes } from "./App.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
-import { propTypes } from "./App.props";
+import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
 import styles from "./App.module.scss";
 
 const Draft = lazy(() => import("pages/Draft"));
@@ -30,12 +32,22 @@ const Profile = lazy(() => import("pages/Profile"));
 const SignIn = lazy(() => import("pages/SignIn"));
 
 App.propTypes = propTypes;
+App.defaultProps = defaultProps;
 
-export function App ({ onCheckSessionStart, onFetchPostsStart }) {
+export function App ({
+    currentPostsPage,
+    onCheckSessionStart,
+    onFetchPostsStart,
+    postsOnPageCount
+}) {
     useEffect(() => {
         onCheckSessionStart();
-        onFetchPostsStart();
-    }, [onCheckSessionStart, onFetchPostsStart]);
+
+        onFetchPostsStart({
+            count: postsOnPageCount,
+            page: currentPostsPage
+        });
+    }, [currentPostsPage, onCheckSessionStart, onFetchPostsStart]);
 
     return (
         <div className={styles.container}>
@@ -88,13 +100,18 @@ export function App ({ onCheckSessionStart, onFetchPostsStart }) {
     );
 }
 
+const mapStateToProps = createStructuredSelector({
+    currentPostsPage: selectCurrentPage,
+    postsOnPageCount: selectCount
+});
+
 const mapDispatchToProps = (dispatch) => ({
     onCheckSessionStart: () => dispatch(checkSessionStart()),
     onFetchPostsStart: (options) => dispatch(fetchPostsStart(options))
 });
 
 const ConnectedApp = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(App);
 

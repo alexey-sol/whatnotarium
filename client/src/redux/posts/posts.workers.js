@@ -38,8 +38,8 @@ export function * doFetchPost ({ payload: id }) {
 
 export function * doFetchPosts ({ payload }) {
     try {
-        const itemsWithTotalCount = yield api.fetchPosts(payload);
-        yield put(actions.fetchPostsSuccess(itemsWithTotalCount));
+        const itemsWithPagingOpts = yield api.fetchPosts(payload);
+        yield put(actions.fetchPostsSuccess(itemsWithPagingOpts));
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.fetchPostsFailure(error));

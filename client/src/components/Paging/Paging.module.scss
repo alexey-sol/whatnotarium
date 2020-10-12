@@ -1,0 +1,25 @@
+@import "styles/style.scss";
+
+.container {
+    width: fit-content;
+
+    .steps {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .paging {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    .active {
+        background-color: #ff0000;
+    }
+}

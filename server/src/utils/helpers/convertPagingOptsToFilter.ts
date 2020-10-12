@@ -1,9 +1,9 @@
 import { DEFAULT_COUNT } from "#utils/const/paginationOptions";
 import DbQueryFilter from "#types/DbQueryFilter";
-import PaginationOptions from "#root/src/types/PaginationOptions";
+import PagingOptions from "#types/PagingOptions";
 
-function convertPaginOptsToFilter<Props> (
-    options: PaginationOptions
+function convertPagingOptsToFilter<Props> (
+    options: PagingOptions
 ): DbQueryFilter<Props> {
     const {
         count = DEFAULT_COUNT,
@@ -20,4 +20,4 @@ function convertPaginOptsToFilter<Props> (
     };
 }
 
-export default convertPaginOptsToFilter;
+export default convertPagingOptsToFilter;

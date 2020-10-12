@@ -79,9 +79,9 @@ export function fetchPostsStart (filter) {
     };
 }
 
-export function fetchPostsSuccess ({ items, totalCount }) {
+export function fetchPostsSuccess (payload) {
     return {
-        payload: { items, totalCount },
+        payload,
         type: types.FETCH_POSTS_SUCCESS
     };
 }
