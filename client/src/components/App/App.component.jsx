@@ -1,7 +1,6 @@
 import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import {
     DRAFT,
@@ -19,9 +18,7 @@ import Main from "components/Main";
 import Nav from "components/Nav";
 import Spinner from "components/Spinner";
 import { checkSessionStart } from "redux/session/session.actions";
-import { defaultProps, propTypes } from "./App.props";
-import { fetchPostsStart } from "redux/posts/posts.actions";
-import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
+import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 
 const Draft = lazy(() => import("pages/Draft"));
@@ -32,22 +29,11 @@ const Profile = lazy(() => import("pages/Profile"));
 const SignIn = lazy(() => import("pages/SignIn"));
 
 App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
-export function App ({
-    currentPostsPage,
-    onCheckSessionStart,
-    onFetchPostsStart,
-    postsOnPageCount
-}) {
+export function App ({ onCheckSessionStart }) {
     useEffect(() => {
         onCheckSessionStart();
-
-        onFetchPostsStart({
-            count: postsOnPageCount,
-            page: currentPostsPage
-        });
-    }, [currentPostsPage, onCheckSessionStart, onFetchPostsStart]);
+    }, [onCheckSessionStart]);
 
     return (
         <div className={styles.container}>
@@ -61,6 +47,11 @@ export function App ({
                                 component={Home}
                                 exact
                                 path="/"
+                            />
+
+                            <Route
+                                component={Home}
+                                path="/page:number"
                             />
 
                             <Route
@@ -100,18 +91,12 @@ export function App ({
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentPostsPage: selectCurrentPage,
-    postsOnPageCount: selectCount
-});
-
 const mapDispatchToProps = (dispatch) => ({
-    onCheckSessionStart: () => dispatch(checkSessionStart()),
-    onFetchPostsStart: (options) => dispatch(fetchPostsStart(options))
+    onCheckSessionStart: () => dispatch(checkSessionStart())
 });
 
 const ConnectedApp = connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(App);
 

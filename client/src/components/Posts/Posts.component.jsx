@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { withRouter } from "react-router";
 
 import { defaultProps, propTypes } from "./Posts.props";
 import Paging from "components/Paging";
@@ -13,7 +14,6 @@ import {
     selectTotalCount
 } from "redux/postsPaging/postsPaging.selectors";
 
-import { fetchPostsStart } from "redux/posts/posts.actions";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 
 Posts.defaultProps = defaultProps;
@@ -21,7 +21,6 @@ Posts.propTypes = propTypes;
 
 function Posts ({
     currentPage,
-    onFetchPostsStart,
     onSetCurrentPage,
     posts,
     postsOnPageCount,
@@ -36,11 +35,6 @@ function Posts ({
         </li>
     ));
 
-    const onChangePage = (page) => {
-        onSetCurrentPage(page);
-        onFetchPostsStart({ count: postsOnPageCount, page });
-    }; // TODO: maybe move fetching logic to Paging comp itself?
-
     return (
         <article className={styles.container}>
             <ul className={styles.postList}>
@@ -50,8 +44,7 @@ function Posts ({
             <Paging
                 count={postsOnPageCount}
                 currentPage={currentPage}
-                onChangePage={onChangePage}
-                pageNeighbours={4}
+                setCurrentPage={onSetCurrentPage}
                 totalRecords={totalCount}
             />
         </article>
@@ -65,7 +58,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onFetchPostsStart: (options) => dispatch(fetchPostsStart(options)),
     onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 
@@ -74,4 +66,4 @@ const ConnectedPosts = connect(
     mapDispatchToProps
 )(Posts);
 
-export default ConnectedPosts;
+export default withRouter(ConnectedPosts);

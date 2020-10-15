@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router";
 
 import { defaultProps, propTypes } from "./Paging.props";
 import range from "utils/helpers/range";
@@ -10,12 +11,18 @@ Paging.defaultProps = defaultProps;
 function Paging ({
     count,
     currentPage,
-    onChangePage,
+    history,
     pageNeighbours,
+    pathPrefix,
+    setCurrentPage,
     totalRecords
 }) {
     const lastNumber = Math.ceil(totalRecords / count);
     const totalNumbers = (pageNeighbours * 2) + 1;
+
+    if (!totalRecords || lastNumber === 1) {
+        return null;
+    }
 
     const leftmostNumber = currentPage - pageNeighbours;
     const rightmostNumber = currentPage + pageNeighbours;
@@ -23,9 +30,22 @@ function Paging ({
     const hasLeftSpill = leftmostNumber > 1;
     const hasRightSpill = rightmostNumber < lastNumber;
 
+    const handlePageChange = (page) => {
+        if (currentPage === page) {
+            return;
+        }
+
+        const path = (page === 1)
+            ? `${pathPrefix}/`
+            : `${pathPrefix}/page${page}`;
+
+        setCurrentPage(page);
+        history.push(path);
+    };
+
     const goToPage = (pageNumber) => {
         const page = Math.max(0, Math.min(pageNumber, lastNumber));
-        onChangePage(page);
+        handlePageChange(page);
     };
 
     const getPagesRange = () => {
@@ -37,10 +57,6 @@ function Paging ({
 
         return range(startNumber, endNumber);
     };
-
-    if (!totalRecords || lastNumber === 1) {
-        return null;
-    }
 
     const pagesRange = getPagesRange();
 
@@ -106,4 +122,4 @@ function Paging ({
     );
 }
 
-export default Paging;
+export default withRouter(Paging);
