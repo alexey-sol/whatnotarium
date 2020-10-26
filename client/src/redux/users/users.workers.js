@@ -5,11 +5,9 @@ import * as api from "utils/api/users";
 
 import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
-export function * doUpdateProfile ({ cb, payload }) {
-    const { id, ...props } = payload;
-
+export function * doUpdateUser ({ cb, payload }) {
     try {
-        const user = yield api.updateProfile(id, props);
+        const user = yield api.updateUser(payload);
         yield put(actions.updateUserSuccess(user));
         cb();
     } catch (errorResponse) {

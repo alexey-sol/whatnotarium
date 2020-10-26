@@ -2,16 +2,16 @@ import { Form, Formik } from "formik";
 import { Redirect } from "react-router";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { EMAIL, PASSWORD } from "utils/const/userData";
 import { HIDE_NOTIFICATION } from "utils/const/events";
+import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignInContent.props";
-import { selectCurrentUser, selectIsPending } from "redux/session/session.selectors";
-import { selectNotification } from "redux/ui/ui.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { signInStart } from "redux/session/session.actions";
 import pubsub from "utils/pubsub";
 import signInSchema from "utils/validators/shemas/signIn";
@@ -126,11 +126,13 @@ function SignInContent ({
         : elem;
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    notification: selectNotification,
-    isPending: selectIsPending
-});
+const mapStateToProps = () => {
+    return (state) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: Boolean(selectRelevantPendingAction(state, SESSION_PREFIX)),
+        notification: selectNotification(state)
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onSignInStart: (credentials) => dispatch(signInStart(credentials))

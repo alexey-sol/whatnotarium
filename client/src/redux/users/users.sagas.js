@@ -4,7 +4,7 @@ import * as types from "./users.types";
 import * as workers from "./users.workers";
 
 function * onUpdateUserStart () {
-    yield takeLatest(types.UPDATE_USER_START, workers.doUpdateProfile);
+    yield takeLatest(types.UPDATE_USER_START, workers.doUpdateUser);
 }
 
 function * usersSagas () {

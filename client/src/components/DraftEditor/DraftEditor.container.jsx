@@ -5,17 +5,13 @@ import { withRouter } from "react-router-dom";
 import { POST, PROFILE } from "utils/const/pathnames";
 import { RESET_POST } from "utils/const/events";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
+import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import DraftEditor from "./DraftEditor.component";
-
-import {
-    createPostStart,
-    deletePostStart,
-    updatePostStart
-} from "redux/posts/posts.actions";
-
+import { createPostStart, deletePostStart, updatePostStart } from "redux/posts/posts.actions";
 import { defaultProps, propTypes } from "./DraftEditor.container.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectIsPending, selectPostById } from "redux/posts/posts.selectors";
+import { selectPostById } from "redux/posts/posts.selectors";
+import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
@@ -108,7 +104,7 @@ function DraftEditorContainer ({
 const mapStateToProps = () => {
     return (state, ownProps) => ({
         currentUser: selectCurrentUser(state),
-        isPending: selectIsPending(state),
+        isPending: Boolean(selectRelevantPendingAction(state, POSTS_PREFIX)),
         post: selectPostById(state, +ownProps.match.params.id)
     });
 };

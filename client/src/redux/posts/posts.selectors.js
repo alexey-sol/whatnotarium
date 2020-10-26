@@ -9,11 +9,6 @@ export const selectError = createSelector(
     ({ error }) => error
 );
 
-export const selectIsPending = createSelector(
-    [getPosts],
-    ({ isPending }) => isPending
-);
-
 export const selectPostById = createSelector(
     [getPosts, getPostId],
     ({ items }, postId) => {
@@ -26,11 +21,6 @@ export const selectPosts = createSelector(
     ({ items }) => (items?.size > 0)
         ? [...items.values()]
         : []
-);
-
-export const selectTotalCount = createSelector(
-    [getPosts],
-    ({ totalCount }) => totalCount
 );
 
 export const selectUserPosts = createSelector(

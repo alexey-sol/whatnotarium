@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
+import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import Posts from "components/Posts";
 import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
 import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
-import { selectIsPending, selectPosts } from "redux/posts/posts.selectors";
+import { selectPosts } from "redux/posts/posts.selectors";
+import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 
 Home.defaultProps = defaultProps;
 Home.propTypes = propTypes;
@@ -42,12 +43,15 @@ function Home ({
     return <HomeWithSpinner />;
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentPostsPage: selectCurrentPage,
-    isPending: selectIsPending,
-    posts: selectPosts,
-    postsOnPageCount: selectCount
-});
+
+const mapStateToProps = () => {
+    return (state) => ({
+        currentPostsPage: selectCurrentPage(state),
+        isPending: Boolean(selectRelevantPendingAction(state, POSTS_PREFIX)),
+        posts: selectPosts(state),
+        postsOnPageCount: selectCount(state)
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchPostsStart: (options) => dispatch(fetchPostsStart(options))

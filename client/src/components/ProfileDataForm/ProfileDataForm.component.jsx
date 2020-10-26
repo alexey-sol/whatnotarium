@@ -1,23 +1,22 @@
 import { Form, Formik } from "formik";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { EMAIL, NAME } from "utils/const/userData";
 import { HIDE_NOTIFICATION } from "utils/const/events";
+import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "../FormInput";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectIsPending } from "redux/users/users.selectors";
-import { selectNotification } from "redux/ui/ui.selectors";
+import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
 import { updateUserStart } from "redux/users/users.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
 import styles from "./ProfileDataForm.module.scss";
-import updateProfileSchema from "utils/validators/shemas/updateProfile";
+import updateUserSchema from "utils/validators/shemas/updateUser";
 
 const successNotification = {
     text: phrases.done,
@@ -58,7 +57,7 @@ function ProfileDataForm ({
             initialValues={initialValues}
             onSubmit={props => onUpdateUserStart(props, showSuccess)}
             validateOnChange
-            validationSchema={updateProfileSchema}
+            validationSchema={updateUserSchema}
         >
             {({ errors, handleChange }) => (
                 <Form className={styles.container}>
@@ -78,7 +77,7 @@ function ProfileDataForm ({
                     />
 
                     <BaseButton
-                        className={styles.updateProfileDataButton}
+                        className={styles.updateUserDataButton}
                         disabled={isPending || Object.keys(errors).length > 0}
                         text="Сохранить"
                         theme="dark"
@@ -89,11 +88,13 @@ function ProfileDataForm ({
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    isPending: selectIsPending,
-    notification: selectNotification
-});
+const mapStateToProps = () => {
+    return (state) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: Boolean(selectRelevantPendingAction(state, USERS_PREFIX)),
+        notification: selectNotification(state)
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onShowNotification: (notification) => dispatch(showNotification(notification)),

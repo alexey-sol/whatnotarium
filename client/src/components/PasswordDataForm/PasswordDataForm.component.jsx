@@ -1,21 +1,19 @@
 import { Form, Formik } from "formik";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
 // import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { HIDE_NOTIFICATION } from "utils/const/events";
+import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectIsPending } from "redux/users/users.selectors";
-import { selectNotification } from "redux/ui/ui.selectors";
+import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
 import { updateUserStart } from "redux/users/users.actions";
-
 // import hints from "utils/resources/text/ru/hints";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
@@ -102,11 +100,13 @@ function PasswordDataForm ({
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    isPending: selectIsPending,
-    notification: selectNotification
-});
+const mapStateToProps = () => {
+    return (state) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: Boolean(selectRelevantPendingAction(state, USERS_PREFIX)),
+        notification: selectNotification(state)
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onShowNotification: (notification) => dispatch(showNotification(notification)),

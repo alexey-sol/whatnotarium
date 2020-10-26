@@ -32,7 +32,7 @@ export function deletePostFailure (error) {
 export function deletePostStart (id, cb) {
     return {
         cb,
-        payload: id,
+        payload: { id },
         type: types.DELETE_POST_START
     };
 }
@@ -53,7 +53,7 @@ export function fetchPostFailure (error) {
 
 export function fetchPostStart (id) {
     return {
-        payload: id,
+        payload: { id },
         type: types.FETCH_POST_START
     };
 }

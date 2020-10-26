@@ -1,4 +1,5 @@
 import { put } from "redux-saga/effects";
+import status from "http-status";
 
 import * as actions from "./session.actions";
 import * as api from "utils/api/session";
@@ -9,6 +10,12 @@ export function * doCheckSession () {
         const currentUser = yield api.checkSession();
         yield put(actions.checkSessionSuccess(currentUser));
     } catch (errorResponse) {
+        const isUnauthorized = errorResponse.status === status.UNAUTHORIZED;
+        const errorIfAny = (isUnauthorized)
+            ? null
+            : getErrorFromResponse(errorResponse);
+
+        yield put(actions.checkSessionFailure(errorIfAny));
         console.error(errorResponse);
     }
 }

@@ -3,8 +3,7 @@ import reduce from "utils/redux/reduce";
 
 const INITIAL_STATE = {
     currentUser: null,
-    error: null,
-    isPending: false
+    error: null
 };
 
 export default reduce(INITIAL_STATE, {
@@ -14,21 +13,17 @@ export default reduce(INITIAL_STATE, {
     [types.RESET_SESSION_ERROR]: onResetSessionError,
     [types.SET_CURRENT_USER]: onSetCurrentUser,
     [types.SIGN_IN_FAILURE]: onFailure,
-    [types.SIGN_IN_START]: onStart,
     [types.SIGN_IN_SUCCESS]: onSuccess,
     [types.SIGN_OUT_FAILURE]: onFailure,
-    [types.SIGN_OUT_START]: onStart,
     [types.SIGN_OUT_SUCCESS]: onResetSession,
     [types.SIGN_UP_FAILURE]: onFailure,
-    [types.SIGN_UP_SUCCESS]: onSuccess,
-    [types.SIGN_UP_START]: onStart
+    [types.SIGN_UP_SUCCESS]: onSuccess
 });
 
 function onFailure (state, { payload }) {
     return {
         ...state,
-        error: payload.error,
-        isPending: false
+        error: payload.error
     };
 }
 
@@ -43,8 +38,7 @@ function onResetSession (state) {
     return {
         ...state,
         currentUser: null,
-        error: null,
-        isPending: false
+        error: null
     };
 }
 
@@ -63,17 +57,9 @@ function onSetCurrentUser (state, { payload }) {
     };
 }
 
-function onStart (state) {
-    return {
-        ...state,
-        isPending: true
-    };
-}
-
 function onSuccess (state) {
     return {
         ...state,
-        error: null,
-        isPending: false
+        error: null
     };
 }

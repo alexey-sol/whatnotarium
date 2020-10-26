@@ -7,12 +7,7 @@ export const selectError = createSelector(
     ({ error }) => error
 );
 
-export const selectIsPending = createSelector(
-    [getUsers],
-    ({ isPending }) => isPending
-);
-
-export const selectPosts = createSelector(
+export const selectUsers = createSelector(
     [getUsers],
     ({ items }) => (items?.size > 0)
         ? [...items.values()]

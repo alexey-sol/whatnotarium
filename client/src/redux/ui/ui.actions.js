@@ -1,8 +1,22 @@
 import * as types from "./ui.types";
 
+export function addActionToPendingApi (actionType, data = null) { // TODO: data -> itemId?
+    return {
+        payload: { actionType, data },
+        type: types.ADD_ACTION_TO_PENDING_API
+    };
+}
+
 export function hideNotification () {
     return {
         type: types.HIDE_NOTIFICATION
+    };
+}
+
+export function removeActionFromPendingApi (actionType) {
+    return {
+        payload: { actionType },
+        type: types.REMOVE_ACTION_FROM_PENDING_API
     };
 }
 

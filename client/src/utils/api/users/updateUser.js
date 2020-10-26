@@ -1,6 +1,6 @@
 import superagent from "superagent";
 
-async function updateProfile (id, props) {
+async function updateUser ({ id, ...props }) {
     const response = await superagent
         .put(`/api/v1/user/${id}`)
         .set("Content-Type", "application/json")
@@ -9,4 +9,4 @@ async function updateProfile (id, props) {
     return response?.body;
 }
 
-export default updateProfile;
+export default updateUser;

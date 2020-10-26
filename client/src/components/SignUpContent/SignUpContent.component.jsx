@@ -2,7 +2,6 @@ import { Form, Formik } from "formik";
 import { Redirect } from "react-router";
 import React from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import {
     CONFIRM_PASSWORD,
@@ -11,13 +10,13 @@ import {
     PASSWORD
 } from "utils/const/userData";
 
+import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignUpContent.props";
 import { signUpStart } from "redux/session/session.actions";
-import { selectCurrentUser, selectIsPending } from "redux/session/session.selectors";
-import { selectNotification } from "redux/ui/ui.selectors";
-
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import hints from "utils/resources/text/ru/hints";
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import phrases from "utils/resources/text/ru/commonPhrases";
@@ -108,11 +107,13 @@ function SignUpContent ({
         : elem;
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    isPending: selectIsPending,
-    notification: selectNotification
-});
+const mapStateToProps = () => {
+    return (state) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: Boolean(selectRelevantPendingAction(state, SESSION_PREFIX)),
+        notification: selectNotification(state)
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onSignUpStart: (credentials) => dispatch(signUpStart(credentials))

@@ -10,8 +10,3 @@ export const selectError = createSelector(
     [getSession],
     ({ error }) => error
 );
-
-export const selectIsPending = createSelector(
-    [getSession],
-    ({ isPending }) => isPending
-);

@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { AvatarPlaceholder } from "components/Icon";
 import { CloseIconButton } from "components/IconButton";
+import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import { defaultProps, propTypes } from "./ProfilePictureForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectIsPending } from "redux/users/users.selectors";
+import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { updateUserStart } from "redux/users/users.actions";
 import Tooltip from "components/Tooltip";
 import styles from "./ProfilePictureForm.module.scss";
@@ -81,10 +81,12 @@ function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    isPending: selectIsPending
-});
+const mapStateToProps = () => {
+    return (state) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: Boolean(selectRelevantPendingAction(state, USERS_PREFIX))
+    });
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onUpdateUserStart: (props) => dispatch(updateUserStart(props))

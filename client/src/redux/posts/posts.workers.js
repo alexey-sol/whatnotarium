@@ -47,10 +47,8 @@ export function * doFetchPosts ({ payload }) {
 }
 
 export function * doUpdatePost ({ cb, payload }) {
-    const { id, ...restProps } = payload;
-
     try {
-        const item = yield api.updatePost(id, restProps);
+        const item = yield api.updatePost(payload);
         yield put(actions.updatePostSuccess(item));
         cb(item.id);
     } catch (errorResponse) {

@@ -2,7 +2,7 @@ import PostItem from "#types/post/Item";
 import ProfileItem from "#types/profile/Item";
 import findUserProfile from "./findUserProfile";
 
-async function complementPostItem (
+async function complementPostItem ( // attachProfileToItem
     postItem: PostItem,
     profile?: ProfileItem
 ): Promise<PostItem> {
@@ -10,15 +10,12 @@ async function complementPostItem (
     const shouldFindProfile = !postItem.author && !profile;
 
     if (profile) {
-        const userProfile = {
+        completedPostItem.author = {
             name: profile.name,
             picture: profile.picture
         };
-
-        completedPostItem.author = userProfile;
     } else if (shouldFindProfile) {
-        const userProfile = await findUserProfile(postItem.userId);
-        completedPostItem.author = userProfile;
+        completedPostItem.author = await findUserProfile(postItem.userId);
     }
 
     return completedPostItem;
