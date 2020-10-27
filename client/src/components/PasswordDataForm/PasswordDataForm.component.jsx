@@ -9,6 +9,7 @@ import { HIDE_NOTIFICATION } from "utils/const/events";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
+import Notification from "utils/objects/Notification";
 import { defaultProps, propTypes } from "./PasswordDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
@@ -20,11 +21,7 @@ import pubsub from "utils/pubsub";
 import styles from "./PasswordDataForm.module.scss";
 import updatePasswordSchema from "utils/validators/shemas/updatePassword";
 
-const successNotification = {
-    text: phrases.done,
-    timeoutInMs: DEFAULT_TIMEOUT_IN_MS,
-    type: SUCCESS
-};
+const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;

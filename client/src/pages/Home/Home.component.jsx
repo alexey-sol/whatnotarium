@@ -43,7 +43,6 @@ function Home ({
     return <HomeWithSpinner />;
 }
 
-
 const mapStateToProps = () => {
     return (state) => ({
         currentPostsPage: selectCurrentPage(state),

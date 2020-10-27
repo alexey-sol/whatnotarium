@@ -1,4 +1,4 @@
-import { object } from "prop-types";
+import { func, object } from "prop-types";
 
 export const defaultProps = {
     currentUser: null,
@@ -7,7 +7,8 @@ export const defaultProps = {
 
 export const propTypes = {
     currentUser: object,
-    history: object,
+    history: object.isRequired,
     match: object.isRequired,
+    onFetchPostStart: func.isRequired,
     post: object
 };

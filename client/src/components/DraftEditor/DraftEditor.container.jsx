@@ -7,6 +7,7 @@ import { RESET_POST } from "utils/const/events";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import DraftEditor from "./DraftEditor.component";
+import Notification from "utils/objects/Notification";
 import { createPostStart, deletePostStart, updatePostStart } from "redux/posts/posts.actions";
 import { defaultProps, propTypes } from "./DraftEditor.container.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -16,11 +17,7 @@ import { showNotification } from "redux/ui/ui.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
 
-const successNotification = {
-    text: phrases.done,
-    timeoutInMs: DEFAULT_TIMEOUT_IN_MS,
-    type: SUCCESS
-};
+const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 
 DraftEditorContainer.defaultProps = defaultProps;
 DraftEditorContainer.propTypes = propTypes;

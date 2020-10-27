@@ -8,6 +8,7 @@ import { HIDE_NOTIFICATION } from "utils/const/events";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "../FormInput";
+import Notification from "utils/objects/Notification";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
@@ -18,11 +19,7 @@ import pubsub from "utils/pubsub";
 import styles from "./ProfileDataForm.module.scss";
 import updateUserSchema from "utils/validators/shemas/updateUser";
 
-const successNotification = {
-    text: phrases.done,
-    timeoutInMs: DEFAULT_TIMEOUT_IN_MS,
-    type: SUCCESS
-};
+const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 
 ProfileDataForm.defaultProps = defaultProps;
 ProfileDataForm.propTypes = propTypes;
