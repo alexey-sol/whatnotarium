@@ -13,7 +13,7 @@ const getPosts: RequestHandler = async (
         return next(error);
     }
 
-    request.query = value; // TODO: do the same for the rest?
+    request.query = value;
     next();
 };
 

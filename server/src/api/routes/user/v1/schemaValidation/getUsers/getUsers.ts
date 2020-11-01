@@ -3,16 +3,17 @@ import { RequestHandler } from "express";
 import querySchema from "./schemas/query";
 
 const getUsers: RequestHandler = async (
-    { query },
+    request,
     response,
     next
 ): Promise<void> => {
-    const { error } = querySchema.validate(query);
+    const { error, value } = querySchema.validate(request.query);
 
     if (error) {
         return next(error);
     }
 
+    request.query = value;
     next();
 };
 

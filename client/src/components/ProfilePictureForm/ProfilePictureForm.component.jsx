@@ -7,23 +7,29 @@ import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import { defaultProps, propTypes } from "./ProfilePictureForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
-import { updateUserStart } from "redux/users/users.actions";
+import { updateUserPictureStart } from "redux/users/users.actions";
 import Tooltip from "components/Tooltip";
 import styles from "./ProfilePictureForm.module.scss";
+import toBase64 from "utils/helpers/toBase64";
 
 ProfilePictureForm.defaultProps = defaultProps;
 ProfilePictureForm.propTypes = propTypes;
 
-function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
+function ProfilePictureForm ({
+    currentUser,
+    isPending,
+    onUpdateUserPictureStart
+}) {
     const fileInputRef = useRef(null);
     const pictureContainerRef = useRef(null);
 
+    const { id } = currentUser;
     const { name, picture } = currentUser?.profile;
 
     const avatarImgElem = (
         <img
             alt={name}
-            src={picture}
+            src={`data:image/jpeg;base64,${toBase64(picture?.data)}`}
         />
     );
 
@@ -37,12 +43,11 @@ function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
     const handleChosenFile = ({ target }) => {
         const { files } = target;
 
-        onUpdateUserStart({
+        onUpdateUserPictureStart({
+            id,
             picture: files[0]
         });
     };
-
-    return null;
 
     return (
         <section className={styles.container}>
@@ -51,7 +56,7 @@ function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
                 onClick={() => fileInputRef?.current.click()}
                 ref={pictureContainerRef}
             >
-                {(currentUser?.picture)
+                {(picture)
                     ? avatarImgElem
                     : avatarPlaceholderElem}
             </section>
@@ -59,7 +64,7 @@ function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
             <CloseIconButton
                 className={styles.deleteButton}
                 fill="#455a64"
-                onClick={() => console.log("delete")}
+                onClick={() => onUpdateUserPictureStart({ id, picture: null })}
                 size={14}
                 title="Удалить"
             />
@@ -71,11 +76,12 @@ function ProfilePictureForm ({ currentUser, isPending, onUpdateUserStart }) {
             />
 
             <input
-                type="file"
-                className={styles.hidden}
-                ref={fileInputRef}
-                onChange={handleChosenFile}
                 accept="image/png, image/jpeg, image/jpg"
+                className={styles.hidden}
+                name="picture"
+                onChange={handleChosenFile}
+                ref={fileInputRef}
+                type="file"
             />
         </section>
     );
@@ -89,7 +95,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onUpdateUserStart: (props) => dispatch(updateUserStart(props))
+    onUpdateUserPictureStart: (props) => dispatch(updateUserPictureStart(props))
 });
 
 const ConnectedProfilePictureForm = connect(

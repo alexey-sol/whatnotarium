@@ -16,7 +16,7 @@ interface Props {
     email?: string;
     name?: string;
     newPassword?: string;
-    picture?: Buffer;
+    picture?: Express.Multer.File;
 }
 
 export default async function (
@@ -29,13 +29,7 @@ export default async function (
         throw new UserError(NOT_FOUND, 404);
     }
 
-    const {
-        email,
-        name,
-        newPassword,
-        picture
-    } = props;
-
+    const { email, name, newPassword } = props;
     const userProps: UserAttributes = { email };
     const shouldUpdatePassword = Boolean(newPassword);
 
@@ -49,7 +43,6 @@ export default async function (
 
     const profile = await updateProfile({
         name,
-        picture,
         userId: user.id
     });
 

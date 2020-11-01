@@ -12,6 +12,4 @@ export default Joi.object({
 
     password: Joi
         .string()
-
-    // picture // TODO
 });

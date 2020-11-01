@@ -7,5 +7,5 @@ export const defaultProps = {
 export const propTypes = {
     currentUser: object.isRequired,
     isPending: bool,
-    onUpdateUserStart: func.isRequired
+    onUpdateUserPictureStart: func.isRequired
 };

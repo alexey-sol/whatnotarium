@@ -8,7 +8,7 @@ export function * doCreatePost ({ cb, payload }) {
     try {
         const item = yield api.createPost(payload);
         yield put(actions.createPostSuccess(item));
-        cb(item.id);
+        if (cb) cb(item.id);
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.createPostFailure(error));
@@ -19,7 +19,7 @@ export function * doDeletePost ({ cb, payload: id }) {
     try {
         const postId = yield api.deletePost(id);
         yield put(actions.deletePostSuccess(postId));
-        cb();
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.deletePostFailure(error));

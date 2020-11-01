@@ -7,6 +7,28 @@ export function setUser (payload) {
     };
 }
 
+export function updateUserPictureFailure (error) {
+    return {
+        payload: { error },
+        type: types.UPDATE_USER_PICTURE_FAILURE
+    };
+}
+
+export function updateUserPictureStart (props, cb) {
+    return {
+        cb,
+        payload: props,
+        type: types.UPDATE_USER_PICTURE_START
+    };
+}
+
+export function updateUserPictureSuccess (item) {
+    return {
+        payload: { item },
+        type: types.UPDATE_USER_PICTURE_SUCCESS
+    };
+}
+
 export function updateUserFailure (error) {
     return {
         payload: { error },

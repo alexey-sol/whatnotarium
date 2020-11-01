@@ -15,5 +15,3 @@ async function updateRecordAttributes<InputType, OutputType> (
 }
 
 export default updateRecordAttributes;
-
-// Returns null if there was nothing to update.

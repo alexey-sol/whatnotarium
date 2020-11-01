@@ -7,7 +7,6 @@ import dataValidation from "./dataValidation";
 import middlewares from "#api/middlewares";
 import schemaValidation from "./schemaValidation";
 
-
 const root = process.cwd();
 const uploadsDirPath = join(root, "uploads");
 const uploads = multer({ dest: uploadsDirPath });
@@ -34,9 +33,17 @@ router.post(
 );
 
 router.put(
+    "/:id/picture",
+    middlewares.isAuthed,
+    uploads.single("picture"),
+    schemaValidation.putUserPicture,
+    dataValidation.putUserPicture,
+    controllers.putUserPicture
+);
+
+router.put(
     "/:id",
     middlewares.isAuthed,
-    uploads.single("avatar"), // generate id
     schemaValidation.putUser,
     dataValidation.putUser,
     controllers.putUser

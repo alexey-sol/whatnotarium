@@ -53,7 +53,7 @@ class Create<InputType> extends ModelSqlGenerator<InputType> {
         const values = [];
 
         for (const key in props) {
-            if (key) {
+            if (Object.prototype.hasOwnProperty.call(props, key)) {
                 count += 1;
                 values.push(`$${count}`);
             }

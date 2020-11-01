@@ -15,7 +15,7 @@ const getPost: RequestHandler = async (
     next
 ): Promise<void> => {
     const { id } = params;
-
+    console.log(id, typeof id)
     try {
         const post = await Post.findById(+id);
 

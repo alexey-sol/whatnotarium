@@ -1,20 +1,19 @@
 import { RequestHandler } from "express";
 
-import bodySchema from "./schemas/body";
+import fileSchema from "./schemas/file";
 import paramsSchema from "./schemas/params";
 
-const putUser: RequestHandler = async (
+const putUserPicture: RequestHandler = async (
     request,
     response,
     next
 ): Promise<void> => {
     const {
-        error: bodyError,
-        value: bodyValue
-    } = bodySchema.validate(request.body, { stripUnknown: true });
+        error: fileError
+    } = fileSchema.validate(request.file, { stripUnknown: true });
 
-    if (bodyError) {
-        return next(bodyError);
+    if (fileError) {
+        return next(fileError);
     }
 
     const {
@@ -26,9 +25,8 @@ const putUser: RequestHandler = async (
         return next(paramsError);
     }
 
-    request.body = bodyValue;
     request.params = paramsValue;
     next();
 };
 
-export default putUser;
+export default putUserPicture;

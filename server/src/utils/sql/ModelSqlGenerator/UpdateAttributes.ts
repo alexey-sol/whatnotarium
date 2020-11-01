@@ -46,9 +46,9 @@ class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
         const andClauseRows: string[] = [];
 
         for (const key in props) {
-            if (key) {
+            if (Object.prototype.hasOwnProperty.call(props, key)) {
                 count += 1;
-                setClauseRows.push(`"${key}" = COALESCE($${count}, "${key}")`);
+                setClauseRows.push(`"${key}" = $${count}`);
                 andClauseRows.push(`$${count} IS DISTINCT FROM "${key}"`);
             }
         }
