@@ -1,4 +1,4 @@
-import fs from "fs";
+import sharp from "sharp";
 
 import { NOT_FOUND } from "#utils/const/validationErrors";
 import Profile from "#models/Profile";
@@ -8,12 +8,11 @@ import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
 import complementUserItem from "#utils/helpers/complementUserItem";
-
-const fsPromises = fs.promises;
+import unlinkFiles from "#utils/helpers/unlinkFiles";
 
 export default async function (
     id: number,
-    file: Express.Multer.File
+    file?: Express.Multer.File
 ): Promise<UserItem> | never {
     const user = await User.findById(id);
 
@@ -21,19 +20,28 @@ export default async function (
         throw new UserError(NOT_FOUND, 404);
     }
 
-    // TODO: compress img with Sharp
-    let picture;
-
-    if (file) {
-        picture = await fsPromises.readFile(file.path);
-    }
+    const picture = file && await compressImageAndGetBuffer(file);
 
     const profile = await updateProfile({
         picture,
         userId: user.id
     });
 
+    if (file) {
+        await unlinkFiles(file.path);
+    }
+
     return complementUserItem(user, profile);
+}
+
+async function compressImageAndGetBuffer (
+    file: Express.Multer.File
+): Promise<Buffer> {
+    return sharp(file.path)
+        .withMetadata()
+        .resize(170, 170)
+        .toFormat("png")
+        .toBuffer();
 }
 
 async function updateProfile (
