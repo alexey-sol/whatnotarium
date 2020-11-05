@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import { AvatarPlaceholder } from "components/Icon";
 import { CloseIconButton } from "components/IconButton";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
+import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./ProfilePictureForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { updateUserPictureStart } from "redux/users/users.actions";
-import Tooltip from "components/Tooltip";
+
 import styles from "./ProfilePictureForm.module.scss";
 import toBase64 from "utils/helpers/toBase64";
 
@@ -26,10 +27,14 @@ function ProfilePictureForm ({
     const { id } = currentUser;
     const { name, picture } = currentUser?.profile;
 
+    const pictureDataIfAny = (picture)
+        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
+        : null;
+
     const avatarImgElem = (
         <img
             alt={name}
-            src={`data:image/jpeg;base64,${toBase64(picture?.data)}`}
+            src={pictureDataIfAny}
         />
     );
 
@@ -41,19 +46,21 @@ function ProfilePictureForm ({
     );
 
     const handleChosenFile = ({ target }) => {
-        const { files } = target;
+        const file = target.files?.[0];
 
-        onUpdateUserPictureStart({
-            id,
-            picture: files[0]
-        });
+        if (file) {
+            onUpdateUserPictureStart({
+                id,
+                picture: file
+            });
+        }
     };
 
     return (
         <section className={styles.container}>
             <section
                 className={styles.pictureContainer}
-                onClick={() => fileInputRef?.current.click()}
+                onClick={() => fileInputRef.current?.click()}
                 ref={pictureContainerRef}
             >
                 {(picture)
@@ -79,7 +86,7 @@ function ProfilePictureForm ({
                 accept="image/png, image/jpeg, image/jpg"
                 className={styles.hidden}
                 name="picture"
-                onChange={handleChosenFile}
+                onInput={handleChosenFile}
                 ref={fileInputRef}
                 type="file"
             />

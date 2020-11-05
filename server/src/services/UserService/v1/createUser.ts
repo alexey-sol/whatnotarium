@@ -4,7 +4,7 @@ import Profile from "#models/Profile";
 import ProfileAttributes from "#types/profile/Attributes";
 import User from "#models/User";
 import UserItem from "#types/user/Item";
-import complementUserItem from "#utils/helpers/complementUserItem";
+import attachProfileToUserItem from "#utils/helpers/attachProfileToUserItem";
 import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
@@ -34,7 +34,7 @@ export default async function (
         userId: user.id
     });
 
-    return complementUserItem(user, profile);
+    return attachProfileToUserItem(user, profile);
 }
 
 async function createHashOptions (

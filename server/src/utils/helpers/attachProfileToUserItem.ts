@@ -2,12 +2,12 @@ import ProfileItem from "#types/profile/Item";
 import UserItem from "#types/user/Item";
 import findUserProfile from "./findUserProfile";
 
-async function complementUserItem (
+async function attachProfileToUserItem (
     userItem: UserItem,
     profile?: ProfileItem
 ): Promise<UserItem> {
-    const completedUserItem = { ...userItem };
-    delete completedUserItem.password;
+    const result = { ...userItem };
+    delete result.password;
 
     const shouldFindProfile = !userItem.profile && !profile;
 
@@ -17,13 +17,13 @@ async function complementUserItem (
             picture: profile.picture
         };
 
-        completedUserItem.profile = userProfile;
+        result.profile = userProfile;
     } else if (shouldFindProfile) {
         const userProfile = await findUserProfile(userItem.id);
-        completedUserItem.profile = userProfile;
+        result.profile = userProfile;
     }
 
-    return completedUserItem;
+    return result;
 }
 
-export default complementUserItem;
+export default attachProfileToUserItem;

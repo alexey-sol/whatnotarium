@@ -24,6 +24,7 @@ function checkIfShouldSetCurrentUser (type) {
         type === types.CHECK_SESSION_SUCCESS ||
         type === types.SIGN_IN_SUCCESS ||
         type === types.SIGN_UP_SUCCESS ||
+        type === usersTypes.UPDATE_USER_PICTURE_SUCCESS ||
         type === usersTypes.UPDATE_USER_SUCCESS
     );
 }

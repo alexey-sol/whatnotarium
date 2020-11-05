@@ -2,23 +2,23 @@ import PostItem from "#types/post/Item";
 import ProfileItem from "#types/profile/Item";
 import findUserProfile from "./findUserProfile";
 
-async function complementPostItem ( // attachProfileToItem
+async function attachAuthorToPostItem (
     postItem: PostItem,
     profile?: ProfileItem
 ): Promise<PostItem> {
-    const completedPostItem = { ...postItem };
+    const result = { ...postItem };
     const shouldFindProfile = !postItem.author && !profile;
 
     if (profile) {
-        completedPostItem.author = {
+        result.author = {
             name: profile.name,
             picture: profile.picture
         };
     } else if (shouldFindProfile) {
-        completedPostItem.author = await findUserProfile(postItem.userId);
+        result.author = await findUserProfile(postItem.userId);
     }
 
-    return completedPostItem;
+    return result;
 }
 
-export default complementPostItem;
+export default attachAuthorToPostItem;

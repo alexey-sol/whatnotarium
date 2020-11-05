@@ -7,7 +7,7 @@ import ProfileError from "#utils/errors/ProfileError";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
-import complementUserItem from "#utils/helpers/complementUserItem";
+import attachProfileToUserItem from "#utils/helpers/attachProfileToUserItem";
 import unlinkFiles from "#utils/helpers/unlinkFiles";
 
 export default async function (
@@ -31,7 +31,7 @@ export default async function (
         await unlinkFiles(file.path);
     }
 
-    return complementUserItem(user, profile);
+    return attachProfileToUserItem(user, profile);
 }
 
 async function compressImageAndGetBuffer (
@@ -39,6 +39,7 @@ async function compressImageAndGetBuffer (
 ): Promise<Buffer> {
     return sharp(file.path)
         .withMetadata()
+        .rotate()
         .resize(170, 170)
         .toFormat("png")
         .toBuffer();
