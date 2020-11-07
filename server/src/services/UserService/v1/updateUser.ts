@@ -1,4 +1,5 @@
 import { NOT_FOUND } from "#utils/const/validationErrors";
+import { PROFILES } from "#utils/const/database/tableNames";
 import DataOnUpdate from "#types/user/DataOnUpdate";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
@@ -9,6 +10,7 @@ interface Props {
     email?: string;
     name?: string;
     newPassword?: string;
+    password?: string;
     picture?: Express.Multer.File;
 }
 
@@ -22,8 +24,13 @@ export default async function (
         throw new UserError(NOT_FOUND, 404);
     }
 
-    const { email, name, newPassword } = props;
-    let userProps: DataOnUpdate = { email, name };
+    const {
+        newPassword,
+        password: _,
+        ...rest
+    } = props;
+
+    let userProps: DataOnUpdate = { ...rest };
 
     if (newPassword) {
         const hashResult = await hashPassword(newPassword);
@@ -34,5 +41,13 @@ export default async function (
         };
     }
 
-    return user.updateAttributes(userProps);
+    const includeProfile = {
+        as: "profile",
+        attributes: ["name", "picture"],
+        referencedKey: "userId",
+        ownKey: "id",
+        tableName: PROFILES
+    };
+
+    return user.updateAttributes(userProps, [includeProfile]);
 }

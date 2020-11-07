@@ -1,8 +1,8 @@
 import { NOT_FOUND } from "#utils/const/validationErrors";
+import { PROFILES } from "#utils/const/database/tableNames";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 import PostItem from "#types/post/Item";
-import attachAuthorToPostItem from "#utils/helpers/attachAuthorToPostItem";
 
 interface Props {
     body?: string;
@@ -30,6 +30,13 @@ export default async function (
         updatedAt: new Date()
     };
 
-    const updatedPost = await post.updateAttributes(updatedProps);
-    return attachAuthorToPostItem(updatedPost);
+    const include = [{
+        as: "author",
+        attributes: ["name", "picture"],
+        referencedKey: "userId",
+        ownKey: "userId",
+        tableName: PROFILES
+    }];
+
+    return post.updateAttributes(updatedProps, include);
 }

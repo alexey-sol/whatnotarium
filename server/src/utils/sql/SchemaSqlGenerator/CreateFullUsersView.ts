@@ -68,14 +68,14 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
 
                 ELSIF (TG_OP = 'UPDATE') THEN
                     UPDATE "${USERS}" SET
-                        "email" = new."email",
+                        "email" = COALESCE(new."email", old."email"),
                         "updatedAt" = NOW()
                     WHERE "id" = old."id" AND (
                         new."email" IS DISTINCT FROM old."email"
                     );
 
                     UPDATE "${PROFILES}" SET
-                        "name" = new."name",
+                        "name" = COALESCE(new."name", old."name"),
                         "picture" = new."picture",
                         "updatedAt" = NOW()
                     WHERE "id" = old."id" AND (

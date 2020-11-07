@@ -1,9 +1,6 @@
 import sharp from "sharp";
 
 import { NOT_FOUND } from "#utils/const/validationErrors";
-import Profile from "#models/Profile";
-import ProfileAttributes from "#types/profile/Attributes";
-import ProfileError from "#utils/errors/ProfileError";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";

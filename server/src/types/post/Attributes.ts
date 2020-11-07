@@ -1,4 +1,4 @@
-import Profile from "#types/Profile";
+import Profile from "#types/UserProfile";
 
 interface Attributes {
     author?: Profile;

@@ -53,10 +53,14 @@ class Post implements Model<Attributes, Post> {
     }
 
     static async create (
-        props: Attributes
+        props: Attributes,
+        include?: Include[]
     ): Promise<Post> | never {
         const record = await createRecord<Attributes, Item>(POSTS, props);
-        return Post.formatPropsAndInstantiate(record);
+
+        return (include)
+            ? Post.findById(record.id, include) as Promise<Post>
+            : Post.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (
@@ -68,8 +72,7 @@ class Post implements Model<Attributes, Post> {
     static async count (
         filter?: DbQueryFilter<Attributes>
     ): Promise<number> | never {
-        const count = await countRecords<Attributes>(POSTS, filter);
-        return count;
+        return countRecords<Attributes>(POSTS, filter);
     }
 
     static async findAll (
@@ -113,7 +116,8 @@ class Post implements Model<Attributes, Post> {
     }
 
     async updateAttributes (
-        props: Attributes
+        props: Attributes,
+        include?: Include[]
     ): Promise<Post> | never {
         const updatedProps = {
             ...props,
@@ -126,7 +130,9 @@ class Post implements Model<Attributes, Post> {
             updatedProps
         );
 
-        return Post.formatPropsAndInstantiate(record || this);
+        return (include)
+            ? Post.findById(this.id, include) as Promise<Post>
+            : Post.formatPropsAndInstantiate(record || this);
     }
 
     static formatPropsAndInstantiate (

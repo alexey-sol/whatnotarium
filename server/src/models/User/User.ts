@@ -18,7 +18,7 @@ import {
 } from "#utils/sql/SchemaSqlGenerator";
 
 import { INVALID_PROPS } from "#utils/const/validationErrors";
-import { PROFILES, USERS } from "#utils/const/database/tableNames";
+import { USERS } from "#utils/const/database/tableNames";
 import { VIEW_FULL_USERS } from "#utils/const/database/viewNames";
 import Attributes from "#types/user/Attributes";
 import DataOnCreate from "#types/user/DataOnCreate";
@@ -34,7 +34,7 @@ import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserItem from "#utils/typeGuards/isUserItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
 
-class User implements Model<Attributes, User> {
+class User implements Model<DataOnUpdate, User> {
     static tableName = USERS;
 
     createdAt: Date;
@@ -50,6 +50,10 @@ class User implements Model<Attributes, User> {
         this.id = props.id;
         this.updatedAt = props.updatedAt;
 
+        if (props.hashOptions) {
+            this.hashOptions = props.hashOptions;
+        }
+
         if (props.profile) {
             this.profile = props.profile;
         }
@@ -63,21 +67,18 @@ class User implements Model<Attributes, User> {
     }
 
     static async create (
-        props: DataOnCreate
+        props: DataOnCreate,
+        include?: Include[]
     ): Promise<User> | never {
-        const record = await createRecord<Attributes, Item>(
+        const record = await createRecord<DataOnCreate, Item>(
             VIEW_FULL_USERS,
             props,
             ["id", "email", "createdAt", "updatedAt"]
         );
 
-        return User.findById(record.id, [{
-            as: "profile",
-            attributes: ["name", "picture"],
-            referencedKey: "userId",
-            ownKey: "id",
-            tableName: PROFILES
-        }]) as Promise<User>;
+        return (include)
+            ? User.findById(record.id, include) as Promise<User>
+            : User.formatPropsAndInstantiate(record);
     }
 
     static async destroyById (
@@ -139,26 +140,24 @@ class User implements Model<Attributes, User> {
     }
 
     async updateAttributes (
-        props: DataOnUpdate
+        props: DataOnUpdate,
+        include?: Include[]
     ): Promise<User> | never {
         const updatedProps = {
             ...props,
             updatedAt: new Date()
         };
 
-        await updateRecordAttributes<Attributes, Item>(
+        const record = await updateRecordAttributes<DataOnUpdate, Item>(
             VIEW_FULL_USERS,
             this.id,
-            updatedProps
+            updatedProps,
+            ["id", "email", "createdAt", "updatedAt"]
         );
 
-        return User.findById(this.id, [{ // TODO: fix it, the same include in many places
-            as: "profile",
-            attributes: ["name", "picture"],
-            referencedKey: "userId",
-            ownKey: "id",
-            tableName: PROFILES
-        }]) as Promise<User>;
+        return (include)
+            ? User.findById(this.id, include) as Promise<User>
+            : User.formatPropsAndInstantiate(record || this);
     }
 
     static formatPropsAndInstantiate (

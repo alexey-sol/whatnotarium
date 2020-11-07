@@ -2,7 +2,7 @@
 interface DataOnUpdate {
     email?: string;
     name?: string;
-    picture?: Buffer;
+    picture?: Express.Multer.File | Buffer;
     hash?: Buffer;
     digest?: string;
     iterations?: number;
