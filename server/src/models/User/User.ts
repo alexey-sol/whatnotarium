@@ -10,15 +10,25 @@ import {
     updateRecordAttributes
 } from "#utils/sql/Model";
 
-import { CreateUsersTable } from "#utils/sql/SchemaSqlGenerator";
+import {
+    CreateFullUsersView,
+    CreateHashOptionsTable,
+    CreateProfilesTable,
+    CreateUsersTable
+} from "#utils/sql/SchemaSqlGenerator";
+
 import { INVALID_PROPS } from "#utils/const/validationErrors";
-import { USERS } from "#utils/const/database/tableNames";
+import { PROFILES, USERS } from "#utils/const/database/tableNames";
+import { VIEW_FULL_USERS } from "#utils/const/database/viewNames";
 import Attributes from "#types/user/Attributes";
+import DataOnCreate from "#types/user/DataOnCreate";
+import DataOnUpdate from "#types/user/DataOnUpdate";
 import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/user/Item";
 import Model from "#types/Model";
 import UserError from "#utils/errors/UserError";
+import UserHashOptions from "#types/UserHashOptions";
 import UserProfile from "#types/UserProfile";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserItem from "#utils/typeGuards/isUserItem";
@@ -29,8 +39,8 @@ class User implements Model<Attributes, User> {
 
     createdAt: Date;
     email: string;
+    hashOptions?: UserHashOptions;
     id: number;
-    password: Buffer;
     profile?: UserProfile;
     updatedAt: Date;
 
@@ -38,7 +48,6 @@ class User implements Model<Attributes, User> {
         this.createdAt = props.createdAt;
         this.email = props.email;
         this.id = props.id;
-        this.password = props.password;
         this.updatedAt = props.updatedAt;
 
         if (props.profile) {
@@ -48,17 +57,27 @@ class User implements Model<Attributes, User> {
 
     static async up (): Promise<void> {
         await generateSqlAndQuery(new CreateUsersTable());
+        await generateSqlAndQuery(new CreateProfilesTable());
+        await generateSqlAndQuery(new CreateHashOptionsTable());
+        await generateSqlAndQuery(new CreateFullUsersView());
     }
 
     static async create (
-        props: Attributes
+        props: DataOnCreate
     ): Promise<User> | never {
         const record = await createRecord<Attributes, Item>(
-            USERS,
-            props
+            VIEW_FULL_USERS,
+            props,
+            ["id", "email", "createdAt", "updatedAt"]
         );
 
-        return User.formatPropsAndInstantiate(record);
+        return User.findById(record.id, [{
+            as: "profile",
+            attributes: ["name", "picture"],
+            referencedKey: "userId",
+            ownKey: "id",
+            tableName: PROFILES
+        }]) as Promise<User>;
     }
 
     static async destroyById (
@@ -70,8 +89,7 @@ class User implements Model<Attributes, User> {
     static async count (
         filter?: DbQueryFilter<Attributes>
     ): Promise<number> | never {
-        const count = await countRecords<Attributes>(USERS, filter);
-        return count;
+        return countRecords<Attributes>(USERS, filter);
     }
 
     static async findAll (
@@ -121,20 +139,26 @@ class User implements Model<Attributes, User> {
     }
 
     async updateAttributes (
-        props: Attributes
+        props: DataOnUpdate
     ): Promise<User> | never {
         const updatedProps = {
             ...props,
             updatedAt: new Date()
         };
 
-        const record = await updateRecordAttributes<Attributes, Item>(
-            USERS,
+        await updateRecordAttributes<Attributes, Item>(
+            VIEW_FULL_USERS,
             this.id,
             updatedProps
         );
 
-        return User.formatPropsAndInstantiate(record || this);
+        return User.findById(this.id, [{ // TODO: fix it, the same include in many places
+            as: "profile",
+            attributes: ["name", "picture"],
+            referencedKey: "userId",
+            ownKey: "id",
+            tableName: PROFILES
+        }]) as Promise<User>;
     }
 
     static formatPropsAndInstantiate (

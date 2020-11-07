@@ -10,8 +10,10 @@ class CreateUsersTable extends SchemaSqlGenerator<unknown> {
                 "picture" BYTEA,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
-                "userId" INTEGER UNIQUE NOT NULL REFERENCES "${USERS}" ("id")
+                "userId" INTEGER UNIQUE NOT NULL
+                    REFERENCES "${USERS}" ("id")
                     ON DELETE CASCADE
+                    ON UPDATE CASCADE
             );
         `;
     }

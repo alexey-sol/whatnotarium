@@ -1,11 +1,12 @@
-import UserProfile from "#types/UserProfile";
+import HashOptions from "#types/UserHashOptions";
+import Profile from "#types/UserProfile";
 
 interface Item {
     createdAt: Date;
     email: string;
+    hashOptions?: HashOptions;
     id: number;
-    password: Buffer;
-    profile?: UserProfile;
+    profile?: Profile;
     updatedAt: Date;
 }
 

@@ -16,10 +16,14 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
         this.offset = (recordId) ? 1 : 0;
     }
 
-    abstract generate (input?: InputType): SqlQueryPayload;
+    abstract generate (
+        input?: InputType,
+        returningFields?: string[]
+    ): SqlQueryPayload;
 
     protected abstract getText (
-        input?: InputType | DbQueryFilter<InputType>
+        input?: InputType | DbQueryFilter<InputType>,
+        returningFields?: string[]
     ): string;
 
     protected createSelectClause (
@@ -83,6 +87,14 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
 
     protected createWhereIdClause (): string {
         return `WHERE "${this.tableName}"."id" = $1`;
+    }
+
+    protected createReturningClause (returningFields?: string[]): string {
+        const fields = returningFields
+            ?.map(field => `"${field}"`)
+            .join(", ") || "*";
+
+        return `RETURNING ${fields}`;
     }
 
     protected getValues (input: InputType): string[];

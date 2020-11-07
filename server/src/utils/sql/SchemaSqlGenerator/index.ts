@@ -1,3 +1,4 @@
+export { default as CreateFullUsersView } from "./CreateFullUsersView";
 export { default as CreateHashOptionsTable } from "./CreateHashOptionsTable";
 export { default as CreateSchema } from "./CreateSchema";
 export { default as CreatePostsTable } from "./CreatePostsTable";

@@ -25,7 +25,7 @@ const putUser: RequestHandler = async (
         if (password && newPassword) {
             const passwordIsValid = await isValidPassword(
                 password,
-                user
+                user.id
             );
 
             if (!passwordIsValid) {

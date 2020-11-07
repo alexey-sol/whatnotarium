@@ -7,8 +7,6 @@ async function attachProfileToUserItem (
     profile?: ProfileItem
 ): Promise<UserItem> {
     const result = { ...userItem };
-    delete result.password;
-
     const shouldFindProfile = !userItem.profile && !profile;
 
     if (profile) {

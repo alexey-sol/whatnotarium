@@ -7,6 +7,7 @@ function isHashOptionsItem (
     const {
         createdAt,
         digest,
+        hash,
         id,
         iterations,
         keyLength,
@@ -23,7 +24,8 @@ function isHashOptionsItem (
         typeof iterations === "number" &&
         typeof keyLength === "number" &&
         typeof salt === "string" &&
-        typeof userId === "number"
+        typeof userId === "number" &&
+        Buffer.isBuffer(hash)
     );
 }
 

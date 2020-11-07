@@ -11,20 +11,23 @@ class Create<InputType> extends ModelSqlGenerator<InputType> {
     }
 
     generate (
-        props: InputType
+        props: InputType,
+        returningFields: string[] = []
     ): SqlQueryPayload {
         return {
             name: this.queryName,
-            text: this.getText(props),
+            text: this.getText(props, returningFields),
             values: this.getValues(props)
         };
     }
 
     protected getText (
-        props: InputType
+        props: InputType,
+        returningFields: string[] = []
     ): string {
         const insertIntoClause = this.createInsertIntoClause(props);
         const valuesClause = this.createValuesClause(props);
+        const returningClause = this.createReturningClause(returningFields);
 
         return `
             INSERT INTO "${this.tableName}" (
@@ -33,7 +36,7 @@ class Create<InputType> extends ModelSqlGenerator<InputType> {
             VALUES (
                 ${valuesClause}
             )
-            RETURNING *;
+            ${returningClause};
         `;
     }
 

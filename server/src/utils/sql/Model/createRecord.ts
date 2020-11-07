@@ -3,11 +3,13 @@ import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 
 async function createRecord<InputType, OutputType> (
     tableName: string,
-    props: InputType
+    props: InputType,
+    returningFields?: string[]
 ): Promise<OutputType> | never {
     const queryPayload = await generateSqlAndQuery<InputType, OutputType>(
         new Create(tableName),
-        props
+        props,
+        returningFields
     );
 
     return queryPayload[0];

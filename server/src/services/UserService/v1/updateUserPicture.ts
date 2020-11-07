@@ -7,7 +7,6 @@ import ProfileError from "#utils/errors/ProfileError";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
-import attachProfileToUserItem from "#utils/helpers/attachProfileToUserItem";
 import unlinkFiles from "#utils/helpers/unlinkFiles";
 
 export default async function (
@@ -21,17 +20,13 @@ export default async function (
     }
 
     const picture = file && await compressImageAndGetBuffer(file);
-
-    const profile = await updateProfile({
-        picture,
-        userId: user.id
-    });
+    const updatedUser = await user.updateAttributes({ picture });
 
     if (file) {
         await unlinkFiles(file.path);
     }
 
-    return attachProfileToUserItem(user, profile);
+    return updatedUser;
 }
 
 async function compressImageAndGetBuffer (
@@ -43,18 +38,4 @@ async function compressImageAndGetBuffer (
         .resize(170, 170)
         .toFormat("png")
         .toBuffer();
-}
-
-async function updateProfile (
-    props: ProfileAttributes
-): Promise<Profile> | never {
-    const profile = await Profile.findOne({
-        where: { userId: props.userId }
-    });
-
-    if (!profile) {
-        throw new ProfileError(NOT_FOUND, 404);
-    }
-
-    return profile.updateAttributes(props);
 }

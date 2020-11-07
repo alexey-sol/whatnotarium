@@ -1,27 +1,30 @@
-import HashOptions from "#models/HashOptions";
+import { HASH_OPTIONS } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import hashPassword from "#utils/helpers/hashPassword";
 
 async function isValidPassword (
     passwordToCheck: string,
-    user: User
+    userId: number
 ): Promise<boolean> | never {
-    const { id, password } = user;
-    const findOneHashOptionsWhere = { userId: id };
+    const user = await User.findById(userId, [{
+        as: "hashOptions",
+        attributes: ["digest", "hash", "iterations", "keyLength", "salt"],
+        referencedKey: "userId",
+        ownKey: "id",
+        tableName: HASH_OPTIONS
+    }]);
 
-    const hashOptions = await HashOptions.findOne({
-        where: findOneHashOptionsWhere
-    });
-
-    if (!hashOptions) {
+    if (!user?.hashOptions) {
         return false;
     }
+
+    const { hash, ...hashOptions } = user.hashOptions;
 
     const {
         hash: hashToCheck
     } = await hashPassword(passwordToCheck, hashOptions);
 
-    return hashToCheck.equals(password);
+    return hashToCheck.equals(hash);
 }
 
 export default isValidPassword;

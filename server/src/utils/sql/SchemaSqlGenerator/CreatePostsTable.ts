@@ -10,8 +10,10 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                 "title" VARCHAR(255),
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
-                "userId" INTEGER NOT NULL REFERENCES "${USERS}" ("id")
+                "userId" INTEGER NOT NULL
+                    REFERENCES "${USERS}" ("id")
                     ON DELETE CASCADE
+                    ON UPDATE CASCADE
             );
         `;
     }

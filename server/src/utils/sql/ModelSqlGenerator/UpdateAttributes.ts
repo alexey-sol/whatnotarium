@@ -12,27 +12,30 @@ class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
     }
 
     generate (
-        props: InputType
+        props: InputType,
+        returningFields: string[] = []
     ): SqlQueryPayload {
         return {
             name: this.queryName,
-            text: this.getText(props),
+            text: this.getText(props, returningFields),
             values: this.getValues(props)
         };
     }
 
     protected getText (
-        props: InputType
+        props: InputType,
+        returningFields: string[] = []
     ): string {
         const { setClause, andClause } = this.createClauses(props);
         const whereIdElement = this.createWhereIdClause();
+        const returningClause = this.createReturningClause(returningFields);
 
         return `
             UPDATE "${this.tableName}"
             SET ${setClause}
             ${whereIdElement}
             AND (${andClause})
-            RETURNING *;
+            ${returningClause};
         `;
     }
 

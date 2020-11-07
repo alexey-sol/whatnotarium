@@ -22,7 +22,7 @@ const postSession: RequestHandler = async (
             throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);
         }
 
-        const passwordIsValid = await isValidPassword(password, user);
+        const passwordIsValid = await isValidPassword(password, user.id);
 
         if (!passwordIsValid) {
             throw new UserError(INVALID_CREDENTIALS, FORBIDDEN, ip);
