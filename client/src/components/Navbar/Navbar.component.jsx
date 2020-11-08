@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
+import { USERS } from "utils/const/pathnames";
 import WritePostTab from "components/WritePostTab";
 import { defaultProps, propTypes } from "./Navbar.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -45,7 +46,7 @@ function Navbar ({ currentUser }) {
                 <li className={styles.item}>
                     <Link
                         title="Авторы"
-                        to="/authors"
+                        to={`/${USERS}`}
                     >
                         Авторы
                     </Link>

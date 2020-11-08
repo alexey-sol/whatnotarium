@@ -26,16 +26,16 @@
         display: grid;
         align-items: center;
         grid-template-areas:
-            "avatar username"
-            "avatar date";
+            "userPicture username"
+            "userPicture date";
         grid-template-rows: auto auto;
         grid-template-columns: 5rem minmax(10rem, auto);
         column-gap: 1rem;
         font-family: $font-family--undertone;
         font-weight: 300;
 
-        .avatar {
-            grid-area: avatar;
+        .userPicture {
+            grid-area: userPicture;
             display: flex;
 
             :first-child {

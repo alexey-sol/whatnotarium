@@ -1,6 +1,6 @@
+import { FULL_USERS_VIEW } from "#utils/const/database/viewNames";
 import { HASH_OPTIONS, PROFILES, USERS } from "#utils/const/database/tableNames";
 import { PUBLIC } from "#utils/const/database/schemaNames";
-import { VIEW_FULL_USERS } from "#utils/const/database/viewNames";
 import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
@@ -10,7 +10,7 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
 
     protected getText (): string {
         return `
-            CREATE OR REPLACE VIEW "${VIEW_FULL_USERS}" AS
+            CREATE OR REPLACE VIEW "${FULL_USERS_VIEW}" AS
             SELECT
                 u."id", u."email", u."createdAt", u."updatedAt", p."name", p."picture",
                 ho."hash", ho."salt", ho."digest", ho."iterations", ho."keyLength"
@@ -105,10 +105,10 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
             END;
             $$ LANGUAGE plpgsql;
 
-            DROP TRIGGER IF EXISTS trigger_update_full_users ON "${VIEW_FULL_USERS}";
+            DROP TRIGGER IF EXISTS trigger_update_full_users ON "${FULL_USERS_VIEW}";
 
             CREATE TRIGGER trigger_update_full_users
-            INSTEAD OF INSERT OR UPDATE OR DELETE ON "${VIEW_FULL_USERS}"
+            INSTEAD OF INSERT OR UPDATE OR DELETE ON "${FULL_USERS_VIEW}"
             FOR EACH ROW
             EXECUTE PROCEDURE update_full_users();
         `;

@@ -17,9 +17,9 @@ import {
     CreateUsersTable
 } from "#utils/sql/SchemaSqlGenerator";
 
+import { FULL_USERS_VIEW } from "#utils/const/database/viewNames";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/database/tableNames";
-import { VIEW_FULL_USERS } from "#utils/const/database/viewNames";
 import Attributes from "#types/user/Attributes";
 import DataOnCreate from "#types/user/DataOnCreate";
 import DataOnUpdate from "#types/user/DataOnUpdate";
@@ -71,7 +71,7 @@ class User implements Model<DataOnUpdate, User> {
         include?: Include[]
     ): Promise<User> | never {
         const record = await createRecord<DataOnCreate, Item>(
-            VIEW_FULL_USERS,
+            FULL_USERS_VIEW,
             props,
             ["id", "email", "createdAt", "updatedAt"]
         );
@@ -149,7 +149,7 @@ class User implements Model<DataOnUpdate, User> {
         };
 
         const record = await updateRecordAttributes<DataOnUpdate, Item>(
-            VIEW_FULL_USERS,
+            FULL_USERS_VIEW,
             this.id,
             updatedProps,
             ["id", "email", "createdAt", "updatedAt"]

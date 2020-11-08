@@ -1,2 +1,1 @@
-export const VIEW_FULL_USERS = "viewFullUsers";
-export const VIEW_USERS_WITH_PROFILE = "viewUsersWithProfile";
+export const FULL_USERS_VIEW = "fullUsersView";

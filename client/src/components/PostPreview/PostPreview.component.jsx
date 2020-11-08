@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import React from "react";
 
-import { AvatarPlaceholder } from "components/Icon";
-import { POST } from "utils/const/pathnames";
+import { POST, USER } from "utils/const/pathnames";
+import { UserPicturePlaceholder } from "components/Icon";
 import DateFormatter from "utils/formatters/DateFormatter";
 import { propTypes } from "./PostPreview.props";
 import styles from "./PostPreview.module.scss";
+import toBase64 from "utils/helpers/toBase64";
 
 PostPreview.propTypes = propTypes;
 
@@ -17,20 +18,26 @@ function PostPreview ({
     title,
     updatedAt
 }) {
+    const { name, picture } = author;
+
     const formattedCreatedAt = new DateFormatter(createdAt)
         .formatByPattern("YYYY, MMM DD");
 
     const bodyHTML = { __html: body };
 
-    const avatarImgElem = (
+    const picDataIfAny = (picture)
+        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
+        : null;
+
+    const userPicElem = (
         <img
-            alt={author.name}
-            src={author.avatarUrl}
+            alt={name}
+            src={picDataIfAny}
         />
     );
 
-    const avatarPlaceholderElem = (
-        <AvatarPlaceholder
+    const userPicPlaceholderElem = (
+        <UserPicturePlaceholder
             fill="#455a64"
             size={50}
         />
@@ -38,31 +45,35 @@ function PostPreview ({
 
     return (
         <article className={styles.container}>
-            <Link
-                className={styles.content}
-                title="Развернуть статью"
-                to={`/${POST}/${id}`}
-            >
-                <header className={styles.title}>
+            <header className={styles.title}>
+                <Link
+                    className={styles.content}
+                    title="Развернуть статью"
+                    to={`/${POST}/${id}`}
+                >
                     {title}
-                </header>
+                </Link>
+            </header>
 
-                <section
-                    className={styles.body}
-                    dangerouslySetInnerHTML={bodyHTML}
-                />
-            </Link>
+            <section
+                className={styles.body}
+                dangerouslySetInnerHTML={bodyHTML}
+            />
 
             <section className={styles.metadata}>
-                <div className={styles.avatar}>
-                    {(author.avatarUrl)
-                        ? avatarImgElem
-                        : avatarPlaceholderElem}
-                </div>
+                <Link title={name} to={`/${USER}/${id}`}>
+                    <div className={styles.userPicture}>
+                        {(picture)
+                            ? userPicElem
+                            : userPicPlaceholderElem}
+                    </div>
+                </Link>
 
-                <span>
-                    {author.name}
-                </span>
+                <Link title={name} to={`/${USER}/${id}`}>
+                    <span>
+                        {author.name}
+                    </span>
+                </Link>
 
                 <span className={styles.date}>
                     {formattedCreatedAt}

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { defaultProps, propTypes } from "./MyArticles.props";
 import { selectUserPosts } from "redux/posts/posts.selectors";
-import Posts from "components/Posts";
+import Posts from "components/PostList";
 import styles from "./MyArticles.module.scss";
 
 MyArticles.defaultProps = defaultProps;

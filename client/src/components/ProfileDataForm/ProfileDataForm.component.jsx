@@ -48,7 +48,7 @@ function ProfileDataForm ({
 
         cb(event);
     };
-    console.log(isPending);
+
     return (
         <Formik
             initialValues={initialValues}

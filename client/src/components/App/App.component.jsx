@@ -7,7 +7,8 @@ import {
     EDIT,
     POST,
     PROFILE,
-    SIGN_IN
+    SIGN_IN,
+    USERS
 } from "utils/const/pathnames";
 
 import { PrivateRoute } from "components/Route";
@@ -27,6 +28,7 @@ const Page404 = lazy(() => import("pages/Page404"));
 const Post = lazy(() => import("pages/Post"));
 const Profile = lazy(() => import("pages/Profile"));
 const SignIn = lazy(() => import("pages/SignIn"));
+const Users = lazy(() => import("pages/Users"));
 
 App.propTypes = propTypes;
 
@@ -77,6 +79,11 @@ export function App ({ onCheckSessionStart }) {
                             <Route
                                 component={Post}
                                 path={`/${POST}/:id`}
+                            />
+
+                            <Route
+                                component={Users}
+                                path={`/${USERS}`}
                             />
 
                             <Route component={Page404} />

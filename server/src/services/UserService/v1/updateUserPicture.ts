@@ -1,6 +1,7 @@
 import sharp from "sharp";
 
 import { NOT_FOUND } from "#utils/const/validationErrors";
+import { PROFILES } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
@@ -16,8 +17,16 @@ export default async function (
         throw new UserError(NOT_FOUND, 404);
     }
 
+    const includeProfile = {
+        as: "profile",
+        attributes: ["name", "picture"],
+        referencedKey: "userId",
+        ownKey: "id",
+        tableName: PROFILES
+    };
+
     const picture = file && await compressImageAndGetBuffer(file);
-    const updatedUser = await user.updateAttributes({ picture });
+    const updatedUser = await user.updateAttributes({ picture }, [includeProfile]);
 
     if (file) {
         await unlinkFiles(file.path);

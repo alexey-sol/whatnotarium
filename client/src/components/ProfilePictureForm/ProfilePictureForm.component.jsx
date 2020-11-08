@@ -1,15 +1,14 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
 
-import { AvatarPlaceholder } from "components/Icon";
 import { CloseIconButton } from "components/IconButton";
+import { UserPicturePlaceholder } from "components/Icon";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./ProfilePictureForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { updateUserPictureStart } from "redux/users/users.actions";
-
 import styles from "./ProfilePictureForm.module.scss";
 import toBase64 from "utils/helpers/toBase64";
 
@@ -27,19 +26,19 @@ function ProfilePictureForm ({
     const { id } = currentUser;
     const { name, picture } = currentUser?.profile;
 
-    const pictureDataIfAny = (picture)
+    const picDataIfAny = (picture)
         ? `data:image/jpeg;base64,${toBase64(picture.data)}`
         : null;
 
     const avatarImgElem = (
         <img
             alt={name}
-            src={pictureDataIfAny}
+            src={picDataIfAny}
         />
     );
 
     const avatarPlaceholderElem = (
-        <AvatarPlaceholder
+        <UserPicturePlaceholder
             fill="#455a64"
             size={170}
         />

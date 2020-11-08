@@ -9,13 +9,15 @@ FormInput.propTypes = propTypes;
 
 function FormInput ({ label, onChange, ...props }) {
     const [field, meta] = useField(props);
-    const errorText = meta.error && meta.touched
+
+    const errorText = (meta.error && meta.touched)
         ? meta.error
         : "";
 
     return (
         <Input
             {...field}
+            {...props}
             error={errorText}
             label={label}
             onChange={onChange}

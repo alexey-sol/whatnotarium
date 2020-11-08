@@ -7,6 +7,7 @@ import postsPagingReducer from "./postsPaging/postsPaging.reducer";
 import sessionReducer from "./session/session.reducer";
 import transformStateItemsMap from "utils/redux/transformStateItemsMap";
 import uiReducer from "./ui/ui.reducer";
+import usersPagingReducer from "./usersPaging/usersPaging.reducer";
 import usersReducer from "./users/users.reducer";
 
 const persistConfig = {
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     postsPaging: postsPagingReducer,
     session: sessionReducer,
     ui: uiReducer,
-    users: usersReducer
+    users: usersReducer,
+    usersPaging: usersPagingReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

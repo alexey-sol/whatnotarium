@@ -1,9 +1,12 @@
 import React from "react";
 
-import { AvatarPlaceholder } from "components/Icon";
+import { UserPicturePlaceholder } from "components/Icon";
 import BaseButton from "components/BaseButton";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
+import toBase64 from "../../utils/helpers/toBase64";
+import { USER } from "../../utils/const/pathnames";
+import { Link } from "react-router-dom";
 
 PostDetails.defaultProps = defaultProps;
 PostDetails.propTypes = propTypes;
@@ -14,27 +17,32 @@ function PostDetails ({
     userId
 }) {
     const {
-        author,
+        author = {},
         body,
         id,
         title,
         updatedAt
     } = post || {};
 
+    const { name, picture } = author;
     const userIsAuthor = post?.userId === userId;
     const shouldRenderControls = Boolean(userIsAuthor && id);
 
     const bodyHTML = { __html: body };
 
-    const avatarImgElem = (
+    const picDataIfAny = (picture)
+        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
+        : null;
+
+    const userPicElem = (
         <img
-            alt={author?.name}
-            src={author?.avatarUrl}
+            alt={name}
+            src={picDataIfAny}
         />
     );
 
-    const avatarPlaceholderElem = (
-        <AvatarPlaceholder
+    const userPicPlaceholderElem = (
+        <UserPicturePlaceholder
             fill="#455a64"
             size={50}
         />
@@ -52,15 +60,19 @@ function PostDetails ({
             />
 
             <section className={styles.metadata}>
-                <div className={styles.avatar}>
-                    {(author?.avatarUrl)
-                        ? avatarImgElem
-                        : avatarPlaceholderElem}
-                </div>
+                <Link title={name} to={`/${USER}/${id}`}>
+                    <div className={styles.userPicture}>
+                        {(picture)
+                            ? userPicElem
+                            : userPicPlaceholderElem}
+                    </div>
+                </Link>
 
-                <span>
-                    {author?.name}
-                </span>
+                <Link title={name} to={`/${USER}/${id}`}>
+                    <span>
+                        {author?.name}
+                    </span>
+                </Link>
 
                 <span className={styles.date}>
                     {updatedAt}

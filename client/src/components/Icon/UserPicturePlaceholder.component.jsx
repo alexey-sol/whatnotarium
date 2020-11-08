@@ -2,10 +2,10 @@ import React from "react";
 
 import { defaultProps, propTypes } from "./Icon.props";
 
-AvatarPlaceholder.defaultProps = defaultProps;
-AvatarPlaceholder.propTypes = propTypes;
+UserPicturePlaceholder.defaultProps = defaultProps;
+UserPicturePlaceholder.propTypes = propTypes;
 
-function AvatarPlaceholder ({ fill, size }) {
+function UserPicturePlaceholder ({ fill, size }) {
     return (
         <svg
             height={size}
@@ -21,4 +21,4 @@ function AvatarPlaceholder ({ fill, size }) {
     );
 }
 
-export default AvatarPlaceholder;
+export default UserPicturePlaceholder;

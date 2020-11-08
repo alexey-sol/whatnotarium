@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
-import Posts from "components/Posts";
+import PostList from "components/PostList";
 import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
@@ -36,7 +36,7 @@ function Home ({
     };
 
     const HomeWithSpinner = WithSpinner(
-        Posts,
+        PostList,
         propsFromHome
     );
 

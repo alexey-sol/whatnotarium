@@ -1,0 +1,20 @@
+@import "styles/style.scss";
+
+.container {
+    display: grid;
+    animation: fade-in 0.1s;
+
+    .userList {
+        display: grid;
+        grid-template-columns: minmax(30rem, 1fr);
+        row-gap: 4vh;
+        padding: 0;
+        margin: 0;
+
+        .userItem {
+            padding: 0;
+            margin: 0;
+            list-style-type: none;
+        }
+    }
+}

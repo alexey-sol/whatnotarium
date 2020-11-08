@@ -5,6 +5,26 @@ import * as api from "utils/api/users";
 
 import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
+export function * doFetchUser ({ payload: id }) {
+    try {
+        const item = yield api.fetchUser(id);
+        yield put(actions.fetchUserSuccess(item));
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.fetchUserFailure(error));
+    }
+}
+
+export function * doFetchUsers ({ payload }) {
+    try {
+        const itemsWithPagingOpts = yield api.fetchUsers(payload);
+        yield put(actions.fetchUsersSuccess(itemsWithPagingOpts));
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.fetchUsersFailure(error));
+    }
+}
+
 export function * doUpdateUser ({ cb, payload }) {
     try {
         const user = yield api.updateUser(payload);
