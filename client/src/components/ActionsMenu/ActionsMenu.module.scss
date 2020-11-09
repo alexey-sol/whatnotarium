@@ -14,8 +14,17 @@
     }
 
     .iconButton {
+        position: relative;
+
         &:not(:first-of-type) {
             margin-left: 0.7vw;
+        }
+
+        .searchInputContainer {
+            position: absolute;
+            z-index: 1;
+            right: 4.4rem;
+            height: 100%;
         }
     }
 

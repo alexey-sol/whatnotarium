@@ -14,6 +14,12 @@ router.get(
 );
 
 router.get(
+    "/search",
+    schemaValidation.getSearch,
+    controllers.getSearch
+);
+
+router.get(
     "/:id",
     schemaValidation.getPost,
     dataValidation.getPost,

@@ -16,6 +16,7 @@ import {
 } from "components/IconButton";
 
 import { SignInDialog, SignUpDialog } from "components/Dialog";
+import SearchPostInput from "components/SearchPostInput";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./ActionsMenu.module.scss";
@@ -25,15 +26,19 @@ ActionsMenu.propTypes = propTypes;
 
 export function ActionsMenu ({
     currentUser,
+    initialSearchIsShown,
     initialSignInIsShown,
     initialSignUpIsShown,
     showUserMenu
 }) {
+    const [searchIsShown, setSearchIsShown] = useState(initialSearchIsShown);
     const [signInIsShown, setSignInIsShown] = useState(initialSignInIsShown);
     const [signUpIsShown, setSignUpIsShown] = useState(initialSignUpIsShown);
 
     const userIconButtonRef = useRef(null);
     const showSignInDialog = useCallback(() => setSignInIsShown(true), []);
+
+    const toggleSearchIsShown = () => setSearchIsShown(!searchIsShown);
 
     const handleClickOnUserButton = (currentUser)
         ? showUserMenu
@@ -59,14 +64,16 @@ export function ActionsMenu ({
     return (
         <div className={styles.container}>
             <div className={styles.content}>
-                {false && (
-                    <span className={styles.iconButton}>
-                        <SearchIconButton
-                            className={styles.iconButton}
-                            onClick={() => console.log("Click on search icon")}
-                        />
-                    </span>
-                )}
+                <span className={styles.iconButton}>
+                    {searchIsShown && (
+                        <SearchPostInput rootClassName={styles.searchInputContainer} />
+                    )}
+
+                    <SearchIconButton
+                        className={styles.iconButton}
+                        onClick={toggleSearchIsShown}
+                    />
+                </span>
 
                 {false && currentUser && (
                     <span className={styles.iconButton}>

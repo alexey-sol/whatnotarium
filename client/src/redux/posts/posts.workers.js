@@ -46,6 +46,16 @@ export function * doFetchPosts ({ payload }) {
     }
 }
 
+export function * doSearchPosts ({ payload }) {
+    try {
+        const itemsWithPagingOpts = yield api.searchPosts(payload);
+        yield put(actions.searchPostsSuccess(itemsWithPagingOpts));
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.searchPostsFailure(error));
+    }
+}
+
 export function * doUpdatePost ({ cb, payload }) {
     try {
         const item = yield api.updatePost(payload);

@@ -44,15 +44,16 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
             include,
             limit,
             offset,
+            operators,
             order,
             where = {}
         } = filter;
 
         const attributes = Object.keys(where);
 
-        const selectElement = this.createSelectClause(include);
-        const joinElement = this.createJoinClause(include);
-        const whereAttributesElement = this.createWhereAttributesClause(attributes);
+        const selectElem = this.createSelectClause(include);
+        const joinElem = this.createJoinClause(include);
+        const whereAttribElem = this.createWhereAttributesClause(attributes, operators, include);
 
         const orderElement = (order)
             ? `ORDER BY ${order}`
@@ -67,10 +68,10 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
             : "";
 
         return `
-            ${selectElement}
+            ${selectElem}
             FROM "${this.tableName}"
-            ${joinElement}
-            ${whereAttributesElement}
+            ${joinElem}
+            ${whereAttribElem}
             ${orderElement}
             ${limitElement}
             ${offsetElement};

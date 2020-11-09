@@ -13,7 +13,7 @@ export const postsNormalizer = () => (next) => (action) => {
         return next(action);
     }
 
-    if (type === types.FETCH_POSTS_SUCCESS) {
+    if (type === types.FETCH_POSTS_SUCCESS || type === types.SEARCH_POSTS_SUCCESS) {
         actionWithNormalizedPayload.payload = {
             ...payload,
             items: convertItemsArrayToMap(payload.items)
@@ -64,7 +64,7 @@ export const postsMapper = ({ dispatch }) => (next) => (action) => {
         return next(action);
     }
 
-    if (type === types.FETCH_POSTS_SUCCESS) {
+    if (type === types.FETCH_POSTS_SUCCESS || type === types.SEARCH_POSTS_SUCCESS) {
         const { items, ...rest } = payload;
 
         const pagingOptions = {

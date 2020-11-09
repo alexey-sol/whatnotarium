@@ -17,6 +17,8 @@ export default reduce(INITIAL_STATE, {
     [types.FETCH_POSTS_FAILURE]: onFailure,
     [types.FETCH_POSTS_SUCCESS]: onSuccess,
     [types.RESET_POSTS_ERROR]: onResetError,
+    [types.SEARCH_POSTS_FAILURE]: onFailure,
+    [types.SEARCH_POSTS_SUCCESS]: onSuccess,
     [types.UPDATE_POST_FAILURE]: onFailure,
     [types.UPDATE_POST_SUCCESS]: onSuccess
 });

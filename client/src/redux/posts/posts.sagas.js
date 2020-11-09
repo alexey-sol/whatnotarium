@@ -19,6 +19,10 @@ function * onFetchPostsStart () {
     yield takeLatest(types.FETCH_POSTS_START, workers.doFetchPosts);
 }
 
+function * onSearchPostsStart () {
+    yield takeLatest(types.SEARCH_POSTS_START, workers.doSearchPosts);
+}
+
 function * onUpdatePostStart () {
     yield takeLatest(types.UPDATE_POST_START, workers.doUpdatePost);
 }
@@ -29,6 +33,7 @@ function * postSagas () {
         call(onDeletePostStart),
         call(onFetchPostStart),
         call(onFetchPostsStart),
+        call(onSearchPostsStart),
         call(onUpdatePostStart)
     ]);
 }

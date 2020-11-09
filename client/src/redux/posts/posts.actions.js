@@ -92,6 +92,27 @@ export function resetPostsError () {
     };
 }
 
+export function searchPostsFailure (error) {
+    return {
+        payload: { error },
+        type: types.SEARCH_POSTS_FAILURE
+    };
+}
+
+export function searchPostsStart (searchTerm) {
+    return {
+        payload: searchTerm,
+        type: types.SEARCH_POSTS_START
+    };
+}
+
+export function searchPostsSuccess (payload) {
+    return {
+        payload,
+        type: types.SEARCH_POSTS_SUCCESS
+    };
+}
+
 export function updatePostFailure (error) {
     return {
         payload: { error },

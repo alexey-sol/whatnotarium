@@ -1,5 +1,14 @@
+import {
+    $and,
+    $eq,
+    $ilike,
+    $like,
+    $or
+} from "#utils/const/database/modelOperators";
+
 import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
+import Operators from "#types/Operators";
 import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import isObject from "#utils/typeGuards/isObject";
@@ -65,24 +74,91 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     }
 
     protected createWhereAttributesClause (
-        attributes: string[]
+        attributes: string[],
+        operators: Operators = {},
+        include?: Include[]
     ): string {
         let whereElement = "";
 
+        const { matchingOp = $eq, conjunctionOp = $and } = operators;
+        const $match = this.getOp(matchingOp);
+        const $conj = this.getOp(conjunctionOp);
+
         if (attributes.length > 0) {
-            let count = this.offset;
+            const normalizedAttributes = this.normalizeAttributes(attributes, include);
             const values = [];
 
-            for (const attribute of attributes) {
+            let count = this.offset;
+
+            for (const attribute of normalizedAttributes) {
                 count += 1;
-                values.push(`"${this.tableName}"."${attribute}" = $${count}`);
+                values.push(`${attribute} ${$match} $${count}`);
             }
 
-            const where = values.join(" AND ");
+            const where = values.join(` ${$conj} `);
             whereElement = `WHERE ${where}`;
         }
 
         return whereElement;
+    }
+
+    private getOp (
+        op: typeof $and | typeof $eq | typeof $ilike | typeof $like | typeof $or
+    ): string {
+        return op.slice(1).toUpperCase();
+    }
+
+    private normalizeAttributes (
+        attributes: string[],
+        include?: Include[]
+    ): string[] {
+        const allAttributesFromInclude: {
+            attribute: string;
+            tableName: string;
+        }[] = [];
+
+        const foreignAttributes: {
+            attribute: string;
+            tableName: string;
+        }[] = [];
+
+        const ownAttributes: {
+            attribute: string;
+            tableName: string;
+        }[] = [];
+
+        if (include) {
+            include.forEach(includeItem => {
+                const { attributes: attributesToInclude, tableName } = includeItem;
+
+                attributesToInclude.forEach(attribute => {
+                    allAttributesFromInclude.push({
+                        attribute,
+                        tableName
+                    });
+                });
+            });
+        }
+
+        attributes.forEach(attribute => {
+            const foreignAttribute = allAttributesFromInclude
+                .find(item => item.attribute === attribute);
+
+            if (foreignAttribute) {
+                foreignAttributes.push({
+                    attribute,
+                    tableName: foreignAttribute.tableName
+                });
+            } else {
+                ownAttributes.push({
+                    attribute,
+                    tableName: this.tableName
+                });
+            }
+        });
+
+        return [...ownAttributes, ...foreignAttributes]
+            .map(({ attribute, tableName }) => `"${tableName}"."${attribute}"`);
     }
 
     protected createWhereIdClause (): string {
