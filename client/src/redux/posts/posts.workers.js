@@ -36,10 +36,11 @@ export function * doFetchPost ({ payload: id }) {
     }
 }
 
-export function * doFetchPosts ({ payload }) {
+export function * doFetchPosts ({ cb, payload }) {
     try {
         const itemsWithPagingOpts = yield api.fetchPosts(payload);
         yield put(actions.fetchPostsSuccess(itemsWithPagingOpts));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.fetchPostsFailure(error));

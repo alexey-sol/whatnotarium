@@ -13,6 +13,11 @@ import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
 import isObject from "#utils/typeGuards/isObject";
 
+interface MatchedAttribute {
+    attribute: string;
+    tableName: string;
+}
+
 abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     protected offset: number;
 
@@ -112,20 +117,9 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
         attributes: string[],
         include?: Include[]
     ): string[] {
-        const allAttributesFromInclude: {
-            attribute: string;
-            tableName: string;
-        }[] = [];
-
-        const foreignAttributes: {
-            attribute: string;
-            tableName: string;
-        }[] = [];
-
-        const ownAttributes: {
-            attribute: string;
-            tableName: string;
-        }[] = [];
+        const allAttributesFromInclude: MatchedAttribute[] = [];
+        const foreignAttributes: MatchedAttribute[] = [];
+        const ownAttributes: MatchedAttribute[] = [];
 
         if (include) {
             include.forEach(includeItem => {

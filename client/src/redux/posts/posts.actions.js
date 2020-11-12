@@ -72,8 +72,9 @@ export function fetchPostsFailure (error) {
     };
 }
 
-export function fetchPostsStart (filter) {
+export function fetchPostsStart (filter, cb) {
     return {
+        cb,
         payload: filter,
         type: types.FETCH_POSTS_START
     };

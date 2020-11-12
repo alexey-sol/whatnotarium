@@ -1,0 +1,26 @@
+@import "styles/style.scss";
+
+.resetSearchButton {
+    width: 100%;
+    border: 0;
+    padding-left: 1.5rem;
+    background-color: $menu-item-write-post-bg-color;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
+    color: $menu-item-color;
+    text-align: left;
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $menu-item-write-post-bg-color--hover;
+    }
+
+    @media screen and (max-width: 1024px) {
+        &.writePostTab {
+            background-color: transparent;
+        }
+    }
+}
+
+

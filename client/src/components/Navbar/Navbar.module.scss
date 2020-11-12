@@ -37,11 +37,11 @@
             margin-top: 0.3rem;
         }
 
-        &.prominent {
-            background-color: $menu-prominent-item-bg-color;
+        &.writePostTab {
+            background-color: $menu-item-write-post-bg-color;
 
             &:hover {
-                background-color: $menu-prominent-item-bg-color--hover;
+                background-color: $menu-item-write-post-bg-color--hover;
             }
         }
     }
@@ -83,7 +83,7 @@
                 margin-top: 0;
             }
 
-            &.prominent {
+            &.writePostTab {
                 background-color: transparent;
             }
         }

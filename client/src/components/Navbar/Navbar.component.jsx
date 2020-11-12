@@ -5,6 +5,7 @@ import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
 import { USERS } from "utils/const/pathnames";
+import PostsTab from "components/PostsTab";
 import WritePostTab from "components/WritePostTab";
 import { defaultProps, propTypes } from "./Navbar.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -20,18 +21,13 @@ function Navbar ({ currentUser }) {
         <div className={styles.container}>
             <ul className={styles.list}>
                 {userIsAuthed && (
-                    <li className={classnames(styles.item, styles.prominent)}>
+                    <li className={classnames(styles.item, styles.writePostTab)}>
                         <WritePostTab />
                     </li>
                 )}
 
                 <li className={styles.item}>
-                    <Link
-                        title="Статьи"
-                        to="/"
-                    >
-                        Статьи
-                    </Link>
+                    <PostsTab />
                 </li>
 
                 <li className={styles.item}>

@@ -10,6 +10,7 @@ import { createStructuredSelector } from "reselect";
 
 import {
     BookmarkIconButton,
+    CancelIconButton,
     NotificationIconButton,
     SearchIconButton,
     UserIconButton
@@ -38,12 +39,12 @@ export function ActionsMenu ({
     const userIconButtonRef = useRef(null);
     const showSignInDialog = useCallback(() => setSignInIsShown(true), []);
 
-    const toggleSearchIsShown = () => setSearchIsShown(!searchIsShown);
-
     const handleClickOnUserButton = (currentUser)
         ? showUserMenu
         : showSignInDialog;
 
+    const hideSearchInput = useCallback(() => setSearchIsShown(false), []);
+    const showSearchInput = useCallback(() => setSearchIsShown(true), []);
     const hideSignIn = useCallback(() => setSignInIsShown(false), []);
     const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
     const showSignUp = useCallback(() => setSignUpIsShown(true), []);
@@ -61,18 +62,36 @@ export function ActionsMenu ({
         }
     }, [currentUser]);
 
+    const closeButtonElem = (
+        <CancelIconButton
+            className={styles.iconButton}
+            onClick={hideSearchInput}
+        />
+    );
+
+    const searchButtonElem = (
+        <SearchIconButton
+            className={styles.iconButton}
+            onClick={showSearchInput}
+        />
+    );
+
+    const toggleSearchInputElem = (searchIsShown)
+        ? closeButtonElem
+        : searchButtonElem;
+
     return (
         <div className={styles.container}>
             <div className={styles.content}>
                 <span className={styles.iconButton}>
                     {searchIsShown && (
-                        <SearchPostInput rootClassName={styles.searchInputContainer} />
+                        <SearchPostInput
+                            onClose={hideSearchInput}
+                            rootClassName={styles.searchInputContainer}
+                        />
                     )}
 
-                    <SearchIconButton
-                        className={styles.iconButton}
-                        onClick={toggleSearchIsShown}
-                    />
+                    {toggleSearchInputElem}
                 </span>
 
                 {false && currentUser && (
