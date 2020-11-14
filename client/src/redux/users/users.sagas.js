@@ -11,6 +11,10 @@ function * onFetchUsersStart () {
     yield takeLatest(types.FETCH_USERS_START, workers.doFetchUsers);
 }
 
+function * onSearchUsersStart () {
+    yield takeLatest(types.SEARCH_USERS_START, workers.doSearchUsers);
+}
+
 function * onUpdateUserPictureStart () {
     yield takeLatest(types.UPDATE_USER_PICTURE_START, workers.doUpdateUserPicture);
 }
@@ -23,6 +27,7 @@ function * usersSagas () {
     yield all([
         call(onFetchUserStart),
         call(onFetchUsersStart),
+        call(onSearchUsersStart),
         call(onUpdateUserPictureStart),
         call(onUpdateUserStart)
     ]);

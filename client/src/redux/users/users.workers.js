@@ -15,13 +15,24 @@ export function * doFetchUser ({ payload: id }) {
     }
 }
 
-export function * doFetchUsers ({ payload }) {
+export function * doFetchUsers ({ cb, payload }) {
     try {
         const itemsWithPagingOpts = yield api.fetchUsers(payload);
         yield put(actions.fetchUsersSuccess(itemsWithPagingOpts));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.fetchUsersFailure(error));
+    }
+}
+
+export function * doSearchUsers ({ cb, payload }) {
+    try {
+        const itemsWithPagingOpts = yield api.searchUsers(payload);
+        yield put(actions.searchUsersSuccess(itemsWithPagingOpts));
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.searchUsersFailure(error));
     }
 }
 

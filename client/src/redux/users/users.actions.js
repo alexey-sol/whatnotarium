@@ -28,8 +28,9 @@ export function fetchUsersFailure (error) {
     };
 }
 
-export function fetchUsersStart (filter) {
+export function fetchUsersStart (filter, cb) {
     return {
+        cb,
         payload: filter,
         type: types.FETCH_USERS_START
     };
@@ -39,6 +40,27 @@ export function fetchUsersSuccess (payload) {
     return {
         payload,
         type: types.FETCH_USERS_SUCCESS
+    };
+}
+
+export function searchUsersFailure (error) {
+    return {
+        payload: { error },
+        type: types.SEARCH_USERS_FAILURE
+    };
+}
+
+export function searchUsersStart (searchTerm) {
+    return {
+        payload: searchTerm,
+        type: types.SEARCH_USERS_START
+    };
+}
+
+export function searchUsersSuccess (payload) {
+    return {
+        payload,
+        type: types.SEARCH_USERS_SUCCESS
     };
 }
 

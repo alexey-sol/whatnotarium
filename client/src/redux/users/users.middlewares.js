@@ -12,7 +12,7 @@ export const usersNormalizer = () => (next) => (action) => {
         return next(action);
     }
 
-    if (type === types.FETCH_USERS_SUCCESS) {
+    if (type === types.FETCH_USERS_SUCCESS || type === types.SEARCH_USERS_SUCCESS) {
         actionWithNormalizedPayload.payload = {
             ...payload,
             items: convertItemsArrayToMap(payload.items)

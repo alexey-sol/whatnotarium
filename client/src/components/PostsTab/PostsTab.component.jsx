@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { RESET_SEARCH_POSTS } from "utils/const/events";
+import { SEARCH_POSTS } from "utils/const/events";
 import { fetchPostsStart } from "redux/posts/posts.actions";
 import { propTypes } from "./PostsTab.props";
 import { selectCount } from "redux/postsPaging/postsPaging.selectors";
@@ -12,13 +12,13 @@ import styles from "./PostsTab.module.scss";
 
 PostsTab.propTypes = propTypes;
 
-function PostsTab ({ onFetchPostsStart, pageNumber, postsOnPageCount }) {
+function PostsTab ({ onFetchPostsStart, postsOnPageCount }) {
     const [resetSearchIsShown, setResetSearchIsShown] = useState(false);
 
     const resetSearch = useCallback(() => onFetchPostsStart({
         count: postsOnPageCount,
-        page: pageNumber
-    }, () => setResetSearchIsShown(false)), [onFetchPostsStart, pageNumber, postsOnPageCount]);
+        page: 1
+    }, () => setResetSearchIsShown(false)), [onFetchPostsStart, postsOnPageCount]);
 
     const resetSearchTab = (
         <button
@@ -40,10 +40,12 @@ function PostsTab ({ onFetchPostsStart, pageNumber, postsOnPageCount }) {
     );
 
     useEffect(() => {
-        const showResetSearch = () => setResetSearchIsShown(true);
+        const showResetSearch = (searchTerm = "") => {
+            setResetSearchIsShown(searchTerm.length > 0);
+        };
 
-        pubsub.subscribe(RESET_SEARCH_POSTS, showResetSearch);
-        return () => pubsub.unsubscribe(RESET_SEARCH_POSTS, showResetSearch);
+        pubsub.subscribe(SEARCH_POSTS, showResetSearch);
+        return () => pubsub.unsubscribe(SEARCH_POSTS, showResetSearch);
     }, []);
 
     return (resetSearchIsShown)

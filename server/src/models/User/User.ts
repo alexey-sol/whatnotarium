@@ -96,10 +96,7 @@ class User implements Model<DataOnUpdate, User> {
     static async findAll (
         filter?: DbQueryFilter<Attributes>
     ): Promise<User[]> | never {
-        const records = await findAllRecords<Attributes, Item>(
-            USERS,
-            filter
-        );
+        const records = await findAllRecords<Attributes, Item>(USERS, filter);
 
         return records.map(record => User.formatPropsAndInstantiate(
             record,
@@ -114,10 +111,7 @@ class User implements Model<DataOnUpdate, User> {
             return null;
         }
 
-        const record = await findOneRecord<Attributes, Item>(
-            USERS,
-            filter
-        );
+        const record = await findOneRecord<Attributes, Item>(USERS, filter);
 
         return (record)
             ? User.formatPropsAndInstantiate(record, filter?.include)

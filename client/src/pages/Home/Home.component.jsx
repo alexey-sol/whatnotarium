@@ -30,15 +30,8 @@ function Home ({
         });
     }, [onFetchPostsStart, pageNumber, postsOnPageCount]);
 
-    const propsFromHome = {
-        isPending,
-        posts
-    };
-
-    const HomeWithSpinner = WithSpinner(
-        PostList,
-        propsFromHome
-    );
+    const propsFromHome = { isPending, posts };
+    const HomeWithSpinner = WithSpinner(PostList, propsFromHome);
 
     return <HomeWithSpinner />;
 }

@@ -1,6 +1,7 @@
 @import "styles/style.scss";
 
 .container {
+    display: flex;
     width: 40rem;
 
     .input {
@@ -15,5 +16,9 @@
         color: $search-post-input-text-color;
         font-family: $font-family--normal;
         font-size: $font-size--medium;
+    }
+
+    .cancelButton {
+
     }
 }

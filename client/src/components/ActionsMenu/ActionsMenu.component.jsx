@@ -66,6 +66,7 @@ export function ActionsMenu ({
         <CancelIconButton
             className={styles.iconButton}
             onClick={hideSearchInput}
+            title="Закрыть"
         />
     );
 

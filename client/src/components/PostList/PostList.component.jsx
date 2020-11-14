@@ -37,9 +37,9 @@ function PostList ({
 
     return (
         <article className={styles.container}>
-            <ul className={styles.postList}>
-                {postElems}
-            </ul>
+            {(posts.length > 0)
+                ? <ul className={styles.postList}>{postElems}</ul>
+                : <div>Ничего не нашли</div>}
 
             <Paging
                 count={postsOnPageCount}

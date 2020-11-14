@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 
-import PostService from "#services/PostService/v1";
+import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
 const getSearch: RequestHandler = async (
@@ -10,8 +10,8 @@ const getSearch: RequestHandler = async (
 ): Promise<void> => {
     const { searchTerm } = query;
 
-    PostService.searchPosts(searchTerm as string)
-        .then(posts => sendResponse(response, posts))
+    UserService.searchUsers(searchTerm as string)
+        .then(users => sendResponse(response, users))
         .catch(next);
 };
 

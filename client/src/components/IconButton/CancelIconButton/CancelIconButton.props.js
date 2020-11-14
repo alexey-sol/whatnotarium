@@ -7,7 +7,7 @@ import {
 
 export const defaultProps = {
     ...iconButtonDefaultProps,
-    title: "Закрыть"
+    title: "Отменить"
 };
 
 export const propTypes = {

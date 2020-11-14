@@ -17,6 +17,8 @@ export default reduce(INITIAL_STATE, {
     [types.FETCH_USERS_FAILURE]: onFailure,
     [types.FETCH_USERS_SUCCESS]: onSuccess,
     [types.RESET_USERS_ERROR]: onResetError,
+    [types.SEARCH_USERS_FAILURE]: onFailure,
+    [types.SEARCH_USERS_SUCCESS]: onSuccess,
     [types.SET_USER]: onSuccess,
     [types.UPDATE_USER_PICTURE_FAILURE]: onFailure,
     [types.UPDATE_USER_PICTURE_SUCCESS]: onSuccess,

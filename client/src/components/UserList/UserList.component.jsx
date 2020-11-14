@@ -37,9 +37,9 @@ function UserList ({
 
     return (
         <article className={styles.container}>
-            <ul className={styles.userList}>
-                {userElems}
-            </ul>
+            {(users.length > 0)
+                ? <ul className={styles.userList}>{userElems}</ul>
+                : <div>Никого не нашли</div>}
 
             <Paging
                 count={usersOnPageCount}

@@ -3,12 +3,13 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 
-import { RESET_SEARCH_POSTS } from "utils/const/events";
-import { propTypes } from "./SearchPostInput.props";
+import { SEARCH_POSTS } from "utils/const/events";
+import { defaultProps, propTypes } from "./SearchPostInput.props";
 import { searchPostsStart } from "redux/posts/posts.actions";
 import pubsub from "utils/pubsub";
 import styles from "./SearchPostInput.module.scss";
 
+SearchPostInput.defaultProps = defaultProps;
 SearchPostInput.propTypes = propTypes;
 
 function SearchPostInput ({
@@ -18,8 +19,8 @@ function SearchPostInput ({
     onSearchPostsStart,
     rootClassName
 }) {
-    const [searchIsInitiated, setSearchIsInitiated] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchIsInitiated, setSearchIsInitiated] = useState(false);
 
     const handleChange = ({ target }) => {
         if (!searchIsInitiated) {
@@ -53,19 +54,21 @@ function SearchPostInput ({
 
     useEffect(() => {
         if (searchIsInitiated) {
-            pubsub.publish(RESET_SEARCH_POSTS);
+            pubsub.publish(SEARCH_POSTS, searchTerm);
         }
-    }, [searchIsInitiated]);
+    }, [searchIsInitiated, searchTerm]);
 
     return (
         <div className={classnames(styles.container, rootClassName)}>
             <input
+                autoComplete="off"
                 autoFocus
                 className={styles.input}
                 maxLength={100}
                 name="searchTerm"
                 onBlur={onClose}
                 onChange={handleChange}
+                placeholder="Найти статью по названию, содержанию или имени автора"
                 value={searchTerm}
             />
         </div>
