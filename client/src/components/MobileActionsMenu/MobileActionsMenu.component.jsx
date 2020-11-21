@@ -21,7 +21,7 @@ export function MobileActionsMenu ({
     onSignOutStart,
     showSignIn
 }) {
-    const bindOnClose = (cb) => () => {
+    const bindClose = (cb) => () => {
         cb();
         onClose();
     };
@@ -33,20 +33,32 @@ export function MobileActionsMenu ({
         onClose();
     };
 
-    const authButton = (currentUser)
-        ? (
-            <div>
-                <li><span onClick={bindOnClose(redirectToProfile)}>Профиль</span></li>
-                <li><span onClick={bindOnClose(signOut)}>Выйти из аккаунта</span></li>
-            </div>
-        )
-        : (
+    const renderProfileButtons = () => (
+        <div className={styles.profileButtons}>
             <BaseButton
-                onClick={bindOnClose(showSignIn)}
+                onClick={bindClose(redirectToProfile)}
+                text="Профиль"
+                width="full"
+            />
+
+            <BaseButton
+                onClick={bindClose(signOut)}
+                text="Выйти из аккаунта"
+                theme="dark"
+                width="full"
+            />
+        </div>
+    );
+
+    const renderSignInButton = () => (
+        <li className={styles.item}>
+            <BaseButton
+                onClick={bindClose(showSignIn)}
                 text="Войти"
                 width="full"
             />
-        );
+        </li>
+    );
 
     return (
         <BaseDialog
@@ -63,9 +75,9 @@ export function MobileActionsMenu ({
                     />
                 </li>
 
-                <li className={styles.item}>
-                    {authButton}
-                </li>
+                {(currentUser)
+                    ? renderProfileButtons()
+                    : renderSignInButton()}
 
                 <div className={styles.item}>
                     <div className={styles.mobileNavbar}>

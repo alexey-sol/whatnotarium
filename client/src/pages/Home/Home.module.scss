@@ -1,3 +1,22 @@
+@import "styles/style.scss";
+
 .resetSearchingButton {
-    background-color: orange;
+    width: fit-content;
+    border: 1px solid $reset-search-post-button-border-color;
+    margin-bottom: 2rem;
+    background-color: $reset-search-post-button-bg-color;
+    transition: background-color 50ms ease;
+    box-shadow:
+        0 1px 0.8rem rgba(0, 0, 0, 0.05),
+        0 0 1.5rem rgba(0, 0, 0, 0.01) inset;
+
+    &:hover {
+        background-color: $reset-search-post-button-bg-color--hover;
+    }
+
+    a {
+        display: block;
+        padding: 0.5rem 1.5rem;
+        color: $reset-search-post-button-text-color;
+    }
 }

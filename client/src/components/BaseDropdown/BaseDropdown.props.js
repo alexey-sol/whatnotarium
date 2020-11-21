@@ -2,7 +2,6 @@ import {
     arrayOf,
     bool,
     func,
-    instanceOf,
     object,
     oneOfType,
     node,
