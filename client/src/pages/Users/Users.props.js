@@ -18,6 +18,7 @@ export const defaultProps = {
 export const propTypes = {
     currentUsersPage: number,
     isPending: bool,
+    location: object.isRequired,
     match: object.isRequired,
     onFetchUsersStart: func.isRequired,
     users: array,

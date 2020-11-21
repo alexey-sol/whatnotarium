@@ -16,13 +16,22 @@ const INITIAL_COORDS = {
 
 function BaseDropdown ({
     children,
-    className,
     elemRef,
     isFixed,
-    onClose
+    onClose,
+    rootClassName
 }) {
     const [coords, setCoords] = useState(INITIAL_COORDS);
     const dropdownRef = useRef(null);
+
+    useEffect(() => { // TODO: make it a custom hook?
+        const handleKeydown = (event) => {
+            if (event.key === "Escape") onClose();
+        };
+
+        document.addEventListener("keydown", handleKeydown);
+        return () => document.removeEventListener("keydown", handleKeydown);
+    }, [onClose]);
 
     const { x, y } = coords;
 
@@ -35,7 +44,7 @@ function BaseDropdown ({
 
     const dropdownClassName = classnames(
         styles.container,
-        className,
+        rootClassName,
         (isProperlyPositioned) ? "" : styles.transparent,
         (isFixed) ? styles.fixed : ""
     );
@@ -79,7 +88,7 @@ function BaseDropdown ({
 
     return ReactDOM.createPortal(
         dropdownElem,
-        document.body
+        elemRef.current
     );
 }
 

@@ -100,8 +100,9 @@ export function searchPostsFailure (error) {
     };
 }
 
-export function searchPostsStart (searchTerm) {
+export function searchPostsStart (searchTerm, cb) {
     return {
+        cb,
         payload: searchTerm,
         type: types.SEARCH_POSTS_START
     };

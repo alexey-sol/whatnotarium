@@ -1,0 +1,107 @@
+@import "styles/style.scss";
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    .item {
+        display: flex;
+        border-bottom: 1px solid $menu-item-border-color;
+        user-select: none;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: background-color 50ms ease, border 100ms ease;
+
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        &:hover {
+            background-color: $menu-item-bg-color--hover;
+        }
+    }
+
+    .prominentItem {
+        background-color: $menu-item-bg-color--prominent;
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0.5rem 5rem 0.5rem 1.5rem;
+        font-size: $font-size--medium;
+        color: $menu-item-text-color;
+        transition: color 50ms ease;
+        animation: fade-in 0.1s;
+
+        &:hover {
+            color: $menu-item-text-color--hover !important;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        &:hover {
+
+            .item {
+                border-color: transparent;
+
+                a {
+                    color: $menu-list-text-color--hover;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        & {
+            display: flex;
+            flex-flow: row nowrap;
+            width: 100%;
+            height: 100%;
+            padding: 0 3vw 0 0;
+
+            .item {
+                border: none;
+
+                a {
+                    padding: 0 1.2rem;
+                    color: $mobile-menu-item-text-color;
+                }
+            }
+
+            .prominentItem {
+                background-color: initial;
+            }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        & {
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .item {
+            height: 5rem;
+            border-bottom: 1px solid $mobile-menu-item-border-color;
+
+            &:first-child {
+                border-top: 1px solid $mobile-menu-item-border-color;
+            }
+
+            a {
+                justify-content: center;
+            }
+        }
+    }
+}

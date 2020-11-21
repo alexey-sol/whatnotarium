@@ -10,44 +10,66 @@
 
     .content {
         display: flex;
-        margin-right: 0.4rem;
+        margin-right: 2rem;
+    }
+
+    .mobileContent {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 40px;
+        margin-right: 3vw;
+    }
+
+    .menuButton {
+        width: 100% !important;
+        height: 100% !important;
+        transition: background-color 50ms ease;
+
+        &:hover {
+            background-color: $mobile-actions-menu-bg-color--hover;
+            cursor: pointer;
+
+            svg {
+                fill: $mobile-menu-item-text-color;
+            }
+        }
     }
 
     .iconButton {
         position: relative;
 
         &:not(:first-of-type) {
-            margin-left: 0.7vw;
+            margin-left: 1rem;
         }
 
         .searchInputContainer {
             position: absolute;
             z-index: 1;
             right: 4.4rem;
+            width: 40rem;
             height: 100%;
         }
     }
 
     @media screen and (max-width: 1024px) {
         & {
-            justify-content: flex-end;
             height: auto;
 
             .content {
-                margin-right: 0;
+                display: none;
             }
 
-            .iconButton {
-                svg {
-                    width: 1.8rem;
-                    height: 1.8rem;
-                    fill: $icon-color-dark;
-                
-                    &:hover {
-                        fill: $icon-color-dark--hover;
-                    }
-                }
+            .mobileContent {
+                display: flex;
             }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .mobileContent {
+            margin-right: 0;
         }
     }
 }

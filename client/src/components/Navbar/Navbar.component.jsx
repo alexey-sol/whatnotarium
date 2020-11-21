@@ -1,63 +1,21 @@
-import { Link } from "react-router-dom";
 import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import classnames from "classnames";
 
-import { USERS } from "utils/const/pathnames";
-import PostsTab from "components/PostsTab";
-import WritePostTab from "components/WritePostTab";
-import { defaultProps, propTypes } from "./Navbar.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
+import Logo from "components/Logo";
+import NavbarList from "components/NavbarList";
 import styles from "./Navbar.module.scss";
 
-Navbar.defaultProps = defaultProps;
-Navbar.propTypes = propTypes;
-
-function Navbar ({ currentUser }) {
-    const userIsAuthed = Boolean(currentUser);
-
+function Navbar () {
     return (
         <div className={styles.container}>
-            <ul className={styles.list}>
-                {userIsAuthed && (
-                    <li className={classnames(styles.item, styles.writePostTab)}>
-                        <WritePostTab />
-                    </li>
-                )}
+            <div className={styles.mobileLogo}>
+                <Logo isMobileView />
+            </div>
 
-                <li className={styles.item}>
-                    <PostsTab />
-                </li>
-
-                <li className={styles.item}>
-                    <Link
-                        title="Заметки"
-                        to="/notes"
-                    >
-                        Заметки
-                    </Link>
-                </li>
-
-                <li className={styles.item}>
-                    <Link
-                        title="Авторы"
-                        to={`/${USERS}`}
-                    >
-                        Авторы
-                    </Link>
-                </li>
-            </ul>
+            <div className={styles.desktopNavbar}>
+                <NavbarList />
+            </div>
         </div>
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
-});
-
-const ConnectedNavbar = connect(
-    mapStateToProps
-)(Navbar);
-
-export default ConnectedNavbar;
+export default Navbar;

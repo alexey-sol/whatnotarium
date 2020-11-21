@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router";
 
-import { defaultProps, propTypes } from "./PostList.props";
 import Paging from "components/Paging";
 import PostPreview from "components/PostPreview";
-import styles from "./PostList.module.scss";
+import { defaultProps, propTypes } from "./PostList.props";
 
 import {
     selectCount,
@@ -15,6 +14,7 @@ import {
 } from "redux/postsPaging/postsPaging.selectors";
 
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
+import styles from "./PostList.module.scss";
 
 PostList.defaultProps = defaultProps;
 PostList.propTypes = propTypes;

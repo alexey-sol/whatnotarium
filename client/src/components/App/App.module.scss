@@ -49,7 +49,7 @@ p {
     display: grid;
     grid-template-areas:
         "header header header"
-        ". main nav"
+        ". main menu"
         "footer footer footer";
     grid-template-rows: $header-height 1fr $footer-height;
     grid-template-columns: 20% 1fr 20%;
@@ -58,11 +58,10 @@ p {
     @media screen and (max-width: 1024px) {
         & {
             grid-template-areas:
-                "header"
-                "nav"
+                "menu"
                 "main"
                 "footer";
-            grid-template-rows: $header-height $nav-height--small 1fr $footer-height;
+            grid-template-rows: $menu-height--small 1fr $footer-height;
             grid-template-columns: 1fr;
         }
     }

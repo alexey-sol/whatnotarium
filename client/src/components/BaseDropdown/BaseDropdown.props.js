@@ -2,6 +2,7 @@ import {
     arrayOf,
     bool,
     func,
+    instanceOf,
     object,
     oneOfType,
     node,
@@ -10,7 +11,8 @@ import {
 
 export const defaultProps = {
     children: null,
-    className: ""
+    containerElem: document.body,
+    rootClassName: ""
 };
 
 export const propTypes = {
@@ -18,8 +20,8 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-    className: string,
     elemRef: object.isRequired,
     isFixed: bool,
-    onClose: func.isRequired
+    onClose: func.isRequired,
+    rootClassName: string,
 };

@@ -16,7 +16,7 @@ import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
 import Header from "components/Header";
 import Main from "components/Main";
-import Nav from "components/Nav";
+import Menu from "components/Menu";
 import Spinner from "components/Spinner";
 import { checkSessionStart } from "redux/session/session.actions";
 import { propTypes } from "./App.props";
@@ -40,6 +40,7 @@ export function App ({ onCheckSessionStart }) {
     return (
         <div className={styles.container}>
             <Header />
+            <Menu />
 
             <Main>
                 <ErrorBoundary>
@@ -92,7 +93,6 @@ export function App ({ onCheckSessionStart }) {
                 </ErrorBoundary>
             </Main>
 
-            <Nav />
             <Footer />
         </div>
     );

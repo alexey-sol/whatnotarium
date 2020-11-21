@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import {Link} from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
+import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/PostList";
 import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Home.props";
@@ -9,6 +11,8 @@ import { fetchPostsStart } from "redux/posts/posts.actions";
 import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
 import { selectPosts } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
+import pubsub from "utils/pubsub";
+import styles from "./Home.module.scss";
 
 Home.defaultProps = defaultProps;
 Home.propTypes = propTypes;
@@ -16,24 +20,51 @@ Home.propTypes = propTypes;
 function Home ({
     currentPostsPage,
     isPending,
+    location,
     match,
     onFetchPostsStart,
     posts,
     postsOnPageCount
 }) {
+    const locationKey = location.key;
     const pageNumber = match.params.number || currentPostsPage;
+    const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
+
+    useEffect(() => {
+        const showResetSearchButton = (searchTerm) => {
+            setResetSearchingIsShown(searchTerm.length > 0);
+        };
+
+        pubsub.subscribe(SEARCH_POSTS, showResetSearchButton);
+        return () => pubsub.unsubscribe(SEARCH_POSTS, showResetSearchButton);
+    }, []);
 
     useEffect(() => {
         onFetchPostsStart({
             count: postsOnPageCount,
             page: pageNumber
         });
-    }, [onFetchPostsStart, pageNumber, postsOnPageCount]);
+    }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount]);
 
     const propsFromHome = { isPending, posts };
     const HomeWithSpinner = WithSpinner(PostList, propsFromHome);
 
-    return <HomeWithSpinner />;
+    return (
+        <Fragment>
+            {resetSearchingIsShown && (
+                <div className={styles.resetSearchingButton}>
+                    <Link
+                        onClick={() => setResetSearchingIsShown(false)}
+                        to="/"
+                    >
+                        Сбросить поиск
+                    </Link>
+                </div>
+            )}
+
+            <HomeWithSpinner />
+        </Fragment>
+    );
 }
 
 const mapStateToProps = () => {

@@ -47,10 +47,11 @@ export function * doFetchPosts ({ cb, payload }) {
     }
 }
 
-export function * doSearchPosts ({ payload }) {
+export function * doSearchPosts ({ cb, payload }) {
     try {
         const itemsWithPagingOpts = yield api.searchPosts(payload);
         yield put(actions.searchPostsSuccess(itemsWithPagingOpts));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.searchPostsFailure(error));

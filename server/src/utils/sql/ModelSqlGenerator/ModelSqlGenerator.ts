@@ -110,7 +110,12 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     private getOp (
         op: typeof $and | typeof $eq | typeof $ilike | typeof $like | typeof $or
     ): string {
-        return op.slice(1).toUpperCase();
+        switch (op) {
+            case $eq:
+                return "=";
+            default:
+                return op.slice(1).toUpperCase();
+        }
     }
 
     private normalizeAttributes (

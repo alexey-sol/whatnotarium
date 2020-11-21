@@ -17,11 +17,13 @@ Users.propTypes = propTypes;
 function Users ({
     currentUsersPage,
     isPending,
+    location,
     match,
     onFetchUsersStart,
     users,
     usersOnPageCount
 }) {
+    const locationKey = location.key;
     const pageNumber = match.params.number || currentUsersPage;
 
     useEffect(() => {
@@ -29,7 +31,7 @@ function Users ({
             count: usersOnPageCount,
             page: pageNumber
         });
-    }, [onFetchUsersStart, pageNumber, usersOnPageCount]);
+    }, [locationKey, onFetchUsersStart, pageNumber, usersOnPageCount]);
 
     const propsFromUsers = { isPending, users };
     const UsersWithSpinner = WithSpinner(UserList, propsFromUsers);

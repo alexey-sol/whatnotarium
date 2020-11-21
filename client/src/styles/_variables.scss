@@ -50,6 +50,8 @@ $base-dialog-bg-color: white;
 $base-dialog-title-text-color: $gray--darken;
 
 $base-dropdown-bg-color: white;
+$base-dropdown-border-color: $gray--light;
+$base-dropdown-text-color: $text-color--normal;
 
 $custom-link-border-color: $color-tertiary;
 $custom-link-border-color--hover: #f5c67f;
@@ -82,11 +84,21 @@ $logo-text-color: white;
 
 $menu-item-bg-color: $color-quaternary;
 $menu-item-bg-color--hover: $color-tertiary;
-$menu-item-color: white;
-$menu-item-reset-search-bg-color: $color-tertiary;
-$menu-item-reset-search-bg-color--hover: #f58d7f;
-$menu-item-write-post-bg-color: $color-tertiary;
-$menu-item-write-post-bg-color--hover: #f58d7f;
+$menu-item-bg-color--prominent: $gray--lightest;
+$menu-item-border-color: $gray--light;
+$menu-item-text-color: $gray--darkest;
+$menu-item-text-color--hover: white;
+
+$menu-list-text-color--hover: $gray;
+
+$mobile-actions-menu-bg-color--hover: $color-tertiary;
+$mobile-logo-bg-color: white;
+$mobile-logo-text-color: $gray--darken;
+$mobile-logo-text-color--hover: white;
+$mobile-menu-item-text-color: white;
+
+$mobile-menu-item-border-color: $gray--light;
+$mobile-menu-item-text-color: white;
 
 $popup-bg-color--error: #ff8888;
 $popup-text-color--error: white;
@@ -101,25 +113,18 @@ $profile-tab-border-color: $gray--light;
 $profile-tab-border-color--active: $gray--darken;
 
 $search-post-input-bg-color: white;
-$search-post-input-border-color: $gray;
+$search-post-input-border-color: $gray--light;
 $search-post-input-text-color: $gray--dark;
 
 $tooltip-bg-color: white;
 $tooltip-border-color: $gray--light;
 $tooltip-text-color: $text-color--normal;
 
-$user-menu-bg-color: white;
-$user-menu-item-bg-color: #f8ecee;
-$user-menu-item-bg-color--hover: #fff4dc;
-$user-menu-item-text-color: $text-color--normal;
-$user-menu-last-item-bg-color: #f1cbce;
-$user-menu-last-item-bg-color--hover: #f8deaa;
-
 $actions-menu-height: 5rem;
 $footer-height: 12rem;
 $header-height: 4rem;
-$menu-width: 17.4rem;
-$nav-height--small: 3rem;
+$menu-width: 17rem;
+$menu-height--small: 4rem;
 $popup-height: $header-height;
 
 // Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361

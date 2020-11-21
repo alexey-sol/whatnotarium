@@ -1,11 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useRef,
+    useState
+} from "react";
 
 import ActionsMenu from "components/ActionsMenu";
 import Navbar from "components/Navbar";
-import UserMenu from "components/UserMenu";
+import UserMenuDropdown from "components/UserMenuDropdown";
 import styles from "./Menu.module.scss";
 
 function Menu () {
+    const menuRef = useRef(null);
+
     const [scrollY, setScrollY] = useState(0);
     const [userMenuIsShown, setUserMenuIsShown] = useState(false);
 
@@ -32,26 +39,29 @@ function Menu () {
     const hideUserMenu = useCallback(() => setUserMenuIsShown(false), []);
     const showUserMenu = useCallback(() => setUserMenuIsShown(true), []);
 
-    const renderUserMenu = () => (
-        <UserMenu onClose={hideUserMenu} />
-    );
-
     const renderCommonMenu = () => (
-        <div className={styles.commonMenu}>
+        <section className={styles.commonMenu} ref={menuRef}>
             <ActionsMenu showUserMenu={showUserMenu} />
             <Navbar />
-        </div>
+        </section>
     );
 
     return (
-        <div
+        <section
             className={styles.container}
             style={positionStyle}
         >
-            {userMenuIsShown
-                ? renderUserMenu()
-                : renderCommonMenu()}
-        </div>
+            <div className={styles.content}>
+                {renderCommonMenu()}
+
+                {userMenuIsShown && (
+                    <UserMenuDropdown
+                        elemRef={menuRef}
+                        onClose={hideUserMenu}
+                    />
+                )}
+            </div>
+        </section>
     );
 }
 

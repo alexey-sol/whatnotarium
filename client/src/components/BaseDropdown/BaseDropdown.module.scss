@@ -4,7 +4,12 @@
     position: absolute;
     display: flex;
     justify-content: center;
+    border: 1px solid $base-dropdown-border-color;
     background-color: $base-dropdown-bg-color;
+    color: $base-dropdown-text-color;
+    box-shadow:
+        0 1px 0.8rem rgba(0, 0, 0, 0.1),
+        0 0 1.5rem rgba(0, 0, 0, 0.03) inset;
 }
 
 .transparent {

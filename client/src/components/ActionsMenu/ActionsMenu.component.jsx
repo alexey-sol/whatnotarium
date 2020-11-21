@@ -11,12 +11,14 @@ import { createStructuredSelector } from "reselect";
 import {
     BookmarkIconButton,
     CancelIconButton,
+    MenuIconButton,
     NotificationIconButton,
     SearchIconButton,
     UserIconButton
 } from "components/IconButton";
 
 import { SignInDialog, SignUpDialog } from "components/Dialog";
+import MobileActionsMenu from "components/MobileActionsMenu";
 import SearchPostInput from "components/SearchPostInput";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -32,6 +34,7 @@ export function ActionsMenu ({
     initialSignUpIsShown,
     showUserMenu
 }) {
+    const [mobileMenuIsShown, setMobileMenuIsShown] = useState(false);
     const [searchIsShown, setSearchIsShown] = useState(initialSearchIsShown);
     const [signInIsShown, setSignInIsShown] = useState(initialSignInIsShown);
     const [signUpIsShown, setSignUpIsShown] = useState(initialSignUpIsShown);
@@ -47,6 +50,7 @@ export function ActionsMenu ({
     const showSearchInput = useCallback(() => setSearchIsShown(true), []);
     const hideSignIn = useCallback(() => setSignInIsShown(false), []);
     const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
+    const showSignIn = useCallback(() => setSignInIsShown(true), []);
     const showSignUp = useCallback(() => setSignUpIsShown(true), []);
 
     useEffect(() => {
@@ -120,6 +124,22 @@ export function ActionsMenu ({
                     <UserIconButton onClick={handleClickOnUserButton} />
                 </span>
             </div>
+
+            <div className={styles.mobileContent}>
+                <MenuIconButton
+                    className={styles.menuButton}
+                    onClick={() => setMobileMenuIsShown(true)}
+                    theme="dark"
+                />
+            </div>
+
+            {mobileMenuIsShown && (
+                <MobileActionsMenu
+                    currentUser={currentUser}
+                    onClose={() => setMobileMenuIsShown(false)}
+                    showSignIn={showSignIn}
+                />
+            )}
 
             {signInIsShown && (
                 <SignInDialog

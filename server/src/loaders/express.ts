@@ -29,7 +29,7 @@ export default function (options: Options): express.Application {
     app.use(initMorgan());
     app.use(cors());
     app.use(helmet());
-    app.use(bodyParser.json());
+    app.use(bodyParser.json({ limit: "1mb" }));
     app.use(cookieParser());
     app.use(initSession());
     app.use(compression());
