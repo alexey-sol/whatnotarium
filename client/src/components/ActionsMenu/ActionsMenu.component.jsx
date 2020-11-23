@@ -23,6 +23,7 @@ import SearchPostInput from "components/SearchPostInput";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./ActionsMenu.module.scss";
+import toBase64 from "../../utils/helpers/toBase64";
 
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
@@ -52,6 +53,26 @@ export function ActionsMenu ({
     const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
     const showSignIn = useCallback(() => setSignInIsShown(true), []);
     const showSignUp = useCallback(() => setSignUpIsShown(true), []);
+
+    const { name, picture } = currentUser?.profile || {};
+
+    const picDataIfAny = (picture)
+        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
+        : null;
+
+    const renderUserPic = () => (
+        <img
+            alt={name}
+            className={styles.userPic}
+            onClick={handleClickOnUserButton}
+            src={picDataIfAny}
+            title={name}
+        />
+    );
+
+    const renderUnauthedUserButton = () => (
+        <UserIconButton onClick={handleClickOnUserButton} />
+    );
 
     useEffect(() => {
         const hasUser = currentUser?.id;
@@ -121,7 +142,9 @@ export function ActionsMenu ({
                     className={styles.iconButton}
                     ref={userIconButtonRef}
                 >
-                    <UserIconButton onClick={handleClickOnUserButton} />
+                    {(currentUser)
+                        ? renderUserPic()
+                        : renderUnauthedUserButton()}
                 </span>
             </div>
 

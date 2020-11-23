@@ -39,6 +39,8 @@
 
     .iconButton {
         position: relative;
+        display: flex;
+        align-items: center;
 
         &:not(:first-of-type) {
             margin-left: 1rem;
@@ -51,6 +53,13 @@
             width: 40rem;
             height: 100%;
         }
+    }
+
+    .userPic {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 100%;
+        cursor: pointer;
     }
 
     @media screen and (max-width: 1024px) {
