@@ -13,7 +13,7 @@ export default async function (
 ): Promise<PostItem> | never {
     const include = [{
         as: "author",
-        attributes: ["name", "picture"],
+        attributes: ["about", "birthdate", "name", "picture", "totalLikeCount"],
         referencedKey: "userId",
         ownKey: "userId",
         tableName: PROFILES

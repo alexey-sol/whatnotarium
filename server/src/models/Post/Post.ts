@@ -31,6 +31,7 @@ class Post implements Model<Attributes, Post> {
     body: string;
     createdAt: Date;
     id: number;
+    likeCount: number;
     title: string;
     updatedAt: Date;
     userId: number;
@@ -39,6 +40,7 @@ class Post implements Model<Attributes, Post> {
         this.body = props.body;
         this.createdAt = props.createdAt;
         this.id = props.id;
+        this.likeCount = props.likeCount;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;

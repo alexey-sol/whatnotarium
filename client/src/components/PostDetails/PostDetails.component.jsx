@@ -20,6 +20,7 @@ function PostDetails ({
         author = {},
         body,
         id,
+        likeCount,
         title,
         updatedAt
     } = post || {};

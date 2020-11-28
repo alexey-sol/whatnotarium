@@ -5,6 +5,7 @@ interface Attributes {
     body?: string;
     createdAt?: Date;
     id?: number;
+    likeCount?: number;
     title?: string;
     updatedAt?: Date;
     userId?: number;

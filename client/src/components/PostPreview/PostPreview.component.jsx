@@ -15,6 +15,7 @@ function PostPreview ({
     body,
     createdAt,
     id,
+    likeCount,
     title,
     updatedAt
 }) {

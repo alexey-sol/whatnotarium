@@ -142,7 +142,7 @@ export function ActionsMenu ({
                     className={styles.iconButton}
                     ref={userIconButtonRef}
                 >
-                    {(currentUser)
+                    {(currentUser?.profile.picture)
                         ? renderUserPic()
                         : renderUnauthedUserButton()}
                 </span>

@@ -43,7 +43,7 @@ export default async function (
 
     const includeProfile = {
         as: "profile",
-        attributes: ["name", "picture"],
+        attributes: ["name", "picture", "birthdate", "about"],
         referencedKey: "userId",
         ownKey: "id",
         tableName: PROFILES

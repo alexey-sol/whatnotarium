@@ -9,6 +9,7 @@ export const propTypes = {
     body: string.isRequired,
     createdAt: string.isRequired,
     id: number.isRequired,
+    likeCount: number.isRequired,
     title: string.isRequired,
     updatedAt: string.isRequired
 };
