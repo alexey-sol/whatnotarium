@@ -66,8 +66,10 @@ function Paging ({
     const moveLeft = () => goToPage(currentPage - 1);
     const moveRight = () => goToPage(currentPage + 1);
 
+    const shouldShowSteps = lastNumber > 2;
+
     const numberItems = pagesRange.map(page => (
-        <li key={page}>
+        <li className={styles.numberItem} key={page}>
             <button
                 className={page === currentPage ? styles.active : ""}
                 onClick={() => goToPage(page)}
@@ -79,44 +81,54 @@ function Paging ({
 
     return (
         <nav className={styles.container}>
-            <ul className={styles.steps}>
-                <li>
-                    <button
-                        disabled={isFirstPage}
-                        onClick={moveLeft}
-                    >
-                        {"< Назад"}
-                    </button>
-                </li>
-
-                <li>
-                    <button
-                        disabled={isLastPage}
-                        onClick={moveRight}
-                    >
-                        {"Вперед >"}
-                    </button>
-                </li>
-            </ul>
-
-            <ul className={styles.paging}>
-                {hasLeftSpill && (
-                    <li>
-                        <button onClick={() => goToPage(1)}>
-                            {"<<"}
+            {shouldShowSteps && (
+                <ul className={styles.steps}>
+                    <li className={styles.step}>
+                        <button
+                            disabled={isFirstPage}
+                            onClick={moveLeft}
+                        >
+                            {" Назад"}
                         </button>
                     </li>
-                )}
+
+                    <li className={styles.step}>
+                        <button
+                            disabled={isLastPage}
+                            onClick={moveRight}
+                        >
+                            {"Вперед "}
+                        </button>
+                    </li>
+                </ul>
+            )}
+
+            <ul className={styles.paging}>
+                <li
+                    className={styles.spill}
+                    title="На первую страницу"
+                >
+                    <button
+                        disabled={!hasLeftSpill}
+                        onClick={() => goToPage(1)}
+                    >
+                        <span>&laquo;</span>
+                    </button>
+                </li>
 
                 {numberItems}
 
-                {hasRightSpill && (
-                    <li>
-                        <button onClick={() => goToPage(lastNumber)}>
-                            {">>"}
-                        </button>
-                    </li>
-                )}
+                <li
+                    className={styles.spill}
+                    title="На последнюю страницу"
+                >
+                    <button
+                        disabled={!hasRightSpill}
+                        onClick={() => goToPage(lastNumber)}
+                    >
+                        <span>&raquo;</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     );

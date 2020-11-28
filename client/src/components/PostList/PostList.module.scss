@@ -2,6 +2,7 @@
 
 .container {
     display: grid;
+    height: 100%;
     animation: fade-in 0.1s;
 
     .postList {
@@ -16,5 +17,11 @@
             margin: 0;
             list-style-type: none;
         }
+    }
+
+    .pagingContainer {
+        display: flex;
+        justify-content: center;
+        margin-top: 3vh;
     }
 }

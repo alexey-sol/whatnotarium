@@ -41,12 +41,14 @@ function PostList ({
                 ? <ul className={styles.postList}>{postElems}</ul>
                 : <div>Ничего не нашли</div>}
 
-            <Paging
-                count={postsOnPageCount}
-                currentPage={currentPage}
-                setCurrentPage={onSetCurrentPage}
-                totalRecords={totalCount}
-            />
+            <div className={styles.pagingContainer}>
+                <Paging
+                    count={postsOnPageCount}
+                    currentPage={currentPage}
+                    setCurrentPage={onSetCurrentPage}
+                    totalRecords={totalCount}
+                />
+            </div>
         </article>
     );
 }

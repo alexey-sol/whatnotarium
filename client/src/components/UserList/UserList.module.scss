@@ -3,6 +3,7 @@
 .container {
     display: grid;
     margin-top: 3rem;
+    height: 100%;
     animation: fade-in 0.1s;
 
     .userList {
@@ -17,5 +18,11 @@
             margin: 0;
             list-style-type: none;
         }
+    }
+
+    .pagingContainer {
+        display: flex;
+        justify-content: center;
+        margin-top: 3vh;
     }
 }

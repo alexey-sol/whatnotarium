@@ -90,6 +90,7 @@ $menu-item-text-color: $gray--darkest;
 $menu-item-text-color--hover: white;
 
 $menu-list-text-color--hover: $gray;
+$menu-text-color--hover: $gray;
 
 $mobile-actions-menu-bg-color--hover: $color-tertiary;
 $mobile-logo-bg-color: white;
@@ -99,6 +100,15 @@ $mobile-menu-item-text-color: white;
 
 $mobile-menu-item-border-color: $gray--light;
 $mobile-menu-item-text-color: white;
+
+$paging-active-item-bg-color: $color-primary;
+$paging-active-item-text-color: white;
+
+$paging-item-bg-color: white;
+$paging-item-bg-color--hover: $color-tertiary;
+$paging-item-border-color: $gray--light;
+$paging-item-text-color: white;
+$paging-step-text-color--hover: $gray--dark;
 
 $popup-bg-color--error: #ff8888;
 $popup-text-color--error: white;
