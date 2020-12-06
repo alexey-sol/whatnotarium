@@ -10,13 +10,22 @@ import {
     updateRecordAttributes
 } from "#utils/sql/Model";
 
-import { CreatePostsTable } from "#utils/sql/SchemaSqlGenerator";
+import {
+    CreateFullPostsView,
+    CreatePostCommentsTable,
+    CreatePostLikesTable,
+    CreatePostsTable
+} from "#utils/sql/SchemaSqlGenerator";
+
+import { FULL_POSTS_VIEW } from "#utils/const/database/viewNames";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
 import { POSTS } from "#utils/const/database/tableNames";
 import Attributes from "#types/post/Attributes";
+import Comment from "#types/Comment";
 import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/post/Item";
+import Like from "#types/Like";
 import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
 import UserProfile from "#types/UserProfile";
@@ -29,9 +38,10 @@ class Post implements Model<Attributes, Post> {
 
     author?: UserProfile;
     body: string;
+    comments?: Comment[];
     createdAt: Date;
     id: number;
-    likeCount: number;
+    likes?: Like[];
     title: string;
     updatedAt: Date;
     userId: number;
@@ -40,7 +50,6 @@ class Post implements Model<Attributes, Post> {
         this.body = props.body;
         this.createdAt = props.createdAt;
         this.id = props.id;
-        this.likeCount = props.likeCount;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;
@@ -48,10 +57,21 @@ class Post implements Model<Attributes, Post> {
         if (props.author) {
             this.author = props.author;
         }
+
+        if (props.comments) {
+            this.comments = props.comments;
+        }
+
+        if (props.likes) {
+            this.likes = props.likes;
+        }
     }
 
     static async up (): Promise<void> {
         await generateSqlAndQuery(new CreatePostsTable());
+        await generateSqlAndQuery(new CreatePostLikesTable());
+        await generateSqlAndQuery(new CreatePostCommentsTable());
+        await generateSqlAndQuery(new CreateFullPostsView());
     }
 
     static async create (
@@ -80,7 +100,7 @@ class Post implements Model<Attributes, Post> {
     static async findAll (
         filter?: DbQueryFilter<Attributes>
     ): Promise<Post[]> | never {
-        const records = await findAllRecords<Attributes, Item>(POSTS, filter);
+        const records = await findAllRecords<Attributes, Item>(FULL_POSTS_VIEW, filter);
 
         return records.map(record => Post.formatPropsAndInstantiate(
             record,
@@ -95,7 +115,7 @@ class Post implements Model<Attributes, Post> {
             return null;
         }
 
-        const record = await findOneRecord<Attributes, Item>(POSTS, filter);
+        const record = await findOneRecord<Attributes, Item>(FULL_POSTS_VIEW, filter);
 
         return (record)
             ? Post.formatPropsAndInstantiate(record, filter?.include)
@@ -106,7 +126,7 @@ class Post implements Model<Attributes, Post> {
         id: number,
         include?: Include[]
     ): Promise<Post | null> | never {
-        const record = await findRecordById<Item>(POSTS, id, include);
+        const record = await findRecordById<Item>(FULL_POSTS_VIEW, id, include);
 
         return (record)
             ? Post.formatPropsAndInstantiate(record, include)

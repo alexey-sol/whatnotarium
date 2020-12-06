@@ -1,15 +1,18 @@
-import { POSTS, USERS } from "#utils/const/database/tableNames";
+import { POST_COMMENTS, POSTS, USERS } from "#utils/const/database/tableNames";
 import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
-class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
+class CreatePostCommentsTable extends SchemaSqlGenerator<unknown> {
     protected getText (): string {
         return `
-            CREATE TABLE IF NOT EXISTS "${POSTS}" (
+            CREATE TABLE IF NOT EXISTS "${POST_COMMENTS}" (
                 "id" SERIAL PRIMARY KEY,
-                "body" TEXT,
-                "title" VARCHAR(255),
+                "text" TEXT NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
+                "postId" INTEGER NOT NULL
+                    REFERENCES "${POSTS}" ("id")
+                    ON DELETE CASCADE
+                    ON UPDATE CASCADE,
                 "userId" INTEGER NOT NULL
                     REFERENCES "${USERS}" ("id")
                     ON DELETE CASCADE
@@ -19,4 +22,4 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
     }
 }
 
-export default CreateHashOptionsTable;
+export default CreatePostCommentsTable;

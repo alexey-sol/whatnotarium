@@ -1,4 +1,4 @@
-import { PROFILES } from "#utils/const/database/tableNames";
+import { POST_LIKES, PROFILES } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import UserItem from "#types/user/Item";
 

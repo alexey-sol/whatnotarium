@@ -31,7 +31,7 @@ function PostList ({
             className={styles.postItem}
             key={post.id}
         >
-            <PostPreview {...post} />
+            <PostPreview post={post} />
         </li>
     ));
 

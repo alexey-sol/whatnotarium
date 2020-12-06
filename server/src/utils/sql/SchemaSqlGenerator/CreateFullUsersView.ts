@@ -104,7 +104,6 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                     );
 
                     IF NOT FOUND THEN RETURN NULL; END IF;
-
                     RETURN new;
                 END IF;
             END;

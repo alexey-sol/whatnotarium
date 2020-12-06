@@ -1,48 +1,25 @@
 import { Link } from "react-router-dom";
 import React from "react";
 
-import { POST, USER } from "utils/const/pathnames";
-import { UserPicturePlaceholder } from "components/Icon";
-import DateFormatter from "utils/formatters/DateFormatter";
+import { POST } from "utils/const/pathnames";
+import PostMetaData from "components/PostMetaData";
 import { propTypes } from "./PostPreview.props";
 import styles from "./PostPreview.module.scss";
-import toBase64 from "utils/helpers/toBase64";
 
 PostPreview.propTypes = propTypes;
 
-function PostPreview ({
-    author,
-    body,
-    createdAt,
-    id,
-    likeCount,
-    title,
-    updatedAt
-}) {
-    const { name, picture } = author;
-
-    const formattedCreatedAt = new DateFormatter(createdAt)
-        .formatByPattern("YYYY, MMM DD");
+function PostPreview ({ post }) {
+    const {
+        author,
+        body,
+        createdAt,
+        id,
+        postLikes,
+        title,
+        updatedAt
+    } = post;
 
     const bodyHTML = { __html: body };
-
-    const picDataIfAny = (picture)
-        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
-        : null;
-
-    const userPicElem = (
-        <img
-            alt={name}
-            src={picDataIfAny}
-        />
-    );
-
-    const userPicPlaceholderElem = (
-        <UserPicturePlaceholder
-            fill="#455a64"
-            size={50}
-        />
-    );
 
     return (
         <article className={styles.container}>
@@ -61,25 +38,10 @@ function PostPreview ({
                 dangerouslySetInnerHTML={bodyHTML}
             />
 
-            <section className={styles.metadata}>
-                <Link title={name} to={`/${USER}/${id}`}>
-                    <div className={styles.userPicture}>
-                        {(picture)
-                            ? userPicElem
-                            : userPicPlaceholderElem}
-                    </div>
-                </Link>
-
-                <Link title={name} to={`/${USER}/${id}`}>
-                    <span>
-                        {author.name}
-                    </span>
-                </Link>
-
-                <span className={styles.date}>
-                    {formattedCreatedAt}
-                </span>
-            </section>
+            <PostMetaData
+                post={post}
+                userProfile={author}
+            />
         </article>
     );
 }

@@ -11,7 +11,6 @@ function isPostItem (
         body,
         createdAt,
         id,
-        likeCount,
         title,
         updatedAt,
         userId
@@ -27,7 +26,6 @@ function isPostItem (
         authorIsValid &&
         typeof body === "string" &&
         typeof id === "number" &&
-        typeof likeCount === "number" &&
         typeof title === "string" &&
         typeof userId === "number"
     );

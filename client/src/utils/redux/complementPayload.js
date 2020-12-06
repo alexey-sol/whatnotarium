@@ -13,11 +13,11 @@ function complementPayload (
     updatedPayload.items = new Map(state.items);
 
     if (isDeletion) {
-        updatedPayload.items.delete(item.id);
+        updatedPayload.items.delete(item?.id);
         updatedPayload.totalCount = state.totalCount - 1;
     } else {
-        const isNewItem = !state.items.get(item.id);
-        updatedPayload.items.set(item.id, item);
+        const isNewItem = !state.items.get(item?.id);
+        updatedPayload.items.set(item?.id, item);
         updatedPayload.totalCount = (isNewItem)
             ? state.totalCount + 1
             : state.totalCount;

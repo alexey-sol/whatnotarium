@@ -1,6 +1,9 @@
+export { default as CreateFullPostsView } from "./CreateFullPostsView";
 export { default as CreateFullUsersView } from "./CreateFullUsersView";
 export { default as CreateHashOptionsTable } from "./CreateHashOptionsTable";
 export { default as CreateSchema } from "./CreateSchema";
+export { default as CreatePostCommentsTable } from "./CreatePostCommentsTable";
+export { default as CreatePostLikesTable } from "./CreatePostLikesTable";
 export { default as CreatePostsTable } from "./CreatePostsTable";
 export { default as CreateProfilesTable } from "./CreateProfilesTable";
 export { default as CreateUsersTable } from "./CreateUsersTable";
