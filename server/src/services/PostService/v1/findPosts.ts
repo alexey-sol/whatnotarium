@@ -1,9 +1,9 @@
 import { PROFILES } from "#utils/const/database/tableNames";
+import DbQueryFilter from "#types/DbQueryFilter";
 import FetchedList from "#types/FetchedList";
 import Post from "#models/Post";
 import PostAttributes from "#types/post/Attributes";
 import PostItem from "#types/post/Item";
-import DbQueryFilter from "#types/DbQueryFilter";
 
 type PostItemsList = FetchedList<PostItem>;
 

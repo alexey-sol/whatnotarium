@@ -3,10 +3,9 @@ import { UNPROCESSABLE_ENTITY } from "http-status";
 import {
     countRecords,
     createRecord,
-    destroyRecordById,
+    destroyAllRecords,
     findAllRecords,
     findOneRecord,
-    findRecordById,
     updateRecordAttributes
 } from "#utils/sql/Model";
 
@@ -81,10 +80,21 @@ class User implements Model<DataOnUpdate, User> {
             : User.formatPropsAndInstantiate(record);
     }
 
+    static async destroyAll (
+        filter: DbQueryFilter<Attributes>
+    ): Promise<number | null> | never {
+        if (!filter.where) {
+            return null;
+        }
+
+        return destroyAllRecords<Attributes, Item>(FULL_USERS_VIEW, filter);
+    }
+
     static async destroyById (
         id: number
     ): Promise<number | null> | never {
-        return destroyRecordById<Item>(USERS, id);
+        const where = { id };
+        return User.destroyAll({ where });
     }
 
     static async count (
@@ -122,11 +132,8 @@ class User implements Model<DataOnUpdate, User> {
         id: number,
         include?: Include[]
     ): Promise<User | null> | never {
-        const record = await findRecordById<Item>(USERS, id, include);
-
-        return (record)
-            ? User.formatPropsAndInstantiate(record, include)
-            : null;
+        const where = { id };
+        return User.findOne({ include, where });
     }
 
     async save (): Promise<User> | never {

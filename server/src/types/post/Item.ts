@@ -5,10 +5,10 @@ import UserProfile from "#types/UserProfile";
 interface Item {
     author?: UserProfile;
     body: string;
-    comments?: Comment[];
+    comments: Comment[];
     createdAt: Date;
     id: number;
-    likes?: Like[];
+    likes: Like[];
     title: string;
     updatedAt: Date;
     userId: number;

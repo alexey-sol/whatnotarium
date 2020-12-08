@@ -1,8 +1,6 @@
-import { NOT_FOUND } from "#utils/const/validationErrors";
 import { RequestHandler } from "express";
 
 import RequestSession from "#utils/helpers/RequestSession";
-import UserError from "#utils/errors/UserError";
 import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 

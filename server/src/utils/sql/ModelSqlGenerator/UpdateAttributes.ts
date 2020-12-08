@@ -27,7 +27,7 @@ class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
         returningFields: string[] = []
     ): string {
         const { setClause, andClause } = this.createClauses(props);
-        const whereIdElement = this.createWhereIdClause();
+        const whereIdElement = this.createWhereAttributesClause(["id"]);
         const returningClause = this.createReturningClause(returningFields);
 
         return `

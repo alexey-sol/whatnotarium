@@ -9,8 +9,10 @@ function isPostItem (
     const {
         author,
         body,
+        comments,
         createdAt,
         id,
+        likes,
         title,
         updatedAt,
         userId
@@ -27,7 +29,9 @@ function isPostItem (
         typeof body === "string" &&
         typeof id === "number" &&
         typeof title === "string" &&
-        typeof userId === "number"
+        typeof userId === "number" &&
+        comments instanceof Array &&
+        likes instanceof Array
     );
 }
 

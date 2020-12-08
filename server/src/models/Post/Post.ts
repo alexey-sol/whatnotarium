@@ -3,10 +3,9 @@ import { UNPROCESSABLE_ENTITY } from "http-status";
 import {
     countRecords,
     createRecord,
-    destroyRecordById,
+    destroyAllRecords,
     findAllRecords,
     findOneRecord,
-    findRecordById,
     updateRecordAttributes
 } from "#utils/sql/Model";
 
@@ -26,6 +25,7 @@ import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/post/Item";
 import Like from "#types/Like";
+import LikeUpdate from "#types/LikeUpdate";
 import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
 import UserProfile from "#types/UserProfile";
@@ -38,32 +38,26 @@ class Post implements Model<Attributes, Post> {
 
     author?: UserProfile;
     body: string;
-    comments?: Comment[];
+    comments: Comment[];
     createdAt: Date;
     id: number;
-    likes?: Like[];
+    likes: Like[];
     title: string;
     updatedAt: Date;
     userId: number;
 
     private constructor (props: Item) {
         this.body = props.body;
+        this.comments = props.comments;
         this.createdAt = props.createdAt;
         this.id = props.id;
+        this.likes = props.likes;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;
 
         if (props.author) {
             this.author = props.author;
-        }
-
-        if (props.comments) {
-            this.comments = props.comments;
-        }
-
-        if (props.likes) {
-            this.likes = props.likes;
         }
     }
 
@@ -85,10 +79,21 @@ class Post implements Model<Attributes, Post> {
             : Post.formatPropsAndInstantiate(record);
     }
 
+    static async destroyAll (
+        filter: DbQueryFilter<Attributes>
+    ): Promise<number | null> | never {
+        if (!filter.where) {
+            return null;
+        }
+
+        return destroyAllRecords<Attributes, Item>(POSTS, filter);
+    }
+
     static async destroyById (
         id: number
     ): Promise<number | null> | never {
-        return destroyRecordById<Item>(POSTS, id);
+        const where = { id };
+        return Post.destroyAll({ where });
     }
 
     static async count (
@@ -126,11 +131,8 @@ class Post implements Model<Attributes, Post> {
         id: number,
         include?: Include[]
     ): Promise<Post | null> | never {
-        const record = await findRecordById<Item>(FULL_POSTS_VIEW, id, include);
-
-        return (record)
-            ? Post.formatPropsAndInstantiate(record, include)
-            : null;
+        const where = { id };
+        return Post.findOne({ include, where });
     }
 
     async save (): Promise<Post> | never {
@@ -155,6 +157,23 @@ class Post implements Model<Attributes, Post> {
         return (include)
             ? Post.findById(this.id, include) as Promise<Post>
             : Post.formatPropsAndInstantiate(record || this);
+    }
+
+    async updateLike (
+        props: LikeUpdate
+    ): Promise<number | null> {
+        const { dislikeValue, likeValue } = props;
+        let result = null;
+
+        if (dislikeValue) { // "-1"
+
+        }
+
+        if (likeValue) { // "+1"
+
+        }
+
+        return result;
     }
 
     static formatPropsAndInstantiate (

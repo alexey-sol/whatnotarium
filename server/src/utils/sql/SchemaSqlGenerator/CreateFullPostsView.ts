@@ -8,17 +8,17 @@ class CreateFullPostsView extends SchemaSqlGenerator<unknown> {
             CREATE OR REPLACE VIEW "${FULL_POSTS_VIEW}" AS
             SELECT
                 p."id", p."body", p."title", p."createdAt", p."updatedAt", p."userId",
-                array_to_json(array_agg(DISTINCT jsonb_build_object(
+                COALESCE(array_to_json(array_agg(DISTINCT jsonb_build_object(
                     'count', pl."count",
                     'userId', pl."userId"
-                )) FILTER (WHERE pl."id" IS NOT NULL)) AS "likes",
-                array_to_json(array_agg(DISTINCT jsonb_build_object(
+                )) FILTER (WHERE pl."id" IS NOT NULL)), '[]') AS "likes",
+                COALESCE(array_to_json(array_agg(DISTINCT jsonb_build_object(
                     'id', pc."id",
                     'text', pc."text",
                     'createdAt', pc."createdAt",
                     'updatedAt', pc."updatedAt",
-                    'userId', pl."userId"
-                )) FILTER (WHERE pc."id" IS NOT NULL)) AS "comments"
+                    'userId', pc."userId"
+                )) FILTER (WHERE pc."id" IS NOT NULL)), '[]') AS "comments"
             FROM "${POSTS}" AS p
             LEFT JOIN "${POST_LIKES}" AS pl ON p."id" = pl."postId"
             LEFT JOIN "${POST_COMMENTS}" AS pc ON p."id" = pc."postId"

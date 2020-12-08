@@ -41,6 +41,13 @@ router.put(
     controllers.putPost
 );
 
+router.put(
+    "/:id/like",
+    schemaValidation.putLike,
+    dataValidation.putLike,
+    controllers.putLike
+);
+
 router.delete(
     "/:id",
     middlewares.isAuthed,

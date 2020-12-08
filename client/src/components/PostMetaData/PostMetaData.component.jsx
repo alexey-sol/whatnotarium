@@ -26,6 +26,7 @@ function CustomLink ({
     const {
         createdAt,
         id,
+        likes,
         postLikes,
         updatedAt,
         userId
@@ -69,9 +70,16 @@ function CustomLink ({
 
     const renderControls = () => (
         <section>
-            test
+            <button>Like +</button>
+            <button>Dislike -</button>
+
+            Like count: {likes.reduce((acc, like) => {
+                return acc + like.count;
+            }, 0)}
         </section>
     );
+
+    const shouldShowControls = Boolean(currentUser) && !isAuthor;
 
     return (
         <section className={styles.container}>
@@ -91,9 +99,9 @@ function CustomLink ({
                 <span className={styles.date}>{formattedCreatedAt}</span>
             </section>
 
-            {(isPreview || isAuthor)
-                ? renderStats()
-                : renderControls()}
+            {(shouldShowControls)
+                ? renderControls()
+                : renderStats()}
         </section>
     );
 }
