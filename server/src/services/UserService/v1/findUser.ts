@@ -7,7 +7,7 @@ export default async function (
 ): Promise<UserItem | null> {
     const include = [{
         as: "profile",
-        attributes: ["about", "birthdate", "name", "picture", "totalLikeCount"],
+        attributes: ["about", "birthdate", "lastActivityDate", "name", "picture", "totalVoteCount"],
         referencedKey: "userId",
         ownKey: "id",
         tableName: PROFILES

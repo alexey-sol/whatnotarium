@@ -42,10 +42,10 @@ router.put(
 );
 
 router.put(
-    "/:id/like",
-    schemaValidation.putLike,
-    dataValidation.putLike,
-    controllers.putLike
+    "/:id/vote",
+    schemaValidation.putVote,
+    dataValidation.putVote,
+    controllers.putVote
 );
 
 router.delete(

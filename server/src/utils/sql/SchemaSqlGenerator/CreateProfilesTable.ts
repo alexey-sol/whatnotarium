@@ -10,7 +10,8 @@ class CreateProfilesTable extends SchemaSqlGenerator<unknown> {
                 "picture" BYTEA,
                 "birthdate" TIMESTAMP,
                 "about" TEXT,
-                "totalLikeCount" INTEGER DEFAULT 0,
+                "totalVoteCount" INTEGER DEFAULT 0,
+                "lastActivityDate" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "userId" INTEGER UNIQUE NOT NULL

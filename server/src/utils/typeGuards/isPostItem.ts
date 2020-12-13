@@ -12,10 +12,12 @@ function isPostItem (
         comments,
         createdAt,
         id,
-        likes,
+        rating,
         title,
         updatedAt,
-        userId
+        userId,
+        userIdsVotedDown,
+        userIdsVotedUp
     } = objectToCheck;
 
     const authorIsValid = (author)
@@ -28,10 +30,12 @@ function isPostItem (
         authorIsValid &&
         typeof body === "string" &&
         typeof id === "number" &&
+        typeof rating === "number" &&
         typeof title === "string" &&
         typeof userId === "number" &&
         comments instanceof Array &&
-        likes instanceof Array
+        userIdsVotedDown instanceof Array &&
+        userIdsVotedUp instanceof Array
     );
 }
 

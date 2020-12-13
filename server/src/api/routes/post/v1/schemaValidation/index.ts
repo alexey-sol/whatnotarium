@@ -3,8 +3,8 @@ import getPost from "./getPost";
 import getPosts from "./getPosts";
 import getSearch from "./getSearch";
 import postPost from "./postPost";
-import putLike from "./putLike";
 import putPost from "./putPost";
+import putVote from "./putVote";
 
 export default {
     deletePost,
@@ -12,6 +12,6 @@ export default {
     getPosts,
     getSearch,
     postPost,
-    putLike,
-    putPost
+    putPost,
+    putVote
 };

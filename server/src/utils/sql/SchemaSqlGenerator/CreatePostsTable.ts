@@ -8,6 +8,9 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                 "id" SERIAL PRIMARY KEY,
                 "body" TEXT,
                 "title" VARCHAR(255),
+                "rating" INTEGER DEFAULT 0 NOT NULL,
+                "userIdsVotedUp" INTEGER[] DEFAULT '{}' NOT NULL,
+                "userIdsVotedDown" INTEGER[] DEFAULT '{}' NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "userId" INTEGER NOT NULL

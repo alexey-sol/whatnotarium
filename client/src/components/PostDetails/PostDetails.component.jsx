@@ -20,9 +20,11 @@ function PostDetails ({
         author = {},
         body,
         id,
-        postLikes,
+        rating,
         title,
-        updatedAt
+        updatedAt,
+        userIdsVotedDown,
+        userIdsVotedUp
     } = post || {};
 
     const { name, picture } = author;

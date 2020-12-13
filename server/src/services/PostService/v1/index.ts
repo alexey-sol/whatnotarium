@@ -3,8 +3,8 @@ import deletePost from "./deletePost";
 import findPost from "./findPost";
 import findPosts from "./findPosts";
 import searchPosts from "./searchPosts";
-import updateLike from "./updateLike";
 import updatePost from "./updatePost";
+import updateVote from "./updateVote";
 
 export default {
     createPost,
@@ -12,6 +12,6 @@ export default {
     findPost,
     findPosts,
     searchPosts,
-    updateLike,
-    updatePost
+    updatePost,
+    updateVote
 };

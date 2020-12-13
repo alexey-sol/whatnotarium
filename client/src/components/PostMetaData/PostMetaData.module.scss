@@ -7,7 +7,7 @@
         display: grid;
         align-items: center;
         grid-template-areas:
-            "picture username likeCount"
+            "picture username votes"
             "picture date .";
         grid-template-rows: auto auto;
         grid-template-columns: 5rem minmax(10rem, auto);
@@ -46,7 +46,7 @@
     .stats {
         display: flex;
 
-        .likeCount {
+        .votes {
 
         }
 

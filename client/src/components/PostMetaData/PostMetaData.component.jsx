@@ -26,10 +26,11 @@ function CustomLink ({
     const {
         createdAt,
         id,
-        likes,
-        postLikes,
+        rating,
         updatedAt,
-        userId
+        userId,
+        userIdsVotedDown,
+        userIdsVotedUp
     } = post;
 
     const { name, picture } = userProfile;
@@ -58,7 +59,7 @@ function CustomLink ({
 
     const renderStats = () => (
         <section className={styles.stats}>
-            <div className={styles.likeCount}>
+            <div className={styles.votes}>
                 
             </div>
 
@@ -73,9 +74,7 @@ function CustomLink ({
             <button>Like +</button>
             <button>Dislike -</button>
 
-            Like count: {likes.reduce((acc, like) => {
-                return acc + like.count;
-            }, 0)}
+            Rating: {rating}
         </section>
     );
 

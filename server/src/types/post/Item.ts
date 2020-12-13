@@ -1,17 +1,18 @@
 import Comment from "#types/Comment";
-import Like from "#types/Like";
-import UserProfile from "#types/UserProfile";
+import Profile from "#types/UserProfile";
 
 interface Item {
-    author?: UserProfile;
+    author?: Profile;
     body: string;
     comments: Comment[];
     createdAt: Date;
     id: number;
-    likes: Like[];
+    rating: number;
     title: string;
     updatedAt: Date;
     userId: number;
+    userIdsVotedDown: number[];
+    userIdsVotedUp: number[];
 }
 
 export default Item;

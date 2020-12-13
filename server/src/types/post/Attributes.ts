@@ -1,5 +1,4 @@
 import Comment from "#types/Comment";
-import Like from "#types/Like";
 import Profile from "#types/UserProfile";
 
 interface Attributes {
@@ -8,10 +7,12 @@ interface Attributes {
     comments?: Comment[];
     createdAt?: Date;
     id?: number;
-    likes?: Like[];
+    rating?: number;
     title?: string;
     updatedAt?: Date;
     userId?: number;
+    userIdsVotedDown?: number[];
+    userIdsVotedUp?: number[];
 }
 
 export default Attributes;

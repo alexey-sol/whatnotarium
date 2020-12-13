@@ -14,9 +14,11 @@ function PostPreview ({ post }) {
         body,
         createdAt,
         id,
-        postLikes,
+        rating,
         title,
-        updatedAt
+        updatedAt,
+        userIdsVotedDown,
+        userIdsVotedUp
     } = post;
 
     const bodyHTML = { __html: body };

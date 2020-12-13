@@ -5,7 +5,7 @@ import { NOT_FOUND } from "#utils/const/validationErrors";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 
-const putLike: RequestHandler = async (
+const putVote: RequestHandler = async (
     { ip, params },
     response,
     next
@@ -25,4 +25,4 @@ const putLike: RequestHandler = async (
     }
 };
 
-export default putLike;
+export default putVote;

@@ -6,7 +6,6 @@ import PostItem from "#types/post/Item";
 
 interface Props {
     body?: string;
-    likeCount?: number;
     title?: string;
 }
 
@@ -22,20 +21,18 @@ export default async function (
 
     const {
         body,
-        likeCount,
         title
     } = props;
 
     const updatedProps = {
         body,
-        // TODO +likeCount
         title,
         updatedAt: new Date()
     };
 
     const include = [{
         as: "author",
-        attributes: ["about", "birthdate", "name", "picture", "totalLikeCount"],
+        attributes: ["about", "birthdate", "lastActivityDate", "name", "picture", "totalVoteCount"],
         referencedKey: "userId",
         ownKey: "userId",
         tableName: PROFILES

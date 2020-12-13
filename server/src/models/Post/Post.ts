@@ -12,23 +12,23 @@ import {
 import {
     CreateFullPostsView,
     CreatePostCommentsTable,
-    CreatePostLikesTable,
+    CreatePostVotesTable,
     CreatePostsTable
 } from "#utils/sql/SchemaSqlGenerator";
 
 import { FULL_POSTS_VIEW } from "#utils/const/database/viewNames";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
-import { POSTS } from "#utils/const/database/tableNames";
+import { POST_VOTES, POSTS } from "#utils/const/database/tableNames";
 import Attributes from "#types/post/Attributes";
 import Comment from "#types/Comment";
 import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/post/Item";
-import Like from "#types/Like";
-import LikeUpdate from "#types/LikeUpdate";
 import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
-import UserProfile from "#types/UserProfile";
+import PostVote from "#types/PostVote";
+import Profile from "#types/UserProfile";
+import VoteUpdate from "#types/VoteUpdate";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isPostItem from "#utils/typeGuards/isPostItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
@@ -36,25 +36,29 @@ import separateIncludedAttributes from "#utils/helpers/separateIncludedAttribute
 class Post implements Model<Attributes, Post> {
     static tableName = POSTS;
 
-    author?: UserProfile;
+    author?: Profile;
     body: string;
     comments: Comment[];
     createdAt: Date;
     id: number;
-    likes: Like[];
+    rating: number;
     title: string;
     updatedAt: Date;
     userId: number;
+    userIdsVotedDown: number[];
+    userIdsVotedUp: number[];
 
     private constructor (props: Item) {
         this.body = props.body;
         this.comments = props.comments;
         this.createdAt = props.createdAt;
         this.id = props.id;
-        this.likes = props.likes;
+        this.rating = props.rating;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;
+        this.userIdsVotedDown = props.userIdsVotedDown;
+        this.userIdsVotedUp = props.userIdsVotedUp;
 
         if (props.author) {
             this.author = props.author;
@@ -63,7 +67,7 @@ class Post implements Model<Attributes, Post> {
 
     static async up (): Promise<void> {
         await generateSqlAndQuery(new CreatePostsTable());
-        await generateSqlAndQuery(new CreatePostLikesTable());
+        await generateSqlAndQuery(new CreatePostVotesTable());
         await generateSqlAndQuery(new CreatePostCommentsTable());
         await generateSqlAndQuery(new CreateFullPostsView());
     }
@@ -159,18 +163,30 @@ class Post implements Model<Attributes, Post> {
             : Post.formatPropsAndInstantiate(record || this);
     }
 
-    async updateLike (
-        props: LikeUpdate
+    async updateVote (
+        props: VoteUpdate
     ): Promise<number | null> {
-        const { dislikeValue, likeValue } = props;
+        const { value } = props;
         let result = null;
 
-        if (dislikeValue) { // "-1"
+        if (value < 0) {
+            const where = {
+                postId: this.id,
+                userId: this.userId
+            };
 
+            // result = await destroyAllRecords(POST_VOTES, { where });
         }
 
-        if (likeValue) { // "+1"
+        if (value > 0) {
+            const voteProps = {
+                postId: this.id,
+                userId: this.userId,
+                value: 1
+            };
 
+            // const vote = await createRecord<unknown, PostVote>(POST_VOTES, voteProps);
+            // result = vote?.id;
         }
 
         return result;

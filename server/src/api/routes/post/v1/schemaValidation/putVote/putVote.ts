@@ -3,7 +3,7 @@ import { RequestHandler } from "express";
 import bodySchema from "./schemas/body";
 import paramsSchema from "./schemas/params";
 
-const putLike: RequestHandler = async (
+const putVote: RequestHandler = async (
     request,
     response,
     next
@@ -31,4 +31,4 @@ const putLike: RequestHandler = async (
     next();
 };
 
-export default putLike;
+export default putVote;
