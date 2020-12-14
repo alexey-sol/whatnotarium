@@ -24,3 +24,6 @@ export const SEARCH_POSTS_SUCCESS = `${POSTS} Search Posts - ${SUCCESS}`;
 export const UPDATE_POST_FAILURE = `${POSTS} Update Post - ${FAILURE}`;
 export const UPDATE_POST_START = `${POSTS} Update Post - ${START}`;
 export const UPDATE_POST_SUCCESS = `${POSTS} Update Post - ${SUCCESS}`;
+export const VOTE_FOR_POST_FAILURE = `${POSTS} Vote For Post - ${FAILURE}`;
+export const VOTE_FOR_POST_START = `${POSTS} Vote For Post - ${START}`;
+export const VOTE_FOR_POST_SUCCESS = `${POSTS} Vote For Post - ${SUCCESS}`;

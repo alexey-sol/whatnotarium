@@ -136,3 +136,25 @@ export function updatePostSuccess (item) {
         type: types.UPDATE_POST_SUCCESS
     };
 }
+
+export function voteForPostFailure (error) {
+    return {
+        payload: { error },
+        type: types.VOTE_FOR_POST_FAILURE
+    };
+}
+
+export function voteForPostStart (payload, cb) {
+    return {
+        cb,
+        payload,
+        type: types.VOTE_FOR_POST_START
+    };
+}
+
+export function voteForPostSuccess (item) {
+    return {
+        payload: { item },
+        type: types.VOTE_FOR_POST_SUCCESS
+    };
+}

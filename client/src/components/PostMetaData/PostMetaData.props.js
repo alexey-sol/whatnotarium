@@ -1,4 +1,4 @@
-import { bool, object } from "prop-types";
+import { bool, func, object } from "prop-types";
 
 export const defaultProps = {
     currentUser: null,
@@ -9,5 +9,5 @@ export const propTypes = {
     currentUser: object,
     isPreview: bool,
     post: object.isRequired,
-    userProfile: object.isRequired
+    onVoteForPostStart: func.isRequired
 };

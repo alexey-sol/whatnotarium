@@ -164,32 +164,31 @@ class Post implements Model<Attributes, Post> {
     }
 
     async updateVote (
-        props: VoteUpdate
-    ): Promise<number | null> {
-        const { value } = props;
-        let result = null;
+        props: VoteUpdate,
+        include?: Include[]
+    ): Promise<Post | null> {
+        const { value, userId } = props;
 
-        if (value < 0) {
-            const where = {
-                postId: this.id,
-                userId: this.userId
-            };
+        const where = {
+            postId: this.id,
+            userId
+        };
 
-            // result = await destroyAllRecords(POST_VOTES, { where });
+        const voteProps = {
+            postId: this.id,
+            userId,
+            value
+        };
+
+        await destroyAllRecords(POST_VOTES, { where });
+
+        if (value !== 0) {
+            await createRecord<unknown, PostVote>(POST_VOTES, voteProps);
         }
 
-        if (value > 0) {
-            const voteProps = {
-                postId: this.id,
-                userId: this.userId,
-                value: 1
-            };
-
-            // const vote = await createRecord<unknown, PostVote>(POST_VOTES, voteProps);
-            // result = vote?.id;
-        }
-
-        return result;
+        return (include)
+            ? Post.findById(this.id, include) as Promise<Post>
+            : Post.formatPropsAndInstantiate(this);
     }
 
     static formatPropsAndInstantiate (

@@ -118,7 +118,7 @@ class CreatePostVotesTable extends SchemaSqlGenerator<unknown> {
 
             CREATE OR REPLACE FUNCTION update_voted_user_ids_and_rating()
             RETURNS TRIGGER AS $$
-            DECLARE new_rating INTEGER; post_id INTEGER; user_id INTEGER; should_append_id BOOLEAN;
+            DECLARE new_rating INTEGER; post_id INTEGER; user_id INTEGER;
             BEGIN
                 SELECT INTO new_rating SUM("value")
                 FROM "${POST_VOTES}"
@@ -131,7 +131,7 @@ class CreatePostVotesTable extends SchemaSqlGenerator<unknown> {
                 user_id := COALESCE(new."userId", old."userId");
 
                 IF (TG_OP = 'INSERT') THEN
-                   PERFORM append_user_id_to_voted_array(new."value" > 0, post_id, user_id);
+                    PERFORM append_user_id_to_voted_array(new."value" > 0, post_id, user_id);
                 ELSIF (TG_OP = 'DELETE') THEN
                     PERFORM remove_user_id_from_voted_array(old."value" > 0, post_id, user_id);
                 END IF;

@@ -27,6 +27,11 @@ function * onUpdatePostStart () {
     yield takeLatest(types.UPDATE_POST_START, workers.doUpdatePost);
 }
 
+function * onVoteForPostStart () {
+    yield takeLatest(types.VOTE_FOR_POST_START, workers.doVoteForPost);
+}
+
+
 function * postSagas () {
     yield all([
         call(onCreatePostStart),
@@ -34,7 +39,8 @@ function * postSagas () {
         call(onFetchPostStart),
         call(onFetchPostsStart),
         call(onSearchPostsStart),
-        call(onUpdatePostStart)
+        call(onUpdatePostStart),
+        call(onVoteForPostStart)
     ]);
 }
 

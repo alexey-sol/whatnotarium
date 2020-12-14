@@ -8,13 +8,11 @@ const putVote: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    try {
-        const { id } = params;
-        const postId = await PostService.updateVote(+id, body);
-        sendResponse(response, { id: postId });
-    } catch (error) {
-        next(error);
-    }
+    const { id } = params;
+
+    PostService.updateVote(+id, body)
+        .then(post => sendResponse(response, post))
+        .catch(next);
 };
 
 export default putVote;

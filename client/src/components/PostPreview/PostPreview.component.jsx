@@ -42,7 +42,6 @@ function PostPreview ({ post }) {
 
             <PostMetaData
                 post={post}
-                userProfile={author}
             />
         </article>
     );

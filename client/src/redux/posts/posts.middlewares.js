@@ -41,7 +41,7 @@ export const postsEnricher = ({ getState }) => (next) => (action) => {
     const enrichedAction = { ...action };
     const isDeletion = type === types.DELETE_POST_SUCCESS;
 
-    enrichedAction.payload = complementPayload(
+    enrichedAction.payload = complementPayload( // TODO rename to enrichPayload
         payload,
         getState().posts,
         isDeletion

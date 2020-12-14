@@ -1,4 +1,5 @@
 interface VoteUpdate {
+    userId: number;
     value: number;
 }
 

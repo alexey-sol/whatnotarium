@@ -10,20 +10,22 @@ import { Like, UserPicturePlaceholder, Views } from "components/Icon";
 import { USER } from "utils/const/pathnames";
 import DateFormatter from "utils/formatters/DateFormatter";
 import { defaultProps, propTypes } from "./PostMetaData.props";
+import { voteForPostStart } from "redux/posts/posts.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./PostMetaData.module.scss";
 import toBase64 from "utils/helpers/toBase64";
 
-CustomLink.defaultProps = defaultProps;
-CustomLink.propTypes = propTypes;
+PostMetaData.defaultProps = defaultProps;
+PostMetaData.propTypes = propTypes;
 
-function CustomLink ({
+function PostMetaData ({
     currentUser,
     isPreview,
-    post,
-    userProfile
+    onVoteForPostStart,
+    post
 }) {
     const {
+        author,
         createdAt,
         id,
         rating,
@@ -32,9 +34,11 @@ function CustomLink ({
         userIdsVotedDown,
         userIdsVotedUp
     } = post;
-
-    const { name, picture } = userProfile;
+    const { name, picture } = author;
     const isAuthor = currentUser?.id === userId;
+
+    const votedUp = userIdsVotedUp.includes(currentUser?.id);
+    const votedDown = userIdsVotedDown.includes(currentUser?.id);
 
     const formattedCreatedAt = new DateFormatter(createdAt)
         .formatByPattern("YYYY, MMM DD");
@@ -57,24 +61,41 @@ function CustomLink ({
         />
     );
 
+    const likePost = () => onVoteForPostStart({
+        postId: id,
+        userId: currentUser?.id,
+        value: (votedUp) ? 0 : 1
+    });
+
+    const dislikePost = () => onVoteForPostStart({
+        postId: id,
+        userId: currentUser?.id,
+        value: (votedDown) ? 0 : -1
+    });
+
     const renderStats = () => (
         <section className={styles.stats}>
-            <div className={styles.votes}>
-                
-            </div>
+            <div className={styles.votes} />
 
-            <div className={styles.viewCount}>
-
-            </div>
+            <div className={styles.viewCount} />
         </section>
     );
 
     const renderControls = () => (
         <section>
-            <button>Like +</button>
-            <button>Dislike -</button>
+            <button
+                className={(votedUp) ? styles.active : ""}
+                onClick={likePost}
+            >
+                Нравится
+            </button>
 
-            Rating: {rating}
+            <button
+                className={(votedDown) ? styles.active : ""}
+                onClick={dislikePost}
+            >
+                Не нравится
+            </button>
         </section>
     );
 
@@ -92,7 +113,7 @@ function CustomLink ({
                 </Link>
 
                 <Link title={name} to={`/${USER}/${id}`}>
-                    <span>{userProfile.name}</span>
+                    <span>{author.name}</span>
                 </Link>
 
                 <span className={styles.date}>{formattedCreatedAt}</span>
@@ -101,6 +122,10 @@ function CustomLink ({
             {(shouldShowControls)
                 ? renderControls()
                 : renderStats()}
+
+            Оценка:
+            {" "}
+            {rating}
         </section>
     );
 }
@@ -109,8 +134,13 @@ const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser
 });
 
+const mapDispatchToProps = (dispatch) => ({
+    onVoteForPostStart: (props) => dispatch(voteForPostStart(props))
+});
+
 const ConnectedCustomLink = connect(
-    mapStateToProps
-)(CustomLink);
+    mapStateToProps,
+    mapDispatchToProps
+)(PostMetaData);
 
 export default ConnectedCustomLink;

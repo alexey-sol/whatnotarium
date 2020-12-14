@@ -68,3 +68,14 @@ export function * doUpdatePost ({ cb, payload }) {
         yield put(actions.updatePostFailure(error));
     }
 }
+
+export function * doVoteForPost ({ cb, payload }) {
+    try {
+        const postId = yield api.voteForPost(payload);
+        yield put(actions.voteForPostSuccess(postId));
+        if (cb) cb();
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.voteForPostFailure(error));
+    }
+}

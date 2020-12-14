@@ -20,7 +20,9 @@ export default reduce(INITIAL_STATE, {
     [types.SEARCH_POSTS_FAILURE]: onFailure,
     [types.SEARCH_POSTS_SUCCESS]: onSuccess,
     [types.UPDATE_POST_FAILURE]: onFailure,
-    [types.UPDATE_POST_SUCCESS]: onSuccess
+    [types.UPDATE_POST_SUCCESS]: onSuccess,
+    [types.VOTE_FOR_POST_FAILURE]: onFailure,
+    [types.VOTE_FOR_POST_SUCCESS]: onSuccess
 });
 
 function onFailure (state, { payload }) {
