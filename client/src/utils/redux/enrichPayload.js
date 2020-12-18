@@ -1,4 +1,4 @@
-function complementPayload (
+function enrichPayload (
     payload = {},
     state = {},
     isDeletion = false
@@ -26,4 +26,4 @@ function complementPayload (
     return updatedPayload;
 }
 
-export default complementPayload;
+export default enrichPayload;

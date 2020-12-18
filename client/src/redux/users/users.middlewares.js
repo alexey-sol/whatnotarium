@@ -1,7 +1,7 @@
 import * as types from "./users.types";
 import { FAILURE_POSTFIX, START_POSTFIX, USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
-import complementPayload from "utils/redux/complementPayload";
+import enrichPayload from "utils/redux/enrichPayload";
 
 export const usersNormalizer = () => (next) => (action) => {
     const { payload, type } = action;
@@ -39,7 +39,7 @@ export const usersEnricher = ({ getState }) => (next) => (action) => {
     const enrichedAction = { ...action };
     const isDeletion = type === types.DELETE_USER_SUCCESS;
 
-    enrichedAction.payload = complementPayload(
+    enrichedAction.payload = enrichPayload(
         payload,
         getState().users,
         isDeletion

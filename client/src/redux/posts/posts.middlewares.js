@@ -1,7 +1,7 @@
 import * as types from "./posts.types";
 import { FAILURE_POSTFIX, POSTS_PREFIX, START_POSTFIX } from "utils/const/actionTypeAffixes";
 import { setPaging } from "redux/postsPaging/postsPaging.actions";
-import complementPayload from "utils/redux/complementPayload";
+import enrichPayload from "utils/redux/enrichPayload";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 
 export const postsNormalizer = () => (next) => (action) => {
@@ -41,7 +41,7 @@ export const postsEnricher = ({ getState }) => (next) => (action) => {
     const enrichedAction = { ...action };
     const isDeletion = type === types.DELETE_POST_SUCCESS;
 
-    enrichedAction.payload = complementPayload( // TODO rename to enrichPayload
+    enrichedAction.payload = enrichPayload(
         payload,
         getState().posts,
         isDeletion

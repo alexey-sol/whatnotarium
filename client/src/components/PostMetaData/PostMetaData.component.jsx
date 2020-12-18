@@ -14,12 +14,15 @@ import { voteForPostStart } from "redux/posts/posts.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./PostMetaData.module.scss";
 import toBase64 from "utils/helpers/toBase64";
+import { selectRelevantPendingAction } from "../../redux/ui/ui.selectors";
+import { POSTS_PREFIX } from "../../utils/const/actionTypeAffixes";
 
 PostMetaData.defaultProps = defaultProps;
 PostMetaData.propTypes = propTypes;
 
 function PostMetaData ({
     currentUser,
+    isPending,
     isPreview,
     onVoteForPostStart,
     post
@@ -34,6 +37,7 @@ function PostMetaData ({
         userIdsVotedDown,
         userIdsVotedUp
     } = post;
+    console.log(isPending);
     const { name, picture } = author;
     const isAuthor = currentUser?.id === userId;
 
@@ -62,13 +66,13 @@ function PostMetaData ({
     );
 
     const likePost = () => onVoteForPostStart({
-        postId: id,
+        id,
         userId: currentUser?.id,
         value: (votedUp) ? 0 : 1
     });
 
     const dislikePost = () => onVoteForPostStart({
-        postId: id,
+        id,
         userId: currentUser?.id,
         value: (votedDown) ? 0 : -1
     });
@@ -85,6 +89,7 @@ function PostMetaData ({
         <section>
             <button
                 className={(votedUp) ? styles.active : ""}
+                disabled={isPending}
                 onClick={likePost}
             >
                 Нравится
@@ -92,6 +97,7 @@ function PostMetaData ({
 
             <button
                 className={(votedDown) ? styles.active : ""}
+                disabled={isPending}
                 onClick={dislikePost}
             >
                 Не нравится
@@ -130,9 +136,19 @@ function PostMetaData ({
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
-});
+const mapStateToProps = () => {
+    return (state, ownProps) => {
+        const options = {
+            actionPrefix: POSTS_PREFIX,
+            prop: { id: +ownProps.post.id }
+        };
+
+        return ({
+            currentUser: selectCurrentUser(state),
+            isPending: Boolean(selectRelevantPendingAction(state, options))
+        });
+    };
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onVoteForPostStart: (props) => dispatch(voteForPostStart(props))

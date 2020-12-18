@@ -1,11 +1,11 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/PostList";
-import WithSpinner from "components/WithSpinner";
+import Spinner from "components/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
 import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
@@ -46,8 +46,9 @@ function Home ({
         });
     }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount]);
 
-    const propsFromHome = { isPending, posts };
-    const HomeWithSpinner = WithSpinner(PostList, propsFromHome);
+    if (isPending) {
+        return <Spinner />;
+    }
 
     return (
         <Fragment>
@@ -62,7 +63,7 @@ function Home ({
                 </div>
             )}
 
-            <HomeWithSpinner />
+            <PostList posts={posts} />
         </Fragment>
     );
 }
@@ -70,7 +71,7 @@ function Home ({
 const mapStateToProps = () => {
     return (state) => ({
         currentPostsPage: selectCurrentPage(state),
-        isPending: Boolean(selectRelevantPendingAction(state, POSTS_PREFIX)),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX })),
         posts: selectPosts(state),
         postsOnPageCount: selectCount(state)
     });

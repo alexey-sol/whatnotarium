@@ -5,16 +5,21 @@ const getActionPrefix = (state, actionPrefix) => actionPrefix;
 
 export const selectRelevantPendingAction = createSelector(
     [getUi, getActionPrefix],
-    ({ pendingApi }, actionPrefix, field = {}) => {
-        const [entry = []] = Object.entries(field);
-        const [fieldName, fieldValue] = entry;
+    ({ pendingApi }, { actionPrefix, prop = null } = {}) => {
+        let fieldName = null;
+        let fieldValue = null;
+
+        if (prop) {
+            const [entry = []] = Object.entries(prop);
+            ([fieldName, fieldValue] = entry);
+        }
 
         return Object
             .entries(pendingApi)
             .find(([actionType, data]) => {
-                const hasRequiredData = (fieldValue)
+                const hasRequiredData = (prop)
                     ? data?.[fieldName] === fieldValue
-                    : !data?.[fieldName];
+                    : data === null;
 
                 return actionType.startsWith(actionPrefix) && hasRequiredData;
             });

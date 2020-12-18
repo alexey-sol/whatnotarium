@@ -169,7 +169,7 @@ class Post implements Model<Attributes, Post> {
     ): Promise<Post | null> {
         const { value, userId } = props;
 
-        const where = {
+        const where = { // TODO: refactor
             postId: this.id,
             userId
         };
