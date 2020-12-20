@@ -1,48 +1,19 @@
 import { Link } from "react-router-dom";
 import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
-import {
-    DislikeActiveIconButton, DislikeIconButton, LikeActiveIconButton, LikeIconButton
-} from "components/IconButton";
-import { Like, UserPicturePlaceholder, Views } from "components/Icon";
 import { USER } from "utils/const/pathnames";
+import { UserPicturePlaceholder } from "components/Icon";
 import DateFormatter from "utils/formatters/DateFormatter";
-import { defaultProps, propTypes } from "./PostMetaData.props";
-import { voteForPostStart } from "redux/posts/posts.actions";
-import { selectCurrentUser } from "redux/session/session.selectors";
+import PostRating from "components/PostRating";
+import { propTypes } from "./PostMetaData.props";
 import styles from "./PostMetaData.module.scss";
 import toBase64 from "utils/helpers/toBase64";
-import { selectRelevantPendingAction } from "../../redux/ui/ui.selectors";
-import { POSTS_PREFIX } from "../../utils/const/actionTypeAffixes";
 
-PostMetaData.defaultProps = defaultProps;
 PostMetaData.propTypes = propTypes;
 
-function PostMetaData ({
-    currentUser,
-    isPending,
-    isPreview,
-    onVoteForPostStart,
-    post
-}) {
-    const {
-        author,
-        createdAt,
-        id,
-        rating,
-        updatedAt,
-        userId,
-        userIdsVotedDown,
-        userIdsVotedUp
-    } = post;
-    console.log(isPending);
+function PostMetaData ({ post }) {
+    const { author, createdAt, id } = post;
     const { name, picture } = author;
-    const isAuthor = currentUser?.id === userId;
-
-    const votedUp = userIdsVotedUp.includes(currentUser?.id);
-    const votedDown = userIdsVotedDown.includes(currentUser?.id);
 
     const formattedCreatedAt = new DateFormatter(createdAt)
         .formatByPattern("YYYY, MMM DD");
@@ -65,48 +36,6 @@ function PostMetaData ({
         />
     );
 
-    const likePost = () => onVoteForPostStart({
-        id,
-        userId: currentUser?.id,
-        value: (votedUp) ? 0 : 1
-    });
-
-    const dislikePost = () => onVoteForPostStart({
-        id,
-        userId: currentUser?.id,
-        value: (votedDown) ? 0 : -1
-    });
-
-    const renderStats = () => (
-        <section className={styles.stats}>
-            <div className={styles.votes} />
-
-            <div className={styles.viewCount} />
-        </section>
-    );
-
-    const renderControls = () => (
-        <section>
-            <button
-                className={(votedUp) ? styles.active : ""}
-                disabled={isPending}
-                onClick={likePost}
-            >
-                Нравится
-            </button>
-
-            <button
-                className={(votedDown) ? styles.active : ""}
-                disabled={isPending}
-                onClick={dislikePost}
-            >
-                Не нравится
-            </button>
-        </section>
-    );
-
-    const shouldShowControls = Boolean(currentUser) && !isAuthor;
-
     return (
         <section className={styles.container}>
             <section className={styles.userProfile}>
@@ -125,38 +54,16 @@ function PostMetaData ({
                 <span className={styles.date}>{formattedCreatedAt}</span>
             </section>
 
-            {(shouldShowControls)
-                ? renderControls()
-                : renderStats()}
+            <section className={styles.stats}>
+                <PostRating
+                    post={post}
+                    withoutControls
+                />
 
-            Оценка:
-            {" "}
-            {rating}
+                <div className={styles.viewCount} />
+            </section>
         </section>
     );
 }
 
-const mapStateToProps = () => {
-    return (state, ownProps) => {
-        const options = {
-            actionPrefix: POSTS_PREFIX,
-            prop: { id: +ownProps.post.id }
-        };
-
-        return ({
-            currentUser: selectCurrentUser(state),
-            isPending: Boolean(selectRelevantPendingAction(state, options))
-        });
-    };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    onVoteForPostStart: (props) => dispatch(voteForPostStart(props))
-});
-
-const ConnectedCustomLink = connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(PostMetaData);
-
-export default ConnectedCustomLink;
+export default PostMetaData;

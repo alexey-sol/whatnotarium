@@ -2,12 +2,13 @@ import { Form, Formik } from "formik";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
 
+import { ABOUT, EMAIL, NAME } from "utils/const/userData";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
-import { EMAIL, NAME } from "utils/const/userData";
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "../FormInput";
+import FormTextarea from "../FormTextarea";
 import Notification from "utils/objects/Notification";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -32,6 +33,7 @@ function ProfileDataForm ({
     onUpdateUserStart
 }) {
     const initialValues = {
+        about: currentUser.profile.about,
         email: currentUser.email,
         id: currentUser.id,
         name: currentUser.profile.name
@@ -71,6 +73,12 @@ function ProfileDataForm ({
                         name={EMAIL}
                         onChange={event => handleChangeWrapper(event, handleChange)}
                         type="email"
+                    />
+
+                    <FormTextarea
+                        label="О себе"
+                        name={ABOUT}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
                     />
 
                     <BaseButton

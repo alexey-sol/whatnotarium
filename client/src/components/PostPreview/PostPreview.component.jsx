@@ -10,15 +10,9 @@ PostPreview.propTypes = propTypes;
 
 function PostPreview ({ post }) {
     const {
-        author,
         body,
-        createdAt,
         id,
-        rating,
-        title,
-        updatedAt,
-        userIdsVotedDown,
-        userIdsVotedUp
+        title
     } = post;
 
     const bodyHTML = { __html: body };

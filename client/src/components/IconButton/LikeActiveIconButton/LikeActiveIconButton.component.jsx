@@ -7,16 +7,23 @@ import { defaultProps, propTypes } from "../IconButton.props";
 LikeActiveIconButton.defaultProps = defaultProps;
 LikeActiveIconButton.propTypes = propTypes;
 
-function LikeActiveIconButton ({ onClick, size, ...rest }) {
+function LikeActiveIconButton ({
+    onClick,
+    size,
+    title,
+    ...rest
+}) {
     return (
-        <IconButton
-            {...rest}
-            onClick={onClick}
-            size={size}
-            title="Удалить оценку"
-        >
-            <LikeActiveIcon size={size} />
-        </IconButton>
+        <div title={title || "Не нравится"}>
+            <IconButton
+                {...rest}
+                onClick={onClick}
+                size={size}
+                title={title || "Нравится"}
+            >
+                <LikeActiveIcon size={size} />
+            </IconButton>
+        </div>
     );
 }
 

@@ -6,8 +6,8 @@ import { POST } from "utils/const/pathnames";
 import PostDetails from "./PostDetails.component";
 import { defaultProps, propTypes } from "./PostDetails.container.props";
 import { fetchPostStart } from "redux/posts/posts.actions";
-import { selectPostById } from "redux/posts/posts.selectors";
 import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectPostById } from "redux/posts/posts.selectors";
 
 PostDetailsContainer.defaultProps = defaultProps;
 PostDetailsContainer.propTypes = propTypes;
@@ -23,7 +23,7 @@ function PostDetailsContainer ({
     const id = +match.params.id;
 
     const redirectToDraft = useCallback(() => push(`/${POST}/${id}/edit`), [id, push]);
-    const shouldFetchPost = !post?.id;
+    const shouldFetchPost = !post.id;
 
     if (shouldFetchPost) {
         onFetchPostStart(id);
@@ -31,18 +31,22 @@ function PostDetailsContainer ({
 
     return (
         <PostDetails
+            currentUserId={currentUser?.id}
             handleClickOnEditButton={redirectToDraft}
             post={post}
-            userId={currentUser?.id}
         />
     );
 }
 
 const mapStateToProps = () => {
-    return (state, ownProps) => ({
-        currentUser: selectCurrentUser(state),
-        post: selectPostById(state, +ownProps.match.params.id)
-    });
+    return (state, ownProps) => {
+        const id = +ownProps.match.params.id;
+
+        return ({
+            currentUser: selectCurrentUser(state),
+            post: selectPostById(state, id)
+        });
+    };
 };
 
 const mapDispatchToProps = (dispatch) => ({

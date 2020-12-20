@@ -1,3 +1,4 @@
+export const ABOUT = "about";
 export const CONFIRM_NEW_PASSWORD = "confirmNewPassword";
 export const CONFIRM_PASSWORD = "confirmPassword";
 export const EMAIL = "email";

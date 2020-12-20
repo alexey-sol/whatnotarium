@@ -67,17 +67,19 @@ function ProfilePictureForm ({
                     : avatarPlaceholderElem}
             </section>
 
-            <CloseIconButton
-                className={styles.deleteButton}
-                fill="#455a64"
-                onClick={() => onUpdateUserPictureStart({ id, picture: null })}
-                size={14}
-                title="Удалить"
-            />
+            {picture && (
+                <CloseIconButton
+                    className={styles.deleteButton}
+                    fill="#455a64"
+                    onClick={() => onUpdateUserPictureStart({ id, picture: null })}
+                    size={14}
+                    title="Удалить фото"
+                />
+            )}
 
             <Tooltip
                 elemRef={pictureContainerRef}
-                text="Изменить"
+                text="Залить новое фото"
                 width="small"
             />
 

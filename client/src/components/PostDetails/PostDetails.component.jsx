@@ -1,55 +1,40 @@
+import { Link } from "react-router-dom";
 import React from "react";
 
+import { USER } from "utils/const/pathnames";
 import { UserPicturePlaceholder } from "components/Icon";
 import BaseButton from "components/BaseButton";
+import PostRating from "components/PostRating";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
-import toBase64 from "../../utils/helpers/toBase64";
-import { USER } from "../../utils/const/pathnames";
-import { Link } from "react-router-dom";
+import toBase64 from "utils/helpers/toBase64";
 
 PostDetails.defaultProps = defaultProps;
 PostDetails.propTypes = propTypes;
 
 function PostDetails ({
+    currentUserId,
     handleClickOnEditButton,
-    post,
-    userId
+    post
 }) {
     const {
         author = {},
         body,
         id,
-        rating,
         title,
         updatedAt,
-        userIdsVotedDown,
-        userIdsVotedUp
-    } = post || {};
+        userId
+    } = post;
 
     const { name, picture } = author;
-    const userIsAuthor = post?.userId === userId;
-    const shouldRenderControls = Boolean(userIsAuthor && id);
+    const isAuthor = userId === currentUserId;
+    const shouldRenderControls = Boolean(isAuthor && id);
 
     const bodyHTML = { __html: body };
 
     const picDataIfAny = (picture)
         ? `data:image/jpeg;base64,${toBase64(picture.data)}`
         : null;
-
-    const userPicElem = (
-        <img
-            alt={name}
-            src={picDataIfAny}
-        />
-    );
-
-    const userPicPlaceholderElem = (
-        <UserPicturePlaceholder
-            fill="#455a64"
-            size={50}
-        />
-    );
 
     return (
         <article className={styles.container}>
@@ -66,8 +51,8 @@ function PostDetails ({
                 <Link title={name} to={`/${USER}/${id}`}>
                     <div className={styles.userPicture}>
                         {(picture)
-                            ? userPicElem
-                            : userPicPlaceholderElem}
+                            ? <img alt={name} src={picDataIfAny} />
+                            : <UserPicturePlaceholder fill="#455a64" size={50} />}
                     </div>
                 </Link>
 
@@ -90,6 +75,15 @@ function PostDetails ({
                     />
                 </section>
             )}
+
+            <section className={styles.stats}>
+                <PostRating
+                    isDisabled={!currentUserId || isAuthor}
+                    post={post}
+                />
+
+                <div className={styles.viewCount} />
+            </section>
         </article>
     );
 }

@@ -92,8 +92,7 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
         if (attributes.length > 0) {
             const normalizedAttributes = this.normalizeAttributes(attributes, include);
             const values = [];
-
-            let count = this.offset;
+            let count = 0;
 
             for (const attribute of normalizedAttributes) {
                 count += 1;

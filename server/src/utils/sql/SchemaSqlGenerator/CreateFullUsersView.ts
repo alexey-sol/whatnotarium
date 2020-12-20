@@ -13,8 +13,8 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
             CREATE OR REPLACE VIEW "${FULL_USERS_VIEW}" AS
             SELECT
                 u."id", u."email", u."createdAt", u."updatedAt", p."name", p."picture",
-                p."totalVoteCount", p."lastActivityDate", ho."hash", ho."salt", ho."digest",
-                ho."iterations", ho."keyLength"
+                p."birthdate", p."about", p."totalVoteCount", p."lastActivityDate", ho."hash",
+                ho."salt", ho."digest", ho."iterations", ho."keyLength"
             FROM "${USERS}" AS u
             INNER JOIN "${PROFILES}" AS p ON u."id" = p."userId"
             INNER JOIN "${HASH_OPTIONS}" AS ho ON u."id" = ho."userId";
@@ -76,8 +76,8 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                     );
 
                     UPDATE "${PROFILES}" SET
-                        "about" = COALESCE(new."about", old."about"),
-                        "birthdate" = COALESCE(new."birthdate", old."birthdate"),
+                        "about" = new."about",
+                        "birthdate" = new."birthdate",
                         "name" = COALESCE(new."name", old."name"),
                         "picture" = new."picture",
                         "updatedAt" = NOW()

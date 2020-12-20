@@ -1,22 +1,29 @@
 import React from "react";
 
-import { Dislike as DislikeIcon } from "components/Icon";
+import { DislikeActive as DislikeActiveIcon } from "components/Icon";
 import IconButton from "components/BaseIconButton";
 import { defaultProps, propTypes } from "../IconButton.props";
 
 DislikeActiveIconButton.defaultProps = defaultProps;
 DislikeActiveIconButton.propTypes = propTypes;
 
-function DislikeActiveIconButton ({ onClick, size, ...rest }) {
+function DislikeActiveIconButton ({
+    onClick,
+    size,
+    title,
+    ...rest
+}) {
     return (
-        <IconButton
-            {...rest}
-            onClick={onClick}
-            size={size}
-            title="Удалить оценку"
-        >
-            <DislikeIcon size={size} />
-        </IconButton>
+        <div title={title || "Не нравится"}>
+            <IconButton
+                {...rest}
+                onClick={onClick}
+                size={size}
+                title={title || "Не нравится"}
+            >
+                <DislikeActiveIcon size={size} />
+            </IconButton>
+        </div>
     );
 }
 

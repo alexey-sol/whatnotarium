@@ -1,12 +1,11 @@
 import { func, number, object } from "prop-types";
 
 export const defaultProps = {
-    post: null,
-    userId: undefined
+    currentUserId: null
 };
 
 export const propTypes = {
+    currentUserId: number,
     handleClickOnEditButton: func.isRequired,
-    post: object,
-    userId: number
+    post: object.isRequired
 };

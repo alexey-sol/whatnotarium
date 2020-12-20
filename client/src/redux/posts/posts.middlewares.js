@@ -1,8 +1,8 @@
 import * as types from "./posts.types";
 import { FAILURE_POSTFIX, POSTS_PREFIX, START_POSTFIX } from "utils/const/actionTypeAffixes";
 import { setPaging } from "redux/postsPaging/postsPaging.actions";
-import enrichPayload from "utils/redux/enrichPayload";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
+import enrichPayload from "utils/redux/enrichPayload";
 
 export const postsNormalizer = () => (next) => (action) => {
     const { payload, type } = action;

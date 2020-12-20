@@ -7,16 +7,23 @@ import { defaultProps, propTypes } from "../IconButton.props";
 LikeIconButton.defaultProps = defaultProps;
 LikeIconButton.propTypes = propTypes;
 
-function LikeIconButton ({ onClick, size, ...rest }) {
+function LikeIconButton ({
+    onClick,
+    size,
+    title,
+    ...rest
+}) {
     return (
-        <IconButton
-            {...rest}
-            onClick={onClick}
-            size={size}
-            title="Понравилось"
-        >
-            <LikeIcon size={size} />
-        </IconButton>
+        <div title={title || "Не нравится"}>
+            <IconButton
+                {...rest}
+                onClick={onClick}
+                size={size}
+                title={title || "Нравится"}
+            >
+                <LikeIcon size={size} />
+            </IconButton>
+        </div>
     );
 }
 

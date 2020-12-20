@@ -32,10 +32,12 @@ import UserProfile from "#types/UserProfile";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserItem from "#utils/typeGuards/isUserItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
+import {log} from "winston";
 
 class User implements Model<DataOnUpdate, User> {
     static tableName = USERS;
 
+    about: string;
     createdAt: Date;
     email: string;
     hashOptions?: UserHashOptions;
@@ -44,6 +46,7 @@ class User implements Model<DataOnUpdate, User> {
     updatedAt: Date;
 
     private constructor (props: Item) {
+        this.about = props.about;
         this.createdAt = props.createdAt;
         this.email = props.email;
         this.id = props.id;

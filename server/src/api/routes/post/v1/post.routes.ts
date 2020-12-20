@@ -43,6 +43,7 @@ router.put(
 
 router.put(
     "/:id/vote",
+    middlewares.isAuthed,
     schemaValidation.putVote,
     dataValidation.putVote,
     controllers.putVote
