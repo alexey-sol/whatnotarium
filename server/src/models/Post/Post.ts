@@ -47,6 +47,7 @@ class Post implements Model<Attributes, Post> {
     userId: number;
     userIdsVotedDown: number[];
     userIdsVotedUp: number[];
+    viewCount: number;
 
     private constructor (props: Item) {
         this.body = props.body;
@@ -59,6 +60,7 @@ class Post implements Model<Attributes, Post> {
         this.userId = props.userId;
         this.userIdsVotedDown = props.userIdsVotedDown;
         this.userIdsVotedUp = props.userIdsVotedUp;
+        this.viewCount = props.viewCount;
 
         if (props.author) {
             this.author = props.author;
@@ -166,24 +168,18 @@ class Post implements Model<Attributes, Post> {
     async updateVote (
         props: VoteUpdate,
         include?: Include[]
-    ): Promise<Post | null> {
+    ): Promise<Post | null> | never {
         const { value, userId } = props;
 
-        const where = { // TODO: refactor
+        const where = {
             postId: this.id,
             userId
-        };
-
-        const voteProps = {
-            postId: this.id,
-            userId,
-            value
         };
 
         await destroyAllRecords(POST_VOTES, { where });
 
         if (value !== 0) {
-            await createRecord<unknown, PostVote>(POST_VOTES, voteProps);
+            await createRecord<unknown, PostVote>(POST_VOTES, { ...where, value });
         }
 
         return (include)

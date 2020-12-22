@@ -23,7 +23,8 @@ function PostDetails ({
         id,
         title,
         updatedAt,
-        userId
+        userId,
+        viewCount
     } = post;
 
     const { name, picture } = author;
@@ -82,7 +83,9 @@ function PostDetails ({
                     post={post}
                 />
 
-                <div className={styles.viewCount} />
+                <div className={styles.viewCount}>
+                    {viewCount}
+                </div>
             </section>
         </article>
     );

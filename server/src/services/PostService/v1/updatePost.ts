@@ -7,6 +7,7 @@ import PostItem from "#types/post/Item";
 interface Props {
     body?: string;
     title?: string;
+    viewCount?: number;
 }
 
 export default async function (
@@ -19,17 +20,6 @@ export default async function (
         throw new PostError(NOT_FOUND, 404);
     }
 
-    const {
-        body,
-        title
-    } = props;
-
-    const updatedProps = {
-        body,
-        title,
-        updatedAt: new Date()
-    };
-
     const include = [{
         as: "author",
         attributes: ["about", "birthdate", "lastActivityDate", "name", "picture", "totalVoteCount"],
@@ -38,5 +28,5 @@ export default async function (
         tableName: PROFILES
     }];
 
-    return post.updateAttributes(updatedProps, include);
+    return post.updateAttributes(props, include);
 }

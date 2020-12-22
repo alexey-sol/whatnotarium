@@ -17,7 +17,8 @@ function isPostItem (
         updatedAt,
         userId,
         userIdsVotedDown,
-        userIdsVotedUp
+        userIdsVotedUp,
+        viewCount
     } = objectToCheck;
 
     const authorIsValid = (author)
@@ -33,6 +34,7 @@ function isPostItem (
         typeof rating === "number" &&
         typeof title === "string" &&
         typeof userId === "number" &&
+        typeof viewCount === "number" &&
         comments instanceof Array &&
         userIdsVotedDown instanceof Array &&
         userIdsVotedUp instanceof Array

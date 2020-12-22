@@ -1,7 +1,12 @@
 import { HASH_OPTIONS, USERS } from "#utils/const/database/tableNames";
+import { PUBLIC } from "#utils/const/database/schemaNames";
 import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
+    constructor () {
+        super(PUBLIC, "");
+    }
+
     protected getText (): string {
         return `
             CREATE TABLE IF NOT EXISTS "${HASH_OPTIONS}" (
@@ -18,6 +23,8 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                     ON DELETE CASCADE
                     ON UPDATE CASCADE
             );
+
+            CREATE INDEX ON "${HASH_OPTIONS}" ("userId");
         `;
     }
 }

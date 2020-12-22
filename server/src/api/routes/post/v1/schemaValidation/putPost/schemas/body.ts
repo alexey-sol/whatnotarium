@@ -5,5 +5,8 @@ export default Joi.object({
         .string(),
 
     title: Joi
-        .string()
+        .string(),
+
+    viewCount: Joi
+        .number()
 });

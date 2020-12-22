@@ -10,5 +10,6 @@ export const propTypes = {
     history: object.isRequired,
     match: object.isRequired,
     onFetchPostStart: func.isRequired,
+    onUpdatePostStart: func.isRequired,
     post: object
 };

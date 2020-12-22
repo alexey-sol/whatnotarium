@@ -13,6 +13,7 @@ interface Item {
     userId: number;
     userIdsVotedDown: number[];
     userIdsVotedUp: number[];
+    viewCount: number;
 }
 
 export default Item;

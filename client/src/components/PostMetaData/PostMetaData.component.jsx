@@ -12,7 +12,13 @@ import toBase64 from "utils/helpers/toBase64";
 PostMetaData.propTypes = propTypes;
 
 function PostMetaData ({ post }) {
-    const { author, createdAt, id } = post;
+    const {
+        author,
+        createdAt,
+        id,
+        viewCount
+    } = post;
+
     const { name, picture } = author;
 
     const formattedCreatedAt = new DateFormatter(createdAt)
@@ -60,7 +66,9 @@ function PostMetaData ({ post }) {
                     withoutControls
                 />
 
-                <div className={styles.viewCount} />
+                <div className={styles.viewCount}>
+                    {viewCount}
+                </div>
             </section>
         </section>
     );
