@@ -13,6 +13,7 @@ function isPostItem (
         createdAt,
         id,
         rating,
+        status,
         title,
         updatedAt,
         userId,
@@ -32,6 +33,7 @@ function isPostItem (
         typeof body === "string" &&
         typeof id === "number" &&
         typeof rating === "number" &&
+        typeof status === "string" &&
         typeof title === "string" &&
         typeof userId === "number" &&
         typeof viewCount === "number" &&

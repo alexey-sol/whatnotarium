@@ -3,9 +3,11 @@ import { PROFILES } from "#utils/const/database/tableNames";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 import PostItem from "#types/post/Item";
+import Status from "#types/post/Status";
 
 interface Props {
     body?: string;
+    status?: Status;
     title?: string;
     viewCount?: number;
 }
@@ -28,5 +30,14 @@ export default async function (
         tableName: PROFILES
     }];
 
-    return post.updateAttributes(props, include);
+    const shouldRetainUpdatedAt = (
+        (Number.isInteger(props.viewCount) || props.status) &&
+        Object.keys(props).length === 1
+    );
+
+    const options = (shouldRetainUpdatedAt)
+        ? { skipUpdatedAt: true }
+        : undefined;
+
+    return post.updateAttributes(props, include, options);
 }

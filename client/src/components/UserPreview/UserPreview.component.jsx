@@ -61,7 +61,7 @@ function UserPreview ({
             </section>
 
             <section className={styles.about}>
-                About
+                {profile.about}
             </section>
         </article>
     );

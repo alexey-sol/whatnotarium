@@ -1,11 +1,13 @@
-import { func, number, object } from "prop-types";
+import { func, object } from "prop-types";
 
 export const defaultProps = {
-    currentUserId: null
+    currentUser: {}
 };
 
 export const propTypes = {
-    currentUserId: number,
+    currentUser: object,
+    handleClickOnApproveButton: func.isRequired,
     handleClickOnEditButton: func.isRequired,
+    handleClickOnRejectButton: func.isRequired,
     post: object.isRequired
 };

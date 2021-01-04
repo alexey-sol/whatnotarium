@@ -6,13 +6,7 @@ import { withRouter } from "react-router";
 import Paging from "components/Paging";
 import PostPreview from "components/PostPreview";
 import { defaultProps, propTypes } from "./PostList.props";
-
-import {
-    selectCount,
-    selectCurrentPage,
-    selectTotalCount
-} from "redux/postsPaging/postsPaging.selectors";
-
+import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import styles from "./PostList.module.scss";
 
@@ -21,6 +15,7 @@ PostList.propTypes = propTypes;
 
 function PostList ({
     currentPage,
+    location,
     onSetCurrentPage,
     posts,
     postsOnPageCount,
@@ -35,6 +30,8 @@ function PostList ({
         </li>
     ));
 
+    const currentRootPath = location.pathname.split("/").splice(0, 2).join("/");
+
     return (
         <article className={styles.container}>
             {(posts.length > 0)
@@ -45,6 +42,7 @@ function PostList ({
                 <Paging
                     count={postsOnPageCount}
                     currentPage={currentPage}
+                    pathPrefix={currentRootPath}
                     setCurrentPage={onSetCurrentPage}
                     totalRecords={totalCount}
                 />
@@ -55,8 +53,7 @@ function PostList ({
 
 const mapStateToProps = createStructuredSelector({
     currentPage: selectCurrentPage,
-    postsOnPageCount: selectCount,
-    totalCount: selectTotalCount
+    postsOnPageCount: selectCount
 });
 
 const mapDispatchToProps = (dispatch) => ({

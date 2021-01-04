@@ -4,7 +4,7 @@ import { setPaging } from "redux/postsPaging/postsPaging.actions";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import enrichPayload from "utils/redux/enrichPayload";
 
-export const postsNormalizer = () => (next) => (action) => {
+export const normalizer = () => (next) => (action) => {
     const { payload, type } = action;
     const actionWithNormalizedPayload = { ...action };
     const shouldIgnoreAction = payload?.error || !type.startsWith(POSTS_PREFIX);
@@ -24,7 +24,7 @@ export const postsNormalizer = () => (next) => (action) => {
 };
 
 // TODO: posts and users have the same middlewares
-export const postsEnricher = ({ getState }) => (next) => (action) => {
+export const enricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
 
     const shouldIgnoreAction = (
@@ -50,7 +50,7 @@ export const postsEnricher = ({ getState }) => (next) => (action) => {
     next(enrichedAction);
 };
 
-export const postsMapper = ({ dispatch }) => (next) => (action) => {
+export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
 
     const shouldIgnoreAction = ( // TODO: duplicates shouldIgnoreAction in enricher

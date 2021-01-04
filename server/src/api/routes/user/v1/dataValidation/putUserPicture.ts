@@ -1,15 +1,17 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
-import { NOT_FOUND } from "#utils/const/validationErrors";
+import { FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
+import RequestSession from "#utils/helpers/RequestSession";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 
 const putUserPicture: RequestHandler = async (
-    { ip, params },
+    request,
     response,
     next
 ): Promise<void> => {
+    const { ip, params } = request;
     const { id } = params;
 
     try {
@@ -17,6 +19,12 @@ const putUserPicture: RequestHandler = async (
 
         if (!user) {
             throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
+        }
+
+        const session = new RequestSession(request);
+
+        if (!session.isPermittedUser(user.id)) {
+            throw new UserError(FORBIDDEN, status.FORBIDDEN, ip);
         }
 
         next();

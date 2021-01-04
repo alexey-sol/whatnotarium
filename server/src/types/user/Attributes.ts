@@ -7,6 +7,7 @@ interface Attributes {
     email?: string;
     hashOptions?: HashOptions;
     id?: number;
+    isAdmin?: boolean;
     profile?: Profile;
     updatedAt?: Date;
 }

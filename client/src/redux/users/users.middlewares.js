@@ -3,7 +3,7 @@ import { FAILURE_POSTFIX, START_POSTFIX, USERS_PREFIX } from "utils/const/action
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import enrichPayload from "utils/redux/enrichPayload";
 
-export const usersNormalizer = () => (next) => (action) => {
+export const normalizer = () => (next) => (action) => {
     const { payload, type } = action;
     const actionWithNormalizedPayload = { ...action };
     const shouldIgnoreAction = payload?.error || !type.startsWith(USERS_PREFIX);
@@ -22,7 +22,7 @@ export const usersNormalizer = () => (next) => (action) => {
     next(actionWithNormalizedPayload);
 };
 
-export const usersEnricher = ({ getState }) => (next) => (action) => {
+export const enricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
 
     const shouldIgnoreAction = (

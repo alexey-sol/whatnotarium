@@ -13,10 +13,14 @@ PostDetails.defaultProps = defaultProps;
 PostDetails.propTypes = propTypes;
 
 function PostDetails ({
-    currentUserId,
+    currentUser,
+    handleClickOnApproveButton,
     handleClickOnEditButton,
+    handleClickOnRejectButton,
     post
 }) {
+    const { id: currentUserId, isAdmin } = currentUser || {};
+
     const {
         author = {},
         body,
@@ -87,6 +91,21 @@ function PostDetails ({
                     {viewCount}
                 </div>
             </section>
+
+            {isAdmin && (
+                <section className={styles.adminControls}>
+                    <BaseButton
+                        onClick={handleClickOnApproveButton}
+                        text="Approve"
+                    />
+
+                    <BaseButton
+                        onClick={handleClickOnRejectButton}
+                        text="Reject"
+                        theme="dark"
+                    />
+                </section>
+            )}
         </article>
     );
 }

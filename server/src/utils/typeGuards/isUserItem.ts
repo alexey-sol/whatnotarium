@@ -11,6 +11,7 @@ function isUserItem (
         createdAt,
         email,
         id,
+        isAdmin,
         hashOptions,
         profile,
         updatedAt
@@ -29,6 +30,7 @@ function isUserItem (
         updatedAt instanceof Date &&
         typeof email === "string" &&
         typeof id === "number" &&
+        typeof isAdmin === "boolean" &&
         hashOptionsIsValidIfPassed &&
         profileIsValidIfPassed
     );

@@ -8,10 +8,11 @@ import {
     POST,
     PROFILE,
     SIGN_IN,
+    UNAPPROVED_POSTS,
     USERS
 } from "utils/const/pathnames";
 
-import { PrivateRoute } from "components/Route";
+import { AdminRoute, PrivateRoute } from "components/Route";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
 import Header from "components/Header";
@@ -28,6 +29,7 @@ const Page404 = lazy(() => import("pages/Page404"));
 const Post = lazy(() => import("pages/Post"));
 const Profile = lazy(() => import("pages/Profile"));
 const SignIn = lazy(() => import("pages/SignIn"));
+const UnapprovedPosts = lazy(() => import("pages/UnapprovedPosts"));
 const Users = lazy(() => import("pages/Users"));
 
 App.propTypes = propTypes;
@@ -67,6 +69,16 @@ export function App ({ onCheckSessionStart }) {
                                 path={`/${PROFILE}`}
                             />
 
+                            <Route
+                                component={Post}
+                                path={`/${POST}/:id`}
+                            />
+
+                            <Route
+                                component={Users}
+                                path={`/${USERS}`}
+                            />
+
                             <PrivateRoute
                                 component={Draft}
                                 path={`/${DRAFT}`}
@@ -77,14 +89,14 @@ export function App ({ onCheckSessionStart }) {
                                 path={`/${POST}/:id/${EDIT}`}
                             />
 
-                            <Route
-                                component={Post}
-                                path={`/${POST}/:id`}
+                            <AdminRoute
+                                component={UnapprovedPosts}
+                                path={`/${UNAPPROVED_POSTS}`}
                             />
 
-                            <Route
-                                component={Users}
-                                path={`/${USERS}`}
+                            <AdminRoute
+                                component={UnapprovedPosts}
+                                path={`/${UNAPPROVED_POSTS}/page:number`}
                             />
 
                             <Route component={Page404} />

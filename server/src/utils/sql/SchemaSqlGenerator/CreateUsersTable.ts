@@ -12,6 +12,7 @@ class CreateUsersTable extends SchemaSqlGenerator<unknown> {
             CREATE TABLE IF NOT EXISTS "${USERS}" (
                 "id" SERIAL PRIMARY KEY,
                 "email" VARCHAR(255) UNIQUE NOT NULL,
+                "isAdmin" BOOLEAN DEFAULT FALSE NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL
             );

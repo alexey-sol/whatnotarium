@@ -12,9 +12,9 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
         return `
             CREATE OR REPLACE VIEW "${FULL_USERS_VIEW}" AS
             SELECT
-                u."id", u."email", u."createdAt", u."updatedAt", p."name", p."picture",
-                p."birthdate", p."about", p."totalVoteCount", p."lastActivityDate", ho."hash",
-                ho."salt", ho."digest", ho."iterations", ho."keyLength"
+                u."id", u."email", u."isAdmin", u."createdAt", u."updatedAt", p."name",
+                p."picture", p."birthdate", p."about", p."totalVoteCount", p."lastActivityDate",
+                ho."hash", ho."salt", ho."digest", ho."iterations", ho."keyLength"
             FROM "${USERS}" AS u
             INNER JOIN "${PROFILES}" AS p ON u."id" = p."userId"
             INNER JOIN "${HASH_OPTIONS}" AS ho ON u."id" = ho."userId";

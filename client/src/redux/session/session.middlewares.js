@@ -3,7 +3,7 @@ import * as usersTypes from "redux/users/users.types";
 import { setCurrentUser } from "redux/session/session.actions";
 import { setUser } from "redux/users/users.actions";
 
-export const sessionMapper = ({ dispatch }) => (next) => (action) => {
+export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
     const shouldIgnoreAction = payload?.error;
 

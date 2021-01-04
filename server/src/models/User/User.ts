@@ -32,7 +32,6 @@ import UserProfile from "#types/UserProfile";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserItem from "#utils/typeGuards/isUserItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
-import {log} from "winston";
 
 class User implements Model<DataOnUpdate, User> {
     static tableName = USERS;
@@ -42,6 +41,7 @@ class User implements Model<DataOnUpdate, User> {
     email: string;
     hashOptions?: UserHashOptions;
     id: number;
+    isAdmin: boolean;
     profile?: UserProfile;
     updatedAt: Date;
 
@@ -50,6 +50,7 @@ class User implements Model<DataOnUpdate, User> {
         this.createdAt = props.createdAt;
         this.email = props.email;
         this.id = props.id;
+        this.isAdmin = props.isAdmin;
         this.updatedAt = props.updatedAt;
 
         if (props.hashOptions) {
@@ -75,7 +76,7 @@ class User implements Model<DataOnUpdate, User> {
         const record = await createRecord<DataOnCreate, Item>(
             FULL_USERS_VIEW,
             props,
-            ["id", "email", "createdAt", "updatedAt"]
+            ["id", "email", "isAdmin", "createdAt", "updatedAt"]
         );
 
         return (include)
@@ -156,7 +157,7 @@ class User implements Model<DataOnUpdate, User> {
             FULL_USERS_VIEW,
             this.id,
             updatedProps,
-            ["id", "email", "createdAt", "updatedAt"]
+            ["id", "email", "isAdmin", "createdAt", "updatedAt"]
         );
 
         return (include)

@@ -3,7 +3,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { USERS } from "utils/const/pathnames";
+import { UNAPPROVED_POSTS, USERS } from "utils/const/pathnames";
 import WritePostTab from "components/WritePostTab";
 import { defaultProps, propTypes } from "./NavbarList.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -14,12 +14,24 @@ Navbar.propTypes = propTypes;
 
 function Navbar ({ currentUser, onClose }) {
     const userIsAuthed = Boolean(currentUser);
+    const { isAdmin } = currentUser || {};
 
     return (
         <ul className={styles.container} onClick={onClose}>
-            {userIsAuthed && (
+            {userIsAuthed && !isAdmin && (
                 <li className={styles.item}>
                     <WritePostTab classNameProminent={styles.prominentItem} />
+                </li>
+            )}
+
+            {isAdmin && (
+                <li className={styles.item}>
+                    <Link
+                        title="Статьи на проверку"
+                        to={`/${UNAPPROVED_POSTS}`}
+                    >
+                        Статьи на проверку
+                    </Link>
                 </li>
             )}
 

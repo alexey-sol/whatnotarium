@@ -1,6 +1,5 @@
 import { $ilike, $or } from "#utils/const/database/modelOperators";
 import { PROFILES } from "#utils/const/database/tableNames";
-import Attributes from "#types/user/Attributes";
 import FetchedList from "#types/FetchedList";
 import User from "#models/User";
 import UserItem from "#types/user/Item";
@@ -24,11 +23,12 @@ export default async function (
     };
 
     const where = {
+        about: `%${searchTerm}%`,
         name: `%${searchTerm}%`
-        // TODO: search by about?
-    } as Attributes;
+    };
 
-    const items = await User.findAll({ include, operators, where });
+    const rawItems = await User.findAll({ include, operators, where });
+    const items = rawItems.filter(({ isAdmin }) => !isAdmin);
     const totalCount = items.length;
 
     return { items, totalCount };

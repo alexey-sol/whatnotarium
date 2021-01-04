@@ -7,8 +7,8 @@ import UserList from "components/UserList";
 import WithSpinner from "components/WithSpinner";
 import { defaultProps, propTypes } from "./Users.props";
 import { fetchUsersStart } from "redux/users/users.actions";
-import { selectCount, selectCurrentPage } from "redux/usersPaging/usersPaging.selectors";
 import { selectUsers } from "redux/users/users.selectors";
+import { selectCount, selectCurrentPage } from "redux/usersPaging/usersPaging.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 
 Users.defaultProps = defaultProps;

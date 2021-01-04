@@ -15,14 +15,16 @@ class Count<InputType> extends ModelSqlGenerator<InputType> {
         return {
             name: this.queryName,
             text: this.getText(filter),
-            values: this.getValues()
+            values: this.getValues(filter?.where)
         };
     }
 
     protected getText (
         filter: DbQueryFilter<InputType> = {}
     ): string {
-        const { groupBy } = filter;
+        const { groupBy, where } = filter;
+        const attributes = Object.keys(where || {});
+        const whereAttributesElement = this.createWhereAttributesClause(attributes);
 
         const groupByElement = (groupBy)
             ? `GROUP BY "${groupBy}"`
@@ -31,6 +33,7 @@ class Count<InputType> extends ModelSqlGenerator<InputType> {
         return `
             SELECT COUNT(*)
             FROM "${this.tableName}"
+            ${whereAttributesElement}
             ${groupByElement};
         `;
     }

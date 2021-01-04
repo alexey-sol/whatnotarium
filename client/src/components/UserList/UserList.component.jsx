@@ -3,16 +3,10 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router";
 
-import { defaultProps, propTypes } from "./UserList.props";
 import Paging from "components/Paging";
 import UserPreview from "components/UserPreview";
-
-import {
-    selectCount,
-    selectCurrentPage,
-    selectTotalCount
-} from "redux/usersPaging/usersPaging.selectors";
-
+import { defaultProps, propTypes } from "./UserList.props";
+import { selectCount, selectCurrentPage } from "redux/usersPaging/usersPaging.selectors";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
 import styles from "./UserList.module.scss";
 
@@ -23,8 +17,7 @@ function UserList ({
     currentPage,
     onSetCurrentPage,
     users,
-    usersOnPageCount,
-    totalCount
+    usersOnPageCount
 }) {
     const userElems = users.map(user => (
         <li
@@ -46,7 +39,7 @@ function UserList ({
                     count={usersOnPageCount}
                     currentPage={currentPage}
                     setCurrentPage={onSetCurrentPage}
-                    totalRecords={totalCount}
+                    totalRecords={users.length}
                 />
             </div>
         </article>
@@ -55,8 +48,7 @@ function UserList ({
 
 const mapStateToProps = createStructuredSelector({
     currentPage: selectCurrentPage,
-    usersOnPageCount: selectCount,
-    totalCount: selectTotalCount
+    usersOnPageCount: selectCount
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4,8 +4,8 @@ import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router";
 
 import { CancelIconButton } from "../IconButton";
-import { propTypes } from "./SearchUserInput.props";
 import { fetchUsersStart, searchUsersStart } from "redux/users/users.actions";
+import { propTypes } from "./SearchUserInput.props";
 import { selectCount } from "redux/usersPaging/usersPaging.selectors";
 import styles from "./SearchUserInput.module.scss";
 
@@ -53,7 +53,7 @@ function SearchUserInput ({
                 maxLength={100}
                 name="searchTerm"
                 onChange={handleChange}
-                placeholder="Найти автора по имени"
+                placeholder={"Найти автора по имени или по полю о \"себе\""}
                 value={searchTerm}
             />
 

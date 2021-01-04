@@ -7,7 +7,7 @@ import { addActionToPendingApi, removeActionFromPendingApi, showNotification } f
 import removePostfix from "utils/redux/removePostfixFromActionType";
 import translateError from "utils/helpers/translateError";
 
-export const uiMapper = ({ dispatch }) => (next) => (action) => {
+export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
     const shouldShowError = Boolean(payload?.error);
 

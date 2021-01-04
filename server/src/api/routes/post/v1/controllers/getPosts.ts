@@ -11,7 +11,7 @@ const getPosts: RequestHandler = async (
     next
 ): Promise<void> => {
     const { count, page } = query;
-    const filter = convertPagingOptsToFilter<Attributes>(query);
+    const filter = convertPagingOptsToFilter<Attributes>({ ...query });
 
     PostService.findPosts(filter)
         .then(posts => sendResponse(response, { ...posts, count, page })) // TODO: impl this in getUsers as well

@@ -167,7 +167,7 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
         return `RETURNING ${fields}`;
     }
 
-    protected getValues (input: InputType): string[];
+    protected getValues (input?: InputType): string[];
     protected getValues (input?: unknown[]): string[];
     protected getValues (input?: unknown): string[] {
         const id = this.recordId;

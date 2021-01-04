@@ -26,6 +26,6 @@ export default async function (
 
     return {
         items: await Post.findAll(updatedFilter),
-        totalCount: await Post.count()
+        totalCount: await Post.count({ where: filter.where })
     };
 }

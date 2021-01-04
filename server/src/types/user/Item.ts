@@ -7,6 +7,7 @@ interface Item {
     email: string;
     hashOptions?: HashOptions;
     id: number;
+    isAdmin: boolean;
     profile?: Profile;
     updatedAt: Date;
 }

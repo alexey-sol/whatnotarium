@@ -2,13 +2,20 @@ import { Link } from "react-router-dom";
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
+import { APPROVED } from "utils/const/postStatuses";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/PostList";
 import Spinner from "components/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
-import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
+
+import {
+    selectCount,
+    selectCurrentPage,
+    selectTotalCount
+} from "redux/postsPaging/postsPaging.selectors";
+
 import { selectPosts } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import pubsub from "utils/pubsub";
@@ -24,7 +31,8 @@ function Home ({
     match,
     onFetchPostsStart,
     posts,
-    postsOnPageCount
+    postsOnPageCount,
+    totalCount
 }) {
     const locationKey = location.key;
     const pageNumber = match.params.number || currentPostsPage;
@@ -42,7 +50,8 @@ function Home ({
     useEffect(() => {
         onFetchPostsStart({
             count: postsOnPageCount,
-            page: pageNumber
+            page: pageNumber,
+            where: { status: APPROVED }
         });
     }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount]);
 
@@ -63,7 +72,7 @@ function Home ({
                 </div>
             )}
 
-            <PostList posts={posts} />
+            <PostList posts={posts} totalCount={totalCount} />
         </Fragment>
     );
 }
@@ -73,7 +82,8 @@ const mapStateToProps = () => {
         currentPostsPage: selectCurrentPage(state),
         isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX })),
         posts: selectPosts(state),
-        postsOnPageCount: selectCount(state)
+        postsOnPageCount: selectCount(state),
+        totalCount: selectTotalCount(state)
     });
 };
 

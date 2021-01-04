@@ -4,10 +4,11 @@ import createSagaMiddleware from "redux-saga";
 import logger from "redux-logger";
 
 import { DEVELOPMENT } from "utils/const/nodeEnv";
-import { postsEnricher, postsMapper, postsNormalizer } from "./posts/posts.middlewares";
-import { sessionMapper } from "redux/session/session.middlewares";
-import { uiMapper } from "./ui/ui.middlewares";
-import { usersEnricher, usersNormalizer } from "./users/users.middlewares";
+import * as admin from "./admin/admin.middlewares";
+import * as posts from "./posts/posts.middlewares";
+import * as session from "./session/session.middlewares";
+import * as ui from "./ui/ui.middlewares";
+import * as users from "./users/users.middlewares";
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
 
@@ -16,13 +17,14 @@ const isDevelopment = process.env.NODE_ENV === DEVELOPMENT;
 
 const middlewares = [
     sagaMiddleware,
-    sessionMapper,
-    uiMapper,
-    usersNormalizer,
-    usersEnricher,
-    postsNormalizer,
-    postsEnricher,
-    postsMapper
+    session.mapper,
+    ui.mapper,
+    users.normalizer,
+    users.enricher,
+    posts.normalizer,
+    posts.enricher,
+    posts.mapper,
+    admin.mapper
 ];
 
 if (isDevelopment) {

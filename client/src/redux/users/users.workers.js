@@ -30,6 +30,7 @@ export function * doSearchUsers ({ cb, payload }) {
     try {
         const itemsWithPagingOpts = yield api.searchUsers(payload);
         yield put(actions.searchUsersSuccess(itemsWithPagingOpts));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.searchUsersFailure(error));

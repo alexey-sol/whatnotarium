@@ -28,6 +28,7 @@ import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
 import PostVote from "#types/PostVote";
 import Profile from "#types/UserProfile";
+import Status from "#types/post/Status";
 import VoteUpdate from "#types/VoteUpdate";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isPostItem from "#utils/typeGuards/isPostItem";
@@ -36,12 +37,13 @@ import separateIncludedAttributes from "#utils/helpers/separateIncludedAttribute
 class Post implements Model<Attributes, Post> {
     static tableName = POSTS;
 
-    author?: Profile;
+    author: Profile;
     body: string;
     comments: Comment[];
     createdAt: Date;
     id: number;
     rating: number;
+    status: Status;
     title: string;
     updatedAt: Date;
     userId: number;
@@ -50,21 +52,19 @@ class Post implements Model<Attributes, Post> {
     viewCount: number;
 
     private constructor (props: Item) {
+        this.author = props.author;
         this.body = props.body;
         this.comments = props.comments;
         this.createdAt = props.createdAt;
         this.id = props.id;
         this.rating = props.rating;
+        this.status = props.status;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;
         this.userIdsVotedDown = props.userIdsVotedDown;
         this.userIdsVotedUp = props.userIdsVotedUp;
         this.viewCount = props.viewCount;
-
-        if (props.author) {
-            this.author = props.author;
-        }
     }
 
     static async up (): Promise<void> {
@@ -147,12 +147,14 @@ class Post implements Model<Attributes, Post> {
 
     async updateAttributes (
         props: Attributes,
-        include?: Include[]
+        include?: Include[],
+        options?: { skipUpdatedAt?: boolean }
     ): Promise<Post> | never {
-        const updatedProps = {
-            ...props,
-            updatedAt: new Date()
-        };
+        const updatedProps = { ...props };
+
+        if (!options?.skipUpdatedAt) {
+            updatedProps.updatedAt = new Date();
+        }
 
         const record = await updateRecordAttributes<Attributes, Item>(
             POSTS,

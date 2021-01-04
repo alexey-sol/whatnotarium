@@ -17,16 +17,23 @@ class RequestSession {
         if (session) {
             session.user = {};
             session.user.id = user.id;
+            session.user.isAdmin = user.isAdmin;
         }
+    }
+
+    isAdmin (): boolean {
+        const { session } = this.request;
+        return session?.user?.isAdmin;
     }
 
     isAuthed (): boolean {
         const { session, cookies } = this.request;
+        return Boolean(session?.user && cookies?.[this.sessionName]);
+    }
 
-        return Boolean(
-            session?.user &&
-            cookies?.[this.sessionName]
-        );
+    isPermittedUser (userId: number): boolean {
+        const sessionUser = this.getUserFromSession();
+        return userId === sessionUser?.id;
     }
 
     cookieExistsButHasNoUser (): boolean {
