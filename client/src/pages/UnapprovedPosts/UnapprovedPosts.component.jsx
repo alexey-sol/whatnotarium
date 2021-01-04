@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { matchPath } from "react-router";
 
-import { NOT_APPROVED } from "utils/const/postStatuses";
+import * as p from "utils/const/pathnames";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import PostList from "components/PostList";
 import Spinner from "components/Spinner";
@@ -17,6 +18,7 @@ import {
 
 import { selectPosts } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
+import getPathPrefix from "utils/helpers/getPathPrefix";
 import styles from "./UnapprovedPosts.module.scss";
 
 UnapprovedPosts.defaultProps = defaultProps;
@@ -26,21 +28,27 @@ function UnapprovedPosts ({
     currentPostsPage,
     isPending,
     location,
-    match,
     onFetchPostsStart,
     posts,
     postsOnPageCount,
     totalCount
 }) {
-    const locationKey = location.key;
-    const pageNumber = match.params.number || currentPostsPage;
     const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
+
+    const match = matchPath(location.pathname, {
+        path: `/${p.UNAPPROVED_POSTS}/page:number`,
+        exact: true,
+        strict: false
+    });
+
+    const locationKey = location.key;
+    const pageNumber = match?.params.number || currentPostsPage;
 
     useEffect(() => {
         onFetchPostsStart({
             count: postsOnPageCount,
             page: pageNumber,
-            where: { status: NOT_APPROVED }
+            where: { isApproved: false }
         });
     }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount]);
 
@@ -61,7 +69,12 @@ function UnapprovedPosts ({
                 </div>
             )}
 
-            <PostList posts={posts} totalCount={totalCount} />
+            <PostList
+                currentPage={+pageNumber}
+                pathPrefix={getPathPrefix(location.pathname)}
+                posts={posts}
+                totalCount={totalCount}
+            />
         </Fragment>
     );
 }

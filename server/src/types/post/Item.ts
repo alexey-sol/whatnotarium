@@ -1,6 +1,5 @@
 import Comment from "#types/Comment";
 import Profile from "#types/UserProfile";
-import Status from "#types/post/Status";
 
 interface Item {
     author: Profile;
@@ -8,7 +7,7 @@ interface Item {
     comments: Comment[];
     createdAt: Date;
     id: number;
-    status: Status;
+    isApproved: boolean;
     rating: number;
     title: string;
     updatedAt: Date;

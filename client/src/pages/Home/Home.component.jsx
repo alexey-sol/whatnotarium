@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { APPROVED } from "utils/const/postStatuses";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/PostList";
@@ -51,7 +50,7 @@ function Home ({
         onFetchPostsStart({
             count: postsOnPageCount,
             page: pageNumber,
-            where: { status: APPROVED }
+            where: { isApproved: true }
         });
     }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount]);
 
@@ -72,7 +71,11 @@ function Home ({
                 </div>
             )}
 
-            <PostList posts={posts} totalCount={totalCount} />
+            <PostList
+                currentPage={+pageNumber}
+                posts={posts}
+                totalCount={totalCount}
+            />
         </Fragment>
     );
 }

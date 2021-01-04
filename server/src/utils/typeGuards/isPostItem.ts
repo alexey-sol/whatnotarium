@@ -12,8 +12,8 @@ function isPostItem (
         comments,
         createdAt,
         id,
+        isApproved,
         rating,
-        status,
         title,
         updatedAt,
         userId,
@@ -32,8 +32,8 @@ function isPostItem (
         authorIsValid &&
         typeof body === "string" &&
         typeof id === "number" &&
+        typeof isApproved === "boolean" &&
         typeof rating === "number" &&
-        typeof status === "string" &&
         typeof title === "string" &&
         typeof userId === "number" &&
         typeof viewCount === "number" &&

@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import { DEFAULT_POST_VIEW_INCREMENT } from "utils/const/defaultValues";
-import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "../../utils/const/notificationProps";
+import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { POST, UNAPPROVED_POSTS } from "utils/const/pathnames";
+import Notification from "utils/objects/Notification";
 import PostDetails from "./PostDetails.component";
 import { approvePostStart, rejectPostStart } from "redux/admin/admin.actions";
 import { defaultProps, propTypes } from "./PostDetails.container.props";
@@ -12,8 +13,7 @@ import { fetchPostStart, updatePostStart } from "redux/posts/posts.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
 import { showNotification } from "redux/ui/ui.actions";
-import Notification from "../../utils/objects/Notification";
-import phrases from "../../utils/resources/text/ru/commonPhrases";
+import phrases from "utils/resources/text/ru/commonPhrases";
 
 const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 

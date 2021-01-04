@@ -4,7 +4,7 @@ export default Joi.object({
     body: Joi
         .string(),
 
-    status: Joi
+    isApproved: Joi
         .any()
         .forbidden(),
 

@@ -101,7 +101,7 @@ function DraftEditorContainer ({
 const mapStateToProps = () => {
     return (state, ownProps) => ({
         currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, POSTS_PREFIX)),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX })),
         post: selectPostById(state, +ownProps.match.params.id)
     });
 };

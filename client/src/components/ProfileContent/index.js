@@ -1,1 +1,1 @@
-export { default } from "./ProfileContent.container";
+export { default } from "./ProfileContent.component";

@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import { SIGN_IN } from "utils/const/pathnames";
 import { defaultProps, propTypes } from "./Route.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 
 AdminRoute.defaultProps = defaultProps;
 AdminRoute.propTypes = propTypes;
@@ -13,9 +13,12 @@ AdminRoute.propTypes = propTypes;
 function AdminRoute ({
     component: Component,
     currentUser,
+    sessionError,
     ...rest
 }) {
-    const renderComponent = (props) => (currentUser?.isAdmin)
+    const shouldRenderComponent = !sessionError || currentUser?.isAdmin;
+
+    const renderComponent = (props) => (shouldRenderComponent)
         ? <Component {...props} />
         : <Redirect to={`/${SIGN_IN}`} />;
 
@@ -27,12 +30,13 @@ function AdminRoute ({
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
+const mapStateToProps = () => createStructuredSelector({
+    currentUser: selectCurrentUser,
+    sessionError: selectError
 });
 
-const ConnectedPrivateRoute = connect(
+const ConnectedAdminRoute = connect(
     mapStateToProps
 )(AdminRoute);
 
-export default ConnectedPrivateRoute;
+export default ConnectedAdminRoute;

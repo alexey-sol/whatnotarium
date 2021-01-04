@@ -47,7 +47,7 @@ function Users ({
 const mapStateToProps = () => {
     return (state) => ({
         currentUsersPage: selectCurrentPage(state),
-        isPending: Boolean(selectRelevantPendingAction(state, USERS_PREFIX)),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
         users: selectUsers(state),
         usersOnPageCount: selectCount(state)
     });

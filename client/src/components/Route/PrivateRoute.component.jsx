@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import { SIGN_IN } from "utils/const/pathnames";
 import { defaultProps, propTypes } from "./Route.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 
 PrivateRoute.defaultProps = defaultProps;
 PrivateRoute.propTypes = propTypes;
@@ -13,9 +13,12 @@ PrivateRoute.propTypes = propTypes;
 function PrivateRoute ({
     component: Component,
     currentUser,
+    sessionError,
     ...rest
 }) {
-    const renderComponent = (props) => (currentUser)
+    const shouldRenderComponent = !sessionError || currentUser;
+
+    const renderComponent = (props) => (shouldRenderComponent)
         ? <Component {...props} />
         : <Redirect to={`/${SIGN_IN}`} />;
 
@@ -27,8 +30,9 @@ function PrivateRoute ({
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser
+const mapStateToProps = () => createStructuredSelector({
+    currentUser: selectCurrentUser,
+    sessionError: selectError
 });
 
 const ConnectedPrivateRoute = connect(

@@ -1,5 +1,4 @@
 import { $ilike, $or } from "#utils/const/database/modelOperators";
-import { APPROVED } from "#utils/const/postStatuses";
 import { PROFILES } from "#utils/const/database/tableNames";
 import FetchedList from "#types/FetchedList";
 import Post from "#models/Post";
@@ -35,7 +34,7 @@ export default async function (
     // difficult to revamp the SQL generator.
 
     const rawItems = await Post.findAll({ include, operators, where });
-    const items = rawItems.filter(({ status }) => status === APPROVED);
+    const items = rawItems.filter(({ isApproved }) => isApproved);
     const totalCount = items.length;
 
     return { items, totalCount };

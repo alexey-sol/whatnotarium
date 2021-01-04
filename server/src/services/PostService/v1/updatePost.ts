@@ -3,11 +3,10 @@ import { PROFILES } from "#utils/const/database/tableNames";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 import PostItem from "#types/post/Item";
-import Status from "#types/post/Status";
 
 interface Props {
     body?: string;
-    status?: Status;
+    isApproved?: boolean;
     title?: string;
     viewCount?: number;
 }
@@ -31,7 +30,7 @@ export default async function (
     }];
 
     const shouldRetainUpdatedAt = (
-        (Number.isInteger(props.viewCount) || props.status) &&
+        (Number.isInteger(props.viewCount) || typeof props.isApproved === "boolean") &&
         Object.keys(props).length === 1
     );
 

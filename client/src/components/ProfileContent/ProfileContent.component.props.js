@@ -1,5 +1,22 @@
-import { object } from "prop-types";
+import {
+    arrayOf,
+    bool,
+    node,
+    oneOfType,
+    string
+} from "prop-types";
+
+export const defaultProps = {
+    activeTabName: "",
+    children: null,
+    isPending: false
+};
 
 export const propTypes = {
-    currentUser: object.isRequired
+    activeTabName: string,
+    children: oneOfType([
+        arrayOf(node),
+        node
+    ]),
+    isPending: bool
 };

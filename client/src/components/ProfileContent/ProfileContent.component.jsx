@@ -1,59 +1,61 @@
-import React, { useState } from "react";
+import React from "react";
+import { connect } from "react-redux";
 import classnames from "classnames";
 
-import Activity from "./components/Activity";
-import MyArticles from "./components/MyArticles";
-import MyNotes from "./components/MyNotes";
-import Settings from "./components/Settings";
-import { propTypes } from "./ProfileContent.component.props";
+import * as p from "utils/const/pathnames";
+import { ACTIVITY, MY_POSTS, SETTINGS } from "utils/const/profileTabNames";
+import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
+import CustomLink from "components/CustomLink";
+import Spinner from "components/Spinner";
+import { defaultProps, propTypes } from "./ProfileContent.component.props";
+import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import styles from "./ProfileContent.module.scss";
 
-const tabNames = [
-    "Активность",
-    "Мои статьи",
-    "Мои заметки",
-    "Настройки"
-];
-
 ProfileContent.propTypes = propTypes;
+ProfileContent.defaultProps = defaultProps;
 
-function ProfileContent ({ currentUser }) {
-    const [currentTab, setCurrentTab] = useState(tabNames[0]);
-
-    const tabs = tabNames.map((tabName, index) => (
+function ProfileContent ({ activeTabName, children, isPending }) {
+    const renderTab = (tabName, path) => (
         <li
             className={classnames(
                 styles.tab,
-                (tabName === currentTab) ? styles.active : ""
+                (tabName === activeTabName) ? styles.active : ""
             )}
-            key={index} // eslint-disable-line
-            onClick={() => setCurrentTab(tabName)}
+            key={path}
         >
-            <span className={styles.tabTitle}>
+            <CustomLink to={path}>
                 {tabName}
-            </span>
+            </CustomLink>
         </li>
-    ));
-
-    const activityIsSelected = currentTab === tabNames[0];
-    const myArticlesIsSelected = currentTab === tabNames[1];
-    const myNotesIsSelected = currentTab === tabNames[2];
-    const settingsIsSelected = currentTab === tabNames[3];
+    );
 
     return (
         <div className={styles.container}>
             <ul className={styles.tabsList}>
-                {tabs}
+                {renderTab(ACTIVITY, `/${p.PROFILE}/${p.ACTIVITY}`)}
+                {renderTab(MY_POSTS, `/${p.PROFILE}/${p.MY_POSTS}`)}
+                {renderTab(SETTINGS, `/${p.PROFILE}/${p.SETTINGS}`)}
             </ul>
 
             <div className={styles.tabContent}>
-                {activityIsSelected && <Activity />}
-                {myArticlesIsSelected && <MyArticles currentUser={currentUser} />}
-                {myNotesIsSelected && <MyNotes />}
-                {settingsIsSelected && <Settings />}
+                {(isPending)
+                    ? <Spinner />
+                    : children}
             </div>
         </div>
     );
 }
 
-export default ProfileContent;
+const mapStateToProps = () => {
+    return (state) => ({
+        currentUser: selectCurrentUser(state),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX }))
+    });
+};
+
+const ConnectedProfileContent = connect(
+    mapStateToProps
+)(ProfileContent);
+
+export default ConnectedProfileContent;

@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import React, { useCallback } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import { ABOUT, EMAIL, NAME } from "utils/const/userData";
@@ -7,8 +7,8 @@ import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
-import FormInput from "../FormInput";
-import FormTextarea from "../FormTextarea";
+import FormInput from "components/FormInput";
+import FormTextarea from "components/FormTextarea";
 import Notification from "utils/objects/Notification";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -32,6 +32,10 @@ function ProfileDataForm ({
     onShowNotification,
     onUpdateUserStart
 }) {
+    if (!currentUser) {
+        return null;
+    }
+
     const initialValues = {
         about: currentUser.profile.about,
         email: currentUser.email,
@@ -39,9 +43,7 @@ function ProfileDataForm ({
         name: currentUser.profile.name
     };
 
-    const showSuccess = useCallback(() => {
-        onShowNotification(successNotification);
-    }, [onShowNotification]);
+    const showSuccess = () => onShowNotification(successNotification);
 
     const handleChangeWrapper = (event, cb) => {
         if (notification) {
@@ -96,7 +98,7 @@ function ProfileDataForm ({
 const mapStateToProps = () => {
     return (state) => ({
         currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, USERS_PREFIX)),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
         notification: selectNotification(state)
     });
 };

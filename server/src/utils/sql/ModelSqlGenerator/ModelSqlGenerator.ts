@@ -130,10 +130,7 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
                 const { attributes: attributesToInclude, tableName } = includeItem;
 
                 attributesToInclude.forEach(attribute => {
-                    allAttributesFromInclude.push({
-                        attribute,
-                        tableName
-                    });
+                    allAttributesFromInclude.push({ attribute, tableName });
                 });
             });
         }

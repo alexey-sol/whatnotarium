@@ -1,25 +1,26 @@
 import {
     array,
-    bool,
     func,
-    number
+    number,
+    object
 } from "prop-types";
 
 import { DEFAULT_PAGING_COUNT } from "utils/const/defaultValues";
 
 export const defaultProps = {
     currentPostsPage: 1,
-    isPending: false,
+    currentUser: null,
+    posts: [],
     postsOnPageCount: DEFAULT_PAGING_COUNT,
-    totalCount: 0,
-    userPosts: []
+    totalCount: 0
 };
 
 export const propTypes = {
     currentPostsPage: number,
-    isPending: bool,
+    currentUser: object,
+    location: object.isRequired,
     onFetchPostsStart: func.isRequired,
+    posts: array,
     postsOnPageCount: number,
-    totalCount: number,
-    userPosts: array
+    totalCount: number
 };

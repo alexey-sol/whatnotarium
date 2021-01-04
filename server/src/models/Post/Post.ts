@@ -28,7 +28,6 @@ import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
 import PostVote from "#types/PostVote";
 import Profile from "#types/UserProfile";
-import Status from "#types/post/Status";
 import VoteUpdate from "#types/VoteUpdate";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isPostItem from "#utils/typeGuards/isPostItem";
@@ -42,8 +41,8 @@ class Post implements Model<Attributes, Post> {
     comments: Comment[];
     createdAt: Date;
     id: number;
+    isApproved: boolean;
     rating: number;
-    status: Status;
     title: string;
     updatedAt: Date;
     userId: number;
@@ -57,8 +56,8 @@ class Post implements Model<Attributes, Post> {
         this.comments = props.comments;
         this.createdAt = props.createdAt;
         this.id = props.id;
+        this.isApproved = props.isApproved;
         this.rating = props.rating;
-        this.status = props.status;
         this.title = props.title;
         this.updatedAt = props.updatedAt;
         this.userId = props.userId;

@@ -1,12 +1,10 @@
 import superagent from "superagent";
 
-import { APPROVED } from "utils/const/postStatuses";
-
 async function approvePost ({ id }) {
     const response = await superagent
         .put(`/api/v1/admin/posts/${id}`)
         .set("Content-Type", "application/json")
-        .send({ status: APPROVED });
+        .send({ isApproved: true });
 
     return response?.body;
 }

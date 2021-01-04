@@ -2,16 +2,7 @@ import { Route, Switch } from "react-router-dom";
 import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
 
-import {
-    DRAFT,
-    EDIT,
-    POST,
-    PROFILE,
-    SIGN_IN,
-    UNAPPROVED_POSTS,
-    USERS
-} from "utils/const/pathnames";
-
+import * as p from "utils/const/pathnames";
 import { AdminRoute, PrivateRoute } from "components/Route";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
@@ -27,7 +18,9 @@ const Draft = lazy(() => import("pages/Draft"));
 const Home = lazy(() => import("pages/Home"));
 const Page404 = lazy(() => import("pages/Page404"));
 const Post = lazy(() => import("pages/Post"));
-const Profile = lazy(() => import("pages/Profile"));
+const ProfileActivity = lazy(() => import("pages/Profile/Activity"));
+const ProfileMyPosts = lazy(() => import("pages/Profile/MyPosts"));
+const ProfileSettings = lazy(() => import("pages/Profile/Settings"));
 const SignIn = lazy(() => import("pages/SignIn"));
 const UnapprovedPosts = lazy(() => import("pages/UnapprovedPosts"));
 const Users = lazy(() => import("pages/Users"));
@@ -61,42 +54,57 @@ export function App ({ onCheckSessionStart }) {
 
                             <Route
                                 component={SignIn}
-                                path={`/${SIGN_IN}`}
+                                path={`/${p.SIGN_IN}`}
                             />
 
                             <PrivateRoute
-                                component={Profile}
-                                path={`/${PROFILE}`}
+                                component={ProfileActivity}
+                                path={`/${p.PROFILE}/${p.ACTIVITY}`}
+                            />
+
+                            <PrivateRoute
+                                component={ProfileMyPosts}
+                                path={`/${p.PROFILE}/${p.MY_POSTS}`}
+                            />
+
+                            <PrivateRoute
+                                component={ProfileMyPosts}
+                                path={`/${p.PROFILE}/${p.MY_POSTS}/page:number`}
+                            />
+
+                            <PrivateRoute
+                                component={ProfileSettings}
+                                path={`/${p.PROFILE}/${p.SETTINGS}`}
                             />
 
                             <Route
                                 component={Post}
-                                path={`/${POST}/:id`}
+                                path={`/${p.POST}/:id`}
                             />
 
                             <Route
                                 component={Users}
-                                path={`/${USERS}`}
+                                path={`/${p.USERS}`}
                             />
 
                             <PrivateRoute
                                 component={Draft}
-                                path={`/${DRAFT}`}
+                                path={`/${p.DRAFT}`}
                             />
 
                             <PrivateRoute
                                 component={Draft}
-                                path={`/${POST}/:id/${EDIT}`}
+                                path={`/${p.POST}/:id/${p.EDIT}`}
                             />
 
                             <AdminRoute
                                 component={UnapprovedPosts}
-                                path={`/${UNAPPROVED_POSTS}`}
+                                path={`/${p.UNAPPROVED_POSTS}`}
                             />
 
                             <AdminRoute
                                 component={UnapprovedPosts}
-                                path={`/${UNAPPROVED_POSTS}/page:number`}
+                                path={`/${p.UNAPPROVED_POSTS}/page:number`}
                             />
 
                             <Route component={Page404} />

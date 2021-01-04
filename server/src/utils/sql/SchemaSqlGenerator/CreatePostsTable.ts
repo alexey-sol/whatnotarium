@@ -16,7 +16,7 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                 "rating" INTEGER DEFAULT 0 NOT NULL,
                 "userIdsVotedUp" INTEGER[] DEFAULT '{}' NOT NULL,
                 "userIdsVotedDown" INTEGER[] DEFAULT '{}' NOT NULL,
-                "status" VARCHAR(255) DEFAULT 'notApproved' NOT NULL,
+                "isApproved" BOOLEAN DEFAULT FALSE NOT NULL,
                 "viewCount" INTEGER DEFAULT 0 NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,

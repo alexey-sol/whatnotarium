@@ -9,9 +9,9 @@ const putApproval: RequestHandler = async (
     next
 ): Promise<void> => {
     const { id } = params;
-    const { status } = body;
+    const { isApproved } = body;
 
-    PostService.updatePost(+id, { status })
+    PostService.updatePost(+id, { isApproved })
         .then(post => sendResponse(response, post))
         .catch(next);
 };

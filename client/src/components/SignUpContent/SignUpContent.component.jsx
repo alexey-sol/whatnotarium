@@ -110,7 +110,7 @@ function SignUpContent ({
 const mapStateToProps = () => {
     return (state) => ({
         currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, SESSION_PREFIX)),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SESSION_PREFIX })),
         notification: selectNotification(state)
     });
 };

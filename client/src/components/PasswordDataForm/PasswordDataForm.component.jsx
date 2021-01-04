@@ -39,7 +39,7 @@ function PasswordDataForm ({
 
     const initialValues = {
         confirmNewPassword: "",
-        id: currentUser.id,
+        id: currentUser?.id,
         newPassword: "",
         password: ""
     };
@@ -100,7 +100,7 @@ function PasswordDataForm ({
 const mapStateToProps = () => {
     return (state) => ({
         currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, USERS_PREFIX)),
+        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
         notification: selectNotification(state)
     });
 };
