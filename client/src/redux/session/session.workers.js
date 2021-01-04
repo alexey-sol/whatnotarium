@@ -24,10 +24,11 @@ export function * doSignIn ({ payload }) {
     }
 }
 
-export function * doSignOut () {
+export function * doSignOut ({ cb }) {
     try {
         yield api.signOut();
         yield put(actions.signOutSuccess());
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.signOutFailure(error));

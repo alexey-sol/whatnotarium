@@ -29,7 +29,7 @@ export function MobileActionsMenu ({
     const redirectToProfile = () => history.push(`/${PROFILE}`);
 
     const signOut = () => {
-        onSignOutStart();
+        onSignOutStart(() => history.push("/"));
         onClose();
     };
 
@@ -91,7 +91,7 @@ export function MobileActionsMenu ({
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    onSignOutStart: () => dispatch(signOutStart())
+    onSignOutStart: (cb) => dispatch(signOutStart(cb))
 });
 
 const ConnectedMobileActionsMenu = connect(

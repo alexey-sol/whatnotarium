@@ -28,7 +28,7 @@ function UserMenuDropdown ({
     };
 
     const signOut = () => {
-        onSignOutStart();
+        onSignOutStart(() => history.push("/"));
         onClose();
     };
 
@@ -47,7 +47,7 @@ function UserMenuDropdown ({
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    onSignOutStart: () => dispatch(signOutStart())
+    onSignOutStart: (cb) => dispatch(signOutStart(cb))
 });
 
 const ConnectedUserMenuDropdown = connect(

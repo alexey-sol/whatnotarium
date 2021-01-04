@@ -67,8 +67,9 @@ export function signOutFailure (error) {
     };
 }
 
-export function signOutStart () {
+export function signOutStart (cb) {
     return {
+        cb,
         type: types.SIGN_OUT_START
     };
 }

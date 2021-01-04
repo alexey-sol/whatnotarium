@@ -25,7 +25,7 @@ export default async function (
         tableName: PROFILES
     };
 
-    const picture = file && await compressImageAndGetBuffer(file);
+    const picture = (file && await compressImageAndGetBuffer(file)) || null;
     const updatedUser = await user.updateAttributes({ picture }, [includeProfile]);
 
     if (file) {

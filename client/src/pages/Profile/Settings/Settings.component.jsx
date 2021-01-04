@@ -11,8 +11,8 @@ import styles from "./Settings.module.scss";
 function Settings () {
     return (
         <ProfileContent activeTabName={SETTINGS}>
-            <article className={styles.container}>
-                <article className={styles.forms}>
+            <section className={styles.container}>
+                <section className={styles.forms}>
                     <section
                         className={classnames(
                             styles.formContainer,
@@ -39,8 +39,8 @@ function Settings () {
                     >
                         <PasswordDataForm />
                     </section>
-                </article>
-            </article>
+                </section>
+            </section>
         </ProfileContent>
     );
 }
