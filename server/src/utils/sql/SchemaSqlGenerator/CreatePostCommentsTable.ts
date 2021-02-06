@@ -24,8 +24,8 @@ class CreatePostCommentsTable extends SchemaSqlGenerator<unknown> {
                     ON UPDATE CASCADE
             );
 
-            CREATE INDEX ON "${POST_COMMENTS}" ("postId");
-            CREATE INDEX ON "${POST_COMMENTS}" ("userId");
+            CREATE INDEX IF NOT EXISTS idx_pc_post_id ON "${POST_COMMENTS}" ("postId");
+            CREATE INDEX IF NOT EXISTS idx_pc_user_id ON "${POST_COMMENTS}" ("userId");
         `;
     }
 }

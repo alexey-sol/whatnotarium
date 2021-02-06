@@ -28,6 +28,7 @@ function UnapprovedPosts ({
     currentPostsPage,
     isPending,
     location,
+    match,
     onFetchPostsStart,
     posts,
     postsOnPageCount,
@@ -35,11 +36,11 @@ function UnapprovedPosts ({
 }) {
     const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
 
-    const match = matchPath(location.pathname, {
-        path: `/${p.UNAPPROVED_POSTS}/page:number`,
-        exact: true,
-        strict: false
-    });
+    // const match = matchPath(location.pathname, {
+    //     path: `/${p.UNAPPROVED_POSTS}/page:number`,
+    //     exact: true,
+    //     strict: false
+    // });
 
     const locationKey = location.key;
     const pageNumber = match?.params.number || currentPostsPage;

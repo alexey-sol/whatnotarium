@@ -64,6 +64,7 @@ export function App ({ onCheckSessionStart }) {
 
                             <PrivateRoute
                                 component={ProfileMyPosts}
+                                exact
                                 path={`/${p.PROFILE}/${p.MY_POSTS}`}
                             />
 
@@ -104,6 +105,7 @@ export function App ({ onCheckSessionStart }) {
 
                             <AdminRoute
                                 component={UnapprovedPosts}
+                                exact
                                 path={`/${p.UNAPPROVED_POSTS}/page:number`}
                             />
 

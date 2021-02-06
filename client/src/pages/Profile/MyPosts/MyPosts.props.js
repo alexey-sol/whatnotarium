@@ -19,6 +19,7 @@ export const propTypes = {
     currentPostsPage: number,
     currentUser: object,
     location: object.isRequired,
+    match: object.isRequired,
     onFetchPostsStart: func.isRequired,
     posts: array,
     postsOnPageCount: number,

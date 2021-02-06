@@ -24,7 +24,8 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                     ON UPDATE CASCADE
             );
 
-            CREATE INDEX ON "${HASH_OPTIONS}" ("userId");
+            CREATE INDEX IF NOT EXISTS idx_ho_hash ON "${HASH_OPTIONS}" ("hash");
+            CREATE INDEX IF NOT EXISTS idx_ho_user_id ON "${HASH_OPTIONS}" ("userId");
         `;
     }
 }

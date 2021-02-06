@@ -8,7 +8,8 @@ class CreateFullPostsView extends SchemaSqlGenerator<unknown> {
             CREATE OR REPLACE VIEW "${FULL_POSTS_VIEW}" AS
             SELECT
                 p."id", p."body", p."title", p."rating", p."userIdsVotedUp", p."userIdsVotedDown",
-                p."viewCount", p."isApproved", p."createdAt", p."updatedAt", p."userId",
+                p."viewCount", p."isApproved", p."isFrozen", p."createdAt", p."updatedAt",
+                p."userId",
                 COALESCE(array_to_json(array_agg(DISTINCT jsonb_build_object(
                     'id', pc."id",
                     'text', pc."text",

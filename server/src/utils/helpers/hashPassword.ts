@@ -1,7 +1,8 @@
-import { pbkdf2, randomBytes } from "crypto";
+import { pbkdf2 } from "crypto";
 
 import HashPasswordOptions from "#types/HashPasswordOptions";
 import HashPasswordResult from "#types/HashPasswordResult";
+import getRandomBytes from "#utils/helpers/getRandomBytes";
 
 async function hashPassword (
     password: string,
@@ -41,10 +42,6 @@ function getDefaultOptions (): HashPasswordOptions {
         digest: "sha512",
         iterations: 10000,
         keyLength: 32,
-        salt: getSalt()
+        salt: getRandomBytes()
     };
-}
-
-function getSalt (): string {
-    return randomBytes(128).toString("base64");
 }

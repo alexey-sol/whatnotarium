@@ -8,6 +8,7 @@ interface Item {
     hashOptions?: HashOptions;
     id: number;
     isAdmin: boolean;
+    isConfirmed: boolean;
     profile?: Profile;
     updatedAt: Date;
 }

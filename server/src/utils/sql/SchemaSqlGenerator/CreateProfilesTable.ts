@@ -25,8 +25,10 @@ class CreateProfilesTable extends SchemaSqlGenerator<unknown> {
                     ON UPDATE CASCADE
             );
 
-            CREATE INDEX ON "${PROFILES}" ("lastActivityDate");
-            CREATE INDEX ON "${PROFILES}" ("userId");
+            CREATE INDEX IF NOT EXISTS idx_profiles_name ON "${PROFILES}" ("name");
+            CREATE INDEX IF NOT EXISTS idx_profiles_about ON "${PROFILES}" ("about");
+            CREATE INDEX IF NOT EXISTS idx_profiles_last_act ON "${PROFILES}" ("lastActivityDate");
+            CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON "${PROFILES}" ("userId");
         `;
     }
 }

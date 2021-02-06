@@ -12,6 +12,7 @@ function isUserItem (
         email,
         id,
         isAdmin,
+        isConfirmed,
         hashOptions,
         profile,
         updatedAt
@@ -31,6 +32,7 @@ function isUserItem (
         typeof email === "string" &&
         typeof id === "number" &&
         typeof isAdmin === "boolean" &&
+        typeof isConfirmed === "boolean" &&
         hashOptionsIsValidIfPassed &&
         profileIsValidIfPassed
     );

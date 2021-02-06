@@ -17,6 +17,7 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                 "userIdsVotedUp" INTEGER[] DEFAULT '{}' NOT NULL,
                 "userIdsVotedDown" INTEGER[] DEFAULT '{}' NOT NULL,
                 "isApproved" BOOLEAN DEFAULT FALSE NOT NULL,
+                "isFrozen" BOOLEAN DEFAULT FALSE NOT NULL,
                 "viewCount" INTEGER DEFAULT 0 NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
@@ -26,7 +27,10 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                     ON UPDATE CASCADE
             );
 
-            CREATE INDEX ON "${POSTS}" ("userId");
+            CREATE INDEX IF NOT EXISTS idx_posts_body ON "${POSTS}" ("body");
+            CREATE INDEX IF NOT EXISTS idx_posts_title ON "${POSTS}" ("title");
+            CREATE INDEX IF NOT EXISTS idx_posts_is_approved ON "${POSTS}" ("isApproved");
+            CREATE INDEX IF NOT EXISTS idx_posts_user_id ON "${POSTS}" ("userId");
         `;
     }
 }

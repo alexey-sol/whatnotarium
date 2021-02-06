@@ -10,6 +10,10 @@ export default Joi.object({
     email: Joi
         .string(),
 
+    isConfirmed: Joi
+        .any()
+        .forbidden(),
+
     name: Joi
         .string(),
 

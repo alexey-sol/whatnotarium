@@ -4,9 +4,9 @@ import { createStructuredSelector } from "reselect";
 import { matchPath } from "react-router";
 
 import * as p from "utils/const/pathnames";
+import { MY_POSTS } from "utils/const/profileTabNames";
 import ProfileContent from "components/ProfileContent";
 import PostList from "components/PostList";
-import { MY_POSTS } from "utils/const/profileTabNames";
 import { defaultProps, propTypes } from "./MyPosts.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
 
@@ -28,16 +28,17 @@ function MyPosts ({
     currentPostsPage,
     currentUser,
     location,
+    match,
     onFetchPostsStart,
     posts,
     postsOnPageCount,
     totalCount
 }) {
-    const match = matchPath(location.pathname, {
-        path: `/${p.PROFILE}/${p.MY_POSTS}/page:number`,
-        exact: true,
-        strict: false
-    });
+    // const match = matchPath(location.pathname, {
+    //     path: `/${p.PROFILE}/${p.MY_POSTS}/page:number`,
+    //     exact: true,
+    //     strict: false
+    // });
 
     const userId = currentUser?.id;
     const locationKey = location.key;

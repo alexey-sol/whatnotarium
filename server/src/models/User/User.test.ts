@@ -19,7 +19,7 @@ describe("User", async () => {
     beforeEach(() => resetTables());
 
     describe("create", () => {
-        it("should add new users to DB and return User instance", async () => {
+        it("should add new users to DB and return ConfirmToken instance", async () => {
             const { email, name, password } = await generateFakeUserProps();
 
             const user = await User.create({
@@ -245,7 +245,7 @@ describe("User", async () => {
     });
 
     describe("formatPropsAndInstantiate", () => {
-        it("should return User instance if valid users props were given", async () => {
+        it("should return ConfirmToken instance if valid users props were given", async () => {
             const props = await generateFakeUserProps();
             props.createdAt = new Date();
             props.updatedAt = new Date();
@@ -272,7 +272,7 @@ describe("User", async () => {
     });
 
     describe("save", () => {
-        it("should save updated properties and return updated User instance", async () => {
+        it("should save updated properties and return updated ConfirmToken instance", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
             const user = await createFakeUser(originalProps);
             user.name = "Philip Pirrip";
@@ -306,7 +306,7 @@ describe("User", async () => {
     });
 
     describe("updateAttributes", () => {
-        it("should update properties and return updated User instance", async () => {
+        it("should update properties and return updated ConfirmToken instance", async () => {
             const originalProps = await generateFakeUserProps({ name: "Pip" });
             const user = await User.create(originalProps);
 

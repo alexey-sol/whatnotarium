@@ -20,8 +20,12 @@ services:
             - PORT
             - POSTGRES_URL
             - POSTGRES_URL_TEST
+            - PROJECT_NAME_FULL
+            - PROJECT_NAME_SHORT
             - REDIS_HOST
             - REDIS_PORT
+            - SENDER_EMAIL
+            - SENDGRID_API_KEY
             - SESSION_NAME
             - SESSION_SECRET
             - URL

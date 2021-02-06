@@ -27,9 +27,9 @@ class CreatePostVotesTable extends SchemaSqlGenerator<unknown> {
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL
             );
 
-            CREATE INDEX ON "${POST_VOTES}" ("postId");
-            CREATE INDEX ON "${POST_VOTES}" ("userId");
-            CREATE INDEX ON "${POST_VOTES}" ("postId", "userId");
+            CREATE INDEX IF NOT EXISTS idx_pv_post_id ON "${POST_VOTES}" ("postId");
+            CREATE INDEX IF NOT EXISTS idx_pv_user_id ON "${POST_VOTES}" ("userId");
+            CREATE INDEX IF NOT EXISTS idx_pv_post_user_ids ON "${POST_VOTES}" ("postId", "userId");
 
             CREATE OR REPLACE FUNCTION abort_if_post_vote_exists()
             RETURNS TRIGGER AS $$

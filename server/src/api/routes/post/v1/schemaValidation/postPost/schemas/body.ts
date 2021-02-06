@@ -5,6 +5,10 @@ export default Joi.object({
         .string()
         .required(),
 
+    isApproved: Joi
+        .any()
+        .forbidden(),
+
     title: Joi
         .string()
         .required(),

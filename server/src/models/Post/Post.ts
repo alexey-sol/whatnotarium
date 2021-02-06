@@ -42,6 +42,7 @@ class Post implements Model<Attributes, Post> {
     createdAt: Date;
     id: number;
     isApproved: boolean;
+    isFrozen: boolean;
     rating: number;
     title: string;
     updatedAt: Date;
@@ -57,6 +58,7 @@ class Post implements Model<Attributes, Post> {
         this.createdAt = props.createdAt;
         this.id = props.id;
         this.isApproved = props.isApproved;
+        this.isFrozen = props.isFrozen;
         this.rating = props.rating;
         this.title = props.title;
         this.updatedAt = props.updatedAt;

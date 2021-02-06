@@ -21,12 +21,28 @@ export default Joi.object({
         .string()
         .required(),
 
+    PROJECT_NAME_FULL: Joi
+        .string()
+        .required(),
+
+    PROJECT_NAME_SHORT: Joi
+        .string()
+        .required(),
+
     REDIS_HOST: Joi
         .string()
         .required(),
 
     REDIS_PORT: Joi
         .number()
+        .required(),
+
+    SENDER_EMAIL: Joi
+        .string()
+        .required(),
+
+    SENDGRID_API_KEY: Joi
+        .string()
         .required(),
 
     SESSION_NAME: Joi

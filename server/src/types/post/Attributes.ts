@@ -8,6 +8,7 @@ interface Attributes {
     createdAt?: Date;
     id?: number;
     isApproved?: boolean;
+    isFrozen?: boolean;
     rating?: number;
     title?: string;
     updatedAt?: Date;

@@ -13,6 +13,7 @@ function isPostItem (
         createdAt,
         id,
         isApproved,
+        isFrozen,
         rating,
         title,
         updatedAt,
@@ -33,6 +34,7 @@ function isPostItem (
         typeof body === "string" &&
         typeof id === "number" &&
         typeof isApproved === "boolean" &&
+        typeof isFrozen === "boolean" &&
         typeof rating === "number" &&
         typeof title === "string" &&
         typeof userId === "number" &&

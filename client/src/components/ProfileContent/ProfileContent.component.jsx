@@ -18,10 +18,7 @@ ProfileContent.defaultProps = defaultProps;
 function ProfileContent ({ activeTabName, children, isPending }) {
     const renderTab = (tabName, path) => (
         <li
-            className={classnames(
-                styles.tab,
-                (tabName === activeTabName) ? styles.active : ""
-            )}
+            className={classnames(styles.tab, (tabName === activeTabName) ? styles.active : "")}
             key={path}
         >
             <CustomLink to={path}>

@@ -1,3 +1,4 @@
+export { default as CreateConfirmTokenTable } from "./CreateConfirmTokenTable";
 export { default as CreateFullPostsView } from "./CreateFullPostsView";
 export { default as CreateFullUsersView } from "./CreateFullUsersView";
 export { default as CreateHashOptionsTable } from "./CreateHashOptionsTable";
@@ -6,6 +7,7 @@ export { default as CreatePostCommentsTable } from "./CreatePostCommentsTable";
 export { default as CreatePostVotesTable } from "./CreatePostVotesTable";
 export { default as CreatePostsTable } from "./CreatePostsTable";
 export { default as CreateProfilesTable } from "./CreateProfilesTable";
+export { default as CreateResetTokenTable } from "./CreateResetTokenTable";
 export { default as CreateUsersTable } from "./CreateUsersTable";
 export { default as DropSchema } from "./DropSchema";
 export { default as TableExists } from "./TableExists";

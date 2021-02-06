@@ -18,6 +18,8 @@
             "#api/*": ["./src/api/*"],
             "#config/*": ["./src/config/*"],
             "#connectionPool": ["./src/loaders/connectionPool"],
+            "#emailTransporter": ["./src/loaders/emailTransporter"],
+            "#events/*": ["./src/events/*"],
             "#loaders": ["./src/loaders"],
             "#logger": ["./src/loaders/logger"],
             "#models/*": ["./src/models/*"],

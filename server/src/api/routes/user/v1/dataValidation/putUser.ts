@@ -1,7 +1,13 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
-import { FORBIDDEN, INVALID_PASSWORD, NOT_FOUND } from "#utils/const/validationErrors";
+import {
+    CONFLICT,
+    FORBIDDEN,
+    INVALID_PASSWORD,
+    NOT_FOUND
+} from "#utils/const/validationErrors";
+
 import RequestSession from "#utils/helpers/RequestSession";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
@@ -20,6 +26,8 @@ const putUser: RequestHandler = async (
 
         if (!user) {
             throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
+        } else if (!user.isConfirmed) {
+            throw new UserError(CONFLICT, status.CONFLICT, ip);
         }
 
         const session = new RequestSession(request);
