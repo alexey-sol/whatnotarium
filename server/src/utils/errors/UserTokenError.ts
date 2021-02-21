@@ -1,6 +1,6 @@
 import ModelError from "./ModelError";
 
-class ConfirmTokenError extends ModelError {
+class UserTokenError extends ModelError {
     constructor (
         message: string,
         statusCode: number,
@@ -11,4 +11,4 @@ class ConfirmTokenError extends ModelError {
     }
 }
 
-export default ConfirmTokenError;
+export default UserTokenError;

@@ -1,5 +1,6 @@
 interface DataOnCreate {
     token: string;
+    typeId: number;
     userId: number;
 }
 

@@ -1,24 +1,27 @@
 import { RequestHandler } from "express";
 
 import UserToken from "#models/UserToken";
-import User from "#models/User";
 import serverConfig from "#config/server";
 
 const confirmEmail: RequestHandler = async (
     request,
-    response
+    response,
+    next
 ): Promise<void> => {
     const { query } = request;
     const token = query.token as string;
 
-    const { userId } = await UserToken.findOne({
-        where: { token }
-    }) as UserToken;
+    try {
+        const tokenIsValid = await UserToken.isValidToken(token);
 
-    const user = await User.findById(userId) as User;
-    await user.updateAttributes({ isConfirmed: true });
+        if (!tokenIsValid) {
+            return response.redirect(`${serverConfig.url}/support/confirm-token-error/${token}`);
+        }
 
-    response.redirect(`${serverConfig.url}`);
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default confirmEmail;

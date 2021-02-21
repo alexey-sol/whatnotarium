@@ -1,7 +1,7 @@
-import Attributes from "#types/confirmToken/Attributes";
-import Item from "#types/confirmToken/Item";
+import Attributes from "#types/userToken/Attributes";
+import Item from "#types/userToken/Item";
 
-function isConfirmTokenItem (
+function isUserTokenItem (
     objectToCheck: Attributes
 ): objectToCheck is Item {
     const {
@@ -9,6 +9,7 @@ function isConfirmTokenItem (
         expirationDate,
         id,
         token,
+        typeId,
         userId
     } = objectToCheck;
 
@@ -17,8 +18,9 @@ function isConfirmTokenItem (
         expirationDate instanceof Date &&
         typeof id === "number" &&
         typeof token === "string" &&
+        typeof typeId === "number" &&
         typeof userId === "number"
     );
 }
 
-export default isConfirmTokenItem;
+export default isUserTokenItem;

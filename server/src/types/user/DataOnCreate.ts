@@ -1,12 +1,11 @@
-
 interface DataOnCreate {
-    email: string;
-    name: string;
-    picture?: Buffer;
-    hash: Buffer;
     digest: string;
+    email: string;
+    hash: Buffer;
     iterations: number;
     keyLength: number;
+    name: string;
+    picture?: Buffer;
     salt: string;
 }
 

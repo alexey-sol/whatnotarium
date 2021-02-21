@@ -1,3 +1,4 @@
+import { CREATED } from "http-status";
 import { RequestHandler } from "express";
 
 import PostService from "#services/PostService/v1";
@@ -9,7 +10,7 @@ const postPost: RequestHandler = async (
     next
 ): Promise<void> => {
     PostService.createPost(body)
-        .then(post => sendResponse(response, post))
+        .then(post => sendResponse(response, post, CREATED))
         .catch(next);
 };
 

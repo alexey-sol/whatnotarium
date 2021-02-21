@@ -3,6 +3,7 @@ interface Attributes {
     expirationDate?: Date;
     id?: number;
     token?: string;
+    typeId?: number;
     userId?: number;
 }
 

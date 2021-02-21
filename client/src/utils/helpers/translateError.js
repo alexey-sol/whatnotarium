@@ -1,5 +1,6 @@
 import {
     ALREADY_EXISTS,
+    FORBIDDEN,
     INTERNAL_SERVER_ERROR,
     INVALID_CREDENTIALS,
     INVALID_PASSWORD,
@@ -41,6 +42,8 @@ function translateUserError (message) {
     switch (message) {
         case ALREADY_EXISTS:
             return "Такой email уже занят";
+        case FORBIDDEN:
+            return "Доступ запрещен";
         case INVALID_CREDENTIALS:
             return "Неверные учетные данные";
         case INVALID_PASSWORD:

@@ -19,7 +19,7 @@ const { url } = serverConfig;
 const appMajorVersion = Version.getMajorVersion();
 const apiRoute = `${url}/api/v${appMajorVersion}`;
 
-emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token, userId }) => {
+emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
     try {
         const response = await emailTransporter.send({
             to: email,
@@ -27,10 +27,8 @@ emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token, userId }) => {
             subject: `Добро пожаловать на ${projectName}! А теперь подтвердите email`,
             html: `
                 Чтобы ваш аккаунт стал действительным, пожалуйста, перейдите по ссылке ниже.<br>
-                <a href='${apiRoute}/user/${userId}/confirm=${token}'>Подтвердить email</a>
-            ` // TODO: where?
-            // 1) user.isConfirmed
-            // 2) session.attachUserToSession(user);
+                <a href='${apiRoute}/support/confirm?token=${token}'>Подтвердить email</a>
+            `
         });
 
         logger.info(response);

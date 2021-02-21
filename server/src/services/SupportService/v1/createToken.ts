@@ -1,10 +1,16 @@
-import ConfirmToken from "#models/ConfirmToken";
-import ConfirmTokenItem from "#types/confirmToken/Item";
+import UserToken from "#models/UserToken";
+import ConfirmTokenItem from "#types/userToken/Item";
 import getRandomBytes from "#utils/helpers/getRandomBytes";
 
+interface Props {
+    typeId: number;
+    userId: number;
+}
+
 export default async function (
-    userId: number
+    props: Props
 ): Promise<ConfirmTokenItem> | never {
+    const { typeId, userId } = props;
     const token = getRandomBytes(64);
-    return ConfirmToken.create({ token, userId });
+    return UserToken.create({ token, typeId, userId });
 }

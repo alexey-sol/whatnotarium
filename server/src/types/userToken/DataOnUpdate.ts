@@ -1,5 +1,6 @@
 interface DataOnUpdate {
     token?: string;
+    typeId?: number;
     userId?: number;
 }
 

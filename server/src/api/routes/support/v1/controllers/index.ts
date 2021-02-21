@@ -1,7 +1,9 @@
+import checkResetToken from "./checkResetToken";
 import confirmEmail from "./confirmEmail";
-import resetPassword from "./resetPassword";
+import sendConfirmToken from "./sendConfirmToken";
 
 export default {
+    checkResetToken,
     confirmEmail,
-    resetPassword
+    sendConfirmToken
 };

@@ -4,7 +4,7 @@ import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 import serverConfig from "#config/server";
 
-const resetPassword: RequestHandler = async (
+const checkResetToken: RequestHandler = async (
     { query, params },
     response,
     next
@@ -21,4 +21,4 @@ const resetPassword: RequestHandler = async (
     //     .catch(next);
 };
 
-export default resetPassword;
+export default checkResetToken;

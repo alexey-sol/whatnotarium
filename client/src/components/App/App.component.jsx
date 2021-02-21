@@ -14,6 +14,7 @@ import { checkSessionStart } from "redux/session/session.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 
+const ConfirmTokenError = lazy(() => import("pages/ConfirmTokenError"));
 const Draft = lazy(() => import("pages/Draft"));
 const Home = lazy(() => import("pages/Home"));
 const Page404 = lazy(() => import("pages/Page404"));
@@ -107,6 +108,11 @@ export function App ({ onCheckSessionStart }) {
                                 component={UnapprovedPosts}
                                 exact
                                 path={`/${p.UNAPPROVED_POSTS}/page:number`}
+                            />
+
+                            <Route
+                                component={ConfirmTokenError}
+                                path={`/${p.SUPPORT}/${p.CONFIRM_TOKEN_ERROR}/:token`}
                             />
 
                             <Route component={Page404} />
