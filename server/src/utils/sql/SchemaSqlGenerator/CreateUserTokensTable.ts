@@ -14,7 +14,7 @@ class CreateUserTokensTable extends SchemaSqlGenerator<unknown> {
                 "token" VARCHAR(255),
                 "expirationDate" TIMESTAMP DEFAULT NOW() + INTERVAL '24 hour' NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
-                "typeId" INTEGER UNIQUE NOT NULL
+                "typeId" SMALLINT NOT NULL
                     REFERENCES "${USER_TOKEN_TYPES}" ("id")
                     ON DELETE CASCADE
                     ON UPDATE CASCADE,

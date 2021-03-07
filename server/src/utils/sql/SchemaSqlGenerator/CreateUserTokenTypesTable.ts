@@ -16,7 +16,7 @@ class CreateUserTokenTypesTable extends SchemaSqlGenerator<unknown> {
             );
 
             INSERT INTO "${USER_TOKEN_TYPES}" ("id", "name")
-            VALUES (1, "${CONFIRM}"), (2, "${RESET}")
+            VALUES (1, '${CONFIRM}'), (2, '${RESET}')
             ON CONFLICT DO NOTHING;
         `;
     }

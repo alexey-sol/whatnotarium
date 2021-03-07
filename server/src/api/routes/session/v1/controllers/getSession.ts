@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 
-import RequestSession from "#utils/helpers/RequestSession";
-import UserService from "#services/UserService/v1";
+import SessionService from "#services/SessionService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
 const getSession: RequestHandler = async (
@@ -9,20 +8,9 @@ const getSession: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    try {
-        const session = new RequestSession(request);
-        const sessionUser = session.getUserFromSession();
-
-        let user = null;
-
-        if (sessionUser) {
-            user = await UserService.findUser(sessionUser.id);
-        }
-
-        sendResponse(response, user);
-    } catch (error) {
-        return next(error);
-    }
+    SessionService.findSession(request)
+        .then(user => sendResponse(response, user))
+        .catch(next);
 };
 
 export default getSession;

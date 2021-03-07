@@ -1,24 +1,30 @@
 import { RequestHandler } from "express";
 
+import SessionService from "#services/SessionService/v1";
 import UserToken from "#models/UserToken";
-import User from "#models/User";
-import serverConfig from "#config/server";
+import UserService from "#services/UserService/v1";
+import sendResponse from "#utils/http/sendResponse";
 
 const confirmEmail: RequestHandler = async (
     request,
-    response
+    response,
+    next
 ): Promise<void> => {
-    const { query } = request;
-    const token = query.token as string;
+    const { body } = request;
+    const token = body.token as string;
 
-    const { userId } = await UserToken.findOne({
-        where: { token }
-    }) as UserToken;
+    try {
+        const { userId } = await UserToken.findOne({
+            where: { token }
+        }) as UserToken;
 
-    const user = await User.findById(userId) as User;
-    await user.updateAttributes({ isConfirmed: true });
+        await UserService.updateUser(userId, { isConfirmed: true });
+        const user = await SessionService.createSession(request);
 
-    response.redirect(`${serverConfig.url}`);
+        sendResponse(response, user);
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default confirmEmail;

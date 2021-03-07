@@ -17,7 +17,7 @@ const { senderEmail } = emailTransporterConfig;
 const { url } = serverConfig;
 
 const appMajorVersion = Version.getMajorVersion();
-const apiRoute = `${url}/api/v${appMajorVersion}`;
+// const url = `${url}/api/v${appMajorVersion}`;
 
 emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
     try {
@@ -26,12 +26,12 @@ emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
             from: senderEmail,
             subject: `Добро пожаловать на ${projectName}! А теперь подтвердите email`,
             html: `
-                Чтобы ваш аккаунт стал действительным, пожалуйста, перейдите по ссылке ниже.<br>
-                <a href='${apiRoute}/support/confirm?token=${token}'>Подтвердить email</a>
+                <p>Чтобы ваш аккаунт стал действительным, пожалуйста, перейдите по ссылке ниже.</p>
+                <p><a href='${url}/support/confirm?token=${token}'>Подтвердить email</a></p>
             `
         });
 
-        logger.info(response);
+        logger.info("SEND_CONFIRM_EMAIL response", response);
     } catch (error) {
         emitter.emit(ERROR, error);
     }
@@ -48,7 +48,7 @@ emitter.on(eventNames.SEND_POST_WAITING_APPROVAL, async ({ email, postId, postTi
                 это может занять день или два. Если возникнут какие-то загвоздки, мы напишем
                 вам, и вы сможете внести в статью необходимые правки и отправить на повторную
                 проверку.
-                <a href="${apiRoute}/post/${postId}">Перейти к статье</a>
+                <a href="${url}/post/${postId}">Перейти к статье</a>
             `
         });
 
@@ -66,7 +66,7 @@ emitter.on(eventNames.SEND_POST_APPROVED, async ({ email, postId, postTitle }) =
             subject: `Ваша статья "${postTitle}" на Geek Regime опубликована`,
             html: `
                 Поздравляем! Ваша статья "${postTitle}" прошла проверку и была опубликована.<br>
-                <a href="${apiRoute}/post/${postId}">Перейти к статье</a>
+                <a href="${url}/post/${postId}">Перейти к статье</a>
             `
         });
 
@@ -91,7 +91,7 @@ emitter.on(eventNames.SEND_POST_REJECTED, async ({
                 Добрый день, мы пока отклонили вашу статью "${postTitle}" на Geek Regime.
                 Причина следующая:<br>${message}<br>
                 Вы можете внести правки и отправить на проверку еще раз.<br>
-                <a href="${apiRoute}/post/${postId}">Перейти к статье</a>
+                <a href="${url}/post/${postId}">Перейти к статье</a>
             `
         });
 

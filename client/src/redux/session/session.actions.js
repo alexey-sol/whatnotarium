@@ -87,8 +87,9 @@ export function signUpFailure (error) {
     };
 }
 
-export function signUpStart (credentials) {
+export function signUpStart (credentials, cb) {
     return {
+        cb,
         payload: credentials,
         type: types.SIGN_UP_START
     };

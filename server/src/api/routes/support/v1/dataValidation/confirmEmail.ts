@@ -1,21 +1,23 @@
 import { RequestHandler } from "express";
+import status from "http-status";
 
+import { FORBIDDEN } from "#utils/const/validationErrors";
 import UserToken from "#models/UserToken";
-import serverConfig from "#config/server";
+import UserTokenError from "#utils/errors/UserTokenError";
 
 const confirmEmail: RequestHandler = async (
     request,
     response,
     next
 ): Promise<void> => {
-    const { query } = request;
-    const token = query.token as string;
+    const { ip, body } = request;
+    const token = body.token as string;
 
     try {
         const tokenIsValid = await UserToken.isValidToken(token);
 
         if (!tokenIsValid) {
-            return response.redirect(`${serverConfig.url}/support/confirm-token-error/${token}`);
+            throw new UserTokenError(FORBIDDEN, status.FORBIDDEN, ip);
         }
 
         next();

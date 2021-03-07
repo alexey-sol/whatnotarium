@@ -8,6 +8,7 @@ import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
     email?: string;
+    isConfirmed?: boolean;
     name?: string;
     newPassword?: string;
     password?: string;

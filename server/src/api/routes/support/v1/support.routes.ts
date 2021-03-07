@@ -6,15 +6,16 @@ import schemaValidation from "./schemaValidation";
 
 const router = express.Router();
 
-router.post(
+router.get( // TODO: ONLY for resend email purposes (auxiliary endpoint)
     "/confirm",
     schemaValidation.sendConfirmToken,
     dataValidation.sendConfirmToken,
     controllers.sendConfirmToken
 );
 
-router.get(
-    "/confirm/:token",
+router.post(
+    // "/confirm/:token",
+    "/confirm",
     schemaValidation.confirmEmail,
     dataValidation.confirmEmail,
     controllers.confirmEmail
@@ -45,10 +46,18 @@ router.put(
 
 export default router;
 
-// TODO: create view combining both tokens, "userMeta"?
-
 // TODO: confirm
-// 1) after submitting the signing up form, client gets 200 and renders in modal/page: "You've signed up, but you must confirm your email..."
+// 1) after submitting the signing up form, client gets 201 and renders in modal/page: "You've signed up, but you must confirm your email..."
+//    So meanwhile backend sends email with link: GET https://site.com/support/confirm?token=f27a7n5va1
+// 2) user opens email and clicks the link;
+//    They get to the page which receives "token" parameter. In the background, request to POST "https://site.com/api/v1/support/confirm { token: f27a7n5va1 }"
+//    is sent
+// 3) API says: ok (and creates session for user) | error
+//    OK? Render "You've confirmed your email". Then after 3 sec redirect to home page
+//    Error? Render error message. And add link "resend ver email" (backend searhces user using token) -> redirect to home page (add notification "email's been sent")
+
+// TODO: confirm (old)
+// 1) after submitting the signing up form, client gets 201 and renders in modal/page: "You've signed up, but you must confirm your email..."
 //    So meanwhile backend sends email with link: GET https://site.com/api/v1/support/confirm?token=f27a7n5va1
 // 2) user opens email and clicks the link; then backend tries to find the user by given token (f27a7n5va1).
 //    If not found (or expDate has expired): redirect to page "not exist or expired, try resend email by clicking...": https://site.com/support/confirm-token-error
@@ -57,11 +66,22 @@ export default router;
 // When signing in (email's not confirmed) render route "https://site.com/support/confirm-token-error" allowing to resend confirm email
 
 // backend routes:
+// - POST https://site.com/api/v1/support/confirm { token: f27a7n5va1 }
+
+// frontend routes:
+// - https://site.com/support/confirm
+
+
+// old
+// backend routes:
 // - GET https://site.com/api/v1/support/confirm?token=f27a7n5va1
 
+// old
 // frontend routes:
 // - https://site.com/support/confirm-token-error
 // - https://site.com/support/reset-token-error
+
+
 
 // TODO: reset
 // 1) click "forgot pass". Is rendered route https://site.com/support/reset (exact).

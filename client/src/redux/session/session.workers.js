@@ -35,10 +35,11 @@ export function * doSignOut ({ cb }) {
     }
 }
 
-export function * doSignUp ({ payload }) {
+export function * doSignUp ({ payload, cb }) {
     try {
         const currentUser = yield api.signUp(payload);
         yield put(actions.signUpSuccess(currentUser));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.signUpFailure(error));

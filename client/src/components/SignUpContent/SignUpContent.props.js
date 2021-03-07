@@ -10,5 +10,6 @@ export const propTypes = {
     currentUser: object,
     isPending: bool,
     notification: object,
+    onClose: func.isRequired,
     onSignUpStart: func.isRequired
 };

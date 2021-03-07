@@ -13,7 +13,7 @@ function SignUpDialog ({ onClose }) {
             title="Регистрация"
             width="fixed"
         >
-            <SignUpContent />
+            <SignUpContent onClose={onClose} />
         </BaseDialog>
     );
 }

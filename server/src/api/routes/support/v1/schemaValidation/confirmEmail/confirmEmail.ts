@@ -1,21 +1,19 @@
 import { RequestHandler } from "express";
 
-import querySchema from "./schemas/query";
-import serverConfig from "#config/server";
+import bodySchema from "./schemas/body";
 
 const confirmEmail: RequestHandler = async (
     request,
     response,
     next
 ): Promise<void> => {
-    const { error, value } = querySchema.validate(request.query);
+    const { error, value } = bodySchema.validate(request.body);
 
     if (error) {
-        const { token } = request.query;
-        return response.redirect(`${serverConfig.url}/support/confirm-token-error/${token}`);
+        return next(error);
     }
 
-    request.query = value;
+    request.body = value;
     next();
 };
 

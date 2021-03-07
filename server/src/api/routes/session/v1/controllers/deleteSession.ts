@@ -1,21 +1,16 @@
 import { RequestHandler } from "express";
 
-import RequestSession from "#utils/helpers/RequestSession";
-import sessionConfig from "#config/session";
+import SessionService from "#services/SessionService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
 const deleteSession: RequestHandler = async (
     request,
-    response
+    response,
+    next
 ): Promise<void> => {
-    const { name } = sessionConfig;
-    const session = new RequestSession(request);
-
-    if (session.isAuthed()) {
-        response.clearCookie(name);
-    }
-
-    sendResponse(response);
+    SessionService.deleteSession(request, response)
+        .then(user => sendResponse(response, user))
+        .catch(next);
 };
 
 export default deleteSession;

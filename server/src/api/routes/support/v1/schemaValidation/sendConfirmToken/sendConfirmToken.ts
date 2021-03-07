@@ -1,19 +1,19 @@
 import { RequestHandler } from "express";
 
-import bodySchema from "./schemas/body";
+import querySchema from "./schemas/query";
 
 const sendConfirmToken: RequestHandler = async (
     request,
     response,
     next
 ): Promise<void> => {
-    const { error, value } = bodySchema.validate(request.body);
+    const { error, value } = querySchema.validate(request.query);
 
     if (error) {
         return next(error);
     }
 
-    request.body = value;
+    request.query = value;
     next();
 };
 
