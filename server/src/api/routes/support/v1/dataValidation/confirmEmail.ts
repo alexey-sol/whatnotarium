@@ -1,9 +1,11 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
-import { FORBIDDEN } from "#utils/const/validationErrors";
+import { CONFLICT, FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
 import UserToken from "#models/UserToken";
 import UserTokenError from "#utils/errors/UserTokenError";
+import User from "#models/User";
+import UserError from "#utils/errors/UserError";
 
 const confirmEmail: RequestHandler = async (
     request,
@@ -11,15 +13,34 @@ const confirmEmail: RequestHandler = async (
     next
 ): Promise<void> => {
     const { ip, body } = request;
+    body.token = decodeURIComponent(body.token as string);
+
     const token = body.token as string;
 
     try {
-        const tokenIsValid = await UserToken.isValidToken(token);
+        const userToken = await UserToken.findOne({
+            where: { token }
+        });
+
+        if (!userToken) {
+            throw new UserTokenError(NOT_FOUND, status.NOT_FOUND, ip);
+        }
+
+        const tokenIsValid = userToken.isValidToken();
 
         if (!tokenIsValid) {
             throw new UserTokenError(FORBIDDEN, status.FORBIDDEN, ip);
         }
 
+        const user = await User.findById(userToken?.userId);
+
+        if (!user) {
+            throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
+        } else if (user.isConfirmed) {
+            throw new UserTokenError(CONFLICT, status.CONFLICT, ip);
+        }
+
+        response.locals.user = user;
         next();
     } catch (error) {
         next(error);

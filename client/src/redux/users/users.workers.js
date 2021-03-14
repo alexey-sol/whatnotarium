@@ -2,7 +2,6 @@ import { put } from "redux-saga/effects";
 
 import * as actions from "./users.actions";
 import * as api from "utils/api/users";
-
 import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
 export function * doFetchUser ({ payload: id }) {

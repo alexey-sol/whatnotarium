@@ -1,6 +1,6 @@
 import UserToken from "#models/UserToken";
 import ConfirmTokenItem from "#types/userToken/Item";
-import getRandomBytes from "#utils/helpers/getRandomBytes";
+import generateId from "#utils/helpers/generateId";
 
 interface Props {
     typeId: number;
@@ -11,6 +11,6 @@ export default async function (
     props: Props
 ): Promise<ConfirmTokenItem> | never {
     const { typeId, userId } = props;
-    const token = getRandomBytes(64);
+    const token = generateId(64);
     return UserToken.create({ token, typeId, userId });
 }

@@ -1,14 +1,15 @@
 import superagent from "superagent";
 
-async function sendConfirmToken (token) {
+async function sendConfirmToken ({ email, token }) {
+    const key = (token) ? "token" : "email";
+    const value = token || email;
+
     const response = await superagent
-        .post("/api/v1/support/confirm")
+        .get("/api/v1/support/confirm")
         .set("Content-Type", "application/json")
-        .send({ token });
+        .query({ [key]: encodeURIComponent(value) });
 
     return response?.body;
 }
-
-// TODO: add to redux
 
 export default sendConfirmToken;

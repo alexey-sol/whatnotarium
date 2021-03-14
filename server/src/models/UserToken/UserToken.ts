@@ -20,6 +20,7 @@ import DbQueryFilter from "#types/DbQueryFilter";
 import Include from "#types/Include";
 import Item from "#types/userToken/Item";
 import Model from "#types/Model";
+import UserEmail from "#types/UserEmail";
 import UserTokenError from "#utils/errors/UserTokenError";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isUserTokenItem from "#utils/typeGuards/isUserTokenItem";
@@ -33,6 +34,7 @@ class UserToken implements Model<DataOnUpdate, UserToken> {
     id: number;
     token: string;
     typeId: number;
+    user?: UserEmail;
     userId: number;
 
     private constructor (props: Item) {
@@ -42,6 +44,10 @@ class UserToken implements Model<DataOnUpdate, UserToken> {
         this.token = props.token;
         this.typeId = props.typeId;
         this.userId = props.userId;
+
+        if (props.user) {
+            this.user = props.user;
+        }
     }
 
     static async up (): Promise<void> {
@@ -145,6 +151,10 @@ class UserToken implements Model<DataOnUpdate, UserToken> {
             : UserToken.formatPropsAndInstantiate(record || this);
     }
 
+    isValidToken (): boolean {
+        return moment(Date.now()).isBefore(new Date(this.expirationDate));
+    }
+
     static formatPropsAndInstantiate (
         props: Attributes,
         include?: Include[]
@@ -158,17 +168,6 @@ class UserToken implements Model<DataOnUpdate, UserToken> {
         }
 
         return new UserToken(item);
-    }
-
-    static async isValidToken (token: string): Promise<boolean> {
-        const confirmToken = await UserToken.findOne({ where: { token } });
-
-        if (!confirmToken) {
-            return false;
-        }
-
-        const { expirationDate } = confirmToken;
-        return moment(Date.now()).isBefore(expirationDate);
     }
 }
 

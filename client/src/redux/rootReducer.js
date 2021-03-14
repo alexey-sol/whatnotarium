@@ -6,6 +6,7 @@ import adminReducer from "./admin/admin.reducer";
 import postsReducer from "./posts/posts.reducer";
 import postsPagingReducer from "./postsPaging/postsPaging.reducer";
 import sessionReducer from "./session/session.reducer";
+import supportReducer from "./support/support.reducer";
 import transformStateItemsMap from "utils/redux/transformStateItemsMap";
 import uiReducer from "./ui/ui.reducer";
 import usersPagingReducer from "./usersPaging/usersPaging.reducer";
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     posts: postsReducer,
     postsPaging: postsPagingReducer,
     session: sessionReducer,
+    support: supportReducer,
     ui: uiReducer,
     users: usersReducer,
     usersPaging: usersPagingReducer

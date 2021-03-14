@@ -1,15 +1,11 @@
 import { FORBIDDEN } from "http-status";
 import { RequestHandler } from "express";
 
-import { CONFIRM } from "#utils/const/database/userTokenTypeIds";
-import { INVALID_CREDENTIALS } from "#utils/const/validationErrors";
+import { INVALID_CREDENTIALS, NOT_VERIFIED } from "#utils/const/validationErrors";
+import UnauthorizedError from "#utils/errors/UnauthorizedError";
 import User from "#models/User";
-import UserToken from "#models/UserToken";
 import UserError from "#utils/errors/UserError";
 import isValidPassword from "#utils/helpers/isValidPassword";
-import serverConfig from "#config/server";
-
-const { url } = serverConfig;
 
 const postSession: RequestHandler = async (
     { body, ip },
@@ -34,13 +30,7 @@ const postSession: RequestHandler = async (
         }
 
         if (!user.isConfirmed) {
-            const where = {
-                typeId: CONFIRM,
-                userId: user.id
-            };
-
-            const confirmToken = await UserToken.findOne({ where });
-            return response.redirect(`${url}/support/confirm-token-error/${confirmToken?.token}`);
+            throw new UnauthorizedError(NOT_VERIFIED, ip, { email });
         }
 
         next();

@@ -6,13 +6,13 @@ import Notification from "utils/objects/Notification";
 import { addActionToPendingApi, removeActionFromPendingApi, showNotification } from "./ui.actions";
 import removePostfix from "utils/redux/removePostfixFromActionType";
 import translateError from "utils/helpers/translateError";
-
 import { UNAUTHORIZED_ERROR } from "utils/const/errorNames";
 
 export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
-    const hasNoSession = payload?.error?.name !== UNAUTHORIZED_ERROR;
-    const shouldShowError = Boolean(payload?.error) && hasNoSession;
+
+    const notOmittable = payload?.error?.name !== UNAUTHORIZED_ERROR;
+    const shouldShowError = Boolean(payload?.error) && notOmittable;
 
     if (shouldShowError) {
         const translatedError = translateError(payload.error);

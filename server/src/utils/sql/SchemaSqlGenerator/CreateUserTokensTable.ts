@@ -18,7 +18,7 @@ class CreateUserTokensTable extends SchemaSqlGenerator<unknown> {
                     REFERENCES "${USER_TOKEN_TYPES}" ("id")
                     ON DELETE CASCADE
                     ON UPDATE CASCADE,
-                "userId" INTEGER UNIQUE NOT NULL
+                "userId" INTEGER NOT NULL
                     REFERENCES "${USERS}" ("id")
                     ON DELETE CASCADE
                     ON UPDATE CASCADE

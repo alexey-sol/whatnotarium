@@ -10,15 +10,15 @@ import {
     PASSWORD
 } from "utils/const/userData";
 
+import { HIDE_NOTIFICATION } from "utils/const/events";
 import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignUpContent.props";
-import { signUpStart } from "redux/session/session.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
+import { signUpStart } from "redux/session/session.actions";
 import hints from "utils/resources/text/ru/hints";
-import { HIDE_NOTIFICATION } from "utils/const/events";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
 import signUpSchema from "utils/validators/shemas/signUp";
@@ -117,7 +117,7 @@ function SignUpContent ({
         <div className={styles.doneMessage}>
             <p>
                 Поздравляем! Вы зарегистрированы. Но прежде чем начать пользоваться
-                порталом, надлежит верифицировать email.
+                порталом, надлежит подтвердить email.
             </p>
 
             <p>
@@ -127,7 +127,6 @@ function SignUpContent ({
             <BaseButton
                 onClick={onClose}
                 text="Оки"
-                theme="dark"
                 width="full"
             />
         </div>

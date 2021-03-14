@@ -14,7 +14,8 @@ import { checkSessionStart } from "redux/session/session.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
 
-const ConfirmTokenError = lazy(() => import("pages/ConfirmTokenError"));
+const ConfirmEmail = lazy(() => import("pages/ConfirmEmail"));
+const ConfirmToken = lazy(() => import("pages/ConfirmToken"));
 const Draft = lazy(() => import("pages/Draft"));
 const Home = lazy(() => import("pages/Home"));
 const Page404 = lazy(() => import("pages/Page404"));
@@ -111,8 +112,13 @@ export function App ({ onCheckSessionStart }) {
                             />
 
                             <Route
-                                component={ConfirmTokenError}
-                                path={`/${p.SUPPORT}/${p.CONFIRM_TOKEN_ERROR}/:token`}
+                                component={ConfirmEmail}
+                                path={`/${p.SUPPORT}/${p.CONFIRM}/${p.EMAIL}/:email`}
+                            />
+
+                            <Route
+                                component={ConfirmToken}
+                                path={`/${p.SUPPORT}/${p.CONFIRM}/${p.TOKEN}/:token`}
                             />
 
                             <Route component={Page404} />

@@ -27,7 +27,7 @@ emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
             subject: `Добро пожаловать на ${projectName}! А теперь подтвердите email`,
             html: `
                 <p>Чтобы ваш аккаунт стал действительным, пожалуйста, перейдите по ссылке ниже.</p>
-                <p><a href='${url}/support/confirm?token=${token}'>Подтвердить email</a></p>
+                <p><a href='${url}/support/confirm/token/${token}'>Подтвердить email</a></p>
             `
         });
 

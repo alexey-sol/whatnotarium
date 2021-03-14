@@ -1,14 +1,13 @@
 import { Request } from "express";
 
+import RequestSession from "#utils/helpers/RequestSession";
 import UserItem from "#types/user/Item";
 import UserService from "#services/UserService/v1";
-import RequestSession from "#utils/helpers/RequestSession";
 
 export default async function (
-    request: Request
+    request: Request,
+    email: string
 ): Promise<UserItem> {
-    const { email } = request.body;
-
     const usersList = await UserService.findUsers({
         where: { email }
     });

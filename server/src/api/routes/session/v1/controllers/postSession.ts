@@ -8,7 +8,9 @@ const postSession: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    SessionService.createSession(request)
+    const { email } = request.body;
+
+    SessionService.createSession(request, email)
         .then(user => sendResponse(response, user))
         .catch(next);
 };

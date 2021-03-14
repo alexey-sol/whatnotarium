@@ -13,6 +13,7 @@ import middlewares from "#api/middlewares";
 import adminRouter from "#api/routes/admin/v1";
 import postRouter from "#api/routes/post/v1";
 import sessionRouter from "#api/routes/session/v1";
+import supportRouter from "#api/routes/support/v1";
 import userRouter from "#api/routes/user/v1";
 
 interface Options {
@@ -40,6 +41,7 @@ export default function (options: Options): express.Application {
     app.use(`${apiRoute}/post`, postRouter);
     app.use(`${apiRoute}/user`, userRouter);
     app.use(`${apiRoute}/session`, sessionRouter);
+    app.use(`${apiRoute}/support`, supportRouter);
     app.use(middlewares.logError);
     app.use(middlewares.handleError);
 

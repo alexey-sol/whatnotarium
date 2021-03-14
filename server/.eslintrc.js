@@ -54,6 +54,7 @@ module.exports = {
         "no-confusing-arrow": 0,
         "no-else-return": 0,
         "no-restricted-syntax": 0,
+        "no-underscore-dangle": 0,
         "no-use-before-define": 0,
         "quotes": [2, "double"],
         "lines-between-class-members": ["error", "always", { exceptAfterSingleLine: true }],

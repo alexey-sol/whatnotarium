@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
-function generateId (): string {
-    return crypto.randomBytes(20).toString("hex");
+function generateId (size = 20): string {
+    return crypto.randomBytes(size).toString("hex");
 }
 
 export default generateId;

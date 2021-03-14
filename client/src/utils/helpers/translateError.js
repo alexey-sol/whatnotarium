@@ -1,13 +1,15 @@
 import {
     ALREADY_EXISTS,
+    CONFLICT,
     FORBIDDEN,
     INTERNAL_SERVER_ERROR,
     INVALID_CREDENTIALS,
     INVALID_PASSWORD,
-    NOT_FOUND
+    NOT_FOUND,
+    NOT_VERIFIED
 } from "utils/const/validationErrors";
 
-import { POST_ERROR, USER_ERROR } from "utils/const/errorNames";
+import { POST_ERROR, USER_ERROR, USER_TOKEN_ERROR } from "utils/const/errorNames";
 
 function translateError (error) {
     if (!error) {
@@ -20,6 +22,8 @@ function translateError (error) {
         return translatePostError(message);
     } else if (name === USER_ERROR) {
         return translateUserError(message);
+    } else if (name === USER_TOKEN_ERROR) {
+        return translateUserTokenError(message);
     } else {
         return translateCommonError(message);
     }
@@ -48,6 +52,23 @@ function translateUserError (message) {
             return "Неверные учетные данные";
         case INVALID_PASSWORD:
             return "Неверный пароль";
+        case NOT_FOUND:
+            return "Пользователь не найден";
+        case NOT_VERIFIED:
+            return "Email не подтвержден";
+        default:
+            return message;
+    }
+}
+
+function translateUserTokenError (message) {
+    switch (message) {
+        case CONFLICT:
+            return "Email уже подтвержден";
+        case FORBIDDEN:
+            return "Срок действия токена истек";
+        case NOT_FOUND:
+            return "Токен не найден";
         default:
             return message;
     }

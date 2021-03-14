@@ -1,4 +1,5 @@
 import * as types from "redux/session/session.types";
+import * as supportTypes from "redux/support/support.types";
 import * as usersTypes from "redux/users/users.types";
 import { setCurrentUser } from "redux/session/session.actions";
 import { setUser } from "redux/users/users.actions";
@@ -24,6 +25,7 @@ function checkIfShouldSetCurrentUser (type) {
         type === types.CHECK_SESSION_SUCCESS ||
         type === types.SIGN_IN_SUCCESS ||
         type === types.SIGN_UP_SUCCESS ||
+        type === supportTypes.CONFIRM_EMAIL_SUCCESS ||
         type === usersTypes.UPDATE_USER_PICTURE_SUCCESS ||
         type === usersTypes.UPDATE_USER_SUCCESS
     );

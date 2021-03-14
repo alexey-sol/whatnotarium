@@ -1,16 +1,18 @@
 import { Form, Formik } from "formik";
-import { Redirect } from "react-router";
-import React, { useCallback } from "react";
+import { Redirect, withRouter } from "react-router";
+import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
 
+import * as p from "utils/const/pathnames";
 import { EMAIL, PASSWORD } from "utils/const/userData";
 import { HIDE_NOTIFICATION } from "utils/const/events";
+import { NOT_VERIFIED } from "utils/const/validationErrors";
 import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignInContent.props";
-import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { signInStart } from "redux/session/session.actions";
 import pubsub from "utils/pubsub";
@@ -27,10 +29,12 @@ SignInContent.propTypes = propTypes;
 
 function SignInContent ({
     currentUser,
+    history,
     isPending,
     notification,
     onClose,
     onSignInStart,
+    sessionError,
     showSignUp
 }) {
     const handleChangeWrapper = (event, cb) => {
@@ -51,6 +55,19 @@ function SignInContent ({
     const signInUsingYandex = useCallback(() => {
         console.log("signInUsingYandex");
     }, []);
+
+    useEffect(() => {
+        const shouldRedirectToSupportPage = (
+            sessionError?.message === NOT_VERIFIED &&
+            sessionError?.additionalData
+        );
+
+        if (shouldRedirectToSupportPage) {
+            const { email } = sessionError.additionalData;
+            history.push(`/${p.SUPPORT}/${p.CONFIRM}/email/${email}`);
+            onClose();
+        }
+    }, [history, onClose, sessionError]);
 
     const elem = ( // TODO: does styles.form work?
         <div className={styles.container}>
@@ -130,7 +147,8 @@ const mapStateToProps = () => {
     return (state) => ({
         currentUser: selectCurrentUser(state),
         isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SESSION_PREFIX })),
-        notification: selectNotification(state)
+        notification: selectNotification(state),
+        sessionError: selectError(state)
     });
 };
 
@@ -143,4 +161,4 @@ const ConnectedSignInContent = connect(
     mapDispatchToProps
 )(SignInContent);
 
-export default ConnectedSignInContent;
+export default withRouter(ConnectedSignInContent);

@@ -1,5 +1,7 @@
 import Attributes from "#types/userToken/Attributes";
 import Item from "#types/userToken/Item";
+import UserEmail from "#types/UserEmail";
+import isOfType from "#utils/typeGuards/isOfType";
 
 function isUserTokenItem (
     objectToCheck: Attributes
@@ -10,8 +12,13 @@ function isUserTokenItem (
         id,
         token,
         typeId,
+        user,
         userId
     } = objectToCheck;
+
+    const userIsValidIfPassed = (user)
+        ? isOfType<UserEmail>(user, "email")
+        : true;
 
     return (
         createdAt instanceof Date &&
@@ -19,7 +26,8 @@ function isUserTokenItem (
         typeof id === "number" &&
         typeof token === "string" &&
         typeof typeId === "number" &&
-        typeof userId === "number"
+        typeof userId === "number" &&
+        userIsValidIfPassed
     );
 }
 

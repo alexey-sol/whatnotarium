@@ -1,8 +1,6 @@
 import { RequestHandler } from "express";
-
 import SessionService from "#services/SessionService/v1";
-import UserToken from "#models/UserToken";
-import UserService from "#services/UserService/v1";
+import User from "#models/User";
 import sendResponse from "#utils/http/sendResponse";
 
 const confirmEmail: RequestHandler = async (
@@ -10,18 +8,11 @@ const confirmEmail: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    const { body } = request;
-    const token = body.token as string;
-
     try {
-        const { userId } = await UserToken.findOne({
-            where: { token }
-        }) as UserToken;
-
-        await UserService.updateUser(userId, { isConfirmed: true });
-        const user = await SessionService.createSession(request);
-
-        sendResponse(response, user);
+        const user = response.locals.user as User;
+        await user.updateAttributes({ isConfirmed: true });
+        const currentUser = await SessionService.createSession(request, user.email);
+        sendResponse(response, currentUser);
     } catch (error) {
         next(error);
     }

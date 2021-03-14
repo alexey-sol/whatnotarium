@@ -48,7 +48,7 @@ export default router;
 
 // TODO: confirm
 // 1) after submitting the signing up form, client gets 201 and renders in modal/page: "You've signed up, but you must confirm your email..."
-//    So meanwhile backend sends email with link: GET https://site.com/support/confirm?token=f27a7n5va1
+//    So meanwhile backend sends email with link: GET https://site.com/support/confirm/f27a7n5va1
 // 2) user opens email and clicks the link;
 //    They get to the page which receives "token" parameter. In the background, request to POST "https://site.com/api/v1/support/confirm { token: f27a7n5va1 }"
 //    is sent
@@ -69,7 +69,7 @@ export default router;
 // - POST https://site.com/api/v1/support/confirm { token: f27a7n5va1 }
 
 // frontend routes:
-// - https://site.com/support/confirm
+// - https://site.com/support/confirm/:token
 
 
 // old
