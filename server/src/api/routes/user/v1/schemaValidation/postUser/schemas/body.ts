@@ -15,5 +15,9 @@ export default Joi.object({
 
     password: Joi
         .string()
-        .required()
+        .required(),
+
+    skipConfirmEmail: Joi
+        .boolean()
+        .optional()
 });

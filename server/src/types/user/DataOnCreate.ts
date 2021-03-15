@@ -2,6 +2,7 @@ interface DataOnCreate {
     digest: string;
     email: string;
     hash: Buffer;
+    isConfirmed?: boolean;
     iterations: number;
     keyLength: number;
     name: string;

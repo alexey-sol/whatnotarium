@@ -1,0 +1,13 @@
+@import "styles/style.scss";
+
+.container {
+    width: fit-content;
+    margin-top: 4rem;
+    font-family: $font-family--normal;
+    font-size: $font-size--medium;
+    color: $text-color--normal;
+
+    span {
+        margin-left: 0.5rem;
+    }
+}

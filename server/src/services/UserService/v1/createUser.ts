@@ -5,6 +5,7 @@ import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
     email: string;
+    isConfirmed?: boolean;
     name: string;
     password: string;
 }
@@ -12,7 +13,13 @@ interface Props {
 export default async function (
     props: Props
 ): Promise<UserItem> {
-    const { email, name, password } = props;
+    const {
+        email,
+        isConfirmed,
+        name,
+        password
+    } = props;
+
     const hashOptions = await hashPassword(password);
 
     const includeProfile = {
@@ -25,6 +32,7 @@ export default async function (
 
     return User.create({
         email,
+        isConfirmed,
         name,
         ...hashOptions
     }, [includeProfile]);

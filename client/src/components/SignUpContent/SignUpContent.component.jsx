@@ -7,12 +7,14 @@ import {
     CONFIRM_PASSWORD,
     EMAIL,
     NAME,
-    PASSWORD
+    PASSWORD,
+    SKIP_CONFIRM_EMAIL
 } from "utils/const/userData";
 
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
+import FormCheckbox from "components/FormCheckbox";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignUpContent.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -42,15 +44,18 @@ function SignUpContent ({
     onSignUpStart
 }) {
     const [specifiedEmail, setSpecifiedEmail] = useState("указанный email");
+    const [skipConfirmEmail, setSkipConfirmEmail] = useState(false);
     const [done, setDone] = useState(false);
 
     // const weakPasswordHint = (passwordErrorCode === PASSWORD_TOO_WEAK) // TODO
     //     ? hints.weakPassword
     //     : "";
 
-    const updateEmailIfNeeded = (input) => {
-        if (input.name === "email" && input.value > 0) {
+    const updateStateIfNeeded = (input) => {
+        if (input.name === EMAIL && input.value > 0) {
             setSpecifiedEmail(input.value);
+        } else if (input.name === SKIP_CONFIRM_EMAIL) {
+            setSkipConfirmEmail(input.value);
         }
     };
 
@@ -59,12 +64,17 @@ function SignUpContent ({
             pubsub.publish(HIDE_NOTIFICATION);
         }
 
-        updateEmailIfNeeded(event.target);
-
+        updateStateIfNeeded(event.target);
         cb(event);
     };
 
-    const signUp = (cred) => onSignUpStart(cred, () => setDone(true));
+    const signUp = (cred) => onSignUpStart(cred, () => {
+        if (skipConfirmEmail) {
+            onClose();
+        } else {
+            setDone(true);
+        }
+    });
 
     const formElem = (
         <Formik
@@ -101,6 +111,12 @@ function SignUpContent ({
                         name={CONFIRM_PASSWORD}
                         onChange={event => handleChangeWrapper(event, handleChange)}
                         type="password"
+                    />
+
+                    <FormCheckbox
+                        label="Пропустить подтверждение email"
+                        name={SKIP_CONFIRM_EMAIL}
+                        onChange={event => handleChangeWrapper(event, handleChange)}
                     />
 
                     <BaseButton

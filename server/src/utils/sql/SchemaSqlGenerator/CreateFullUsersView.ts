@@ -26,10 +26,12 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
             BEGIN
                 IF (TG_OP = 'INSERT') THEN
                     INSERT INTO "${USERS}" (
-                        "email"
+                        "email",
+                        "isConfirmed"
                     )
                     VALUES (
-                        new."email"
+                        new."email",
+                        new."isConfirmed"
                     )
                     RETURNING "id", "createdAt", "updatedAt"
                     INTO new_user_id, new_created_at, new_updated_at;
