@@ -35,6 +35,7 @@ function SignInContent ({
     onClose,
     onSignInStart,
     sessionError,
+    showForgotPass,
     showSignUp
 }) {
     const handleChangeWrapper = (event, cb) => {
@@ -51,6 +52,13 @@ function SignInContent ({
         if (onClose) onClose();
         showSignUp();
     }, [onClose, showSignUp]);
+
+    const handleClickOnForgotPass = useCallback((event) => {
+        event.preventDefault();
+
+        if (onClose) onClose();
+        showForgotPass();
+    }, [onClose, showForgotPass]);
 
     const signInUsingYandex = useCallback(() => {
         console.log("signInUsingYandex");
@@ -105,16 +113,27 @@ function SignInContent ({
             </Formik>
 
             <div className={styles.otherOptions}>
+                <p className={styles.forgotPassword}>
+
+                </p>
+
                 <p className={styles.signUpParagraph}>
+                    <CustomLink
+                        onClick={handleClickOnForgotPass}
+                        to="/"
+                    >
+                        Забыли пароль?
+                    </CustomLink>
+
                     <span>
-                        Нет аккаунта?&nbsp;
+                        &nbsp;Или вовсе нет аккаунта? Тогда можно&nbsp;
                     </span>
 
                     <CustomLink
                         onClick={handleClickOnSignUp}
                         to="/"
                     >
-                        Зарегистрироваться!
+                        зарегистрироваться!
                     </CustomLink>
                 </p>
 

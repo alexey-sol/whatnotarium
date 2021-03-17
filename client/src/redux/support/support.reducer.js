@@ -9,6 +9,7 @@ export default reduce(INITIAL_STATE, {
     [types.CONFIRM_EMAIL_FAILURE]: onFailure,
     [types.CONFIRM_EMAIL_SUCCESS]: onSuccess,
     [types.RESET_SUPPORT_ERROR]: onResetSupportError,
+    [types.RESTORE_PASSWORD_SUCCESS]: onSuccess,
     [types.SEND_CONFIRM_TOKEN_FAILURE]: onFailure,
     [types.SEND_CONFIRM_TOKEN_SUCCESS]: onSuccess
 });

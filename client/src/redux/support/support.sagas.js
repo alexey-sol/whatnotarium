@@ -7,6 +7,10 @@ function * onConfirmEmailStart () {
     yield takeLatest(types.CONFIRM_EMAIL_START, workers.doConfirmEmail);
 }
 
+function * onRestorePasswordStart () {
+    yield takeLatest(types.RESTORE_PASSWORD_START, workers.doRestorePassword);
+}
+
 function * onSendConfirmTokenStart () {
     yield takeLatest(types.SEND_CONFIRM_TOKEN_START, workers.doSendConfirmToken);
 }
@@ -14,6 +18,7 @@ function * onSendConfirmTokenStart () {
 function * supportSagas () {
     yield all([
         call(onConfirmEmailStart),
+        call(onRestorePasswordStart),
         call(onSendConfirmTokenStart)
     ]);
 }

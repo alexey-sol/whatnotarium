@@ -16,5 +16,6 @@ export const propTypes = {
     onClose: func,
     onSignInStart: func.isRequired,
     sessionError: object,
+    showForgotPass: func.isRequired,
     showSignUp: func.isRequired
 };

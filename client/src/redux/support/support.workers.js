@@ -15,6 +15,17 @@ export function * doConfirmEmail ({ payload, cb }) {
     }
 }
 
+export function * doRestorePassword ({ payload, cb }) {
+    try {
+        yield api.restorePassword(payload);
+        yield put(actions.restorePasswordSuccess());
+        if (cb) cb();
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.restorePasswordFailure(error));
+    }
+}
+
 export function * doSendConfirmToken ({ payload, cb }) {
     try {
         yield api.sendConfirmToken(payload);

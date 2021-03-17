@@ -17,25 +17,27 @@ import {
     UserIconButton
 } from "components/IconButton";
 
-import { SignInDialog, SignUpDialog } from "components/Dialog";
+import { ForgotPasswordDialog, SignInDialog, SignUpDialog } from "components/Dialog";
 import MobileActionsMenu from "components/MobileActionsMenu";
 import SearchPostInput from "components/SearchPostInput";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./ActionsMenu.module.scss";
-import toBase64 from "../../utils/helpers/toBase64";
+import toBase64 from "utils/helpers/toBase64";
 
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
 
 export function ActionsMenu ({
     currentUser,
+    initialForgotPassIsShown,
     initialSearchIsShown,
     initialSignInIsShown,
     initialSignUpIsShown,
     showUserMenu
 }) {
     const [mobileMenuIsShown, setMobileMenuIsShown] = useState(false);
+    const [forgotPassIsShown, setForgotPassIsShown] = useState(initialForgotPassIsShown);
     const [searchIsShown, setSearchIsShown] = useState(initialSearchIsShown);
     const [signInIsShown, setSignInIsShown] = useState(initialSignInIsShown);
     const [signUpIsShown, setSignUpIsShown] = useState(initialSignUpIsShown);
@@ -50,9 +52,11 @@ export function ActionsMenu ({
     const hideSearchInput = useCallback(() => setSearchIsShown(false), []);
     const showSearchInput = useCallback(() => setSearchIsShown(true), []);
     const hideSignIn = useCallback(() => setSignInIsShown(false), []);
-    const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
     const showSignIn = useCallback(() => setSignInIsShown(true), []);
+    const hideSignUp = useCallback(() => setSignUpIsShown(false), []);
     const showSignUp = useCallback(() => setSignUpIsShown(true), []);
+    const hideForgotPass = useCallback(() => setForgotPassIsShown(false), []);
+    const showForgotPass = useCallback(() => setForgotPassIsShown(true), []);
 
     const { name, picture } = currentUser?.profile || {};
 
@@ -80,6 +84,7 @@ export function ActionsMenu ({
         const hideDialogs = () => {
             setSignInIsShown(false);
             setSignUpIsShown(false);
+            setForgotPassIsShown(false);
         };
 
         if (hasUser) {
@@ -167,12 +172,17 @@ export function ActionsMenu ({
             {signInIsShown && (
                 <SignInDialog
                     onClose={hideSignIn}
+                    showForgotPass={showForgotPass}
                     showSignUp={showSignUp}
                 />
             )}
 
             {signUpIsShown && (
                 <SignUpDialog onClose={hideSignUp} />
+            )}
+
+            {forgotPassIsShown && (
+                <ForgotPasswordDialog onClose={hideForgotPass} />
             )}
         </div>
     );

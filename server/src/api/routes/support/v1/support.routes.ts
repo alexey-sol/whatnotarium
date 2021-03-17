@@ -23,8 +23,8 @@ router.post(
 
 router.post(
     "/reset",
-    // schemaValidation.sendResetToken, // redirect to page if token is wrong, not just send json
-    // dataValidation.sendResetToken, // redirect to page if token is wrong, not just send json
+    // schemaValidation.sendResetToken,
+    // dataValidation.sendResetToken,
     // controllers.sendResetToken
 );
 

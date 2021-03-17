@@ -22,6 +22,27 @@ export function confirmEmailSuccess (item) {
     };
 }
 
+export function restorePasswordFailure (error) {
+    return {
+        payload: { error },
+        type: types.RESTORE_PASSWORD_FAILURE
+    };
+}
+
+export function restorePasswordStart (payload, cb) {
+    return {
+        cb,
+        payload,
+        type: types.RESTORE_PASSWORD_START
+    };
+}
+
+export function restorePasswordSuccess () {
+    return {
+        type: types.RESTORE_PASSWORD_SUCCESS
+    };
+}
+
 export function sendConfirmTokenFailure (error) {
     return {
         payload: { error },

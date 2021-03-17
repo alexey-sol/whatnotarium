@@ -6,7 +6,7 @@ import { propTypes } from "./SignInDialog.props";
 
 SignInDialog.propTypes = propTypes;
 
-function SignInDialog ({ onClose, showSignUp }) {
+function SignInDialog ({ onClose, showForgotPass, showSignUp }) {
     return (
         <BaseDialog
             onClose={onClose}
@@ -15,6 +15,7 @@ function SignInDialog ({ onClose, showSignUp }) {
         >
             <SignInContent
                 onClose={onClose}
+                showForgotPass={showForgotPass}
                 showSignUp={showSignUp}
             />
         </BaseDialog>
