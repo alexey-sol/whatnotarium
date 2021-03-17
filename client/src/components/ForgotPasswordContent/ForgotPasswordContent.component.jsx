@@ -1,24 +1,26 @@
 import { Form, Formik } from "formik";
-import { Redirect } from "react-router";
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
+import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { EMAIL } from "utils/const/userData";
-
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
+import Notification from "utils/objects/Notification";
 import { defaultProps, propTypes } from "./ForgotPasswordContent.props";
 import { restorePasswordStart } from "redux/support/support.actions";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
+import { showNotification } from "redux/ui/ui.actions";
 import forgotPasswordSchema from "utils/validators/shemas/forgotPassword";
 import pubsub from "utils/pubsub";
 import styles from "./ForgotPasswordContent.module.scss";
 
-const initialValues = {
-    email: ""
-};
+const EMAIL_SENT = "Письмо выслано на указанный email";
+const notif = new Notification(EMAIL_SENT, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
+
+const initialValues = { email: "" };
 
 ForgotPasswordContent.defaultProps = defaultProps;
 ForgotPasswordContent.propTypes = propTypes;
@@ -27,8 +29,16 @@ function ForgotPasswordContent ({
     isPending,
     notification,
     onClose,
-    onRestorePasswordStart
+    onRestorePasswordStart,
+    onShowNotification
 }) {
+    const submitEmailAndShowSuccess = ({ email }) => {
+        onRestorePasswordStart({ email }, () => {
+            onShowNotification(notif);
+            onClose();
+        });
+    };
+
     const handleChangeWrapper = (event, cb) => {
         if (notification) {
             pubsub.publish(HIDE_NOTIFICATION);
@@ -37,43 +47,31 @@ function ForgotPasswordContent ({
         cb(event);
     };
 
-    const submitEmail = (cred) => onRestorePasswordStart(cred, () => {
-        // if (skipConfirmEmail) {
-        //     onClose();
-        // } else {
-        //     setDone(true);
-        // }
-    });
-
-    const formElem = (
-        <Formik
-            initialValues={initialValues}
-            onSubmit={submitEmail}
-            validateOnChange
-            validationSchema={forgotPasswordSchema}
-        >
-            {({ errors, handleChange }) => (
-                <Form className={styles.container}>
-                    <FormInput
-                        label="Ваш email"
-                        name={EMAIL}
-                        onChange={event => handleChangeWrapper(event, handleChange)}
-                        type="email"
-                    />
-
-                    <BaseButton
-                        className={styles.signUpButton}
-                        disabled={isPending || Object.keys(errors).length > 0}
-                        text="Отправить"
-                    />
-                </Form>
-            )}
-        </Formik>
-    );
-
     return (
         <div className={styles.container}>
-            {formElem}
+            <Formik
+                initialValues={initialValues}
+                onSubmit={submitEmailAndShowSuccess}
+                validateOnChange
+                validationSchema={forgotPasswordSchema}
+            >
+                {({ errors, handleChange }) => (
+                    <Form className={styles.container}>
+                        <FormInput
+                            label="Ваш email"
+                            name={EMAIL}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="email"
+                        />
+
+                        <BaseButton
+                            className={styles.submitEmailButton}
+                            disabled={isPending || Object.keys(errors).length > 0}
+                            text="Отправить"
+                        />
+                    </Form>
+                )}
+            </Formik>
         </div>
     );
 }
@@ -86,7 +84,8 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onRestorePasswordStart: (credentials, cb) => dispatch(restorePasswordStart(credentials, cb))
+    onRestorePasswordStart: (credentials, cb) => dispatch(restorePasswordStart(credentials, cb)),
+    onShowNotification: (notification) => dispatch(showNotification(notification))
 });
 
 const ConnectedSignUpContent = connect(

@@ -113,11 +113,7 @@ function SignInContent ({
             </Formik>
 
             <div className={styles.otherOptions}>
-                <p className={styles.forgotPassword}>
-
-                </p>
-
-                <p className={styles.signUpParagraph}>
+                <p>
                     <CustomLink
                         onClick={handleClickOnForgotPass}
                         to="/"

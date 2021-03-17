@@ -14,7 +14,6 @@ router.get( // TODO: ONLY for resend email purposes (auxiliary endpoint)
 );
 
 router.post(
-    // "/confirm/:token",
     "/confirm",
     schemaValidation.confirmEmail,
     dataValidation.confirmEmail,
@@ -23,15 +22,17 @@ router.post(
 
 router.post(
     "/reset",
-    // schemaValidation.sendResetToken,
-    // dataValidation.sendResetToken,
-    // controllers.sendResetToken
+    schemaValidation.sendResetToken,
+    dataValidation.sendResetToken,
+    controllers.sendResetToken
 );
+// TODO: implement client route (resetting pass form):
+// http://localhost:10000/support/reset/token/d0a168bc8dc3288536695a5cb596f2a7fc91fa9aedc1ea19de5b9c95b11c5065ded70db616bfad0890d1ae4c88a51946ebcc9585fadf63855b01737f8d710121
 
 router.get(
     "/reset/:token",
-    schemaValidation.checkResetToken,
-    dataValidation.checkResetToken,
+    // schemaValidation.checkResetToken,
+    // dataValidation.checkResetToken,
     // controllers.checkResetToken
 );
 

@@ -9,5 +9,6 @@ export const propTypes = {
     isPending: bool,
     notification: object,
     onClose: func.isRequired,
-    onRestorePasswordStart: func.isRequired
+    onRestorePasswordStart: func.isRequired,
+    onShowNotification: func.isRequired
 };

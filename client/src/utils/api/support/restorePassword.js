@@ -4,7 +4,7 @@ async function restorePassword ({ email }) {
     const response = await superagent
         .post("/api/v1/support/reset")
         .set("Content-Type", "application/json")
-        .body({ email });
+        .send({ email });
 
     return response?.body;
 }

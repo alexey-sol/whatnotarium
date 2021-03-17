@@ -101,6 +101,26 @@ emitter.on(eventNames.SEND_POST_REJECTED, async ({
     }
 });
 
+emitter.on(eventNames.SEND_RESET_PASSWORD_EMAIL, async ({ email, token }) => {
+    try {
+        const response = await emailTransporter.send({
+            to: email,
+            from: senderEmail,
+            subject: `Восстановление пароля на ${projectName}`,
+            html: `
+                <p>Чтобы восстановить пароль, пожалуйста, перейдите по ссылке ниже.
+                Если вы получили это письмо случайно, проигнорируйте его.</p>
+                <p><a href='${url}/support/reset/token/${token}'>Начать процедуру
+                восстановления</a></p>
+            `
+        });
+
+        logger.info("SEND_RESET_PASSWORD_EMAIL response", response);
+    } catch (error) {
+        emitter.emit(ERROR, error);
+    }
+});
+
 emitter.on(ERROR, (error) => logger.error(error));
 
 export default emitter;
