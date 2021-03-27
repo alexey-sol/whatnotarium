@@ -15,14 +15,14 @@ export function * doConfirmEmail ({ payload, cb }) {
     }
 }
 
-export function * doRestorePassword ({ payload, cb }) {
+export function * doResetPassword ({ payload, cb }) {
     try {
-        yield api.restorePassword(payload);
-        yield put(actions.restorePasswordSuccess());
+        yield api.resetPassword(payload);
+        yield put(actions.resetPasswordSuccess());
         if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
-        yield put(actions.restorePasswordFailure(error));
+        yield put(actions.resetPasswordFailure(error));
     }
 }
 
@@ -34,5 +34,16 @@ export function * doSendConfirmToken ({ payload, cb }) {
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.sendConfirmTokenFailure(error));
+    }
+}
+
+export function * doSendResetToken ({ payload, cb }) {
+    try {
+        yield api.sendResetToken(payload);
+        yield put(actions.sendResetTokenSuccess());
+        if (cb) cb();
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.sendResetTokenFailure(error));
     }
 }

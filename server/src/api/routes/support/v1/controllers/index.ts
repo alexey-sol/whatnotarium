@@ -1,11 +1,11 @@
-import checkResetToken from "./checkResetToken";
 import confirmEmail from "./confirmEmail";
+import resetPassword from "./resetPassword";
 import sendConfirmToken from "./sendConfirmToken";
 import sendResetToken from "./sendResetToken";
 
 export default {
-    checkResetToken,
     confirmEmail,
+    resetPassword,
     sendConfirmToken,
     sendResetToken
 };

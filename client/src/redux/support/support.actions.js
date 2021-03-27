@@ -3,7 +3,7 @@ import * as types from "./support.types";
 export function confirmEmailFailure (error) {
     return {
         payload: { error },
-        type: types.CONFIRM_EMAIL_FAILURE
+        type: types.CHECK_RESET_TOKEN_FAILURE
     };
 }
 
@@ -22,24 +22,24 @@ export function confirmEmailSuccess (item) {
     };
 }
 
-export function restorePasswordFailure (error) {
+export function resetPasswordFailure (error) {
     return {
         payload: { error },
-        type: types.RESTORE_PASSWORD_FAILURE
+        type: types.RESET_PASSWORD_FAILURE
     };
 }
 
-export function restorePasswordStart (payload, cb) {
+export function resetPasswordStart (token, cb) {
     return {
         cb,
-        payload,
-        type: types.RESTORE_PASSWORD_START
+        payload: token,
+        type: types.RESET_PASSWORD_START
     };
 }
 
-export function restorePasswordSuccess () {
+export function resetPasswordSuccess () {
     return {
-        type: types.RESTORE_PASSWORD_SUCCESS
+        type: types.RESET_PASSWORD_SUCCESS
     };
 }
 
@@ -61,5 +61,26 @@ export function sendConfirmTokenStart (payload, cb) {
 export function sendConfirmTokenSuccess () {
     return {
         type: types.SEND_CONFIRM_TOKEN_SUCCESS
+    };
+}
+
+export function sendResetTokenFailure (error) {
+    return {
+        payload: { error },
+        type: types.SEND_RESET_TOKEN_FAILURE
+    };
+}
+
+export function sendResetTokenStart (payload, cb) {
+    return {
+        cb,
+        payload,
+        type: types.SEND_RESET_TOKEN_START
+    };
+}
+
+export function sendResetTokenSuccess () {
+    return {
+        type: types.SEND_RESET_TOKEN_SUCCESS
     };
 }

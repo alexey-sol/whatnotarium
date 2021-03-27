@@ -10,8 +10,8 @@ const sendResetToken: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    const { ip, body } = request;
-    const email = body.email as string;
+    const { ip, query } = request;
+    const email = query.email as string;
 
     try {
         const user = await User.findOne({ where: { email } });

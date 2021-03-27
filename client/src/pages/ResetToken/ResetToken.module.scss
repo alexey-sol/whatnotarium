@@ -1,0 +1,27 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        width: 30rem;
+
+        p {
+            font-family: $font-family--normal;
+            font-size: $font-size--medium;
+            color: $text-color--normal;
+        }
+
+        .input {
+            width: 100%;
+        }
+
+        .submitButton {
+            margin-top: 5vh;
+        }
+    }
+}

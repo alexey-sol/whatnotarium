@@ -23,6 +23,7 @@ const Post = lazy(() => import("pages/Post"));
 const ProfileActivity = lazy(() => import("pages/Profile/Activity"));
 const ProfileMyPosts = lazy(() => import("pages/Profile/MyPosts"));
 const ProfileSettings = lazy(() => import("pages/Profile/Settings"));
+const ResetToken = lazy(() => import("pages/ResetToken"));
 const SignIn = lazy(() => import("pages/SignIn"));
 const UnapprovedPosts = lazy(() => import("pages/UnapprovedPosts"));
 const Users = lazy(() => import("pages/Users"));
@@ -119,6 +120,11 @@ export function App ({ onCheckSessionStart }) {
                             <Route
                                 component={ConfirmToken}
                                 path={`/${p.SUPPORT}/${p.CONFIRM}/${p.TOKEN}/:token`}
+                            />
+
+                            <Route
+                                component={ResetToken}
+                                path={`/${p.SUPPORT}/${p.RESET}/${p.TOKEN}/:token`}
                             />
 
                             <Route component={Page404} />

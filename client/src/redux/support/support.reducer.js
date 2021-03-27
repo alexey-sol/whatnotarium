@@ -6,12 +6,17 @@ const INITIAL_STATE = {
 };
 
 export default reduce(INITIAL_STATE, {
+    [types.CHECK_RESET_TOKEN_FAILURE]: onFailure,
+    [types.CHECK_RESET_TOKEN_SUCCESS]: onSuccess,
     [types.CONFIRM_EMAIL_FAILURE]: onFailure,
     [types.CONFIRM_EMAIL_SUCCESS]: onSuccess,
     [types.RESET_SUPPORT_ERROR]: onResetSupportError,
-    [types.RESTORE_PASSWORD_SUCCESS]: onSuccess,
+    [types.RESET_PASSWORD_FAILURE]: onFailure,
+    [types.RESET_PASSWORD_SUCCESS]: onSuccess,
     [types.SEND_CONFIRM_TOKEN_FAILURE]: onFailure,
-    [types.SEND_CONFIRM_TOKEN_SUCCESS]: onSuccess
+    [types.SEND_CONFIRM_TOKEN_SUCCESS]: onSuccess,
+    [types.SEND_RESET_TOKEN_FAILURE]: onFailure,
+    [types.SEND_RESET_TOKEN_SUCCESS]: onSuccess
 });
 
 function onFailure (state, { payload }) {

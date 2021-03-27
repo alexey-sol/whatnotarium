@@ -9,7 +9,7 @@ import Spinner from "components/Spinner";
 import { confirmEmailStart, sendConfirmTokenStart } from "redux/support/support.actions";
 import { defaultProps, propTypes } from "./ConfirmToken.props";
 import { selectError } from "redux/support/support.selectors";
-import { selectRelevantPendingAction } from "../../redux/ui/ui.selectors";
+import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
 import styles from "./ConfirmToken.module.scss";
 

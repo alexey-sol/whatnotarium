@@ -10,8 +10,8 @@ import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
 import Notification from "utils/objects/Notification";
 import { defaultProps, propTypes } from "./ForgotPasswordContent.props";
-import { restorePasswordStart } from "redux/support/support.actions";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
+import { sendResetTokenStart } from "redux/support/support.actions";
 import { showNotification } from "redux/ui/ui.actions";
 import forgotPasswordSchema from "utils/validators/shemas/forgotPassword";
 import pubsub from "utils/pubsub";
@@ -29,11 +29,11 @@ function ForgotPasswordContent ({
     isPending,
     notification,
     onClose,
-    onRestorePasswordStart,
+    onSendResetTokenStart,
     onShowNotification
 }) {
     const submitEmailAndShowSuccess = ({ email }) => {
-        onRestorePasswordStart({ email }, () => {
+        onSendResetTokenStart({ email }, () => {
             onShowNotification(notif);
             onClose();
         });
@@ -84,7 +84,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onRestorePasswordStart: (credentials, cb) => dispatch(restorePasswordStart(credentials, cb)),
+    onSendResetTokenStart: (credentials, cb) => dispatch(sendResetTokenStart(credentials, cb)),
     onShowNotification: (notification) => dispatch(showNotification(notification))
 });
 

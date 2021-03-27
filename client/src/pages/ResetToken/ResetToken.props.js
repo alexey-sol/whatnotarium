@@ -1,14 +1,15 @@
 import { bool, func, object } from "prop-types";
 
 export const defaultProps = {
-    isPending: false,
-    notification: null
+    currentUser: null,
+    isPending: false
 };
 
 export const propTypes = {
+    currentUser: object,
+    history: object.isRequired,
     isPending: bool,
-    notification: object,
-    onClose: func.isRequired,
-    onSendResetTokenStart: func.isRequired,
+    match: object.isRequired,
+    onResetPasswordStart: func.isRequired,
     onShowNotification: func.isRequired
 };

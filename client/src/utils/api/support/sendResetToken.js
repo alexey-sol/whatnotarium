@@ -1,12 +1,12 @@
 import superagent from "superagent";
 
-async function confirmEmail (token) {
+async function sendResetToken ({ email }) {
     const response = await superagent
-        .post("/api/v1/support/confirm")
+        .get("/api/v1/support/reset")
         .set("Content-Type", "application/json")
-        .send({ token });
+        .query({ email });
 
     return response?.body;
 }
 
-export default confirmEmail;
+export default sendResetToken;

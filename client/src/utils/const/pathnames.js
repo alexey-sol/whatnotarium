@@ -6,6 +6,7 @@ export const EMAIL = "email";
 export const MY_POSTS = "my-posts";
 export const POST = "post";
 export const PROFILE = "profile";
+export const RESET = "reset";
 export const SETTINGS = "settings";
 export const SIGN_IN = "sign-in";
 export const SUPPORT = "support";
