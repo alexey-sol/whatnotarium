@@ -25,6 +25,7 @@ function PostDetails ({
         author = {},
         body,
         id,
+        isApproved,
         title,
         updatedAt,
         userId,
@@ -92,16 +93,16 @@ function PostDetails ({
                 </div>
             </section>
 
-            {isAdmin && (
+            {isAdmin && !isApproved && (
                 <section className={styles.adminControls}>
                     <BaseButton
                         onClick={handleClickOnApproveButton}
-                        text="Approve"
+                        text="Пропустить"
                     />
 
                     <BaseButton
                         onClick={handleClickOnRejectButton}
-                        text="Reject"
+                        text="Отклонить"
                         theme="dark"
                     />
                 </section>

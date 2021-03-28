@@ -6,6 +6,8 @@
     font-family: $font-family--normal;
     font-size: $font-size--medium;
     color: $text-color--normal;
+    user-select: none;
+    cursor: pointer;
 
     span {
         margin-left: 0.5rem;

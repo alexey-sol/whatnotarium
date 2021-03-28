@@ -9,9 +9,11 @@ import React, {
 
 import classnames from "classnames";
 
+import { BODY, SKIP_PREMODERATION, TITLE } from "utils/const/postData";
 import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
 import { RESET_POST } from "utils/const/events";
 import BaseButton from "components/BaseButton";
+import Checkbox from "components/Checkbox";
 import DateFormatter from "utils/formatters/DateFormatter";
 import Editor from "components/Editor";
 import Input from "components/Input";
@@ -42,6 +44,13 @@ function DraftEditor ({
         (editor) ? styles.fadedIn : styles.hidden
     );
 
+    const handleSkipPremodChange = useCallback(({ target }) => {
+        handleChange({
+            name: SKIP_PREMODERATION,
+            value: target.checked
+        });
+    }, [handleChange]);
+
     const handleTitleChange = useCallback(({ target }) => {
         handleChange(target);
     }, [handleChange]);
@@ -55,7 +64,7 @@ function DraftEditor ({
         setBodyLength(plainText.length);
 
         handleChange({
-            name: "body",
+            name: BODY,
             value: DOMPurify.sanitize(content)
         });
     }, [handleChange]);
@@ -104,7 +113,7 @@ function DraftEditor ({
                         <Input
                             className={styles.input}
                             max={POST_TITLE_LENGTH}
-                            name="title"
+                            name={TITLE}
                             onChange={handleTitleChange}
                             rootClassName={styles.inputContainer}
                             type="text"
@@ -132,6 +141,13 @@ function DraftEditor ({
                             {`${bodyLength}/${POST_BODY_LENGTH} символов введено`}
                         </span>
                     </section>
+
+                    <Checkbox
+                        label="Пропустить этап премодерации"
+                        name={SKIP_PREMODERATION}
+                        rootClassName={styles.skipPremodCheckbox}
+                        onChange={handleSkipPremodChange}
+                    />
 
                     <section className={styles.controls}>
                         <BaseButton

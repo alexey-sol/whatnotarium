@@ -61,6 +61,14 @@
 
     }
 
+    .adminControls {
+        display: flex;
+
+        :not(:first-child) {
+            margin-left: 1rem;
+        }
+    }
+
     .stats {
         display: flex;
 

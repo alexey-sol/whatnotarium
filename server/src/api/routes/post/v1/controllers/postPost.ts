@@ -12,14 +12,21 @@ const postPost: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
+    const { skipPremoderation, ...rest } = request.body;
     const session = new RequestSession(request);
     const sessionUser = session.getUserFromSession();
 
-    try {
-        const post = await PostService.createPost(request.body);
-        const { id, title } = post;
+    const props = {
+        ...rest,
+        isApproved: Boolean(skipPremoderation)
+    };
 
-        if (sessionUser?.email) {
+    try {
+        const post = await PostService.createPost(props);
+        const { id, title } = post;
+        const shouldNotifyUserAboutPremod = sessionUser?.email && !skipPremoderation;
+
+        if (shouldNotifyUserAboutPremod) {
             userEmitter.emit(SEND_POST_WAITING_APPROVAL, {
                 email: sessionUser?.email,
                 postId: id,
