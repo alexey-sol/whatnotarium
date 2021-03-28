@@ -1,7 +1,7 @@
 import Joi from "@hapi/joi";
 
 import { TEST } from "#utils/const/nodeEnv";
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 import envSchema from "./schemas/env";
 import envTestSchema from "./schemas/envTest";
 

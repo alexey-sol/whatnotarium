@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 
 import { UNAUTHORIZED } from "#utils/const/validationErrors";
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import UnauthorizedError from "#utils/errors/UnauthorizedError";
 
 const isAuthed: RequestHandler = async (

@@ -3,7 +3,7 @@ import express from "express";
 import http from "http";
 
 import { SIGTERM } from "#utils/const/signals";
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 import loaders from "#loaders";
 import logger from "#logger";
 import serverConfig from "#config/server";

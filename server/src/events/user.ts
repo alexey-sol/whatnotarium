@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 
 import * as eventNames from "#utils/const/events/user";
 import { ERROR } from "#utils/const/events/common";
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 import emailTransporter from "#emailTransporter";
 import emailTransporterConfig from "#config/emailTransporter";
 import logger from "#logger";

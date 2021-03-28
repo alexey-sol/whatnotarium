@@ -1,25 +1,19 @@
 import connectRedis from "connect-redis";
 import redis from "redis";
 
-import logger from "#logger";
-import redisConfig from "#config/redis";
+import redisClient from "#redisClient";
 
 function initRedisStore (
     session: any
 ): connectRedis.RedisStore {
-    const { host, port } = redisConfig;
-
+    const client = redisClient.getClient();
     const RedisStore = connectRedis(session);
-    const client = redis.createClient(+port, host);
-
-    client.on("error", (error) => logger.error(error));
-
-    return new RedisStore(getRedisOptions(client));
+    return new RedisStore(getRedisStoreOptions(client));
 }
 
 export default initRedisStore;
 
-function getRedisOptions (
+function getRedisStoreOptions (
     client: redis.RedisClient
 ): connectRedis.RedisStoreOptions {
     return {

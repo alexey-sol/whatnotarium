@@ -5,7 +5,7 @@ import {
     NextFunction
 } from "express";
 
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import sessionConfig from "#config/session";
 
 const clearUserlessCookie: RequestHandler = (

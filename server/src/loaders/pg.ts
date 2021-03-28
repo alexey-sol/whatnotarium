@@ -1,4 +1,4 @@
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 import createTablesIfNotExist from "#utils/helpers/createTablesIfNotExist";
 import pool from "#connectionPool";
 

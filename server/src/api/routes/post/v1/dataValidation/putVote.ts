@@ -4,7 +4,7 @@ import status from "http-status";
 import { CONFLICT, FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import UserError from "#utils/errors/UserError";
 
 const putVote: RequestHandler = async (

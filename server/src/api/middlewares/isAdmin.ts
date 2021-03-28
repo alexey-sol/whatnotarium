@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 
 import { FORBIDDEN } from "#utils/const/validationErrors";
 import ForbiddenError from "#utils/errors/ForbiddenError";
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 
 const isAdmin: RequestHandler = async (
     request,

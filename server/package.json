@@ -21,6 +21,7 @@
     "#events": "src/events/",
     "#loaders": "src/loaders",
     "#logger": "src/loaders/logger",
+    "#redisClient": "src/loaders/redisClient",
     "#models": "src/models/",
     "#root": ".",
     "#services": "src/services/",

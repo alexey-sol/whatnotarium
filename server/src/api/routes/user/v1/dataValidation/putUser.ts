@@ -8,7 +8,7 @@ import {
     NOT_FOUND
 } from "#utils/const/validationErrors";
 
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import isValidPassword from "#utils/helpers/isValidPassword";

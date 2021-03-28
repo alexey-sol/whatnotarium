@@ -1,6 +1,6 @@
 import { Request } from "express";
 
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import UserItem from "#types/user/Item";
 import UserService from "#services/UserService/v1";
 

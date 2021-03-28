@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import sessionConfig from "#config/session";
 
 export default async function (

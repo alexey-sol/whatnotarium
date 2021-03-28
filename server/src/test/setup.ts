@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { join } from "path";
 
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 import validateEnv from "#utils/validators/validateEnv";
 
 const { nodeEnv } = new ProcessManager();

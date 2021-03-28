@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 
 import { DEVELOPMENT } from "#utils/const/nodeEnv";
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 import validateEnv from "#utils/validators/validateEnv";
 
 export default function (): void {

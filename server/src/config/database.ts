@@ -1,5 +1,5 @@
 import { TEST } from "#utils/const/nodeEnv";
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 
 interface ValidatedEnv {
     POSTGRES_URL: string;

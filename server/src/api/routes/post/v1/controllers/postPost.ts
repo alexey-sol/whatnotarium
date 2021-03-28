@@ -3,7 +3,7 @@ import { RequestHandler } from "express";
 
 import { SEND_POST_WAITING_APPROVAL } from "#utils/const/events/user";
 import PostService from "#services/PostService/v1";
-import RequestSession from "#utils/helpers/RequestSession";
+import RequestSession from "#utils/wrappers/RequestSession";
 import sendResponse from "#utils/http/sendResponse";
 import userEmitter from "#events/user";
 

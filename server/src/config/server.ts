@@ -1,4 +1,4 @@
-import ProcessManager from "#utils/helpers/ProcessManager";
+import ProcessManager from "#utils/wrappers/ProcessManager";
 
 interface ValidatedEnv {
     HOST: string;

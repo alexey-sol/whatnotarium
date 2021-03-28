@@ -23,6 +23,7 @@
             "#loaders": ["./src/loaders"],
             "#logger": ["./src/loaders/logger"],
             "#models/*": ["./src/models/*"],
+            "#redisClient": ["./src/loaders/redisClient"],
             "#root/*": ["./*"],
             "#services/*": ["./src/services/*"],
             "#types/*": ["./src/types/*"],
