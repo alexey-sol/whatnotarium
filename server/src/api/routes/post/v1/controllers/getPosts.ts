@@ -14,7 +14,7 @@ const getPosts: RequestHandler = async (
     const filter = convertPagingOptsToFilter<Attributes>({ ...query });
 
     PostService.findPosts(filter)
-        .then(posts => sendResponse(response, { ...posts, count, page })) // TODO: impl this in getUsers as well
+        .then(posts => sendResponse(response, { ...posts, count, page }))
         .catch(next);
 };
 

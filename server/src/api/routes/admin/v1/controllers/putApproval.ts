@@ -1,7 +1,10 @@
 import { RequestHandler } from "express";
 
+import { SEND_POST_APPROVED, SEND_POST_REJECTED } from "#utils/const/events/user";
 import PostService from "#services/PostService/v1";
+import User from "#models/User";
 import sendResponse from "#utils/http/sendResponse";
+import userEmitter from "#events/user";
 
 const putApproval: RequestHandler = async (
     { body, params },
@@ -9,11 +12,31 @@ const putApproval: RequestHandler = async (
     next
 ): Promise<void> => {
     const { id } = params;
-    const { isApproved } = body;
+    const { isApproved, message } = body;
+    const { email } = response.locals.user as User;
 
-    PostService.updatePost(+id, { isApproved })
-        .then(post => sendResponse(response, post))
-        .catch(next);
+    try {
+        const post = await PostService.updatePost(+id, { isApproved });
+
+        if (isApproved) {
+            userEmitter.emit(SEND_POST_APPROVED, {
+                email,
+                postId: id,
+                postTitle: post.title
+            });
+        } else {
+            userEmitter.emit(SEND_POST_REJECTED, {
+                email,
+                message,
+                postId: id,
+                postTitle: post.title
+            });
+        }
+
+        sendResponse(response, post);
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default putApproval;

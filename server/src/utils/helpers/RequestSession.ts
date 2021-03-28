@@ -1,6 +1,5 @@
 import { Request } from "express";
 
-import SessionUser from "#types/SessionUser";
 import UserItem from "#types/user/Item";
 import sessionConfig from "#config/session";
 
@@ -15,15 +14,13 @@ class RequestSession {
         const { session } = this.request;
 
         if (session) {
-            session.user = {};
-            session.user.id = user.id;
-            session.user.isAdmin = user.isAdmin;
+            session.user = user;
         }
     }
 
     isAdmin (): boolean {
         const { session } = this.request;
-        return session?.user?.isAdmin;
+        return Boolean(session?.user?.isAdmin);
     }
 
     isAuthed (): boolean {
@@ -45,7 +42,7 @@ class RequestSession {
         );
     }
 
-    getUserFromSession (): SessionUser | undefined {
+    getUserFromSession (): UserItem | undefined {
         return this.request.session?.user;
     }
 }

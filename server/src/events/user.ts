@@ -7,7 +7,6 @@ import emailTransporter from "#emailTransporter";
 import emailTransporterConfig from "#config/emailTransporter";
 import logger from "#logger";
 import serverConfig from "#config/server";
-import Version from "#utils/helpers/Version";
 
 const emitter = new EventEmitter();
 const { processEnv } = new ProcessManager();
@@ -15,9 +14,6 @@ const { processEnv } = new ProcessManager();
 const { PROJECT_NAME_FULL: projectName } = processEnv;
 const { senderEmail } = emailTransporterConfig;
 const { url } = serverConfig;
-
-const appMajorVersion = Version.getMajorVersion();
-// const url = `${url}/api/v${appMajorVersion}`;
 
 emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
     try {
@@ -42,13 +38,13 @@ emitter.on(eventNames.SEND_POST_WAITING_APPROVAL, async ({ email, postId, postTi
         const response = await emailTransporter.send({
             to: email,
             from: senderEmail,
-            subject: `Ваша статья "${postTitle}" на Geek Regime ожидает проверки`,
+            subject: `Ваша статья "${postTitle}" на ${projectName} ожидает проверки`,
             html: `
-                Добрый день! Перед публикацией мы должны проверить вашу статью "${postTitle}":
+                <p>Добрый день! Перед публикацией мы должны проверить вашу статью "${postTitle}":
                 это может занять день или два. Если возникнут какие-то загвоздки, мы напишем
                 вам, и вы сможете внести в статью необходимые правки и отправить на повторную
-                проверку.
-                <a href="${url}/post/${postId}">Перейти к статье</a>
+                проверку.</p>
+                <p><a href="${url}/post/${postId}">Перейти к статье</a></p>
             `
         });
 
@@ -63,10 +59,10 @@ emitter.on(eventNames.SEND_POST_APPROVED, async ({ email, postId, postTitle }) =
         const response = await emailTransporter.send({
             to: email,
             from: senderEmail,
-            subject: `Ваша статья "${postTitle}" на Geek Regime опубликована`,
+            subject: `Ваша статья "${postTitle}" на ${projectName} опубликована`,
             html: `
-                Поздравляем! Ваша статья "${postTitle}" прошла проверку и была опубликована.<br>
-                <a href="${url}/post/${postId}">Перейти к статье</a>
+                <p>Поздравляем! Ваша статья "${postTitle}" прошла проверку и была опубликована.</p>
+                <p><a href="${url}/post/${postId}">Перейти к статье</a></p>
             `
         });
 
@@ -78,7 +74,7 @@ emitter.on(eventNames.SEND_POST_APPROVED, async ({ email, postId, postTitle }) =
 
 emitter.on(eventNames.SEND_POST_REJECTED, async ({
     email,
-    message,
+    message = "Причина не указана",
     postId,
     postTitle
 }) => {
@@ -86,12 +82,13 @@ emitter.on(eventNames.SEND_POST_REJECTED, async ({
         const response = await emailTransporter.send({
             to: email,
             from: senderEmail,
-            subject: `Ваша статья "${postTitle}" на Geek Regime пока отклонена`,
+            subject: `Ваша статья "${postTitle}" на ${projectName} пока отклонена`,
             html: `
-                Добрый день, мы пока отклонили вашу статью "${postTitle}" на Geek Regime.
-                Причина следующая:<br>${message}<br>
-                Вы можете внести правки и отправить на проверку еще раз.<br>
-                <a href="${url}/post/${postId}">Перейти к статье</a>
+                <p>Добрый день, мы пока отклонили вашу статью "${postTitle}" на ${projectName}.
+                Причина следующая:</p>
+                <p>${message}</p>
+                <p>Вы можете внести правки и отправить на проверку еще раз.</p>
+                <p><a href="${url}/post/${postId}">Перейти к статье</a></p>
             `
         });
 
