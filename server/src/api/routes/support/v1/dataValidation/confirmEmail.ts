@@ -1,11 +1,12 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
+import { CONFIRM } from "#utils/const/database/userTokenTypeIds";
 import { CONFLICT, FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
-import UserToken from "#models/UserToken";
-import UserTokenError from "#utils/errors/UserTokenError";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
+import UserToken from "#models/UserToken";
+import UserTokenError from "#utils/errors/UserTokenError";
 
 const confirmEmail: RequestHandler = async (
     request,
@@ -19,7 +20,7 @@ const confirmEmail: RequestHandler = async (
 
     try {
         const userToken = await UserToken.findOne({
-            where: { token }
+            where: { token, typeId: CONFIRM }
         });
 
         if (!userToken) {

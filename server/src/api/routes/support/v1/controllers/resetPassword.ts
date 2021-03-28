@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import User from "#models/User";
-import UserService from "#services/UserService/v1"
+import UserService from "#services/UserService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
 const resetPassword: RequestHandler = async (

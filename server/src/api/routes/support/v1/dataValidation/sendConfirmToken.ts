@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
-import { CONFLICT, FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
+import { CONFIRM } from "#utils/const/database/userTokenTypeIds";
+import { CONFLICT, NOT_FOUND } from "#utils/const/validationErrors";
 import { USERS } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
@@ -40,7 +41,7 @@ const sendConfirmToken: RequestHandler = async (
         let where;
 
         if (token) {
-            where = { token };
+            where = { token, typeId: CONFIRM };
         } else if (email && user) {
             where = { userId: user.id };
         }

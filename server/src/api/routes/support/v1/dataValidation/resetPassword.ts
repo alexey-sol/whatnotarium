@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
+import { RESET } from "#utils/const/database/userTokenTypeIds";
 import { FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
 import UserToken from "#models/UserToken";
 import UserTokenError from "#utils/errors/UserTokenError";
@@ -17,7 +18,7 @@ const resetPassword: RequestHandler = async (
 
     try {
         const userToken = await UserToken.findOne({
-            where: { token }
+            where: { token, typeId: RESET }
         });
 
         if (!userToken) {
