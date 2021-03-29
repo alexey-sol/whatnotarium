@@ -5,10 +5,6 @@ import { NOT_FOUND } from "#utils/const/validationErrors";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 
-// TODO: do I need it?
-// add isAuthed to postPost
-// formatPropsAndInstantiate - rename
-
 const getPost: RequestHandler = async (
     { ip, params },
     response,

@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 
 import PostService from "#services/PostService/v1";
-import sendResponse from "#utils/http/sendResponse";
 
 const getPost: RequestHandler = async (
     { params },
@@ -10,9 +9,12 @@ const getPost: RequestHandler = async (
 ): Promise<void> => {
     const { id } = params;
 
-    PostService.findPost(+id)
-        .then(post => sendResponse(response, post))
-        .catch(next);
+    try {
+        response.locals.data = await PostService.findPost(+id);
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default getPost;

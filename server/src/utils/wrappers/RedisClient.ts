@@ -1,3 +1,4 @@
+import { Request } from "express";
 import redis from "redis";
 
 import { DEFAULT_EXPIRE_IN_SEC } from "#utils/const/caching";
@@ -12,10 +13,9 @@ class RedisClient {
         return this.client;
     }
 
-    createKey (prefix: string, options: Record<string, any>): string {
-        return (options)
-            ? `${prefix}-${JSON.stringify(options)}`
-            : prefix;
+    createKey (request: Request): string { // TODO: move this logic to different class
+        const { method, originalUrl } = request;
+        return `${method} ${originalUrl}`;
     }
 
     get (key: string): Promise<any> | never {
@@ -53,6 +53,14 @@ class RedisClient {
             this.client.setex(key, expireInSec, stringifiedValue, (error) => (error)
                 ? reject(error)
                 : resolve());
+        });
+    }
+
+    delete (...keys: string[]): Promise<boolean> | never {
+        return new Promise((resolve, reject) => {
+            this.client.del(keys, (error, result) => (error)
+                ? reject(error)
+                : resolve(!!result));
         });
     }
 }

@@ -22,8 +22,10 @@ router.get(
 router.get(
     "/:id",
     schemaValidation.getPost,
+    middlewares.readRouteCache,
     dataValidation.getPost,
-    controllers.getPost
+    controllers.getPost,
+    middlewares.writeRouteCache
 );
 
 router.post(
@@ -38,6 +40,7 @@ router.put(
     middlewares.isAuthed,
     schemaValidation.putPost,
     dataValidation.putPost,
+    // middlewares.clearRouteCache,
     controllers.putPost
 );
 
@@ -46,6 +49,7 @@ router.put(
     middlewares.isAuthed,
     schemaValidation.putVote,
     dataValidation.putVote,
+    middlewares.clearRouteCache,
     controllers.putVote
 );
 
@@ -54,6 +58,7 @@ router.delete(
     middlewares.isAuthed,
     schemaValidation.deletePost,
     dataValidation.deletePost,
+    // middlewares.clearRouteCache,
     controllers.deletePost
 );
 
