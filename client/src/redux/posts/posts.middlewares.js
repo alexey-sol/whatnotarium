@@ -14,7 +14,9 @@ export const normalizer = ({ getState }) => (next) => (action) => {
         return next(action);
     }
 
-    if (payload.props) {
+    const shouldUpdateSpecificItem = payload.props;
+
+    if (shouldUpdateSpecificItem) {
         actionWithNormalizedPayload.payload = {
             items: getMapWithUpdatingSpecificItem(getState().posts.items, payload)
         };

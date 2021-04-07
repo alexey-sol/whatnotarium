@@ -19,6 +19,7 @@ const getPost: RequestHandler = async (
             throw new PostError(NOT_FOUND, status.NOT_FOUND, ip);
         }
 
+        response.locals.post = post;
         next();
     } catch (error) {
         next(error);

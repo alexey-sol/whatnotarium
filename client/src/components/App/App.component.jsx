@@ -81,16 +81,6 @@ export function App ({ onCheckSessionStart }) {
                                 path={`/${p.PROFILE}/${p.SETTINGS}`}
                             />
 
-                            <Route
-                                component={Post}
-                                path={`/${p.POST}/:id`}
-                            />
-
-                            <Route
-                                component={Users}
-                                path={`/${p.USERS}`}
-                            />
-
                             <PrivateRoute
                                 component={Draft}
                                 path={`/${p.DRAFT}`}
@@ -99,6 +89,16 @@ export function App ({ onCheckSessionStart }) {
                             <PrivateRoute
                                 component={Draft}
                                 path={`/${p.POST}/:id/${p.EDIT}`}
+                            />
+
+                            <Route
+                                component={Post}
+                                path={`/${p.POST}/:id`}
+                            />
+
+                            <Route
+                                component={Users}
+                                path={`/${p.USERS}`}
                             />
 
                             <AdminRoute

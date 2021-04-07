@@ -1,16 +1,14 @@
 import { RequestHandler } from "express";
 
-import PostService from "#services/PostService/v1";
-
 const getPost: RequestHandler = async (
     { params },
     response,
     next
 ): Promise<void> => {
-    const { id } = params;
+    const { post } = response.locals;
 
     try {
-        response.locals.data = await PostService.findPost(+id);
+        response.locals.data = post;
         next();
     } catch (error) {
         next(error);

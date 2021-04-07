@@ -26,10 +26,11 @@ export function * doDeletePost ({ cb, payload: id }) {
     }
 }
 
-export function * doFetchPost ({ payload: id }) {
+export function * doFetchPost ({ cb, payload: id }) {
     try {
         const item = yield api.fetchPost(id);
         yield put(actions.fetchPostSuccess(item));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.fetchPostFailure(error));

@@ -8,7 +8,14 @@ import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import DraftEditor from "./DraftEditor.component";
 import Notification from "utils/objects/Notification";
-import { createPostStart, deletePostStart, updatePostStart } from "redux/posts/posts.actions";
+
+import {
+    createPostStart,
+    deletePostStart,
+    fetchPostStart,
+    updatePostStart
+} from "redux/posts/posts.actions";
+
 import { defaultProps, propTypes } from "./DraftEditor.container.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
@@ -29,6 +36,7 @@ function DraftEditorContainer ({
     match,
     onCreatePostStart,
     onDeletePostStart,
+    onFetchPostStart,
     onShowNotification,
     onUpdatePostStart,
     post
@@ -61,9 +69,10 @@ function DraftEditorContainer ({
             event.preventDefault();
         }
 
+        const { isApproved: _, ...rest } = selectedPost;
         const shouldCreateNewPost = !id;
         const postWithUserId = {
-            ...selectedPost,
+            ...rest,
             userId: currentUser.id
         };
 
@@ -79,6 +88,16 @@ function DraftEditorContainer ({
     }, [id, onDeletePostStart, redirectToProfileAndShowSuccess]);
 
     const shouldResetPostForNewDraft = !paramId && Boolean(selectedPost?.id);
+
+    useEffect(() => {
+        if (!post && paramId) {
+            onFetchPostStart(id);
+        }
+
+        if (!selectedPost && post) {
+            setSelectedPost(post);
+        }
+    }, [id, onFetchPostStart, paramId, post, selectedPost]);
 
     useEffect(() => {
         if (shouldResetPostForNewDraft) {
@@ -109,6 +128,7 @@ const mapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     onCreatePostStart: (props, cb) => dispatch(createPostStart(props, cb)),
     onDeletePostStart: (id, cb) => dispatch(deletePostStart(id, cb)),
+    onFetchPostStart: (id, cb) => dispatch(fetchPostStart(id, cb)),
     onShowNotification: (notification) => dispatch(showNotification(notification)),
     onUpdatePostStart: (props, cb) => dispatch(updatePostStart(props, cb))
 });

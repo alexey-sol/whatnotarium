@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import * as p from "utils/const/pathnames";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
-import { POST, UNAPPROVED_POSTS } from "utils/const/pathnames";
 import Notification from "utils/objects/Notification";
 import PostDetails from "./PostDetails.component";
 import { approvePostStart, rejectPostStart } from "redux/admin/admin.actions";
@@ -37,10 +37,10 @@ function PostDetailsContainer ({
 
     const id = +match.params.id;
     const shouldFetchPost = !post.id;
-    const redirectToDraft = useCallback(() => push(`/${POST}/${id}/edit`), [id, push]);
+    const redirectToDraft = useCallback(() => push(`/${p.POST}/${id}/${p.EDIT}`), [id, push]);
 
     const redirectToListAndShowSuccess = useCallback(() => {
-        push(`/${UNAPPROVED_POSTS}`);
+        push(`/${p.UNAPPROVED_POSTS}`);
         onShowNotification(successNotification);
     }, [onShowNotification, push]);
 

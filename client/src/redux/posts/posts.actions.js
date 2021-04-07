@@ -51,8 +51,9 @@ export function fetchPostFailure (error) {
     };
 }
 
-export function fetchPostStart (id) {
+export function fetchPostStart (id, cb) {
     return {
+        cb,
         payload: { id },
         type: types.FETCH_POST_START
     };
