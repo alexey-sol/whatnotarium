@@ -87,6 +87,28 @@ export function fetchPostsSuccess (payload) {
     };
 }
 
+export function incrementViewCountFailure (error) {
+    return {
+        payload: { error },
+        type: types.INCREMENT_VIEW_COUNT_FAILURE
+    };
+}
+
+export function incrementViewCountStart (postId, cb) {
+    return {
+        cb,
+        payload: postId,
+        type: types.INCREMENT_VIEW_COUNT_START
+    };
+}
+
+export function incrementViewCountSuccess (payload) {
+    return {
+        payload,
+        type: types.INCREMENT_VIEW_COUNT_SUCCESS
+    };
+}
+
 export function resetPostsError () {
     return {
         type: types.RESET_POSTS_ERROR

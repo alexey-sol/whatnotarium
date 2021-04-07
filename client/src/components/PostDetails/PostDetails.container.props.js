@@ -11,8 +11,8 @@ export const propTypes = {
     match: object.isRequired,
     onApprovePostStart: func.isRequired,
     onFetchPostStart: func.isRequired,
+    onIncrementViewCountStart: func.isRequired,
     onRejectPostStart: func.isRequired,
     onShowNotification: func.isRequired,
-    onUpdatePostStart: func.isRequired,
     post: object
 };

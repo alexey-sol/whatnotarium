@@ -19,6 +19,10 @@ function * onFetchPostsStart () {
     yield takeLatest(types.FETCH_POSTS_START, workers.doFetchPosts);
 }
 
+function * onIncrementViewCountStart () {
+    yield takeLatest(types.INCREMENT_VIEW_COUNT_START, workers.doIncrementViewCount);
+}
+
 function * onSearchPostsStart () {
     yield takeLatest(types.SEARCH_POSTS_START, workers.doSearchPosts);
 }
@@ -31,13 +35,13 @@ function * onVoteForPostStart () {
     yield takeLatest(types.VOTE_FOR_POST_START, workers.doVoteForPost);
 }
 
-
 function * postSagas () {
     yield all([
         call(onCreatePostStart),
         call(onDeletePostStart),
         call(onFetchPostStart),
         call(onFetchPostsStart),
+        call(onIncrementViewCountStart),
         call(onSearchPostsStart),
         call(onUpdatePostStart),
         call(onVoteForPostStart)

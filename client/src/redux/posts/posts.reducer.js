@@ -16,6 +16,8 @@ export default reduce(INITIAL_STATE, {
     [types.FETCH_POST_SUCCESS]: onSuccess,
     [types.FETCH_POSTS_FAILURE]: onFailure,
     [types.FETCH_POSTS_SUCCESS]: onSuccess,
+    [types.INCREMENT_VIEW_COUNT_FAILURE]: onFailure,
+    [types.INCREMENT_VIEW_COUNT_SUCCESS]: onSuccess,
     [types.RESET_POSTS_ERROR]: onResetError,
     [types.SEARCH_POSTS_FAILURE]: onFailure,
     [types.SEARCH_POSTS_SUCCESS]: onSuccess,

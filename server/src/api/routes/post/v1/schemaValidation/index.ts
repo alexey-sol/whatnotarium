@@ -4,6 +4,7 @@ import getPosts from "./getPosts";
 import getSearch from "./getSearch";
 import postPost from "./postPost";
 import putPost from "./putPost";
+import putView from "./putView";
 import putVote from "./putVote";
 
 export default {
@@ -13,5 +14,6 @@ export default {
     getSearch,
     postPost,
     putPost,
+    putView,
     putVote
 };

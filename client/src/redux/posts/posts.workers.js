@@ -47,6 +47,17 @@ export function * doFetchPosts ({ cb, payload }) {
     }
 }
 
+export function * doIncrementViewCount ({ cb, payload }) {
+    try {
+        const props = yield api.incrementViewCount(payload);
+        yield put(actions.incrementViewCountSuccess(props));
+        if (cb) cb();
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.incrementViewCountFailure(error));
+    }
+}
+
 export function * doSearchPosts ({ cb, payload }) {
     try {
         const itemsWithPagingOpts = yield api.searchPosts(payload);

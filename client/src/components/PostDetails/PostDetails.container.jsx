@@ -2,14 +2,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { DEFAULT_POST_VIEW_INCREMENT } from "utils/const/defaultValues";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { POST, UNAPPROVED_POSTS } from "utils/const/pathnames";
 import Notification from "utils/objects/Notification";
 import PostDetails from "./PostDetails.component";
 import { approvePostStart, rejectPostStart } from "redux/admin/admin.actions";
 import { defaultProps, propTypes } from "./PostDetails.container.props";
-import { fetchPostStart, updatePostStart } from "redux/posts/posts.actions";
+import { fetchPostStart, incrementViewCountStart } from "redux/posts/posts.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
 import { showNotification } from "redux/ui/ui.actions";
@@ -28,7 +27,7 @@ function PostDetailsContainer ({
     onFetchPostStart,
     onRejectPostStart,
     onShowNotification,
-    onUpdatePostStart,
+    onIncrementViewCountStart,
     post
 }) {
     const [viewCountUpdated, setViewCountUpdated] = useState(false);
@@ -45,9 +44,11 @@ function PostDetailsContainer ({
         onShowNotification(successNotification);
     }, [onShowNotification, push]);
 
-    if (shouldFetchPost) {
-        onFetchPostStart(id);
-    }
+    useEffect(() => {
+        if (shouldFetchPost) {
+            onFetchPostStart(id);
+        }
+    }, [id, onFetchPostStart, shouldFetchPost]);
 
     useEffect(() => {
         const shouldIncrementViewCount = (
@@ -55,15 +56,9 @@ function PostDetailsContainer ({
         );
 
         if (shouldIncrementViewCount) {
-            const updateViewProps = {
-                id,
-                viewCount: viewCount + DEFAULT_POST_VIEW_INCREMENT
-            };
-
-            onUpdatePostStart(updateViewProps);
-            setViewCountUpdated(true);
+            onIncrementViewCountStart(id, () => setViewCountUpdated(true));
         }
-    }, [id, isAdmin, onUpdatePostStart, viewCount, viewCountUpdated]);
+    }, [id, isAdmin, onIncrementViewCountStart, viewCount, viewCountUpdated]);
 
     return (
         <PostDetails
@@ -90,9 +85,9 @@ const mapStateToProps = () => {
 const mapDispatchToProps = (dispatch) => ({
     onApprovePostStart: (id, cb) => dispatch(approvePostStart(id, cb)),
     onFetchPostStart: (id) => dispatch(fetchPostStart(id)),
+    onIncrementViewCountStart: (postId, cb) => dispatch(incrementViewCountStart(postId, cb)),
     onRejectPostStart: (id, cb) => dispatch(rejectPostStart(id, cb)),
-    onShowNotification: (notification) => dispatch(showNotification(notification)),
-    onUpdatePostStart: (props, cb) => dispatch(updatePostStart(props, cb))
+    onShowNotification: (notification) => dispatch(showNotification(notification))
 });
 
 const ConnectedPostDetails = connect(

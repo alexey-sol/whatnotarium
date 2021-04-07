@@ -53,6 +53,13 @@ router.put(
     controllers.putVote
 );
 
+router.put(
+    "/:id/view",
+    schemaValidation.putView,
+    dataValidation.putView,
+    controllers.putView
+);
+
 router.delete(
     "/:id",
     middlewares.isAuthed,

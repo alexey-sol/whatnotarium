@@ -2,16 +2,16 @@ import { Request } from "express";
 import redis from "redis";
 
 import { DEFAULT_EXPIRE_IN_SEC } from "#utils/const/caching";
-import PromisifiedRedisMethods from "./PromisifiedRedisMethods";
+import RedisPromises from "./RedisPromises";
 import { createKey, stringifyValue } from "./helpers";
 import isJSON from "#utils/helpers/isJSON";
 
 class RedisClient {
-    private methods: PromisifiedRedisMethods
+    private methods: RedisPromises
 
     constructor (private client: redis.RedisClient) {
         this.client = client;
-        this.methods = new PromisifiedRedisMethods(this.client);
+        this.methods = new RedisPromises(client);
     }
 
     getClient (): redis.RedisClient {

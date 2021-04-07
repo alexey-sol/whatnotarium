@@ -2,7 +2,7 @@ import redis from "redis";
 
 import promisify from "#utils/helpers/promisify";
 
-class PromisifiedRedisMethods {
+class RedisPromises {
     constructor (private client: redis.RedisClient) {
         this.client = client;
     }
@@ -28,4 +28,4 @@ class PromisifiedRedisMethods {
     }
 }
 
-export default PromisifiedRedisMethods;
+export default RedisPromises;

@@ -3,8 +3,9 @@ import { FAILURE_POSTFIX, POSTS_PREFIX, START_POSTFIX } from "utils/const/action
 import { setPaging } from "redux/postsPaging/postsPaging.actions";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import enrichPayload from "utils/redux/enrichPayload";
+import getMapWithUpdatingSpecificItem from "utils/redux/getMapWithUpdatingSpecificItem";
 
-export const normalizer = () => (next) => (action) => {
+export const normalizer = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
     const actionWithNormalizedPayload = { ...action };
     const shouldIgnoreAction = payload?.error || !type.startsWith(POSTS_PREFIX);
@@ -13,7 +14,11 @@ export const normalizer = () => (next) => (action) => {
         return next(action);
     }
 
-    if (type === types.FETCH_POSTS_SUCCESS || type === types.SEARCH_POSTS_SUCCESS) {
+    if (payload.props) {
+        actionWithNormalizedPayload.payload = {
+            items: getMapWithUpdatingSpecificItem(getState().posts.items, payload)
+        };
+    } else if (type === types.FETCH_POSTS_SUCCESS || type === types.SEARCH_POSTS_SUCCESS) {
         actionWithNormalizedPayload.payload = {
             ...payload,
             items: convertItemsArrayToMap(payload.items)

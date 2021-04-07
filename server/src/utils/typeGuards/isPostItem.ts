@@ -9,7 +9,6 @@ function isPostItem (
     const {
         author,
         body,
-        comments,
         createdAt,
         id,
         isApproved,
@@ -39,7 +38,6 @@ function isPostItem (
         typeof title === "string" &&
         typeof userId === "number" &&
         typeof viewCount === "number" &&
-        comments instanceof Array &&
         userIdsVotedDown instanceof Array &&
         userIdsVotedUp instanceof Array
     );
