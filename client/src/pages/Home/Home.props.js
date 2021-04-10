@@ -10,6 +10,7 @@ import { DEFAULT_PAGING_COUNT } from "utils/const/defaultValues";
 
 export const defaultProps = {
     currentPostsPage: 1,
+    currentUser: null,
     isPending: false,
     posts: [],
     postsOnPageCount: DEFAULT_PAGING_COUNT,
@@ -18,6 +19,7 @@ export const defaultProps = {
 
 export const propTypes = {
     currentPostsPage: number,
+    currentUser: object,
     isPending: bool,
     location: object.isRequired,
     match: object.isRequired,

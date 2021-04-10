@@ -3,7 +3,7 @@ interface UserProfile {
     birthdate?: Date;
     name: string;
     picture?: Buffer;
-    totalLikeCount: number;
+    totalVoteCount: number;
 }
 
 export default UserProfile;

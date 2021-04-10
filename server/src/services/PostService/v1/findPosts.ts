@@ -24,8 +24,10 @@ export default async function (
         order: filter.order || "\"createdAt\" DESC" // TODO: to const?
     };
 
+    const { operators, where } = filter;
+
     return {
         items: await Post.findAll(updatedFilter),
-        totalCount: await Post.count({ where: filter.where })
+        totalCount: await Post.count({ operators, where })
     };
 }

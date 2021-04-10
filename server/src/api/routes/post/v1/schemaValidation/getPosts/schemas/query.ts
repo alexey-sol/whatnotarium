@@ -5,6 +5,10 @@ export default Joi.object({
         .number()
         .optional(),
 
+    operators: Joi
+        .object()
+        .optional(),
+
     page: Joi
         .number()
         .optional(),

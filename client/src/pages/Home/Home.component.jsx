@@ -15,6 +15,7 @@ import {
     selectTotalCount
 } from "redux/postsPaging/postsPaging.selectors";
 
+import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPosts } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import pubsub from "utils/pubsub";
@@ -25,6 +26,7 @@ Home.propTypes = propTypes;
 
 function Home ({
     currentPostsPage,
+    currentUser,
     isPending,
     location,
     match,
@@ -35,6 +37,7 @@ function Home ({
 }) {
     const locationKey = location.key;
     const pageNumber = match.params.number || currentPostsPage;
+    const userId = currentUser?.id;
     const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
 
     useEffect(() => {
@@ -49,10 +52,11 @@ function Home ({
     useEffect(() => {
         onFetchPostsStart({
             count: postsOnPageCount,
+            operators: userId && { conjunctionOp: "$or" },
             page: pageNumber,
-            where: { isApproved: true }
+            where: { isApproved: true, userId }
         });
-    }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount]);
+    }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId]);
 
     if (isPending) {
         return <Spinner />;
@@ -83,6 +87,7 @@ function Home ({
 const mapStateToProps = () => {
     return (state) => ({
         currentPostsPage: selectCurrentPage(state),
+        currentUser: selectCurrentUser(state),
         isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX })),
         posts: selectPosts(state),
         postsOnPageCount: selectCount(state),

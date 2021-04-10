@@ -101,12 +101,12 @@ export function App ({ onCheckSessionStart }) {
                                 path={`/${p.USERS}`}
                             />
 
-                            <AdminRoute
+                            <PrivateRoute
                                 component={UnapprovedPosts}
                                 path={`/${p.UNAPPROVED_POSTS}`}
                             />
 
-                            <AdminRoute
+                            <PrivateRoute
                                 component={UnapprovedPosts}
                                 exact
                                 path={`/${p.UNAPPROVED_POSTS}/page:number`}

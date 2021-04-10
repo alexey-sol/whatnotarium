@@ -31,6 +31,8 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
             CREATE INDEX IF NOT EXISTS idx_posts_title ON "${POSTS}" ("title");
             CREATE INDEX IF NOT EXISTS idx_posts_is_approved ON "${POSTS}" ("isApproved");
             CREATE INDEX IF NOT EXISTS idx_posts_user_id ON "${POSTS}" ("userId");
+            CREATE INDEX IF NOT EXISTS idx_posts_user_approved ON "${POSTS}"
+                ("userId", "isApproved");
         `;
     }
 }

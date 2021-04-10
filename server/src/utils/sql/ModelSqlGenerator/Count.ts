@@ -22,9 +22,9 @@ class Count<InputType> extends ModelSqlGenerator<InputType> {
     protected getText (
         filter: DbQueryFilter<InputType> = {}
     ): string {
-        const { groupBy, where } = filter;
+        const { groupBy, operators, where } = filter;
         const attributes = Object.keys(where || {});
-        const whereAttributesElement = this.createWhereAttributesClause(attributes);
+        const whereAttributesElement = this.createWhereAttributesClause(attributes, operators);
 
         const groupByElement = (groupBy)
             ? `GROUP BY "${groupBy}"`
