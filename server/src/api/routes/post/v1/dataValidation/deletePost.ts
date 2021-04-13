@@ -20,6 +20,8 @@ const deletePost: RequestHandler = async (
 
         if (!post) {
             throw new PostError(NOT_FOUND, status.NOT_FOUND, ip);
+        } else if (post.isFrozen) {
+            throw new PostError(FORBIDDEN, status.FORBIDDEN, ip);
         }
 
         const session = new RequestSession(request);

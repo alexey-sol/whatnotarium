@@ -7,6 +7,7 @@ import PostItem from "#types/post/Item";
 interface Props {
     body?: string;
     isApproved?: boolean;
+    isFrozen?: boolean;
     title?: string;
     viewCount?: number;
 }
@@ -29,14 +30,27 @@ export default async function (
         tableName: PROFILES
     }];
 
-    const shouldRetainUpdatedAt = (
-        (Number.isInteger(props.viewCount) || typeof props.isApproved === "boolean") &&
-        Object.keys(props).length === 1
-    );
-
-    const options = (shouldRetainUpdatedAt)
+    const options = checkIfShouldRetainUpdatedAt(props)
         ? { skipUpdatedAt: true }
         : undefined;
 
-    return post.updateAttributes(props, include, options);
+    const updatedProps = { ...props };
+    const shouldFreezePost = !post.isFrozen && !post.isApproved;
+
+    if (shouldFreezePost) {
+        updatedProps.isFrozen = true;
+    }
+
+    return post.updateAttributes(updatedProps, include, options);
+}
+
+function checkIfShouldRetainUpdatedAt (props: Props): boolean {
+    const isFrozen = typeof props.isFrozen === "boolean";
+    const isMinorUpdate = (
+        Number.isInteger(props.viewCount) ||
+        typeof props.isApproved === "boolean"
+    );
+    const isOnlyMinorUpdate = Object.keys(props).length === 1;
+
+    return isFrozen || (isMinorUpdate && isOnlyMinorUpdate);
 }

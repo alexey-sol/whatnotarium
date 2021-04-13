@@ -18,7 +18,8 @@ const postPost: RequestHandler = async (
 
     const props = {
         ...rest,
-        isApproved: Boolean(skipPremoderation)
+        isApproved: Boolean(skipPremoderation),
+        isFrozen: !skipPremoderation
     };
 
     try {

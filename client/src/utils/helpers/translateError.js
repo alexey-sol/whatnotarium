@@ -35,6 +35,8 @@ function translatePostError (message) {
     switch (message) {
         case ALREADY_EXISTS:
             return "Статья с таким ID уже есть";
+        case FORBIDDEN:
+            return "Изменение запрещено";
         case NOT_FOUND:
             return "Статья не найдена";
         default:

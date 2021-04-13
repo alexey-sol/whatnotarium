@@ -6,6 +6,11 @@ import User from "#models/User";
 import sendResponse from "#utils/http/sendResponse";
 import userEmitter from "#events/user";
 
+interface Props {
+    isApproved: boolean;
+    isFrozen?: boolean;
+}
+
 const putApproval: RequestHandler = async (
     { body, params },
     response,
@@ -16,7 +21,13 @@ const putApproval: RequestHandler = async (
     const { email } = response.locals.user as User;
 
     try {
-        const post = await PostService.updatePost(+id, { isApproved });
+        const props: Props = { isApproved };
+
+        if (!isApproved) {
+            props.isFrozen = false;
+        }
+
+        const post = await PostService.updatePost(+id, props);
 
         if (isApproved) {
             userEmitter.emit(SEND_POST_APPROVED, {

@@ -69,8 +69,9 @@ function DraftEditorContainer ({
             event.preventDefault();
         }
 
-        const { isApproved: _, ...rest } = selectedPost;
+        const { isApproved, isFrozen, ...rest } = selectedPost;
         const shouldCreateNewPost = !id;
+
         const postWithUserId = {
             ...rest,
             userId: currentUser.id

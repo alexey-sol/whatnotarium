@@ -21,6 +21,11 @@
             height: 50rem;
         }
 
+        .warning {
+            color: $color-error;
+            text-align: center;
+        }
+
         .controls {
             display: grid;
             grid-template-rows: auto;

@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import status from "http-status";
 
-import { CONFLICT, FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
+import { FORBIDDEN, NOT_FOUND } from "#utils/const/validationErrors";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 import RequestSession from "#utils/wrappers/RequestSession";
@@ -21,7 +21,7 @@ const putPost: RequestHandler = async (
         if (!post) {
             throw new PostError(NOT_FOUND, status.NOT_FOUND, ip);
         } else if (post.isFrozen) {
-            throw new PostError(CONFLICT, status.CONFLICT, ip);
+            throw new PostError(FORBIDDEN, status.FORBIDDEN, ip);
         }
 
         const session = new RequestSession(request);

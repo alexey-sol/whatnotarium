@@ -26,6 +26,7 @@ function PostDetails ({
         body,
         id,
         isApproved,
+        isFrozen,
         title,
         updatedAt,
         userId,
@@ -73,9 +74,17 @@ function PostDetails ({
                 </span>
             </section>
 
+            {!isAdmin && isFrozen && (
+                <section className={styles.warning}>
+                    Статья на проверке: другие посетители пока не могут ее видеть, а также
+                    она недоступна для редактирования.
+                </section>
+            )}
+
             {shouldRenderControls && (
                 <section className={styles.controls}>
                     <BaseButton
+                        disabled={isFrozen}
                         onClick={handleClickOnEditButton}
                         text="Редактировать"
                     />
@@ -101,9 +110,11 @@ function PostDetails ({
                     />
 
                     <BaseButton
+                        disabled={!isFrozen}
                         onClick={handleClickOnRejectButton}
                         text="Отклонить"
                         theme="dark"
+                        title={(isFrozen) ? "Статья уже отклонена" : ""}
                     />
                 </section>
             )}

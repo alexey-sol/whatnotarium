@@ -1,6 +1,7 @@
 @import "styles/style.scss";
 
 .container {
+    position: relative;
     display: grid;
     grid-template-rows: auto 1fr auto auto;
     grid-template-columns: minmax(30rem, 1fr);
@@ -20,5 +21,23 @@
         max-height: 30rem;
         margin: 1rem 0;
         overflow-y: hidden;
+    }
+
+    &.inactive {
+        opacity: 0.4;
+    }
+
+    .rejected {
+        margin-bottom: $font-size--large;
+        background-color: $post-preview-rejected-bg-color;
+        color: $post-preview-rejected-text-color;
+
+        &:after {
+            position: absolute;
+            top: $font-size--large + 0.5rem;
+            left: 0;
+            content: "Статья отклонена, ожидает ваших правок";
+            font-size: $font-size--smaller;
+        }
     }
 }

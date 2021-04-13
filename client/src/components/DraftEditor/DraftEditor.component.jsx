@@ -7,8 +7,10 @@ import React, {
     useState
 } from "react";
 
+import { Redirect, withRouter } from "react-router";
 import classnames from "classnames";
 
+import * as p from "utils/const/pathnames";
 import { BODY, SKIP_PREMODERATION, TITLE } from "utils/const/postData";
 import { POST_BODY_LENGTH, POST_TITLE_LENGTH } from "utils/const/limits";
 import { RESET_POST } from "utils/const/events";
@@ -32,9 +34,11 @@ function DraftEditor ({
     handleChange,
     handleSubmit,
     isPending,
+    match,
     post,
     setSelectedPost
 }) {
+    const paramId = match.params.id;
     const charsCountRef = useRef(null);
     const [editor, setEditor] = useState(null);
     const [bodyLength, setBodyLength] = useState(0);
@@ -72,9 +76,11 @@ function DraftEditor ({
     const formattedUpdatedAt = new DateFormatter(post?.updatedAt)
         .formatByPattern("YYYY, MMM DD");
 
+    const isFrozenPost = post?.isFrozen || false;
+    const isRejectedPost = post?.isFrozen === false && post?.isApproved === false;
     const bodyLengthIsTooLong = bodyLength > POST_BODY_LENGTH;
-    const deleteButtonIsDisabled = isPending || !post?.id;
-    const saveButtonIsDisabled = isPending || bodyLengthIsTooLong;
+    const deleteButtonIsDisabled = isPending || !post?.id || isFrozenPost;
+    const saveButtonIsDisabled = isPending || bodyLengthIsTooLong || isFrozenPost;
     const shouldHideCharsCount = bodyLength > 0;
 
     const charsCountClassName = classnames(
@@ -99,6 +105,10 @@ function DraftEditor ({
         pubsub.subscribe(RESET_POST, resetPost);
         return () => pubsub.unsubscribe(RESET_POST, resetPost);
     }, [resetPost]);
+
+    if (isFrozenPost) {
+        return <Redirect to={`/${p.POST}/${paramId}`} />;
+    }
 
     return (
         <article className={styles.container}>
@@ -142,12 +152,22 @@ function DraftEditor ({
                         </span>
                     </section>
 
-                    <Checkbox
-                        label="Пропустить этап премодерации"
-                        name={SKIP_PREMODERATION}
-                        rootClassName={styles.skipPremodCheckbox}
-                        onChange={handleSkipPremodChange}
-                    />
+                    {!paramId && (
+                        <Checkbox
+                            label="Пропустить этап премодерации"
+                            name={SKIP_PREMODERATION}
+                            rootClassName={styles.skipPremodCheckbox}
+                            onChange={handleSkipPremodChange}
+                        />
+                    )}
+
+                    {isRejectedPost && (
+                        <section className={styles.warning}>
+                            Пожалуйста, обратите внимание, что после сохранения вы больше не
+                            сможете редактировать статью - до того момента, пока мы не вынесем
+                            вердикт.
+                        </section>
+                    )}
 
                     <section className={styles.controls}>
                         <BaseButton
@@ -179,4 +199,4 @@ function DraftEditor ({
     );
 }
 
-export default DraftEditor;
+export default withRouter(DraftEditor);

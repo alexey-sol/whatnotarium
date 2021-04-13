@@ -10,6 +10,7 @@ export const propTypes = {
     handleChange: func.isRequired,
     handleSubmit: func.isRequired,
     isPending: bool,
+    match: object.isRequired,
     post: object,
     setSelectedPost: func.isRequired
 };

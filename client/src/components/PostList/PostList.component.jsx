@@ -6,6 +6,7 @@ import Paging from "components/Paging";
 import PostPreview from "components/PostPreview";
 import { defaultProps, propTypes } from "./PostList.props";
 import { selectCount } from "redux/postsPaging/postsPaging.selectors";
+import { selectCurrentUser } from "redux/session/session.selectors";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import styles from "./PostList.module.scss";
 
@@ -14,6 +15,7 @@ PostList.propTypes = propTypes;
 
 function PostList ({
     currentPage,
+    currentUser,
     onSetCurrentPage,
     pathPrefix,
     posts,
@@ -25,7 +27,7 @@ function PostList ({
             className={styles.postItem}
             key={post.id}
         >
-            <PostPreview post={post} />
+            <PostPreview currentUser={currentUser} post={post} />
         </li>
     ));
 
@@ -49,6 +51,7 @@ function PostList ({
 }
 
 const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
     postsOnPageCount: selectCount
 });
 

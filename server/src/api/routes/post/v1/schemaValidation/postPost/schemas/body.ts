@@ -9,6 +9,10 @@ export default Joi.object({
         .any()
         .forbidden(),
 
+    isFrozen: Joi
+        .any()
+        .forbidden(),
+
     skipPremoderation: Joi
         .boolean()
         .optional(),

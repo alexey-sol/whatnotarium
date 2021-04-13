@@ -8,6 +8,10 @@ export default Joi.object({
         .any()
         .forbidden(),
 
+    isFrozen: Joi
+        .any()
+        .forbidden(),
+
     title: Joi
         .string(),
 
