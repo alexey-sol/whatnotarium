@@ -40,8 +40,8 @@ router.put(
     middlewares.isAuthed,
     schemaValidation.putPost,
     dataValidation.putPost,
-    // middlewares.clearRouteCache,
-    controllers.putPost
+    controllers.putPost,
+    middlewares.clearRouteCache
 );
 
 router.put(
@@ -49,7 +49,6 @@ router.put(
     middlewares.isAuthed,
     schemaValidation.putVote,
     dataValidation.putVote,
-    // middlewares.clearRouteCache,
     controllers.putVote
 );
 
@@ -65,8 +64,8 @@ router.delete(
     middlewares.isAuthed,
     schemaValidation.deletePost,
     dataValidation.deletePost,
-    // middlewares.clearRouteCache,
-    controllers.deletePost
+    controllers.deletePost,
+    middlewares.clearRouteCache
 );
 
 export default router;

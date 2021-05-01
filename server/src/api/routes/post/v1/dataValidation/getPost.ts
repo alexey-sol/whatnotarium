@@ -2,8 +2,8 @@ import { RequestHandler } from "express";
 import status from "http-status";
 
 import { NOT_FOUND } from "#utils/const/validationErrors";
-import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
+import PostService from "#services/PostService/v1";
 
 const getPost: RequestHandler = async (
     { ip, params },
@@ -13,7 +13,7 @@ const getPost: RequestHandler = async (
     const { id } = params;
 
     try {
-        const post = await Post.findById(+id);
+        const post = await PostService.findPost(+id);
 
         if (!post) {
             throw new PostError(NOT_FOUND, status.NOT_FOUND, ip);

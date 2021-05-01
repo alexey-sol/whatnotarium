@@ -1,18 +1,12 @@
 import { RequestHandler } from "express";
 
 const getPost: RequestHandler = async (
-    { params },
+    request,
     response,
     next
 ): Promise<void> => {
-    const { post } = response.locals;
-
-    try {
-        response.locals.data = post;
-        next();
-    } catch (error) {
-        next(error);
-    }
+    response.locals.data = response.locals.post;
+    next();
 };
 
 export default getPost;
