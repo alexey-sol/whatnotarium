@@ -32,14 +32,6 @@
         .userPicture {
             grid-area: userPicture;
             display: flex;
-
-            :first-child {
-                display: flex;
-                align-items: center;
-                width: 5rem;
-                height: 5rem;
-                border-radius: 100%;
-            }
         }
 
         span {

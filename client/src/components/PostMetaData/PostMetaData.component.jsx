@@ -2,12 +2,11 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 import { USER } from "utils/const/pathnames";
-import { UserPicturePlaceholder } from "components/Icon";
 import DateFormatter from "utils/formatters/DateFormatter";
 import PostRating from "components/PostRating";
+import UserPicture from "components/UserPicture";
 import { propTypes } from "./PostMetaData.props";
 import styles from "./PostMetaData.module.scss";
-import toBase64 from "utils/helpers/toBase64";
 
 PostMetaData.propTypes = propTypes;
 
@@ -15,7 +14,7 @@ function PostMetaData ({ post }) {
     const {
         author,
         createdAt,
-        id,
+        userId,
         viewCount
     } = post;
 
@@ -24,36 +23,18 @@ function PostMetaData ({ post }) {
     const formattedCreatedAt = new DateFormatter(createdAt)
         .formatByPattern("YYYY, MMM DD");
 
-    const picDataIfAny = (picture)
-        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
-        : null;
-
-    const userPicElem = (
-        <img
-            alt={name}
-            src={picDataIfAny}
-        />
-    );
-
-    const userPicPlaceholderElem = (
-        <UserPicturePlaceholder
-            fill="#455a64"
-            size={50}
-        />
-    );
-
     return (
         <section className={styles.container}>
             <section className={styles.userProfile}>
-                <Link title={name} to={`/${USER}/${id}`}>
-                    <div className={styles.picture}>
-                        {(picture)
-                            ? userPicElem
-                            : userPicPlaceholderElem}
-                    </div>
+                <Link title={name} to={`/${USER}/${userId}`}>
+                    <UserPicture
+                        name={name}
+                        picture={picture}
+                        rootClassName={styles.picture}
+                    />
                 </Link>
 
-                <Link title={name} to={`/${USER}/${id}`}>
+                <Link title={name} to={`/${USER}/${userId}`}>
                     <span>{author.name}</span>
                 </Link>
 

@@ -1,0 +1,13 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+
+    :first-child {
+        display: flex;
+        align-items: center;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 100%;
+    }
+}

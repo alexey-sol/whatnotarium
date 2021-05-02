@@ -26,6 +26,7 @@ const ProfileSettings = lazy(() => import("pages/Profile/Settings"));
 const ResetToken = lazy(() => import("pages/ResetToken"));
 const SignIn = lazy(() => import("pages/SignIn"));
 const UnapprovedPosts = lazy(() => import("pages/UnapprovedPosts"));
+const User = lazy(() => import("pages/User"));
 const Users = lazy(() => import("pages/Users"));
 
 App.propTypes = propTypes;
@@ -94,6 +95,11 @@ export function App ({ onCheckSessionStart }) {
                             <Route
                                 component={Post}
                                 path={`/${p.POST}/:id`}
+                            />
+
+                            <Route
+                                component={User}
+                                path={`/${p.USER}/:id`}
                             />
 
                             <Route

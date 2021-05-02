@@ -2,12 +2,11 @@ import { Link } from "react-router-dom";
 import React from "react";
 
 import { USER } from "utils/const/pathnames";
-import { UserPicturePlaceholder } from "components/Icon";
 import BaseButton from "components/BaseButton";
 import PostRating from "components/PostRating";
+import UserPicture from "components/UserPicture";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
-import toBase64 from "utils/helpers/toBase64";
 
 PostDetails.defaultProps = defaultProps;
 PostDetails.propTypes = propTypes;
@@ -39,10 +38,6 @@ function PostDetails ({
 
     const bodyHTML = { __html: body };
 
-    const picDataIfAny = (picture)
-        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
-        : null;
-
     return (
         <article className={styles.container}>
             <header className={styles.title}>
@@ -55,15 +50,15 @@ function PostDetails ({
             />
 
             <section className={styles.metadata}>
-                <Link title={name} to={`/${USER}/${id}`}>
-                    <div className={styles.userPicture}>
-                        {(picture)
-                            ? <img alt={name} src={picDataIfAny} />
-                            : <UserPicturePlaceholder fill="#455a64" size={50} />}
-                    </div>
+                <Link title={name} to={`/${USER}/${userId}`}>
+                    <UserPicture
+                        name={name}
+                        picture={picture}
+                        rootClassName={styles.userPicture}
+                    />
                 </Link>
 
-                <Link title={name} to={`/${USER}/${id}`}>
+                <Link title={name} to={`/${USER}/${userId}`}>
                     <span>
                         {author?.name}
                     </span>

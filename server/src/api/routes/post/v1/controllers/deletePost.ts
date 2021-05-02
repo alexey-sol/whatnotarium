@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 
 import PostService from "#services/PostService/v1";
-import sendResponse from "#utils/http/sendResponse";
 
 const deletePost: RequestHandler = async (
     { params },

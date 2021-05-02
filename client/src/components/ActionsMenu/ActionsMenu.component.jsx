@@ -20,10 +20,10 @@ import {
 import { ForgotPasswordDialog, SignInDialog, SignUpDialog } from "components/Dialog";
 import MobileActionsMenu from "components/MobileActionsMenu";
 import SearchPostInput from "components/SearchPostInput";
+import UserPicture from "components/UserPicture";
 import { defaultProps, propTypes } from "./ActionsMenu.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./ActionsMenu.module.scss";
-import toBase64 from "utils/helpers/toBase64";
 
 ActionsMenu.defaultProps = defaultProps;
 ActionsMenu.propTypes = propTypes;
@@ -60,17 +60,12 @@ export function ActionsMenu ({
 
     const { name, picture } = currentUser?.profile || {};
 
-    const picDataIfAny = (picture)
-        ? `data:image/jpeg;base64,${toBase64(picture.data)}`
-        : null;
-
     const renderUserPic = () => (
-        <img
-            alt={name}
-            className={styles.userPic}
+        <UserPicture
+            name={name}
             onClick={handleClickOnUserButton}
-            src={picDataIfAny}
-            title={name}
+            picture={picture}
+            rootClassName={styles.userPic}
         />
     );
 
