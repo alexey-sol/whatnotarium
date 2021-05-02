@@ -5,21 +5,24 @@ import {
     RequestHandler
 } from "express";
 
+import ParamsWithId from "#types/ParamsWithId";
 import redisClient from "#redisClient";
 import sendResponse from "#utils/http/sendResponse";
 
 const readRouteCache: RequestHandler = async (
-    request: Request,
+    { originalUrl, params }: Request,
     response: Response,
     next: NextFunction
 ): Promise<void> => {
     try {
-        const key = redisClient.createKey(request);
-        const cachedData = await redisClient.get(key);
+        if (params.id) {
+            const key = redisClient.createKey(originalUrl, params as unknown as ParamsWithId);
+            const cachedData = await redisClient.get(key);
 
-        if (cachedData) {
-            sendResponse(response, cachedData);
-            return;
+            if (cachedData) {
+                sendResponse(response, cachedData);
+                return;
+            }
         }
     } catch (error) {
         return next(error);

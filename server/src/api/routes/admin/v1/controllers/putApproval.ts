@@ -3,16 +3,7 @@ import { RequestHandler } from "express";
 import { SEND_POST_APPROVED, SEND_POST_REJECTED } from "#utils/const/events/user";
 import PostService from "#services/PostService/v1";
 import User from "#models/User";
-import Version from "#utils/helpers/Version";
-import logger from "#logger";
-import redisClient from "#redisClient";
-import sendResponse from "#utils/http/sendResponse";
 import userEmitter from "#events/user";
-
-interface Props {
-    isApproved: boolean;
-    isFrozen: boolean;
-}
 
 const putApproval: RequestHandler = async (
     { body, params },
@@ -41,17 +32,11 @@ const putApproval: RequestHandler = async (
             });
         }
 
-        clearCacheForPost(+id).catch(error => logger.error(error.message));
-        sendResponse(response, post);
+        response.locals.data = post;
+        next();
     } catch (error) {
         next(error);
     }
 };
 
 export default putApproval;
-
-async function clearCacheForPost (postId: number) {
-    const appMajorVersion = Version.getMajorVersion();
-    const key = `GET /api/v${appMajorVersion}/post/${postId}`;
-    await redisClient.delete(key);
-}

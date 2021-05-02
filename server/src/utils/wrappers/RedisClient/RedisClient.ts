@@ -1,7 +1,7 @@
-import { Request } from "express";
 import redis from "redis";
 
 import { DEFAULT_EXPIRE_IN_SEC } from "#utils/const/caching";
+import ParamsWithId from "#types/ParamsWithId";
 import RedisPromises from "./RedisPromises";
 import { createKey, stringifyValue } from "./helpers";
 import isJSON from "#utils/helpers/isJSON";
@@ -18,8 +18,10 @@ class RedisClient {
         return this.client;
     }
 
-    createKey (request: Request): string {
-        return createKey(request);
+    createKey (originalUrl: string, params: ParamsWithId): string {
+        return (params.id)
+            ? createKey(originalUrl)
+            : "";
     }
 
     async get (key: string): Promise<any> | never {

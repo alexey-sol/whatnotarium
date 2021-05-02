@@ -8,11 +8,12 @@ import schemaValidation from "./schemaValidation";
 const router = express.Router();
 
 router.put(
-    "/posts/:id",
+    "/post/:id",
     middlewares.isAdmin,
     schemaValidation.putApproval,
     dataValidation.putApproval,
-    controllers.putApproval
+    controllers.putApproval,
+    middlewares.clearRouteCache
 );
 
 export default router;
