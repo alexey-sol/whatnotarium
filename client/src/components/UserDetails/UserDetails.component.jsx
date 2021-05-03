@@ -2,7 +2,10 @@ import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import * as p from "utils/const/pathnames";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
+import BaseButton from "components/BaseButton";
+import DateFormatter from "utils/formatters/DateFormatter";
 import Spinner from "components/Spinner";
 import UserPicture from "components/UserPicture";
 import { defaultProps, propTypes } from "./UserDetails.props";
@@ -28,10 +31,8 @@ function UserDetailsComponent ({
     const {
         createdAt,
         email,
-        isAdmin,
         isConfirmed,
-        profile,
-        updatedAt
+        profile
     } = user || {};
 
     const {
@@ -43,15 +44,22 @@ function UserDetailsComponent ({
         totalVoteCount
     } = profile || {};
 
+    const isMe = id === currentUser?.id;
+
+    const formattedBirthdate = birthdate && new DateFormatter(birthdate)
+        .formatByPattern();
+    const formattedCreatedAt = createdAt && new DateFormatter(createdAt)
+        .formatByPattern();
+
     useEffect(() => {
         onFetchUserStart(id);
     }, [id, onFetchUserStart]);
 
-    const renderProfileSection = (key, value) => (value)
+    const renderProfileSection = (key, value) => (value || typeof value === "number")
         ? (
             <Fragment>
-                <div>{key}:</div>
-                <div>{value}</div>
+                <div className={styles.infoBlock}>{key}:</div>
+                <div className={styles.infoBlock}>{value}</div>
             </Fragment>
         )
         : null;
@@ -71,17 +79,26 @@ function UserDetailsComponent ({
 
                 <div className={styles.name}>
                     {name}
-                    {isConfirmed && <span>&nbsp;(email не подтвержден)</span>}
+                    {!isConfirmed && <span>&nbsp;(email не подтвержден)</span>}
                 </div>
             </header>
 
             <section className={styles.profile}>
                 {renderProfileSection("Email", email)}
-                {renderProfileSection("Дата рождения", birthdate)}
-                {renderProfileSection("Дата регистрации", createdAt)}
+                {renderProfileSection("Дата рождения", formattedBirthdate)}
+                {renderProfileSection("Дата регистрации", formattedCreatedAt)}
                 {renderProfileSection("Число голосов", totalVoteCount)}
                 {renderProfileSection("Пользователь о себе", about)}
             </section>
+
+            {isMe && (
+                <section className={styles.mySettings}>
+                    <BaseButton
+                        onClick={() => history.push(`/${p.PROFILE}/${p.SETTINGS}`)}
+                        text="Изменить"
+                    />
+                </section>
+            )}
         </article>
     );
 }

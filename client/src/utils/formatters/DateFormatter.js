@@ -1,4 +1,7 @@
 import moment from "moment";
+import localization from "moment/locale/ru";
+
+moment.updateLocale("ru", localization);
 
 class DateFormatter {
     constructor (date = moment()) {
@@ -6,7 +9,7 @@ class DateFormatter {
     }
 
     formatByPattern (
-        pattern = "YYYY-MM-DD"
+        pattern = "D MMMM YYYY"
     ) {
         return moment(this.date)
             .locale("ru")

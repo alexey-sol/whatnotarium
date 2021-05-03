@@ -18,7 +18,7 @@ function UserPreview ({
     const { name, picture } = profile;
 
     const formattedCreatedAt = new DateFormatter(createdAt)
-        .formatByPattern("YYYY, MMM DD");
+        .formatByPattern();
 
     return (
         <article className={styles.container}>
@@ -31,15 +31,17 @@ function UserPreview ({
                 </Link>
             </div>
 
-            <header className={styles.userName}>
-                <Link title={name} to={`/${USER}/${id}`}>
-                    {name}
-                </Link>
-            </header>
+            <section className={styles.nameAndDate}>
+                <header className={styles.userName}>
+                    <Link title={name} to={`/${USER}/${id}`}>
+                        {name}
+                    </Link>
+                </header>
 
-            <section className={styles.date}>
-                <span>Дата регистрации:</span>
-                <span className={styles.date}>{formattedCreatedAt}</span>
+                <section className={styles.date}>
+                    <span>Дата регистрации:&nbsp;</span>
+                    <span className={styles.date}>{formattedCreatedAt}</span>
+                </section>
             </section>
 
             <section className={styles.about}>

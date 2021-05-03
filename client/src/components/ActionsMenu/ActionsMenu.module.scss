@@ -58,8 +58,12 @@
     .userPic {
         width: 3.5rem;
         height: 3.5rem;
-        border-radius: 100%;
         cursor: pointer;
+
+        :first-child {
+            width: 3.5rem;
+            height: 3.5rem;
+        }
     }
 
     @media screen and (max-width: 1024px) {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React from "react";
+import React, { Fragment } from "react";
 
 import { USER } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
@@ -7,6 +7,7 @@ import PostRating from "components/PostRating";
 import UserPicture from "components/UserPicture";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
+import DateFormatter from "../../utils/formatters/DateFormatter";
 
 PostDetails.defaultProps = defaultProps;
 PostDetails.propTypes = propTypes;
@@ -23,6 +24,7 @@ function PostDetails ({
     const {
         author = {},
         body,
+        createdAt,
         id,
         isApproved,
         isFrozen,
@@ -37,6 +39,13 @@ function PostDetails ({
     const shouldRenderControls = Boolean(isAuthor && id);
 
     const bodyHTML = { __html: body };
+
+    const formattedCreatedAt = new DateFormatter(createdAt)
+        .formatByPattern();
+    const formattedUpdatedAt = new DateFormatter(updatedAt)
+        .formatByPattern();
+
+    const edited = createdAt !== updatedAt;
 
     return (
         <article className={styles.container}>
@@ -65,7 +74,8 @@ function PostDetails ({
                 </Link>
 
                 <span className={styles.date}>
-                    {updatedAt}
+                    Создано {formattedCreatedAt}
+                    {edited && <Fragment>&nbsp;(отредактировано {formattedUpdatedAt})</Fragment>}
                 </span>
             </section>
 

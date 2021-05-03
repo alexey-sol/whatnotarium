@@ -1,18 +1,16 @@
-import { func, object } from "prop-types";
+import { bool, func, object } from "prop-types";
 
 export const defaultProps = {
-    currentUser: {},
-    post: {}
+    currentUser: null,
+    isPending: false,
+    user: {}
 };
 
 export const propTypes = {
     currentUser: object,
     history: object.isRequired,
+    isPending: bool,
     match: object.isRequired,
-    onApprovePostStart: func.isRequired,
-    onFetchPostStart: func.isRequired,
-    onIncrementViewCountStart: func.isRequired,
-    onRejectPostStart: func.isRequired,
-    onShowNotification: func.isRequired,
-    post: object
+    onFetchUserStart: func.isRequired,
+    user: object
 };
