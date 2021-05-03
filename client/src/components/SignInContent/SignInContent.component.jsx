@@ -57,7 +57,7 @@ function SignInContent ({
         event.preventDefault();
 
         if (onClose) onClose();
-        showForgotPass();
+        if (showForgotPass) showForgotPass();
     }, [onClose, showForgotPass]);
 
     const signInUsingYandex = useCallback(() => {

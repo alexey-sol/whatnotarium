@@ -2,8 +2,9 @@ import React from "react";
 
 import SignInContent from "components/SignInContent";
 import BaseDialog from "components/BaseDialog";
-import { propTypes } from "./SignInDialog.props";
+import { defaultProps, propTypes } from "./SignInDialog.props";
 
+SignInDialog.defaultProps = defaultProps;
 SignInDialog.propTypes = propTypes;
 
 function SignInDialog ({ onClose, showForgotPass, showSignUp }) {

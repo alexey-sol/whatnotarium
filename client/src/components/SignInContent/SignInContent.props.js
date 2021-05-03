@@ -5,7 +5,8 @@ export const defaultProps = {
     isPending: false,
     notification: null,
     onClose: null,
-    sessionError: null
+    sessionError: null,
+    showForgotPass: null
 };
 
 export const propTypes = {
@@ -16,6 +17,6 @@ export const propTypes = {
     onClose: func,
     onSignInStart: func.isRequired,
     sessionError: object,
-    showForgotPass: func.isRequired,
+    showForgotPass: func,
     showSignUp: func.isRequired
 };

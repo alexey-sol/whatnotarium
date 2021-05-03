@@ -29,7 +29,8 @@ function Users ({
     useEffect(() => {
         onFetchUsersStart({
             count: usersOnPageCount,
-            page: pageNumber
+            page: pageNumber,
+            where: { isAdmin: false }
         });
     }, [locationKey, onFetchUsersStart, pageNumber, usersOnPageCount]);
 

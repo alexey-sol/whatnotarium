@@ -21,11 +21,11 @@ export default async function (
     const updatedFilter = {
         ...filter,
         include,
-        order: filter.order || "\"createdAt\" DESC" // TODO: to const?
+        order: filter.order || "\"createdAt\" DESC"
     };
 
     return {
         items: await User.findAll(updatedFilter),
-        totalCount: await User.count()
+        totalCount: await User.count(updatedFilter)
     };
 }

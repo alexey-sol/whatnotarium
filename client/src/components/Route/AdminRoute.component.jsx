@@ -16,7 +16,7 @@ function AdminRoute ({
     sessionError,
     ...rest
 }) {
-    const shouldRenderComponent = !sessionError || currentUser?.isAdmin;
+    const shouldRenderComponent = !sessionError && currentUser?.isAdmin;
 
     const renderComponent = (props) => (shouldRenderComponent)
         ? <Component {...props} />
