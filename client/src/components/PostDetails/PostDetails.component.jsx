@@ -7,7 +7,7 @@ import PostRating from "components/PostRating";
 import UserPicture from "components/UserPicture";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
-import DateFormatter from "../../utils/formatters/DateFormatter";
+import DateFormatter from "utils/formatters/DateFormatter";
 
 PostDetails.defaultProps = defaultProps;
 PostDetails.propTypes = propTypes;
@@ -37,15 +37,11 @@ function PostDetails ({
     const { name, picture } = author;
     const isAuthor = userId === currentUserId;
     const shouldRenderControls = Boolean(isAuthor && id);
+    const edited = createdAt !== updatedAt;
 
     const bodyHTML = { __html: body };
-
-    const formattedCreatedAt = new DateFormatter(createdAt)
-        .formatByPattern();
-    const formattedUpdatedAt = new DateFormatter(updatedAt)
-        .formatByPattern();
-
-    const edited = createdAt !== updatedAt;
+    const formattedCreatedAt = new DateFormatter(createdAt).formatByPattern();
+    const formattedUpdatedAt = new DateFormatter(updatedAt).formatByPattern();
 
     return (
         <article className={styles.container}>

@@ -73,8 +73,7 @@ function DraftEditor ({
         });
     }, [handleChange]);
 
-    const formattedUpdatedAt = new DateFormatter(post?.updatedAt)
-        .formatByPattern();
+    const formattedUpdatedAt = new DateFormatter(post?.updatedAt).formatByPattern();
 
     const isFrozenPost = post?.isFrozen || false;
     const isRejectedPost = post?.isFrozen === false && post?.isApproved === false;

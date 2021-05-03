@@ -16,9 +16,7 @@ function UserPreview ({
     updatedAt
 }) {
     const { name, picture } = profile;
-
-    const formattedCreatedAt = new DateFormatter(createdAt)
-        .formatByPattern();
+    const formattedCreatedAt = new DateFormatter(createdAt).formatByPattern();
 
     return (
         <article className={styles.container}>

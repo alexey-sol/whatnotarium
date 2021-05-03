@@ -27,8 +27,10 @@ router.get(
 router.get(
     "/:id",
     schemaValidation.getUser,
+    middlewares.readRouteCache,
     dataValidation.getUser,
-    controllers.getUser
+    controllers.getUser,
+    middlewares.writeRouteCache
 );
 
 router.post(
@@ -44,7 +46,8 @@ router.put(
     uploads.single("picture"),
     schemaValidation.putUserPicture,
     dataValidation.putUserPicture,
-    controllers.putUserPicture
+    controllers.putUserPicture,
+    middlewares.clearRouteCache
 );
 
 router.put(
@@ -52,7 +55,8 @@ router.put(
     middlewares.isAuthed,
     schemaValidation.putUser,
     dataValidation.putUser,
-    controllers.putUser
+    controllers.putUser,
+    middlewares.clearRouteCache
 );
 
 router.delete(
@@ -60,7 +64,8 @@ router.delete(
     middlewares.isAuthed,
     schemaValidation.deleteUser,
     dataValidation.deleteUser,
-    controllers.deleteUser
+    controllers.deleteUser,
+    middlewares.clearRouteCache
 );
 
 export default router;

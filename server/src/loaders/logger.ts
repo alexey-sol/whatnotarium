@@ -104,8 +104,7 @@ function getConsoleFormat (): Format {
 }
 
 function formatConsoleLog (info: any): string {
-    const date = new DateFormatter()
-        .formatByPattern(dateTimeFormatPattern);
+    const date = new DateFormatter().formatByPattern(dateTimeFormatPattern);
 
     const infoContent = (info.stack)
         ? `${info.stack}\n`

@@ -46,10 +46,8 @@ function UserDetailsComponent ({
 
     const isMe = id === currentUser?.id;
 
-    const formattedBirthdate = birthdate && new DateFormatter(birthdate)
-        .formatByPattern();
-    const formattedCreatedAt = createdAt && new DateFormatter(createdAt)
-        .formatByPattern();
+    const formattedBirthdate = birthdate && new DateFormatter(birthdate).formatByPattern();
+    const formattedCreatedAt = createdAt && new DateFormatter(createdAt).formatByPattern();
 
     useEffect(() => {
         onFetchUserStart(id);
@@ -107,9 +105,14 @@ const mapStateToProps = () => {
     return (state, ownProps) => {
         const id = +ownProps.match.params.id;
 
+        const options = {
+            actionPrefix: USERS_PREFIX,
+            prop: { id }
+        };
+
         return ({
             currentUser: selectCurrentUser(state),
-            isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
+            isPending: Boolean(selectRelevantPendingAction(state, options)),
             user: selectUserById(state, id)
         });
     };

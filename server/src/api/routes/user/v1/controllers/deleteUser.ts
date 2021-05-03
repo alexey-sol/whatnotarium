@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 
 import UserService from "#services/UserService/v1";
-import sendResponse from "#utils/http/sendResponse";
 
 const deleteUser: RequestHandler = async (
     { params },
@@ -10,8 +9,8 @@ const deleteUser: RequestHandler = async (
 ): Promise<void> => {
     try {
         const { id } = params;
-        const result = await UserService.deleteUser(+id);
-        sendResponse(response, result);
+        response.locals.data = await UserService.deleteUser(+id);
+        next();
     } catch (error) {
         next(error);
     }

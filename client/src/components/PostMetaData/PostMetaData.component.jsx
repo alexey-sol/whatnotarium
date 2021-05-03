@@ -20,8 +20,7 @@ function PostMetaData ({ post }) {
 
     const { name, picture } = author;
 
-    const formattedCreatedAt = new DateFormatter(createdAt)
-        .formatByPattern();
+    const formattedCreatedAt = new DateFormatter(createdAt).formatByPattern();
 
     return (
         <section className={styles.container}>
