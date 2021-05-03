@@ -38,6 +38,8 @@ function Home ({
     const locationKey = location.key;
     const pageNumber = match.params.number || currentPostsPage;
     const userId = currentUser?.id;
+    const isAdmin = currentUser?.isAdmin;
+
     const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
 
     useEffect(() => {
@@ -50,13 +52,23 @@ function Home ({
     }, []);
 
     useEffect(() => {
-        onFetchPostsStart({
+        const optionsForRegularUser = {
             count: postsOnPageCount,
             operators: userId && { conjunctionOp: "$or" },
             page: pageNumber,
             where: { isApproved: true, userId }
-        });
-    }, [locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId]);
+        };
+
+        const optionsForAdmin = {
+            count: postsOnPageCount,
+            page: pageNumber,
+            where: { isApproved: false }
+        };
+
+        onFetchPostsStart((isAdmin)
+            ? optionsForAdmin
+            : optionsForRegularUser);
+    }, [isAdmin, locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId]);
 
     if (isPending) {
         return <Spinner />;

@@ -40,7 +40,7 @@ function PostDetailsContainer ({
     const redirectToDraft = useCallback(() => push(`/${p.POST}/${id}/${p.EDIT}`), [id, push]);
 
     const redirectToListAndShowSuccess = useCallback(() => {
-        push(`/${p.UNAPPROVED_POSTS}`);
+        push("/");
         onShowNotification(successNotification);
     }, [onShowNotification, push]);
 

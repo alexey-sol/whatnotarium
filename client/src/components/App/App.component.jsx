@@ -3,7 +3,7 @@ import React, { Suspense, lazy, useEffect } from "react";
 import { connect } from "react-redux";
 
 import * as p from "utils/const/pathnames";
-import { AdminRoute, PrivateRoute } from "components/Route";
+import { PrivateRoute } from "components/Route";
 import ErrorBoundary from "components/ErrorBoundary";
 import Footer from "components/Footer";
 import Header from "components/Header";
@@ -25,7 +25,6 @@ const ProfileMyPosts = lazy(() => import("pages/Profile/MyPosts"));
 const ProfileSettings = lazy(() => import("pages/Profile/Settings"));
 const ResetToken = lazy(() => import("pages/ResetToken"));
 const SignIn = lazy(() => import("pages/SignIn"));
-const UnapprovedPosts = lazy(() => import("pages/UnapprovedPosts"));
 const User = lazy(() => import("pages/User"));
 const Users = lazy(() => import("pages/Users"));
 
@@ -105,17 +104,6 @@ export function App ({ onCheckSessionStart }) {
                             <Route
                                 component={Users}
                                 path={`/${p.USERS}`}
-                            />
-
-                            <AdminRoute
-                                component={UnapprovedPosts}
-                                path={`/${p.UNAPPROVED_POSTS}`}
-                            />
-
-                            <AdminRoute
-                                component={UnapprovedPosts}
-                                exact
-                                path={`/${p.UNAPPROVED_POSTS}/page:number`}
                             />
 
                             <Route

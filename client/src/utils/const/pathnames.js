@@ -11,6 +11,5 @@ export const SETTINGS = "settings";
 export const SIGN_IN = "sign-in";
 export const SUPPORT = "support";
 export const TOKEN = "token";
-export const UNAPPROVED_POSTS = "unapproved-posts";
 export const USER = "user";
 export const USERS = "users";
