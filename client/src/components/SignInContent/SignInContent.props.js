@@ -15,6 +15,7 @@ export const propTypes = {
     isPending: bool,
     notification: object,
     onClose: func,
+    onResetSessionError: func.isRequired,
     onSignInStart: func.isRequired,
     sessionError: object,
     showForgotPass: func,

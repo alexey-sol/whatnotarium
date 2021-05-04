@@ -12,9 +12,9 @@ import BaseButton from "components/BaseButton";
 import CustomLink from "components/CustomLink";
 import FormInput from "components/FormInput";
 import { defaultProps, propTypes } from "./SignInContent.props";
+import { resetSessionError, signInStart } from "redux/session/session.actions";
 import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
-import { signInStart } from "redux/session/session.actions";
 import pubsub from "utils/pubsub";
 import signInSchema from "utils/validators/shemas/signIn";
 import styles from "./SignInContent.module.scss";
@@ -33,6 +33,7 @@ function SignInContent ({
     isPending,
     notification,
     onClose,
+    onResetSessionError,
     onSignInStart,
     sessionError,
     showForgotPass,
@@ -73,9 +74,10 @@ function SignInContent ({
         if (shouldRedirectToSupportPage) {
             const { email } = sessionError.additionalData;
             history.push(`/${p.SUPPORT}/${p.CONFIRM}/email/${email}`);
+            onResetSessionError();
             onClose();
         }
-    }, [history, onClose, sessionError]);
+    }, [history, onClose, onResetSessionError, sessionError]);
 
     const elem = ( // TODO: does styles.form work?
         <div className={styles.container}>
@@ -168,6 +170,7 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+    onResetSessionError: () => dispatch(resetSessionError()),
     onSignInStart: (credentials) => dispatch(signInStart(credentials))
 });
 
