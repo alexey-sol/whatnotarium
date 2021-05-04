@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import { Redirect } from "react-router";
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD } from "utils/const/userData";
 import { SUCCESS } from "utils/const/notificationProps";
@@ -108,12 +109,12 @@ function ResetToken ({
         : elem;
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SUPPORT_PREFIX }))
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: SUPPORT_PREFIX
+    }))
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onResetPasswordStart: (data, cb) => dispatch(resetPasswordStart(data, cb)),

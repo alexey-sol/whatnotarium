@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import { Redirect, withRouter } from "react-router";
 import React, { useCallback, useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import * as p from "utils/const/pathnames";
 import { EMAIL, PASSWORD } from "utils/const/userData";
@@ -160,14 +161,14 @@ function SignInContent ({
         : elem;
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SESSION_PREFIX })),
-        notification: selectNotification(state),
-        sessionError: selectError(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: SESSION_PREFIX
+    })),
+    notification: selectNotification,
+    sessionError: selectError
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onResetSessionError: () => dispatch(resetSessionError()),

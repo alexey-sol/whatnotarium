@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { SUPPORT_PREFIX } from "utils/const/actionTypeAffixes";
@@ -68,12 +69,12 @@ function ConfirmToken ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SUPPORT_PREFIX })),
-        supportError: selectError(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: SUPPORT_PREFIX
+    })),
+    supportError: selectError
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onConfirmEmailStart: (token, cb) => dispatch(confirmEmailStart(token, cb)),

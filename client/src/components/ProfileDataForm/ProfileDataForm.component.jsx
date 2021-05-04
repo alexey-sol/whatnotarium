@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { ABOUT, EMAIL, NAME } from "utils/const/userData";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
@@ -95,13 +96,13 @@ function ProfileDataForm ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
-        notification: selectNotification(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: USERS_PREFIX
+    })),
+    notification: selectNotification
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onShowNotification: (notification) => dispatch(showNotification(notification)),

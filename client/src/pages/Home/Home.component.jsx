@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
@@ -96,16 +97,16 @@ function Home ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentPostsPage: selectCurrentPage(state),
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX })),
-        posts: selectPosts(state),
-        postsOnPageCount: selectCount(state),
-        totalCount: selectTotalCount(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentPostsPage: selectCurrentPage,
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: POSTS_PREFIX
+    })),
+    posts: selectPosts,
+    postsOnPageCount: selectCount,
+    totalCount: selectTotalCount
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchPostsStart: (options) => dispatch(fetchPostsStart(options))

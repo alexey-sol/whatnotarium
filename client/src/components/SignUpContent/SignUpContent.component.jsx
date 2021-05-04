@@ -2,6 +2,7 @@ import { Form, Formik } from "formik";
 import { Redirect } from "react-router";
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import {
     CONFIRM_PASSWORD,
@@ -161,13 +162,13 @@ function SignUpContent ({
         : resultElem;
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SESSION_PREFIX })),
-        notification: selectNotification(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: SESSION_PREFIX
+    })),
+    notification: selectNotification
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onSignUpStart: (credentials, cb) => dispatch(signUpStart(credentials, cb))

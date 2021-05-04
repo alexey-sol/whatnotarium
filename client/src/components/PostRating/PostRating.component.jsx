@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
 import {
@@ -98,21 +99,13 @@ function PostRating ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state, props) => {
-        const { id } = props.post;
-
-        const options = {
-            actionPrefix: POSTS_PREFIX,
-            prop: { id }
-        };
-
-        return ({
-            currentUser: selectCurrentUser(state),
-            isPending: Boolean(selectRelevantPendingAction(state, options))
-        });
-    };
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state, ownProps) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: POSTS_PREFIX,
+        prop: { id: +ownProps.post?.id }
+    }))
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onVoteForPostStart: (props) => dispatch(voteForPostStart(props))

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
 import { POST, PROFILE } from "utils/const/pathnames";
@@ -118,13 +119,13 @@ function DraftEditorContainer ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state, ownProps) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX })),
-        post: selectPostById(state, +ownProps.match.params.id)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: POSTS_PREFIX
+    })),
+    post: (state, ownProps) => selectPostById(state, +ownProps.match.params.id)
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onCreatePostStart: (props, cb) => dispatch(createPostStart(props, cb)),

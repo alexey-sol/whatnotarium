@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import SearchUserInput from "components/SearchUserInput";
@@ -45,14 +46,14 @@ function Users ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUsersPage: selectCurrentPage(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
-        users: selectUsers(state),
-        usersOnPageCount: selectCount(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUsersPage: selectCurrentPage,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: USERS_PREFIX
+    })),
+    users: selectUsers,
+    usersOnPageCount: selectCount
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchUsersStart: (options) => dispatch(fetchUsersStart(options))

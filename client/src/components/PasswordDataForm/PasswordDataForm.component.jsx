@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React, { useCallback } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
 // import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
@@ -97,13 +98,13 @@ function PasswordDataForm ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: USERS_PREFIX })),
-        notification: selectNotification(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: USERS_PREFIX
+    })),
+    notification: selectNotification
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onShowNotification: (notification) => dispatch(showNotification(notification)),

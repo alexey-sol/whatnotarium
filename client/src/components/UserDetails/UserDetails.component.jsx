@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
 import * as p from "utils/const/pathnames";
@@ -101,22 +102,14 @@ function UserDetailsComponent ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state, ownProps) => {
-        const id = +ownProps.match.params.id;
-
-        const options = {
-            actionPrefix: USERS_PREFIX,
-            prop: { id }
-        };
-
-        return ({
-            currentUser: selectCurrentUser(state),
-            isPending: Boolean(selectRelevantPendingAction(state, options)),
-            user: selectUserById(state, id)
-        });
-    };
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state, ownProps) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: USERS_PREFIX,
+        prop: { id: +ownProps.match.params.id }
+    })),
+    user: (state, ownProps) => selectUserById(state, +ownProps.match.params.id)
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchUserStart: (id) => dispatch(fetchUserStart(id))

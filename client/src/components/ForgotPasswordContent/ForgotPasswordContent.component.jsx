@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { EMAIL } from "utils/const/userData";
@@ -76,12 +77,12 @@ function ForgotPasswordContent ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: SESSION_PREFIX })),
-        notification: selectNotification(state)
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: SESSION_PREFIX
+    })),
+    notification: selectNotification
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onSendResetTokenStart: (credentials, cb) => dispatch(sendResetTokenStart(credentials, cb)),

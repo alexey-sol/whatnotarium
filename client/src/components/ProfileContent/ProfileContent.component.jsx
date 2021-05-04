@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
 import * as p from "utils/const/pathnames";
@@ -44,12 +45,12 @@ function ProfileContent ({ activeTabName, children, isPending }) {
     );
 }
 
-const mapStateToProps = () => {
-    return (state) => ({
-        currentUser: selectCurrentUser(state),
-        isPending: Boolean(selectRelevantPendingAction(state, { actionPrefix: POSTS_PREFIX }))
-    });
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
+        actionPrefix: POSTS_PREFIX
+    }))
+});
 
 const ConnectedProfileContent = connect(
     mapStateToProps
