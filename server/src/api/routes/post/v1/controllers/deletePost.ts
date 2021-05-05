@@ -9,7 +9,12 @@ const deletePost: RequestHandler = async (
 ): Promise<void> => {
     try {
         const { id } = params;
-        response.locals.data = await PostService.deletePost(+id);
+        const deletedPostId = await PostService.deletePost(+id);
+
+        response.locals.data = (deletedPostId)
+            ? String(deletedPostId)
+            : deletedPostId;
+
         next();
     } catch (error) {
         next(error);

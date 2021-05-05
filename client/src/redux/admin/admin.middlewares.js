@@ -1,6 +1,6 @@
 import * as types from "./admin.types";
 import { ADMIN_PREFIX, FAILURE_POSTFIX, START_POSTFIX } from "utils/const/actionTypeAffixes";
-import { deletePostSuccess, updatePostSuccess } from "redux/posts/posts.actions";
+import { updatePostSuccess } from "redux/posts/posts.actions";
 
 export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;

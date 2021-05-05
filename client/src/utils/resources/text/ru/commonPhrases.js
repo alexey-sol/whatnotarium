@@ -1,3 +1,4 @@
 export default {
-    done: "Готово"
+    done: "Готово",
+    error: "Произошла ошибка"
 };

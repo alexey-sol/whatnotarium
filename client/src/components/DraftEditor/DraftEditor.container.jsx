@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
-import { POST, PROFILE } from "utils/const/pathnames";
-import { RESET_POST } from "utils/const/events";
 import { DEFAULT_TIMEOUT_IN_MS, ERROR, SUCCESS } from "utils/const/notificationProps";
+import { MY_POSTS, POST, PROFILE } from "utils/const/pathnames";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
+import { RESET_POST } from "utils/const/events";
 import DraftEditor from "./DraftEditor.component";
 import Notification from "utils/objects/Notification";
 
@@ -45,15 +45,27 @@ function DraftEditorContainer ({
     const [selectedPost, setSelectedPost] = useState(post);
 
     const id = paramId || selectedPost?.id;
+    const shouldCreateNewPost = !id;
+    const { skipPremoderation } = selectedPost || {};
+
+    const getTextOnCreateOrUpdateSuccess = useCallback(() => {
+        if (shouldCreateNewPost && skipPremoderation) {
+            return "Статья опубликована";
+        } else if (shouldCreateNewPost && !skipPremoderation) {
+            return "Статья отправлена на проверку";
+        } else {
+            return "Статья обновлена";
+        }
+    }, [shouldCreateNewPost, skipPremoderation]);
 
     const redirectToPostAndShowSuccess = useCallback(postId => {
         push(`/${POST}/${postId}`);
-        onShowNotification(getSuccessNotif());
-    }, [onShowNotification, push]);
+        onShowNotification(getSuccessNotif(getTextOnCreateOrUpdateSuccess()));
+    }, [getTextOnCreateOrUpdateSuccess, onShowNotification, push]);
 
     const redirectToProfileAndShowSuccess = useCallback(() => {
-        push(`/${PROFILE}`);
-        onShowNotification(getSuccessNotif());
+        push(`/${PROFILE}/${MY_POSTS}`);
+        onShowNotification(getSuccessNotif("Статья удалена"));
     }, [onShowNotification, push]);
 
     const handleChange = useCallback(({ name, value }) => {
@@ -69,10 +81,9 @@ function DraftEditorContainer ({
         }
 
         const { isApproved, isFrozen, ...rest } = selectedPost || {};
-        const shouldCreateNewPost = !id;
 
         if (!rest?.title || !rest?.body) {
-            onShowNotification(getValidationErrorNotif());
+            onShowNotification(getErrorNotif("Заголовок и тело статьи не могут быть пустыми"));
             return;
         }
 
@@ -145,12 +156,10 @@ const ConnectedDraftEditor = connect(
 
 export default withRouter(ConnectedDraftEditor);
 
-function getSuccessNotif() {
-    return new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
+function getSuccessNotif (text = phrases.done) {
+    return new Notification(text, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 }
 
-function getValidationErrorNotif() {
-    return new Notification(
-        "Заголовок и тело статьи не могут быть пустыми", ERROR, DEFAULT_TIMEOUT_IN_MS
-    );
+function getErrorNotif (text = phrases.error) {
+    return new Notification(text, ERROR, DEFAULT_TIMEOUT_IN_MS);
 }
