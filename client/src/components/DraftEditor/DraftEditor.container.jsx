@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 
 import { POST, PROFILE } from "utils/const/pathnames";
 import { RESET_POST } from "utils/const/events";
-import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
+import { DEFAULT_TIMEOUT_IN_MS, ERROR, SUCCESS } from "utils/const/notificationProps";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import DraftEditor from "./DraftEditor.component";
 import Notification from "utils/objects/Notification";
@@ -24,8 +24,6 @@ import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
-
-const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 
 DraftEditorContainer.defaultProps = defaultProps;
 DraftEditorContainer.propTypes = propTypes;
@@ -50,12 +48,12 @@ function DraftEditorContainer ({
 
     const redirectToPostAndShowSuccess = useCallback(postId => {
         push(`/${POST}/${postId}`);
-        onShowNotification(successNotification);
+        onShowNotification(getSuccessNotif());
     }, [onShowNotification, push]);
 
     const redirectToProfileAndShowSuccess = useCallback(() => {
         push(`/${PROFILE}`);
-        onShowNotification(successNotification);
+        onShowNotification(getSuccessNotif());
     }, [onShowNotification, push]);
 
     const handleChange = useCallback(({ name, value }) => {
@@ -70,8 +68,13 @@ function DraftEditorContainer ({
             event.preventDefault();
         }
 
-        const { isApproved, isFrozen, ...rest } = selectedPost;
+        const { isApproved, isFrozen, ...rest } = selectedPost || {};
         const shouldCreateNewPost = !id;
+
+        if (!rest?.title || !rest?.body) {
+            onShowNotification(getValidationErrorNotif());
+            return;
+        }
 
         const postWithUserId = {
             ...rest,
@@ -141,3 +144,13 @@ const ConnectedDraftEditor = connect(
 )(DraftEditorContainer);
 
 export default withRouter(ConnectedDraftEditor);
+
+function getSuccessNotif() {
+    return new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
+}
+
+function getValidationErrorNotif() {
+    return new Notification(
+        "Заголовок и тело статьи не могут быть пустыми", ERROR, DEFAULT_TIMEOUT_IN_MS
+    );
+}
