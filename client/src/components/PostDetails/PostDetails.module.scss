@@ -61,9 +61,22 @@
 
     .adminControls {
         display: flex;
+        flex-direction: column;
 
-        :not(:first-child) {
-            margin-left: 1rem;
+        .adminButtons {
+            display: flex;
+
+            :not(:first-child) {
+                margin-left: 1rem;
+            }
+        }
+
+        form {
+            margin-top: 2.5rem;
+
+            .rejectionReasonTextarea {
+                width: 35rem;
+            }
         }
     }
 

@@ -5,9 +5,9 @@ export const defaultProps = {
 };
 
 export const propTypes = {
+    approvePost: func.isRequired,
     currentUser: object,
-    handleClickOnApproveButton: func.isRequired,
     handleClickOnEditButton: func.isRequired,
-    handleClickOnRejectButton: func.isRequired,
-    post: object.isRequired
+    post: object.isRequired,
+    rejectPost: func.isRequired
 };

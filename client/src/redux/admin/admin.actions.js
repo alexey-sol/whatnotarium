@@ -7,10 +7,10 @@ export function approvePostFailure (error) {
     };
 }
 
-export function approvePostStart (id, cb) {
+export function approvePostStart (payload, cb) {
     return {
         cb,
-        payload: { id },
+        payload,
         type: types.APPROVE_POST_START
     };
 }
@@ -29,10 +29,10 @@ export function rejectPostFailure (error) {
     };
 }
 
-export function rejectPostStart (id, cb) {
+export function rejectPostStart (payload, cb) {
     return {
         cb,
-        payload: { id },
+        payload,
         type: types.REJECT_POST_START
     };
 }

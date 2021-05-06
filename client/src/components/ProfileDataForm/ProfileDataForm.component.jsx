@@ -54,6 +54,8 @@ function ProfileDataForm ({
         cb(event);
     };
 
+    const { isAdmin } = currentUser;
+
     return (
         <Formik
             initialValues={initialValues}
@@ -63,6 +65,10 @@ function ProfileDataForm ({
         >
             {({ errors, handleChange }) => (
                 <Form className={styles.container}>
+                    {isAdmin && (
+                        <div className={styles.isAdminLabel}>Администратор</div>
+                    )}
+
                     <FormInput
                         label="Имя"
                         name={NAME}
@@ -80,6 +86,7 @@ function ProfileDataForm ({
 
                     <FormTextarea
                         label="О себе"
+                        maxLength="200"
                         name={ABOUT}
                         onChange={event => handleChangeWrapper(event, handleChange)}
                     />

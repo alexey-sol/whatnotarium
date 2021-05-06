@@ -62,11 +62,11 @@ function PostDetailsContainer ({
 
     return (
         <PostDetails
+            approvePost={() => onApprovePostStart({ id }, redirectToListAndShowSuccess)}
             currentUser={currentUser}
-            handleClickOnApproveButton={() => onApprovePostStart(id, redirectToListAndShowSuccess)}
             handleClickOnEditButton={redirectToDraft}
-            handleClickOnRejectButton={() => onRejectPostStart(id, redirectToListAndShowSuccess)}
             post={post}
+            rejectPost={message => onRejectPostStart({ id, message }, redirectToListAndShowSuccess)}
         />
     );
 }
@@ -83,10 +83,10 @@ const mapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    onApprovePostStart: (id, cb) => dispatch(approvePostStart(id, cb)),
+    onApprovePostStart: (payload, cb) => dispatch(approvePostStart(payload, cb)),
     onFetchPostStart: (id) => dispatch(fetchPostStart(id)),
     onIncrementViewCountStart: (postId, cb) => dispatch(incrementViewCountStart(postId, cb)),
-    onRejectPostStart: (id, cb) => dispatch(rejectPostStart(id, cb)),
+    onRejectPostStart: (payload, cb) => dispatch(rejectPostStart(payload, cb)),
     onShowNotification: (notification) => dispatch(showNotification(notification))
 });
 
