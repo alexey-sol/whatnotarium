@@ -1,16 +1,26 @@
 import { RequestHandler } from "express";
 
+import RequestSession from "#utils/wrappers/RequestSession";
 import SessionService from "#services/SessionService/v1";
-import sendResponse from "#utils/http/sendResponse";
 
 const deleteSession: RequestHandler = async (
     request,
     response,
     next
 ): Promise<void> => {
-    SessionService.deleteSession(request, response)
-        .then(user => sendResponse(response, user))
-        .catch(next);
+    try {
+        const session = new RequestSession(request);
+        const sessionUser = session.getUserFromSession();
+
+        if (sessionUser) {
+            response.locals.cacheKey = `user-${sessionUser.id}`;
+            response.locals.data = await SessionService.deleteSession(request, response);
+        }
+
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default deleteSession;

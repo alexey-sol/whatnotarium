@@ -15,8 +15,11 @@ const clearRouteCache: RequestHandler = async (
     next: NextFunction
 ): Promise<void> => {
     try {
-        if (params.id) {
-            const key = redisClient.createKey(originalUrl, params as unknown as ParamsWithId);
+        const { cacheKey } = response.locals;
+
+        if (cacheKey || params.id) {
+            const paramsWithId = params as unknown as ParamsWithId;
+            const key = cacheKey || redisClient.createKey(originalUrl, paramsWithId);
             await redisClient.delete(key);
         }
 

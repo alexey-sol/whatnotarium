@@ -5,6 +5,7 @@ interface DataOnUpdate {
     isConfirmed?: boolean;
     iterations?: number;
     keyLength?: number;
+    lastActivityDate?: Date;
     name?: string;
     picture?: Express.Multer.File | Buffer | null;
     salt?: string;

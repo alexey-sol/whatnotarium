@@ -85,12 +85,14 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                         "birthdate" = new."birthdate",
                         "name" = COALESCE(new."name", old."name"),
                         "picture" = new."picture",
+                        "lastActivityDate" = new."lastActivityDate",
                         "updatedAt" = NOW()
                     WHERE "id" = old."id" AND (
                         new."about" IS DISTINCT FROM old."about" OR
                         new."birthdate" IS DISTINCT FROM old."birthdate" OR
                         new."name" IS DISTINCT FROM old."name" OR
-                        new."picture" IS DISTINCT FROM old."picture"
+                        new."picture" IS DISTINCT FROM old."picture" OR
+                        new."lastActivityDate" IS DISTINCT FROM old."lastActivityDate"
                     );
 
                     UPDATE "${HASH_OPTIONS}" SET

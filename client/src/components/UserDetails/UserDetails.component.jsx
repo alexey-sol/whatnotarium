@@ -49,6 +49,8 @@ function UserDetailsComponent ({
 
     const formattedBirthdate = birthdate && new DateFormatter(birthdate).formatByPattern();
     const formattedCreatedAt = createdAt && new DateFormatter(createdAt).formatByPattern();
+    const formattedLastActivityDate = lastActivityDate && new DateFormatter(lastActivityDate)
+        .formatByPattern();
 
     useEffect(() => {
         onFetchUserStart(id);
@@ -88,6 +90,7 @@ function UserDetailsComponent ({
                 {renderProfileSection("Дата регистрации", formattedCreatedAt)}
                 {renderProfileSection("Число голосов", totalVoteCount)}
                 {renderProfileSection("Пользователь о себе", about)}
+                {renderProfileSection("Видели в последний раз", formattedLastActivityDate)}
             </section>
 
             {isMe && (

@@ -1,18 +1,22 @@
 import { RequestHandler } from "express";
 
 import SessionService from "#services/SessionService/v1";
-import sendResponse from "#utils/http/sendResponse";
 
 const postSession: RequestHandler = async (
     request,
     response,
     next
 ): Promise<void> => {
-    const { email } = request.body;
+    try {
+        const { email } = request.body;
+        const user = await SessionService.createSession(request, email);
 
-    SessionService.createSession(request, email)
-        .then(user => sendResponse(response, user))
-        .catch(next);
+        response.locals.cacheKey = `user-${user.id}`;
+        response.locals.data = user;
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default postSession;
