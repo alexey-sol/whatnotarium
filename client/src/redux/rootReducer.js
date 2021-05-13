@@ -3,6 +3,7 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import adminReducer from "./admin/admin.reducer";
+import oauthReducer from "./oauth/oauth.reducer";
 import postsReducer from "./posts/posts.reducer";
 import postsPagingReducer from "./postsPaging/postsPaging.reducer";
 import sessionReducer from "./session/session.reducer";
@@ -23,6 +24,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     admin: adminReducer,
+    oauth: oauthReducer,
     posts: postsReducer,
     postsPaging: postsPagingReducer,
     session: sessionReducer,

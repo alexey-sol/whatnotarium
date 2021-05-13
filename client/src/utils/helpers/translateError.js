@@ -9,7 +9,21 @@ import {
     NOT_VERIFIED
 } from "utils/const/validationErrors";
 
-import { POST_ERROR, USER_ERROR, USER_TOKEN_ERROR } from "utils/const/errorNames";
+import {
+    ACCESS_DENIED,
+    INVALID_CLIENT,
+    INVALID_GRANT,
+    INVALID_REQUEST,
+    INVALID_SCOPE,
+    UNAUTHORIZED_CLIENT
+} from "utils/const/oauthErrors";
+
+import {
+    OAUTH_ERROR,
+    POST_ERROR,
+    USER_ERROR,
+    USER_TOKEN_ERROR
+} from "utils/const/errorNames";
 
 function translateError (error) {
     if (!error) {
@@ -24,6 +38,8 @@ function translateError (error) {
         return translateUserError(message);
     } else if (name === USER_TOKEN_ERROR) {
         return translateUserTokenError(message);
+    } else if (name === OAUTH_ERROR) {
+        return translateOauthError(message);
     } else {
         return translateCommonError(message);
     }
@@ -71,6 +87,25 @@ function translateUserTokenError (message) {
             return "Срок действия токена истек";
         case NOT_FOUND:
             return "Токен не найден";
+        default:
+            return message;
+    }
+}
+
+function translateOauthError (message) {
+    switch (message) {
+        case ACCESS_DENIED:
+            return "Приложению отказано в доступе";
+        case INVALID_CLIENT:
+            return "Приложение не найдено или заблокировано";
+        case INVALID_GRANT:
+            return "Неверный или просроченный код подтверждения";
+        case INVALID_REQUEST:
+            return "Неверный формат запроса";
+        case INVALID_SCOPE:
+            return "Права приложения изменились после генерации кода подтверждения";
+        case UNAUTHORIZED_CLIENT:
+            return "Приложение ожидает модерации или заблокировано";
         default:
             return message;
     }

@@ -55,5 +55,13 @@ export default Joi.object({
 
     URL: Joi
         .string()
+        .required(),
+
+    YANDEX_CLIENT_ID: Joi
+        .string()
+        .required(),
+
+    YANDEX_CLIENT_SECRET: Joi
+        .string()
         .required()
 });

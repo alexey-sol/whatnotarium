@@ -1,3 +1,4 @@
+export const OAUTH_ERROR = "OauthError";
 export const POST_ERROR = "PostError";
 export const USER_ERROR = "UserError";
 export const UNAUTHORIZED_ERROR = "UnauthorizedError";

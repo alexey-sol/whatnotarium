@@ -29,6 +29,8 @@ services:
             - SESSION_NAME
             - SESSION_SECRET
             - URL
+            - YANDEX_CLIENT_ID
+            - YANDEX_CLIENT_SECRET
     postgres:
         image: postgres:12.1-alpine
         restart: always

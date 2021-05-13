@@ -62,8 +62,15 @@ function SignInContent ({
         if (showForgotPass) showForgotPass();
     }, [onClose, showForgotPass]);
 
-    const signInUsingYandex = useCallback(() => {
-        console.log("signInUsingYandex");
+    const openWindowToSignUpViaYandex = useCallback(async () => {
+        const clientId = process.env.REACT_APP_YANDEX_CLIENT_ID;
+
+        window.open("https://oauth.yandex.ru/authorize?" +
+            "response_type=code&" +
+            `client_id=${clientId}&` +
+            "force_confirm=yes",
+        "Авторизация через Яндекс"
+        );
     }, []);
 
     useEffect(() => {
@@ -144,8 +151,7 @@ function SignInContent ({
                     <ul className={styles.oauthProvidersList}>
                         <li>
                             <BaseButton
-                                onClick={signInUsingYandex}
-                                disabled
+                                onClick={openWindowToSignUpViaYandex}
                                 text="Яндекс"
                                 width="full"
                             />

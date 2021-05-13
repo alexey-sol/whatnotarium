@@ -4,6 +4,7 @@ export const DRAFT = "draft";
 export const EDIT = "edit";
 export const EMAIL = "email";
 export const MY_POSTS = "my-posts";
+export const OAUTH = "oauth";
 export const POST = "post";
 export const PROFILE = "profile";
 export const RESET = "reset";

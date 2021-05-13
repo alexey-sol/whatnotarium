@@ -1,5 +1,6 @@
 import { all, call } from "redux-saga/effects";
 import adminSagas from "./admin/admin.sagas";
+import oauthSagas from "./oauth/oauth.sagas";
 import postsSagas from "./posts/posts.sagas";
 import sessionSagas from "./session/session.sagas";
 import supportSagas from "./support/support.sagas";
@@ -8,6 +9,7 @@ import usersSagas from "./users/users.sagas";
 function * rootSaga () {
     yield all([
         call(adminSagas),
+        call(oauthSagas),
         call(postsSagas),
         call(sessionSagas),
         call(supportSagas),

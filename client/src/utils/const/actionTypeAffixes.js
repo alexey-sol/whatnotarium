@@ -3,6 +3,7 @@ export const START_POSTFIX = "Start";
 export const SUCCESS_POSTFIX = "Success";
 
 export const ADMIN_PREFIX = "[Admin]";
+export const OAUTH_PREFIX = "[Oauth]";
 export const POSTS_PAGING_PREFIX = "[Posts Paging]";
 export const POSTS_PREFIX = "[Posts]";
 export const SESSION_PREFIX = "[Session]";

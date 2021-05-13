@@ -18,6 +18,7 @@ const ConfirmEmail = lazy(() => import("pages/ConfirmEmail"));
 const ConfirmToken = lazy(() => import("pages/ConfirmToken"));
 const Draft = lazy(() => import("pages/Draft"));
 const Home = lazy(() => import("pages/Home"));
+const OauthCallback = lazy(() => import("pages/OauthCallback"));
 const Page404 = lazy(() => import("pages/Page404"));
 const Post = lazy(() => import("pages/Post"));
 const ProfileActivity = lazy(() => import("pages/Profile/Activity"));
@@ -119,6 +120,11 @@ export function App ({ onCheckSessionStart }) {
                             <Route
                                 component={ResetToken}
                                 path={`/${p.SUPPORT}/${p.RESET}/${p.TOKEN}/:token`}
+                            />
+
+                            <Route
+                                component={OauthCallback}
+                                path={`/${p.SUPPORT}/${p.OAUTH}/:provider`}
                             />
 
                             <Route component={Page404} />

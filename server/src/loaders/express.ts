@@ -11,6 +11,7 @@ import initMorgan from "./helpers/initMorgan";
 import initSession from "./helpers/initSession";
 import middlewares from "#api/middlewares";
 import adminRouter from "#api/routes/admin/v1";
+import oauthRouter from "#api/routes/oauth/v1";
 import postRouter from "#api/routes/post/v1";
 import sessionRouter from "#api/routes/session/v1";
 import supportRouter from "#api/routes/support/v1";
@@ -38,6 +39,7 @@ export default function (options: Options): express.Application {
     app.use(express.static(publicDirPath));
     app.use(middlewares.clearUserlessCookie);
     app.use(`${apiRoute}/admin`, adminRouter);
+    app.use(`${apiRoute}/oauth`, oauthRouter);
     app.use(`${apiRoute}/post`, postRouter);
     app.use(`${apiRoute}/user`, userRouter);
     app.use(`${apiRoute}/session`, sessionRouter);
