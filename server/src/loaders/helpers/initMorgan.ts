@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Request, Response } from "express";
 import morgan from "morgan";
 
 import logger from "#logger";
@@ -9,7 +9,7 @@ function initMorgan (): RequestHandler {
 
 export default initMorgan;
 
-function getMorganOptions (): morgan.Options {
+function getMorganOptions (): morgan.Options<Request, Response> {
     return {
         stream: {
             write: (message): void => {

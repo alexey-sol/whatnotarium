@@ -1,10 +1,10 @@
 import ProcessManager from "#utils/wrappers/ProcessManager";
 import request from "#utils/http/request";
-import Indexer from "#types/Indexer";
+import { Failure, Success } from "#types/externalApi/yandex/RequestTokenResponse";
 
 export default async function (
     code: string
-): Promise<Indexer<unknown> | string> | never {
+): Promise<Success | Failure> {
     const { processEnv } = new ProcessManager();
 
     const {
@@ -26,5 +26,5 @@ export default async function (
     }, {
         code,
         grant_type: "authorization_code"
-    });
+    }) as unknown as Success | Failure;
 }

@@ -1,5 +1,5 @@
-import requestTokenInYandex from "./requestTokenInYandex";
+import signUpViaYandex from "./signUpViaYandex";
 
 export default {
-    requestTokenInYandex
+    signUpViaYandex
 };

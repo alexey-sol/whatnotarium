@@ -18,7 +18,7 @@ async function startServer (): Promise<void> {
     const { port, url } = serverConfig;
     const { exit, nodeEnv } = new ProcessManager(pool);
 
-    const server = app.listen(+port, (error) => (error)
+    const server = app.listen(+port, (error?: Error) => (error)
         ? exit(error)
         : logSuccess({ nodeEnv, url })
     );

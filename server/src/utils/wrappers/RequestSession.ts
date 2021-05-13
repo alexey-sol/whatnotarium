@@ -1,31 +1,35 @@
 import { Request } from "express";
+import { Session } from "express-session";
 
 import UserItem from "#types/user/Item";
 import sessionConfig from "#config/session";
 
+interface SessionWithUser extends Session {
+    user?: UserItem;
+}
+
 class RequestSession {
     private sessionName = sessionConfig.name;
+    private session: SessionWithUser;
 
     constructor (private request: Request) {
         this.request = request;
+        this.session = request.session as SessionWithUser;
     }
 
     attachUserToSession (user: UserItem): void {
-        const { session } = this.request;
-
-        if (session) {
-            session.user = user;
+        if (this.session) {
+            this.session.user = user;
         }
     }
 
     isAdmin (): boolean {
-        const { session } = this.request;
-        return Boolean(session?.user?.isAdmin);
+        return Boolean(this.session?.user?.isAdmin);
     }
 
     isAuthed (): boolean {
-        const { session, cookies } = this.request;
-        return Boolean(session?.user && cookies?.[this.sessionName]);
+        const { cookies } = this.request;
+        return Boolean(this.session?.user && cookies?.[this.sessionName]);
     }
 
     isPermittedUser (userId: number): boolean {
@@ -34,16 +38,16 @@ class RequestSession {
     }
 
     cookieExistsButHasNoUser (): boolean {
-        const { cookies, session } = this.request;
+        const { cookies } = this.request;
 
         return Boolean(
-            !session?.user &&
+            !this.session?.user &&
             cookies?.[this.sessionName]
         );
     }
 
     getUserFromSession (): UserItem | undefined {
-        return this.request.session?.user;
+        return this.session?.user;
     }
 }
 
