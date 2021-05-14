@@ -13,7 +13,7 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
             CREATE OR REPLACE VIEW "${FULL_USERS_VIEW}" AS
             SELECT
                 u."id", u."email", u."isAdmin", u."isConfirmed", u."createdAt", u."updatedAt",
-                p."name", p."picture", p."birthdate", p."about", p."totalVoteCount",
+                u."isOauth", p."name", p."picture", p."birthdate", p."about", p."totalVoteCount",
                 p."lastActivityDate", ho."hash", ho."salt", ho."digest", ho."iterations",
                 ho."keyLength"
             FROM "${USERS}" AS u
@@ -27,11 +27,13 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                 IF (TG_OP = 'INSERT') THEN
                     INSERT INTO "${USERS}" (
                         "email",
-                        "isConfirmed"
+                        "isConfirmed",
+                        "isOauth"
                     )
                     VALUES (
                         new."email",
-                        new."isConfirmed"
+                        new."isConfirmed",
+                        new."isOauth"
                     )
                     RETURNING "id", "createdAt", "updatedAt"
                     INTO new_user_id, new_created_at, new_updated_at;
@@ -89,7 +91,7 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                         "picture" = new."picture",
                         "lastActivityDate" = new."lastActivityDate",
                         "updatedAt" = NOW()
-                    WHERE "id" = old."id" AND (
+                    WHERE "userId" = old."id" AND (
                         new."about" IS DISTINCT FROM old."about" OR
                         new."birthdate" IS DISTINCT FROM old."birthdate" OR
                         new."name" IS DISTINCT FROM old."name" OR
@@ -104,7 +106,7 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                         "iterations" = new."iterations",
                         "keyLength" = new."keyLength",
                         "updatedAt" = NOW()
-                    WHERE "id" = old."id" AND (
+                    WHERE "userId" = old."id" AND (
                         new."hash" IS DISTINCT FROM old."hash" OR
                         new."salt" IS DISTINCT FROM old."salt" OR
                         new."digest" IS DISTINCT FROM old."digest" OR
@@ -121,7 +123,7 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
             DROP TRIGGER IF EXISTS trigger_update_full_users ON "${FULL_USERS_VIEW}";
 
             CREATE TRIGGER trigger_update_full_users
-            INSTEAD OF INSERT OR UPDATE OR DELETE ON "${FULL_USERS_VIEW}"
+            INSTEAD OF INSERT OR UPDATE ON "${FULL_USERS_VIEW}"
             FOR EACH ROW
             EXECUTE PROCEDURE update_full_users();
         `;

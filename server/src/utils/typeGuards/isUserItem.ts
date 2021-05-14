@@ -13,6 +13,7 @@ function isUserItem (
         id,
         isAdmin,
         isConfirmed,
+        isOauth,
         hashOptions,
         profile,
         updatedAt
@@ -33,6 +34,7 @@ function isUserItem (
         typeof id === "number" &&
         typeof isAdmin === "boolean" &&
         typeof isConfirmed === "boolean" &&
+        typeof isOauth === "boolean" &&
         hashOptionsIsValidIfPassed &&
         profileIsValidIfPassed
     );

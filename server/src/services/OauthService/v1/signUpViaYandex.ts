@@ -1,8 +1,9 @@
 import { promises as fs } from "fs";
 import status from "http-status";
 
-import { CommonFailure } from "#types/externalApi/yandex/ResponseData";
+import { CommonFailure, RequestProfileSuccess } from "#types/externalApi/yandex/ResponseData";
 import { INVALID_REQUEST } from "#utils/const/oauthErrors";
+import DataOnCreate from "#types/user/DataOnCreate";
 import OauthError from "#utils/errors/OauthError";
 import UserItem from "#types/user/Item";
 import UserService from "#services/UserService/v1";
@@ -28,6 +29,23 @@ export default async function (
     }
 
     const email = profile.default_email;
+    const usersList = await UserService.findUsers({
+        where: { email }
+    });
+
+    let user = usersList.items[0];
+
+    if (!user) {
+        const props = await getUserProps(profile);
+        user = await UserService.createUser(props);
+    } else if (user && !user.isConfirmed) {
+        await UserService.updateUser(user.id, { isConfirmed: true });
+    }
+
+    return user;
+}
+
+async function getUserProps (profile: RequestProfileSuccess): Promise<DataOnCreate> {
     const hasPicture = !profile.is_avatar_empty;
     const pictureId = profile.default_avatar_id;
 
@@ -37,29 +55,22 @@ export default async function (
     if (hasPicture && pictureId) {
         picturePath = hasPicture && await downloadUserPicture(pictureId);
         picture = await fs.readFile(picturePath);
-    }
-
-    let user = await UserService.findUserByField("email", email);
-
-    if (!user) {
-        const birthdate = (profile.birthday)
-            ? new Date(profile.birthday)
-            : undefined;
-
-        const props = {
-            birthdate,
-            email,
-            isConfirmed: true,
-            name: profile.login,
-            picture
-        };
-
-        user = await UserService.createUser(props);
 
         if (picture && picturePath) {
             await unlinkFiles(picturePath);
         }
     }
 
-    return user;
+    const birthdate = (profile.birthday)
+        ? new Date(profile.birthday)
+        : undefined;
+
+    return {
+        birthdate,
+        email: profile.default_email,
+        isConfirmed: true,
+        isOauth: true,
+        name: profile.login,
+        picture
+    };
 }

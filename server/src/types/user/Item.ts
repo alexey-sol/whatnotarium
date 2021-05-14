@@ -9,6 +9,7 @@ interface Item {
     id: number;
     isAdmin: boolean;
     isConfirmed: boolean;
+    isOauth: boolean;
     profile?: Profile;
     updatedAt: Date;
 }

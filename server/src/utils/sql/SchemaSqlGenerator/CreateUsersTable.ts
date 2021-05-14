@@ -14,6 +14,7 @@ class CreateUsersTable extends SchemaSqlGenerator<unknown> {
                 "email" VARCHAR(255) UNIQUE NOT NULL,
                 "isAdmin" BOOLEAN DEFAULT FALSE NOT NULL,
                 "isConfirmed" BOOLEAN DEFAULT FALSE NOT NULL,
+                "isOauth" BOOLEAN DEFAULT FALSE NOT NULL,
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL
             );

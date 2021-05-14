@@ -9,6 +9,7 @@ interface Attributes {
     id?: number;
     isAdmin?: boolean;
     isConfirmed?: boolean;
+    isOauth?: boolean;
     profile?: Profile;
     updatedAt?: Date;
 }

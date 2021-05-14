@@ -23,7 +23,7 @@ export const mapper = ({ dispatch }) => (next) => (action) => {
 
 function checkIfShouldSetCurrentUser (type) {
     return (
-        type === oauthTypes.GET_TOKEN_START ||
+        type === oauthTypes.GET_TOKEN_SUCCESS ||
         type === types.CHECK_SESSION_SUCCESS ||
         type === types.SIGN_IN_SUCCESS ||
         type === types.SIGN_UP_SUCCESS ||
