@@ -47,27 +47,29 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                         new_user_id
                     );
 
-                    INSERT INTO "${HASH_OPTIONS}" (
-                        "hash",
-                        "salt",
-                        "digest",
-                        "iterations",
-                        "keyLength",
-                        "userId"
-                    )
-                    VALUES (
-                        new."hash",
-                        new."salt",
-                        new."digest",
-                        new."iterations",
-                        new."keyLength",
-                        new_user_id
-                    );
+                    IF (new."hash" IS NOT NULL) THEN
+                        INSERT INTO "${HASH_OPTIONS}" (
+                            "hash",
+                            "salt",
+                            "digest",
+                            "iterations",
+                            "keyLength",
+                            "userId"
+                        )
+                        VALUES (
+                            new."hash",
+                            new."salt",
+                            new."digest",
+                            new."iterations",
+                            new."keyLength",
+                            new_user_id
+                        );
 
-                    new."id" = new_user_id;
-                    new."createdAt" = new_created_at;
-                    new."updatedAt" = new_updated_at;
+                        new."id" = new_user_id;
+                        new."createdAt" = new_created_at;
+                        new."updatedAt" = new_updated_at;
 
+                    END IF;
                     RETURN new;
 
                 ELSIF (TG_OP = 'UPDATE') THEN

@@ -4,23 +4,22 @@ import UserItem from "#types/user/Item";
 import hashPassword from "#utils/helpers/hashPassword";
 
 interface Props {
+    birthdate?: Date;
     email: string;
     isConfirmed?: boolean;
     name: string;
-    password: string;
+    password?: string;
+    picture?: Buffer;
 }
 
 export default async function (
     props: Props
 ): Promise<UserItem> {
-    const {
-        email,
-        isConfirmed,
-        name,
-        password
-    } = props;
+    const { password, ...restProps } = props;
 
-    const hashOptions = await hashPassword(password);
+    const hashOptions = (password)
+        ? await hashPassword(password)
+        : null;
 
     const includeProfile = {
         as: "profile",
@@ -31,9 +30,7 @@ export default async function (
     };
 
     return User.create({
-        email,
-        isConfirmed,
-        name,
+        ...restProps,
         ...hashOptions
     }, [includeProfile]);
 }

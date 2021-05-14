@@ -6,8 +6,8 @@ import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
 export function * doGetToken ({ payload, cb }) {
     try {
-        yield api.getToken(payload);
-        yield put(actions.getTokenSuccess());
+        const user = yield api.getToken(payload);
+        yield put(actions.getTokenSuccess(user));
         if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);

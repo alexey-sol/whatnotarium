@@ -1,3 +1,4 @@
+import * as oauthTypes from "redux/oauth/oauth.types";
 import * as types from "redux/session/session.types";
 import * as supportTypes from "redux/support/support.types";
 import * as usersTypes from "redux/users/users.types";
@@ -22,6 +23,7 @@ export const mapper = ({ dispatch }) => (next) => (action) => {
 
 function checkIfShouldSetCurrentUser (type) {
     return (
+        type === oauthTypes.GET_TOKEN_START ||
         type === types.CHECK_SESSION_SUCCESS ||
         type === types.SIGN_IN_SUCCESS ||
         type === types.SIGN_UP_SUCCESS ||

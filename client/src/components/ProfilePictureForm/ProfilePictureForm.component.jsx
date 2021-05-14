@@ -28,7 +28,9 @@ function ProfilePictureForm ({ currentUser, onUpdateUserPictureStart }) {
     const avatarImgElem = (
         <img
             alt={name}
+            height="170"
             src={picDataIfAny}
+            width="170"
         />
     );
 

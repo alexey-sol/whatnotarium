@@ -1,13 +1,14 @@
 interface DataOnCreate {
-    digest: string;
+    birthdate?: Date;
+    digest?: string;
     email: string;
-    hash: Buffer;
+    hash?: Buffer;
     isConfirmed?: boolean;
-    iterations: number;
-    keyLength: number;
+    iterations?: number;
+    keyLength?: number;
     name: string;
     picture?: Buffer;
-    salt: string;
+    salt?: string;
 }
 
 export default DataOnCreate;

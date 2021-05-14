@@ -1,37 +1,65 @@
+import { promises as fs } from "fs";
 import status from "http-status";
 
-import { Failure, Success } from "#types/externalApi/yandex/RequestTokenResponse";
+import { CommonFailure } from "#types/externalApi/yandex/ResponseData";
+import { INVALID_REQUEST } from "#utils/const/oauthErrors";
 import OauthError from "#utils/errors/OauthError";
+import UserItem from "#types/user/Item";
+import UserService from "#services/UserService/v1";
 import downloadUserPicture from "#utils/externalApi/yandex/downloadUserPicture";
+import isOfType from "#utils/typeGuards/isOfType";
 import requestToken from "#utils/externalApi/yandex/requestToken";
 import requestUserProfile from "#utils/externalApi/yandex/requestUserProfile";
+import unlinkFiles from "#utils/helpers/unlinkFiles";
 
 export default async function (
     code: string
-): Promise<unknown> {
+): Promise<UserItem | null> | never {
     const response = await requestToken(code);
-    const { error } = (response as Failure);
-    const { access_token: accessToken } = (response as Success);
 
-    if (error) {
-        throw new OauthError(error, status.BAD_REQUEST);
-    } else if (accessToken) {
-        const profile = await requestUserProfile(accessToken);
+    if (isOfType<CommonFailure>(response, "error")) {
+        throw new OauthError(response.error, status.BAD_REQUEST);
+    }
 
-        if (profile) {
-            const hasPicture = !profile.is_avatar_empty;
-            const pictureId = profile.default_avatar_id;
-            let picturePath;
+    const profile = await requestUserProfile(response.access_token);
 
-            if (hasPicture && pictureId) {
-                picturePath = hasPicture && await downloadUserPicture(pictureId);
-            }
+    if (!profile) {
+        throw new OauthError(INVALID_REQUEST, status.BAD_REQUEST);
+    }
 
-            // TODO:
-            // create user
-            // create session
+    const email = profile.default_email;
+    const hasPicture = !profile.is_avatar_empty;
+    const pictureId = profile.default_avatar_id;
+
+    let picturePath;
+    let picture;
+
+    if (hasPicture && pictureId) {
+        picturePath = hasPicture && await downloadUserPicture(pictureId);
+        picture = await fs.readFile(picturePath);
+    }
+
+    let user = await UserService.findUserByField("email", email);
+
+    if (!user) {
+        const birthdate = (profile.birthday)
+            ? new Date(profile.birthday)
+            : undefined;
+
+        const props = {
+            birthdate,
+            email,
+            isConfirmed: true,
+            name: profile.login,
+            picture
+        };
+
+        user = await UserService.createUser(props);
+
+        if (picture && picturePath) {
+            await unlinkFiles(picturePath);
         }
     }
 
-    return 1;
+    return user;
 }

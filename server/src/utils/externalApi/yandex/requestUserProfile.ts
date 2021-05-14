@@ -1,9 +1,9 @@
 import request from "#utils/http/request";
-import { Success } from "#types/externalApi/yandex/RequestProfileResponse";
+import { RequestProfileSuccess } from "#types/externalApi/yandex/ResponseData";
 
 export default async function (
     authToken: string
-): Promise<Success | null> {
+): Promise<RequestProfileSuccess | null> {
     return request({
         hostname: "login.yandex.ru",
         method: "GET",
@@ -11,5 +11,5 @@ export default async function (
         headers: {
             "Authorization": `OAuth ${authToken}`
         }
-    }) as unknown as Success | null;
+    }) as unknown as RequestProfileSuccess | null;
 }

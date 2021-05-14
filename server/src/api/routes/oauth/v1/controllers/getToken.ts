@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 
+import SessionService from "#services/SessionService/v1";
 import OauthService from "#services/OauthService/v1";
 import sendResponse from "#utils/http/sendResponse";
 
@@ -11,14 +12,21 @@ const getToken: RequestHandler = async (
     const { provider } = request.params;
     const code = request.query.code as string;
 
+    let user;
+    let currentUser;
+
     try {
         switch (provider) {
             case "yandex":
-                await OauthService.signUpViaYandex(code);
+                user = await OauthService.signUpViaYandex(code);
                 break;
         }
 
-        sendResponse(response);
+        if (user) {
+            currentUser = await SessionService.createSession(request, user.email);
+        }
+
+        sendResponse(response, currentUser);
     } catch (error) {
         next(error);
     }
