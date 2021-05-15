@@ -41,9 +41,14 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
     ): string;
 
     protected createSelectClause (
-        include?: Include[]
+        include?: Include[],
+        returningFields?: string[]
     ): string {
-        let selectElement = `SELECT "${this.tableName}".*`;
+        const joinedReturningFields = (returningFields)
+            ? returningFields.map(field => `"${this.tableName}"."${field}"`).join(", ")
+            : `"${this.tableName}".*`;
+
+        let selectElement = `SELECT ${joinedReturningFields}`;
 
         if (include) {
             include.forEach(({ attributes, tableName }) => {

@@ -13,6 +13,8 @@
     }
 
     .formContainer {
+        min-width: 18rem;
+
         &:not(:first-of-type) {
             margin-top: 3rem;
         }

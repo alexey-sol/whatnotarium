@@ -69,7 +69,6 @@ async function getUserProps (profile: RequestProfileSuccess): Promise<DataOnCrea
         birthdate,
         email: profile.default_email,
         isConfirmed: true,
-        isOauth: true,
         name: profile.login,
         picture
     };

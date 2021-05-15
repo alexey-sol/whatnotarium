@@ -3,7 +3,8 @@ import findAllRecords from "./findAllRecords";
 
 async function findOneRecord<InputType, OutputType> (
     tableName: string,
-    filter: DbQueryFilter<InputType>
+    filter: DbQueryFilter<InputType>,
+    returningFields?: string[]
 ): Promise<OutputType | null> | never {
     const filterWithLimit = {
         ...filter,
@@ -12,7 +13,8 @@ async function findOneRecord<InputType, OutputType> (
 
     const records = await findAllRecords<InputType, OutputType>(
         tableName,
-        filterWithLimit
+        filterWithLimit,
+        returningFields
     );
 
     return records[0];

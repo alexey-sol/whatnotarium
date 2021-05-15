@@ -10,10 +10,10 @@ function isUserItem (
     const {
         createdAt,
         email,
+        hasPassword,
         id,
         isAdmin,
         isConfirmed,
-        isOauth,
         hashOptions,
         profile,
         updatedAt
@@ -31,10 +31,10 @@ function isUserItem (
         createdAt instanceof Date &&
         updatedAt instanceof Date &&
         typeof email === "string" &&
+        typeof hasPassword === "boolean" &&
         typeof id === "number" &&
         typeof isAdmin === "boolean" &&
         typeof isConfirmed === "boolean" &&
-        typeof isOauth === "boolean" &&
         hashOptionsIsValidIfPassed &&
         profileIsValidIfPassed
     );

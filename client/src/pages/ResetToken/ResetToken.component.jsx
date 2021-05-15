@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD } from "utils/const/userData";
-import { SUCCESS } from "utils/const/notificationProps";
+import { EXTENDED_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { SUPPORT_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
@@ -129,6 +129,6 @@ const ConnectedConfirmToken = connect(
 export default ConnectedConfirmToken;
 
 function getSuccessNot () {
-    const RESET_SUCCESS = "Старый пароль сброшен. Теперь вы можете войти при помощи нового пароля";
-    return new Notification(RESET_SUCCESS, SUCCESS, 6000);
+    const notif = "Старый пароль сброшен. Теперь вы можете войти при помощи нового пароля";
+    return new Notification(notif, SUCCESS, EXTENDED_TIMEOUT_IN_MS);
 }

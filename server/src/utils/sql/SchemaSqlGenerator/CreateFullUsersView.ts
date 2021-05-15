@@ -13,12 +13,12 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
             CREATE OR REPLACE VIEW "${FULL_USERS_VIEW}" AS
             SELECT
                 u."id", u."email", u."isAdmin", u."isConfirmed", u."createdAt", u."updatedAt",
-                u."isOauth", p."name", p."picture", p."birthdate", p."about", p."totalVoteCount",
+                p."name", p."picture", p."birthdate", p."about", p."totalVoteCount",
                 p."lastActivityDate", ho."hash", ho."salt", ho."digest", ho."iterations",
-                ho."keyLength"
+                ho."keyLength", COALESCE(ho."id"::BOOLEAN, false) AS "hasPassword"
             FROM "${USERS}" AS u
             INNER JOIN "${PROFILES}" AS p ON u."id" = p."userId"
-            INNER JOIN "${HASH_OPTIONS}" AS ho ON u."id" = ho."userId";
+            LEFT JOIN "${HASH_OPTIONS}" AS ho ON u."id" = ho."userId";
 
             CREATE OR REPLACE FUNCTION update_full_users()
             RETURNS TRIGGER AS $$
@@ -27,13 +27,11 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                 IF (TG_OP = 'INSERT') THEN
                     INSERT INTO "${USERS}" (
                         "email",
-                        "isConfirmed",
-                        "isOauth"
+                        "isConfirmed"
                     )
                     VALUES (
                         new."email",
-                        new."isConfirmed",
-                        new."isOauth"
+                        new."isConfirmed"
                     )
                     RETURNING "id", "createdAt", "updatedAt"
                     INTO new_user_id, new_created_at, new_updated_at;
@@ -99,20 +97,39 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                         new."lastActivityDate" IS DISTINCT FROM old."lastActivityDate"
                     );
 
-                    UPDATE "${HASH_OPTIONS}" SET
-                        "hash" = new."hash",
-                        "salt" = new."salt",
-                        "digest" = new."digest",
-                        "iterations" = new."iterations",
-                        "keyLength" = new."keyLength",
-                        "updatedAt" = NOW()
-                    WHERE "userId" = old."id" AND (
-                        new."hash" IS DISTINCT FROM old."hash" OR
-                        new."salt" IS DISTINCT FROM old."salt" OR
-                        new."digest" IS DISTINCT FROM old."digest" OR
-                        new."iterations" IS DISTINCT FROM old."iterations" OR
-                        new."keyLength" IS DISTINCT FROM old."keyLength"
-                    );
+                    IF (old."hash" IS NULL AND new."hash" IS NOT NULL) THEN
+                        INSERT INTO "${HASH_OPTIONS}" (
+                            "hash",
+                            "salt",
+                            "digest",
+                            "iterations",
+                            "keyLength",
+                            "userId"
+                        )
+                        VALUES (
+                            new."hash",
+                            new."salt",
+                            new."digest",
+                            new."iterations",
+                            new."keyLength",
+                            old."id"
+                        );
+                    ELSE
+                        UPDATE "${HASH_OPTIONS}" SET
+                            "hash" = new."hash",
+                            "salt" = new."salt",
+                            "digest" = new."digest",
+                            "iterations" = new."iterations",
+                            "keyLength" = new."keyLength",
+                            "updatedAt" = NOW()
+                        WHERE "userId" = old."id" AND (
+                            new."hash" IS DISTINCT FROM old."hash" OR
+                            new."salt" IS DISTINCT FROM old."salt" OR
+                            new."digest" IS DISTINCT FROM old."digest" OR
+                            new."iterations" IS DISTINCT FROM old."iterations" OR
+                            new."keyLength" IS DISTINCT FROM old."keyLength"
+                        );
+                    END IF;
 
                     IF NOT FOUND THEN RETURN NULL; END IF;
                     RETURN new;

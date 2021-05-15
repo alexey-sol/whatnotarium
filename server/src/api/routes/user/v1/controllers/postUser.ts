@@ -15,10 +15,10 @@ const postUser: RequestHandler = async (
     next
 ): Promise<void> => {
     try {
-        const { skipConfirmEmail } = request.body;
+        const { skipConfirmEmail, ...rest } = request.body;
 
         const props = {
-            ...request.body,
+            ...rest,
             isConfirmed: Boolean(skipConfirmEmail)
         };
 

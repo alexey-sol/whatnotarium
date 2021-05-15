@@ -11,34 +11,39 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
         super(tableName, undefined, queryName);
     }
 
-    generate (filter?: DbQueryFilter<InputType>): SqlQueryPayload {
+    generate (
+        filter?: DbQueryFilter<InputType>,
+        returningFields?: string[]
+    ): SqlQueryPayload {
         return (filter)
-            ? this.createQueryPayloadWithFilter(filter)
-            : this.createQueryPayload();
+            ? this.createQueryPayloadWithFilter(filter, returningFields)
+            : this.createQueryPayload(returningFields);
     }
 
     private createQueryPayloadWithFilter (
-        filter: DbQueryFilter<InputType>
+        filter: DbQueryFilter<InputType>,
+        returningFields?: string[]
     ): SqlQueryPayload {
         const { where = {} } = filter;
         const fieldValues = Object.values(where);
 
         return {
             name: this.queryName,
-            text: this.getText(filter),
+            text: this.getText(filter, returningFields),
             values: this.getValues(fieldValues)
         };
     }
 
-    private createQueryPayload (): SqlQueryPayload {
+    private createQueryPayload (returningFields?: string[]): SqlQueryPayload {
         return {
             name: this.queryName,
-            text: this.getText()
+            text: this.getText(undefined, returningFields)
         };
     }
 
     protected getText (
-        filter: DbQueryFilter<InputType> = {}
+        filter: DbQueryFilter<InputType> = {},
+        returningFields?: string[]
     ): string {
         const {
             include,
@@ -51,7 +56,7 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
 
         const attributes = Object.keys(where);
 
-        const selectElem = this.createSelectClause(include);
+        const selectElem = this.createSelectClause(include, returningFields);
         const joinElem = this.createJoinClause(include);
         const whereAttribElem = this.createWhereAttributesClause(attributes, operators, include);
 

@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD, PASSWORD } from "utils/const/userData";
 // import { PASSWORD_TOO_WEAK } from "utils/const/validationErrors";
-import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
+import { EXTENDED_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/BaseButton";
@@ -19,10 +19,9 @@ import { updateUserStart } from "redux/users/users.actions";
 // import hints from "utils/resources/text/ru/hints";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
+import setUpPasswordSchema from "utils/validators/shemas/setUpPassword";
 import styles from "./PasswordDataForm.module.scss";
 import updatePasswordSchema from "utils/validators/shemas/updatePassword";
-
-const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;
@@ -40,14 +39,19 @@ function PasswordDataForm ({
 
     const initialValues = {
         confirmNewPassword: "",
-        id: currentUser?.id,
         newPassword: "",
         password: ""
     };
 
+    const { hasPassword } = currentUser || {};
+
     const showSuccess = useCallback(() => {
-        onShowNotification(successNotification);
-    }, [onShowNotification]);
+        const notif = (hasPassword)
+            ? "Готово, пароль изменен"
+            : "Готово, теперь вы можете входить по логину и паролю";
+
+        onShowNotification(getSuccessNotif(notif));
+    }, [hasPassword, onShowNotification]);
 
     const handleChangeWrapper = (event, cb) => {
         if (notification) {
@@ -57,21 +61,43 @@ function PasswordDataForm ({
         cb(event);
     };
 
+    const handleSubmit = (props, { resetForm }) => {
+        const { password, ...rest } = props;
+
+        const updatedProps = {
+            ...rest,
+            id: currentUser?.id
+        };
+
+        if (password.length > 0) {
+            updatedProps.password = password;
+        }
+
+        onUpdateUserStart(updatedProps, () => {
+            resetForm();
+            showSuccess();
+        });
+    };
+
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={props => onUpdateUserStart(props, showSuccess)}
+            onSubmit={handleSubmit}
             validateOnChange
-            validationSchema={updatePasswordSchema}
+            validationSchema={(hasPassword)
+                ? updatePasswordSchema
+                : setUpPasswordSchema}
         >
             {({ errors, handleChange }) => (
                 <Form className={styles.container}>
-                    <FormInput
-                        label="Текущий пароль"
-                        name={PASSWORD}
-                        onChange={event => handleChangeWrapper(event, handleChange)}
-                        type="password"
-                    />
+                    {hasPassword && (
+                        <FormInput
+                            label="Текущий пароль"
+                            name={PASSWORD}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="password"
+                        />
+                    )}
 
                     <FormInput
                         label="Новый пароль"
@@ -90,7 +116,9 @@ function PasswordDataForm ({
                     <BaseButton
                         className={styles.updatePasswordDataButton}
                         disabled={isPending || Object.keys(errors).length > 0}
-                        text="Изменить пароль"
+                        text={(hasPassword)
+                            ? "Изменить пароль"
+                            : "Задать пароль"}
                     />
                 </Form>
             )}
@@ -108,7 +136,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     onShowNotification: (notification) => dispatch(showNotification(notification)),
-    onUpdateUserStart: (props) => dispatch(updateUserStart(props))
+    onUpdateUserStart: (props, cb) => dispatch(updateUserStart(props, cb))
 });
 
 const ConnectedPasswordDataForm = connect(
@@ -117,3 +145,7 @@ const ConnectedPasswordDataForm = connect(
 )(PasswordDataForm);
 
 export default ConnectedPasswordDataForm;
+
+function getSuccessNotif (text = phrases.done) {
+    return new Notification(text, SUCCESS, EXTENDED_TIMEOUT_IN_MS);
+}

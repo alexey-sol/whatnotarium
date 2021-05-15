@@ -34,7 +34,7 @@ import isUserItem from "#utils/typeGuards/isUserItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
 
 const returningValues = [
-    "id", "email", "isAdmin", "isConfirmed", "isOauth", "createdAt", "updatedAt"
+    "id", "email", "isAdmin", "isConfirmed", "createdAt", "updatedAt", "hasPassword"
 ];
 
 class User implements Model<DataOnUpdate, User> {
@@ -43,11 +43,11 @@ class User implements Model<DataOnUpdate, User> {
     about: string;
     createdAt: Date;
     email: string;
+    hasPassword: boolean;
     hashOptions?: UserHashOptions;
     id: number;
     isAdmin: boolean;
     isConfirmed: boolean;
-    isOauth: boolean;
     profile?: UserProfile;
     updatedAt: Date;
 
@@ -55,10 +55,10 @@ class User implements Model<DataOnUpdate, User> {
         this.about = props.about;
         this.createdAt = props.createdAt;
         this.email = props.email;
+        this.hasPassword = props.hasPassword;
         this.id = props.id;
         this.isAdmin = props.isAdmin;
         this.isConfirmed = props.isConfirmed;
-        this.isOauth = props.isOauth;
         this.updatedAt = props.updatedAt;
 
         if (props.hashOptions) {
@@ -99,7 +99,7 @@ class User implements Model<DataOnUpdate, User> {
             return null;
         }
 
-        return destroyAllRecords<Attributes, Item>(FULL_USERS_VIEW, filter);
+        return destroyAllRecords<Attributes, Item>(USERS, filter);
     }
 
     static async destroyById (
@@ -118,7 +118,11 @@ class User implements Model<DataOnUpdate, User> {
     static async findAll (
         filter?: DbQueryFilter<Attributes>
     ): Promise<User[]> | never {
-        const records = await findAllRecords<Attributes, Item>(USERS, filter);
+        const records = await findAllRecords<Attributes, Item>(
+            FULL_USERS_VIEW,
+            filter,
+            returningValues
+        );
 
         return records.map(record => User.formatPropsAndInstantiate(
             record,
@@ -133,7 +137,11 @@ class User implements Model<DataOnUpdate, User> {
             return null;
         }
 
-        const record = await findOneRecord<Attributes, Item>(USERS, filter);
+        const record = await findOneRecord<Attributes, Item>(
+            FULL_USERS_VIEW,
+            filter,
+            returningValues
+        );
 
         return (record)
             ? User.formatPropsAndInstantiate(record, filter?.include)
@@ -180,7 +188,7 @@ class User implements Model<DataOnUpdate, User> {
         const item = (include)
             ? separateIncludedAttributes(props, include)
             : props;
-
+        console.log(item)
         if (!isUserItem(item)) {
             throw new UserError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }

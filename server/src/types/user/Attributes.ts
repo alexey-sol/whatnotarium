@@ -5,11 +5,11 @@ interface Attributes {
     about?: string;
     createdAt?: Date;
     email?: string;
+    hasPassword?: boolean;
     hashOptions?: HashOptions;
     id?: number;
     isAdmin?: boolean;
     isConfirmed?: boolean;
-    isOauth?: boolean;
     profile?: Profile;
     updatedAt?: Date;
 }

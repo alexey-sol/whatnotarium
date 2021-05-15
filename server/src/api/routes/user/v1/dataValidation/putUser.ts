@@ -39,7 +39,7 @@ const putUser: RequestHandler = async (
         const { newPassword, password } = body;
 
         if (password && newPassword) {
-            const passwordIsValid = await isValidPassword(password, user.id);
+            const passwordIsValid = user.hasPassword && await isValidPassword(password, user.id);
 
             if (!passwordIsValid) {
                 throw new UserError(INVALID_PASSWORD, status.UNAUTHORIZED, ip);

@@ -7,7 +7,6 @@ interface Props {
     birthdate?: Date;
     email: string;
     isConfirmed?: boolean;
-    isOauth?: boolean;
     name: string;
     password?: string;
     picture?: Buffer;
@@ -16,7 +15,7 @@ interface Props {
 export default async function (
     props: Props
 ): Promise<UserItem> {
-    const { isOauth = false, password, ...restProps } = props;
+    const { password, ...restProps } = props;
 
     const hashOptions = (password)
         ? await hashPassword(password)
@@ -33,6 +32,5 @@ export default async function (
     return User.create({
         ...restProps,
         ...hashOptions,
-        isOauth
     }, [includeProfile]);
 }
