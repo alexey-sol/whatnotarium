@@ -73,6 +73,18 @@ function SignInContent ({
         );
     }, []);
 
+    const openWindowToSignUpViaGoogle = useCallback(async () => {
+        const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
+        window.open("https://accounts.google.com/o/oauth2/v2/auth?" +
+            "response_type=code&" +
+            `client_id=${clientId}&` +
+            "redirect_uri=https://a001d931dabb.ngrok.io/support/oauth/google&" +
+            "scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login",
+            "Авторизация через Google"
+        );
+    }, []);
+
     useEffect(() => {
         const shouldRedirectToSupportPage = (
             sessionError?.message === NOT_VERIFIED &&
@@ -149,6 +161,14 @@ function SignInContent ({
                     </p>
 
                     <ul className={styles.oauthProvidersList}>
+                        <li>
+                            <BaseButton
+                                onClick={openWindowToSignUpViaGoogle}
+                                text="Google"
+                                width="full"
+                            />
+                        </li>
+
                         <li>
                             <BaseButton
                                 onClick={openWindowToSignUpViaYandex}

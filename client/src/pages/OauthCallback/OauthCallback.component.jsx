@@ -42,15 +42,13 @@ function OauthCallback ({
             onShowNotification(getErrorNotif(errorMessage));
         }
 
-        // history.push("/");
+        history.push("/");
     }, [error, oauthError, onResetOauthError, onShowNotification]);
 
     useEffect(() => {
         if (code) {
             onGetTokenStart({ code, provider }, () => history.push("/"));
         }
-
-        // history.push("/");
     }, [code, error, history, onGetTokenStart, onShowNotification, provider]);
 
     if (!error) {

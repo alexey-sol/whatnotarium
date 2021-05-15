@@ -17,6 +17,9 @@ const getToken: RequestHandler = async (
 
     try {
         switch (provider) {
+            case "google":
+                user = await OauthService.signUpViaGoogle(code);
+                break;
             case "yandex":
                 user = await OauthService.signUpViaYandex(code);
                 break;

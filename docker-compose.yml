@@ -16,6 +16,8 @@ services:
         ports:
             - ${PORT}:${PORT}
         environment:
+            - GOOGLE_CLIENT_ID
+            - GOOGLE_CLIENT_SECRET
             - HOST
             - PORT
             - POSTGRES_URL
