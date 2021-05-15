@@ -63,6 +63,7 @@ function translatePostError (message) {
 function translateUserError (message) {
     switch (message) {
         case ALREADY_EXISTS:
+        case CONFLICT:
             return "Такой email уже занят";
         case FORBIDDEN:
             return "Доступ запрещен";

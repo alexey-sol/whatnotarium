@@ -46,8 +46,9 @@ export function signInFailure (error) {
     };
 }
 
-export function signInStart (credentials) {
+export function signInStart (credentials, cb) {
     return {
+        cb,
         payload: credentials,
         type: types.SIGN_IN_START
     };

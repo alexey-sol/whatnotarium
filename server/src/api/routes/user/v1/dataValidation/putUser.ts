@@ -9,8 +9,8 @@ import {
 } from "#utils/const/validationErrors";
 
 import RequestSession from "#utils/wrappers/RequestSession";
-import User from "#models/User";
 import UserError from "#utils/errors/UserError";
+import UserService from "#services/UserService/v1";
 import isValidPassword from "#utils/helpers/isValidPassword";
 
 const putUser: RequestHandler = async (
@@ -22,11 +22,27 @@ const putUser: RequestHandler = async (
     const { id } = params;
 
     try {
-        const user = await User.findById(+id);
+        const user = await UserService.findUser(+id);
 
         if (!user) {
             throw new UserError(NOT_FOUND, status.NOT_FOUND, ip);
-        } else if (!user.isConfirmed) {
+        }
+
+        let shouldThrowConflict = !user.isConfirmed;
+        const { email } = body;
+        const isNewEmail = email && user.email !== email;
+
+        if (isNewEmail) {
+            const anotherUserWithSameEmail = (await UserService.findUsers({
+                where: { email }
+            })).items[0];
+
+            if (anotherUserWithSameEmail) {
+                shouldThrowConflict = true;
+            }
+        }
+
+        if (shouldThrowConflict) {
             throw new UserError(CONFLICT, status.CONFLICT, ip);
         }
 
@@ -46,6 +62,7 @@ const putUser: RequestHandler = async (
             }
         }
 
+        response.locals.user = user;
         next();
     } catch (error) {
         next(error);

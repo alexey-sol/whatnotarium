@@ -91,7 +91,7 @@ function SignInContent ({
         <div className={styles.container}>
             <Formik
                 initialValues={initialValues}
-                onSubmit={onSignInStart}
+                onSubmit={(props) => onSignInStart(props, () => history.push("/"))}
                 validateOnChange
                 validationSchema={signInSchema}
             >
@@ -178,7 +178,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     onResetSessionError: () => dispatch(resetSessionError()),
-    onSignInStart: (credentials) => dispatch(signInStart(credentials))
+    onSignInStart: (credentials, cb) => dispatch(signInStart(credentials, cb))
 });
 
 const ConnectedSignInContent = connect(

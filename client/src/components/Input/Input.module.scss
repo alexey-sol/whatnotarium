@@ -31,6 +31,12 @@
             color: $input-text-color--error;
             border-color: $input-border-color--error;
         }
+
+        &:disabled {
+            pointer-events: none;
+            opacity: 0.5;
+            cursor: default;
+        }
     }
 
     input[type="password"] {

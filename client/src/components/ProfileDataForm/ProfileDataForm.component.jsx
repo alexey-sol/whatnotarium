@@ -1,8 +1,10 @@
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useRef } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { withRouter } from "react-router";
 
+import * as p from "utils/const/pathnames";
 import { ABOUT, EMAIL, NAME } from "utils/const/userData";
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { HIDE_NOTIFICATION } from "utils/const/events";
@@ -11,10 +13,12 @@ import BaseButton from "components/BaseButton";
 import FormInput from "components/FormInput";
 import FormTextarea from "components/FormTextarea";
 import Notification from "utils/objects/Notification";
+import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./ProfileDataForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
+import { signOutStart } from "redux/session/session.actions";
 import { updateUserStart } from "redux/users/users.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
@@ -28,11 +32,15 @@ ProfileDataForm.propTypes = propTypes;
 
 function ProfileDataForm ({
     currentUser,
+    history,
     isPending,
     notification,
     onShowNotification,
+    onSignOutStart,
     onUpdateUserStart
 }) {
+    const emailInputRef = useRef(null);
+
     if (!currentUser) {
         return null;
     }
@@ -54,12 +62,28 @@ function ProfileDataForm ({
         cb(event);
     };
 
-    const { isAdmin } = currentUser;
+    const handleSubmit = (props) => {
+        const signOutAndRedirectToSupportIfNeeded = () => {
+            const { email } = props;
+            const emailChanged = email !== currentUser.email;
+
+            if (emailChanged) {
+                onSignOutStart(() => history.push(`/${p.SUPPORT}/${p.CONFIRM}/email/${email}`));
+            }
+        };
+
+        onUpdateUserStart(props, () => {
+            showSuccess();
+            signOutAndRedirectToSupportIfNeeded();
+        });
+    };
+
+    const { hasPassword, isAdmin } = currentUser;
 
     return (
         <Formik
             initialValues={initialValues}
-            onSubmit={props => onUpdateUserStart(props, showSuccess)}
+            onSubmit={handleSubmit}
             validateOnChange
             validationSchema={updateUserSchema}
         >
@@ -76,13 +100,16 @@ function ProfileDataForm ({
                         type="text"
                     />
 
-                    <FormInput
-                        hasFixedTooltip
-                        label="Email"
-                        name={EMAIL}
-                        onChange={event => handleChangeWrapper(event, handleChange)}
-                        type="email"
-                    />
+                    <div ref={emailInputRef}>
+                        <FormInput
+                            disabled={!hasPassword}
+                            hasFixedTooltip
+                            label="Email"
+                            name={EMAIL}
+                            onChange={event => handleChangeWrapper(event, handleChange)}
+                            type="email"
+                        />
+                    </div>
 
                     <FormTextarea
                         label="О себе"
@@ -97,6 +124,14 @@ function ProfileDataForm ({
                         text="Сохранить"
                         theme="dark"
                     />
+
+                    {!hasPassword && (
+                        <Tooltip
+                            elemRef={emailInputRef}
+                            text="Вы не можете изменить email, пока не зададите пароль"
+                            width="large"
+                        />
+                    )}
                 </Form>
             )}
         </Formik>
@@ -113,6 +148,7 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     onShowNotification: (notification) => dispatch(showNotification(notification)),
+    onSignOutStart: (cb) => dispatch(signOutStart(cb)),
     onUpdateUserStart: (props, cb) => dispatch(updateUserStart(props, cb))
 });
 
@@ -121,4 +157,4 @@ const ConnectedProfileDataForm = connect(
     mapDispatchToProps
 )(ProfileDataForm);
 
-export default ConnectedProfileDataForm;
+export default withRouter(ConnectedProfileDataForm);

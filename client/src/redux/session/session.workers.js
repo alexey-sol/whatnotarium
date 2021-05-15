@@ -14,10 +14,11 @@ export function * doCheckSession () {
     }
 }
 
-export function * doSignIn ({ payload }) {
+export function * doSignIn ({ cb, payload }) {
     try {
         const currentUser = yield api.signIn(payload);
         yield put(actions.signInSuccess(currentUser));
+        if (cb) cb();
     } catch (errorResponse) {
         const error = getErrorFromResponse(errorResponse);
         yield put(actions.signInFailure(error));

@@ -8,8 +8,10 @@ export const defaultProps = {
 
 export const propTypes = {
     currentUser: object,
+    history: object.isRequired,
     isPending: bool,
     notification: object,
     onShowNotification: func.isRequired,
+    onSignOutStart: func.isRequired,
     onUpdateUserStart: func.isRequired
 };

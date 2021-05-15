@@ -32,6 +32,11 @@ export default async function (
     } = props;
 
     let userProps: DataOnUpdate = { ...rest };
+    const isNewEmail = props.email && props.email !== user.email;
+
+    if (isNewEmail) {
+        userProps.isConfirmed = false;
+    }
 
     if (newPassword) {
         const hashResult = await hashPassword(newPassword);
