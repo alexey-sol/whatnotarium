@@ -7,6 +7,18 @@ export default Joi.object({
         .string()
         .required(),
 
+    GOOGLE_CLIENT_ID: Joi
+        .string()
+        .required(),
+
+    GOOGLE_CLIENT_SECRET: Joi
+        .string()
+        .required(),
+
+    GOOGLE_OAUTH_REDIRECT_URI: Joi
+        .string()
+        .required(),
+
     NODE_ENV: Joi
         .string()
         .trim()

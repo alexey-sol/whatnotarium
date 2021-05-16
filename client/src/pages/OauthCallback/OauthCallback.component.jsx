@@ -5,12 +5,12 @@ import { createStructuredSelector } from "reselect";
 import { DEFAULT_TIMEOUT_IN_MS, ERROR } from "utils/const/notificationProps";
 import Notification from "utils/objects/Notification";
 import OauthError from "utils/errors/OauthError";
+import QSParser from "utils/parsers/QSParser";
 import Spinner from "components/Spinner";
 import { defaultProps, propTypes } from "./OauthCallback.props";
 import { getTokenStart, resetOauthError } from "redux/oauth/oauth.actions";
 import { selectError } from "redux/oauth/oauth.selectors";
 import { showNotification } from "redux/ui/ui.actions";
-import parseQueryString from "utils/helpers/parseQueryString";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import styles from "./OauthCallback.module.scss";
 import translateError from "utils/helpers/translateError";
@@ -29,7 +29,9 @@ function OauthCallback ({
 }) {
     const qs = location.search;
     const { provider } = match.params;
-    const { code, error } = parseQueryString(qs); // TODO: move this parsing stuff to class
+
+    const qsParser = new QSParser(qs);
+    const { code, error } = qsParser.parse();
 
     useEffect(() => {
         if (oauthError) {
@@ -43,7 +45,7 @@ function OauthCallback ({
         }
 
         history.push("/");
-    }, [error, oauthError, onResetOauthError, onShowNotification]);
+    }, [error, history, oauthError, onResetOauthError, onShowNotification]);
 
     useEffect(() => {
         if (code) {

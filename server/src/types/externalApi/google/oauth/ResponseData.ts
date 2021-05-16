@@ -1,4 +1,4 @@
-export interface RequestProfileSuccess {
+export interface ProfileSuccess {
     sub: string;
     name: string;
     picture?: string;
@@ -6,7 +6,7 @@ export interface RequestProfileSuccess {
     email_verified: string;
 }
 
-export interface RequestTokenSuccess {
+export interface TokenSuccess {
     token_type: string;
     access_token: string;
     expires_in: number;
@@ -15,7 +15,10 @@ export interface RequestTokenSuccess {
     scope: string;
 }
 
-export interface CommonFailure {
+export interface TokenFailure {
     error: string;
     error_description: string;
 }
+
+export type Profile = ProfileSuccess;
+export type Token = TokenSuccess | TokenFailure;

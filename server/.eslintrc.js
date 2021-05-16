@@ -50,6 +50,7 @@ module.exports = {
         "import/order": 0,
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "linebreak-style": ["error", "unix"],
+        "max-classes-per-file": 0,
         "no-await-in-loop": 0,
         "no-confusing-arrow": 0,
         "no-else-return": 0,

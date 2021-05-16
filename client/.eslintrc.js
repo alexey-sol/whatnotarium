@@ -65,6 +65,7 @@ module.exports = {
         "jsx-a11y/no-static-element-interactions": 0,
         "jsx-a11y/label-has-for": [2, { "required": { "some": [ "nesting", "id" ] } }],
         "linebreak-style": ["error", "unix"],
+        "max-classes-per-file": 0,
         "no-confusing-arrow": 0,
         "no-restricted-syntax": 0,
         "no-underscore-dangle": 0,

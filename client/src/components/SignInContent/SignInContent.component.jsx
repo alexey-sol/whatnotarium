@@ -6,6 +6,7 @@ import { createStructuredSelector } from "reselect";
 
 import * as p from "utils/const/pathnames";
 import { EMAIL, PASSWORD } from "utils/const/userData";
+import { GoogleConsentScreen, YandexConsentScreen } from "utils/wrappers/OauthConsentScreen";
 import { HIDE_NOTIFICATION } from "utils/const/events";
 import { NOT_VERIFIED } from "utils/const/validationErrors";
 import { SESSION_PREFIX } from "utils/const/actionTypeAffixes";
@@ -62,28 +63,15 @@ function SignInContent ({
         if (showForgotPass) showForgotPass();
     }, [onClose, showForgotPass]);
 
-    const openWindowToSignUpViaYandex = useCallback(async () => {
-        const clientId = process.env.REACT_APP_YANDEX_CLIENT_ID;
+    const openWindowToSignUpViaYandex = () => {
+        const consentScreen = new YandexConsentScreen();
+        consentScreen.openWindow();
+    };
 
-        window.open("https://oauth.yandex.ru/authorize?" +
-            "response_type=code&" +
-            `client_id=${clientId}&` +
-            "force_confirm=yes",
-        "Авторизация через Яндекс"
-        );
-    }, []);
-
-    const openWindowToSignUpViaGoogle = useCallback(async () => {
-        const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
-        window.open("https://accounts.google.com/o/oauth2/v2/auth?" +
-            "response_type=code&" +
-            `client_id=${clientId}&` +
-            "redirect_uri=https://a001d931dabb.ngrok.io/support/oauth/google&" +
-            "scope=https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/plus.login",
-            "Авторизация через Google"
-        );
-    }, []);
+    const openWindowToSignUpViaGoogle = () => {
+        const consentScreen = new GoogleConsentScreen();
+        consentScreen.openWindow();
+    };
 
     useEffect(() => {
         const shouldRedirectToSupportPage = (
