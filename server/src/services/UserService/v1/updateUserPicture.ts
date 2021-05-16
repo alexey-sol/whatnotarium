@@ -2,6 +2,7 @@ import sharp from "sharp";
 
 import { NOT_FOUND } from "#utils/const/validationErrors";
 import { PROFILES } from "#utils/const/database/tableNames";
+import { USER_PIC_SIZE } from "#utils/const/defaultValues";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
@@ -41,7 +42,7 @@ async function compressImageAndGetBuffer (
     return sharp(file.path)
         .withMetadata()
         .rotate()
-        .resize(170, 170)
+        .resize(USER_PIC_SIZE, USER_PIC_SIZE)
         .toFormat("png")
         .toBuffer();
 }

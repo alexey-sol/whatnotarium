@@ -26,6 +26,10 @@
                 margin: 0;
                 margin-top: 4rem;
                 list-style-type: none;
+
+                :not(:first-child) {
+                    margin-top: 0.5rem;
+                }
             }
         }
     }

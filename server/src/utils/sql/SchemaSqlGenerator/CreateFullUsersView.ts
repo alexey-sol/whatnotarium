@@ -64,12 +64,12 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                             new."keyLength",
                             new_user_id
                         );
-
-                        new."id" = new_user_id;
-                        new."createdAt" = new_created_at;
-                        new."updatedAt" = new_updated_at;
-
                     END IF;
+
+                    new."id" = new_user_id;
+                    new."createdAt" = new_created_at;
+                    new."updatedAt" = new_updated_at;
+
                     RETURN new;
 
                 ELSIF (TG_OP = 'UPDATE') THEN

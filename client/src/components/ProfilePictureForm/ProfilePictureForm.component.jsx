@@ -4,6 +4,7 @@ import { createStructuredSelector } from "reselect";
 
 import { CloseIconButton } from "components/IconButton";
 import { UserPicturePlaceholder } from "components/Icon";
+import { USER_PIC_SIZE } from "utils/const/defaultValues";
 import Tooltip from "components/Tooltip";
 import { defaultProps, propTypes } from "./ProfilePictureForm.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -28,16 +29,16 @@ function ProfilePictureForm ({ currentUser, onUpdateUserPictureStart }) {
     const avatarImgElem = (
         <img
             alt={name}
-            height="170"
+            height={USER_PIC_SIZE}
             src={picDataIfAny}
-            width="170"
+            width={USER_PIC_SIZE}
         />
     );
 
     const avatarPlaceholderElem = (
         <UserPicturePlaceholder
             fill="#455a64"
-            size={170}
+            size={USER_PIC_SIZE}
         />
     );
 

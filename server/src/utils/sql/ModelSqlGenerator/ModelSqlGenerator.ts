@@ -42,13 +42,10 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
 
     protected createSelectClause (
         include?: Include[],
-        returningFields?: string[]
+        fieldsToSelect?: string[]
     ): string {
-        const joinedReturningFields = (returningFields)
-            ? returningFields.map(field => `"${this.tableName}"."${field}"`).join(", ")
-            : `"${this.tableName}".*`;
-
-        let selectElement = `SELECT ${joinedReturningFields}`;
+        const joinedFields = this.joinFieldsToSelect(fieldsToSelect);
+        let selectElement = `SELECT ${joinedFields}`;
 
         if (include) {
             include.forEach(({ attributes, tableName }) => {
@@ -159,6 +156,12 @@ abstract class ModelSqlGenerator<InputType> implements SqlGenerator<InputType> {
 
         return [...ownAttributes, ...foreignAttributes]
             .map(({ attribute, tableName }) => `"${tableName}"."${attribute}"`);
+    }
+
+    private joinFieldsToSelect (fieldsToSelect?: string[]): string {
+        return (fieldsToSelect)
+            ? fieldsToSelect.map(field => `"${this.tableName}"."${field}"`).join(", ")
+            : `"${this.tableName}".*`;
     }
 
     protected createReturningClause (returningFields?: string[]): string {

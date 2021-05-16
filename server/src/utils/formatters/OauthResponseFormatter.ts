@@ -56,7 +56,6 @@ const OauthResponseFormatter = {
             return {
                 accessToken: value.access_token,
                 expiresIn: value.expires_in,
-                refreshToken: value.refresh_token,
                 tokenType: value.token_type
             };
         },
@@ -83,6 +82,8 @@ const OauthResponseFormatter = {
             is_avatar_empty: noPicture,
             login: name
         }: YandexProfile): GenericProfile {
+            const AVAILABLE_SIZE = 200;
+
             return {
                 birthdate: (birthday)
                     ? new Date(birthday)
@@ -91,7 +92,7 @@ const OauthResponseFormatter = {
                 name,
                 pictureUrl: (noPicture)
                     ? undefined
-                    : `https://avatars.yandex.net/get-yapic/${avatarId}/${USER_PIC_SIZE}`
+                    : `https://avatars.yandex.net/get-yapic/${avatarId}/islands-${AVAILABLE_SIZE}`
             };
         }
     }

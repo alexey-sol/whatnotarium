@@ -33,7 +33,7 @@ export class GoogleConsentScreen extends OauthConsentScreen {
         super("Google", url);
 
         if (!url) {
-            const clientId = process.env.REACT_APP_YANDEX_CLIENT_ID;
+            const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
             const redirectUri = process.env.REACT_APP_GOOGLE_OAUTH_REDIRECT_URI;
 
             const scopes = [

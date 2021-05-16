@@ -153,6 +153,7 @@ function SignInContent ({
                             <BaseButton
                                 onClick={openWindowToSignUpViaGoogle}
                                 text="Google"
+                                theme="neutral"
                                 width="full"
                             />
                         </li>
@@ -161,6 +162,7 @@ function SignInContent ({
                             <BaseButton
                                 onClick={openWindowToSignUpViaYandex}
                                 text="Яндекс"
+                                theme="neutral"
                                 width="full"
                             />
                         </li>

@@ -188,7 +188,7 @@ class User implements Model<DataOnUpdate, User> {
         const item = (include)
             ? separateIncludedAttributes(props, include)
             : props;
-        console.log(item)
+
         if (!isUserItem(item)) {
             throw new UserError(INVALID_PROPS, UNPROCESSABLE_ENTITY);
         }

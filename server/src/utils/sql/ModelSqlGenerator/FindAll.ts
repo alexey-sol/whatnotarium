@@ -13,37 +13,37 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
 
     generate (
         filter?: DbQueryFilter<InputType>,
-        returningFields?: string[]
+        fieldsToSelect?: string[]
     ): SqlQueryPayload {
         return (filter)
-            ? this.createQueryPayloadWithFilter(filter, returningFields)
-            : this.createQueryPayload(returningFields);
+            ? this.createQueryPayloadWithFilter(filter, fieldsToSelect)
+            : this.createQueryPayload(fieldsToSelect);
     }
 
     private createQueryPayloadWithFilter (
         filter: DbQueryFilter<InputType>,
-        returningFields?: string[]
+        fieldsToSelect?: string[]
     ): SqlQueryPayload {
         const { where = {} } = filter;
         const fieldValues = Object.values(where);
 
         return {
             name: this.queryName,
-            text: this.getText(filter, returningFields),
+            text: this.getText(filter, fieldsToSelect),
             values: this.getValues(fieldValues)
         };
     }
 
-    private createQueryPayload (returningFields?: string[]): SqlQueryPayload {
+    private createQueryPayload (fieldsToSelect?: string[]): SqlQueryPayload {
         return {
             name: this.queryName,
-            text: this.getText(undefined, returningFields)
+            text: this.getText(undefined, fieldsToSelect)
         };
     }
 
     protected getText (
         filter: DbQueryFilter<InputType> = {},
-        returningFields?: string[]
+        fieldsToSelect?: string[]
     ): string {
         const {
             include,
@@ -56,7 +56,7 @@ class FindAll<InputType> extends ModelSqlGenerator<InputType> {
 
         const attributes = Object.keys(where);
 
-        const selectElem = this.createSelectClause(include, returningFields);
+        const selectElem = this.createSelectClause(include, fieldsToSelect);
         const joinElem = this.createJoinClause(include);
         const whereAttribElem = this.createWhereAttributesClause(attributes, operators, include);
 

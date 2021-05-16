@@ -45,4 +45,14 @@
             background-color: $base-button-bg-color-dark--hover;
         }
     }
+
+    &.neutralTheme {
+        border: 1px solid $base-button-border-color-neutral;
+        background-color: $base-button-bg-color-neutral;
+        color: $base-button-text-color-neutral;
+
+        &:not(.disabled):hover {
+            background-color: $base-button-bg-color-neutral--hover;
+        }
+    }
 }

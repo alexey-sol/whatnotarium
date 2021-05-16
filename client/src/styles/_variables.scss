@@ -41,10 +41,14 @@ $base-button-bg-color-dark: $color-tertiary;
 $base-button-bg-color-dark--hover: #ce746e;
 $base-button-bg-color-light: $color-primary;
 $base-button-bg-color-light--hover: #ffdc9a;
+$base-button-bg-color-neutral: transparent;
+$base-button-bg-color-neutral--hover: #ffdc9a;
 $base-button-border-color-dark: $color-tertiary;
 $base-button-border-color-light: $color-quaternary;
+$base-button-border-color-neutral: $gray--light;
 $base-button-text-color-dark: white;
 $base-button-text-color-light: $color-quaternary;
+$base-button-text-color-neutral: $text-color--normal;
 
 $base-dialog-bg-color: white;
 $base-dialog-title-text-color: $gray--darken;
