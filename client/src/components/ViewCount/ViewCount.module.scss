@@ -1,0 +1,12 @@
+@import "styles/style.scss";
+
+.container {
+    display: grid;
+    align-items: center;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 1rem;
+    color: $rating-text-color--def;
+    font-family: $font-family--caption;
+    font-size: $font-size--small;
+    cursor: default;
+}

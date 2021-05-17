@@ -33,7 +33,7 @@ function PostDetailsContainer ({
     const [viewCountUpdated, setViewCountUpdated] = useState(false);
     const { push } = history;
     const { isAdmin } = currentUser || {};
-    const { viewCount } = post;
+    const { isFrozen, viewCount } = post;
 
     const id = +match.params.id;
     const shouldFetchPost = !post.id;
@@ -52,13 +52,13 @@ function PostDetailsContainer ({
 
     useEffect(() => {
         const shouldIncrementViewCount = (
-            Number.isInteger(viewCount) && !viewCountUpdated && !isAdmin
+            Number.isInteger(viewCount) && !viewCountUpdated && !isAdmin && !isFrozen
         );
 
         if (shouldIncrementViewCount) {
             onIncrementViewCountStart(id, () => setViewCountUpdated(true));
         }
-    }, [id, isAdmin, onIncrementViewCountStart, viewCount, viewCountUpdated]);
+    }, [id, isAdmin, isFrozen, onIncrementViewCountStart, viewCount, viewCountUpdated]);
 
     return (
         <PostDetails

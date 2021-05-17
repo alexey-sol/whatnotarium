@@ -8,6 +8,7 @@ export { default as Like } from "./Like.component";
 export { default as LikeActive } from "./LikeActive.component";
 export { default as Menu } from "./Menu.component";
 export { default as Notification } from "./Notification.component";
+export { default as Rating } from "./Rating.component";
 export { default as Search } from "./Search.component";
 export { default as User } from "./User.component";
 export { default as UserPicturePlaceholder } from "./UserPicturePlaceholder.component";

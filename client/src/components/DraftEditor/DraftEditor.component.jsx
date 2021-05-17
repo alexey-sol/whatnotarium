@@ -121,7 +121,7 @@ function DraftEditor ({
                     <header className={styles.title}>
                         <Input
                             className={styles.input}
-                            max={POST_TITLE_LENGTH}
+                            maxLength={POST_TITLE_LENGTH}
                             name={TITLE}
                             onChange={handleTitleChange}
                             rootClassName={styles.inputContainer}

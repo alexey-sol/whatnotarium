@@ -1,7 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import classnames from "classnames";
 
 import {
     DislikeActiveIconButton,
@@ -12,6 +11,8 @@ import {
 
 import { DEFAULT_POST_RATE } from "utils/const/defaultValues";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
+import CappedCount from "components/CappedCount";
+import Rating from "components/Icon/Rating.component";
 import { defaultProps, propTypes } from "./PostRating.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
@@ -73,28 +74,24 @@ function PostRating ({
         ? <DislikeActiveIconButton {...commonProps} onClick={dislikePost} />
         : <DislikeIconButton {...commonProps} onClick={dislikePost} />;
 
-    const ratingClassNames = classnames(
-        styles.rating,
-        (rating > 0) ? styles.positive : "",
-        (rating < 0) ? styles.negative : ""
-    );
-
     const formattedRating = (rating > 0)
         ? `+${rating}`
         : rating;
 
     return (
-        <section className={styles.container}>
-            {(!withoutControls) && (
-                <Fragment>
-                    {likeButton}
-                    {dislikeButton}
-                </Fragment>
-            )}
+        <section
+            className={styles.container}
+            title={`Оценка: ${formattedRating}`}
+        >
+            {(!withoutControls)
+                ? likeButton
+                : <Rating size={30} />}
 
-            <div className={ratingClassNames} title={`Оценка: ${formattedRating}`}>
-                {formattedRating}
+            <div className={styles.rating}>
+                <CappedCount count={rating} showDynamics />
             </div>
+
+            {!withoutControls && dislikeButton}
         </section>
     );
 }

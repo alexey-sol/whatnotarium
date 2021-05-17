@@ -1,0 +1,23 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+
+    &.positive {
+        color: $rating-text-color--pos;
+    }
+
+    &.negative {
+        color: $rating-text-color--neg;
+    }
+
+    :first-child {
+        height: 2.2rem;
+        margin-right: 0.2rem;
+    }
+
+    :last-child {
+        display: flex;
+        align-items: center;
+    }
+}

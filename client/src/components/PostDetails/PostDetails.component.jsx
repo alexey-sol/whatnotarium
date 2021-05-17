@@ -1,13 +1,11 @@
-import { Link } from "react-router-dom";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 
 import { REJECTION_REASON } from "utils/const/postData";
-import { USER } from "utils/const/pathnames";
 import BaseButton from "components/BaseButton";
-import DateFormatter from "utils/formatters/DateFormatter";
+import PostAuthorInfo from "components/PostAuthorInfo";
 import PostRating from "components/PostRating";
 import Textarea from "components/Textarea";
-import UserPicture from "components/UserPicture";
+import ViewCount from "components/ViewCount";
 import { defaultProps, propTypes } from "./PostDetails.component.props";
 import styles from "./PostDetails.module.scss";
 
@@ -41,10 +39,8 @@ function PostDetails ({
         viewCount
     } = post;
 
-    const { name, picture } = author;
     const isAuthor = userId === currentUserId;
     const shouldRenderControls = Boolean(isAuthor && id);
-    const edited = createdAt !== updatedAt;
 
     const rejectionIsAllowed = whyFormShown && rejectionReason
         .length >= MIN_REJECTION_REASON_LENGTH;
@@ -52,8 +48,6 @@ function PostDetails ({
         .length < MIN_REJECTION_REASON_LENGTH;
 
     const bodyHTML = { __html: body };
-    const formattedCreatedAt = new DateFormatter(createdAt).formatByPattern();
-    const formattedUpdatedAt = new DateFormatter(updatedAt).formatByPattern();
 
     const rejectionReasonLabel = "Пожалуйста, укажите причину отказа (не менее " +
         `${MIN_REJECTION_REASON_LENGTH} символов)`;
@@ -79,26 +73,11 @@ function PostDetails ({
                 dangerouslySetInnerHTML={bodyHTML}
             />
 
-            <section className={styles.metadata}>
-                <Link title={name} to={`/${USER}/${userId}`}>
-                    <UserPicture
-                        name={name}
-                        picture={picture}
-                        rootClassName={styles.userPicture}
-                    />
-                </Link>
-
-                <Link title={name} to={`/${USER}/${userId}`}>
-                    <span>
-                        {author?.name}
-                    </span>
-                </Link>
-
-                <span className={styles.date}>
-                    Создано {formattedCreatedAt}
-                    {edited && <Fragment>&nbsp;(отредактировано {formattedUpdatedAt})</Fragment>}
-                </span>
-            </section>
+            <PostAuthorInfo
+                createdAt={createdAt}
+                updatedAt={updatedAt}
+                user={author}
+            />
 
             {!isAdmin && isFrozen && (
                 <section className={styles.warning}>
@@ -124,9 +103,7 @@ function PostDetails ({
                         post={post}
                     />
 
-                    <div className={styles.viewCount}>
-                        {viewCount}
-                    </div>
+                    <ViewCount count={viewCount} />
                 </section>
             )}
 

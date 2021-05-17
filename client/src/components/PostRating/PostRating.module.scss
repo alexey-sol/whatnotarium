@@ -4,16 +4,12 @@
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, auto);
-    column-gap: 6rem;
+    column-gap: 1rem;
 
     .rating {
-        position: absolute;
-        left: 2.5rem;
-        right: 2.5rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 5.8rem;
         height: 100%;
         overflow-x: hidden;
         white-space: nowrap;
@@ -23,13 +19,5 @@
         font-size: $font-size--small;
         cursor: default;
         transition: 150ms color ease;
-
-        &.positive {
-            color: $rating-text-color--pos;
-        }
-
-        &.negative {
-            color: $rating-text-color--neg;
-        }
     }
 }
