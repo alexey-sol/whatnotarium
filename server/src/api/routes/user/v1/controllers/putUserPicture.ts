@@ -9,7 +9,7 @@ const putUserPicture: RequestHandler = async (
 ): Promise<void> => {
     try {
         const { id } = params;
-        response.locals.data = UserService.updateUserPicture(+id, file);
+        response.locals.data = await UserService.updateUserPicture(+id, file);
         next();
     } catch (error) {
         next(error);

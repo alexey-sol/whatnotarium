@@ -12,6 +12,7 @@ body {
     overflow-y: scroll;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: $body-bg-color;
     color: $text-color--normal;
     font-family: $font-family--normal;
     font-size: $font-size--medium;
