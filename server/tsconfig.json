@@ -27,7 +27,8 @@
             "#root/*": ["./*"],
             "#services/*": ["./src/services/*"],
             "#types/*": ["./src/types/*"],
-            "#utils/*": ["./src/utils/*"]
+            "#utils/*": ["./src/utils/*"],
+            "trim-html" : ["./src/types/declarations/trimHtml"]
         }
     },
     "include": [

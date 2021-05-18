@@ -12,6 +12,7 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
             CREATE TABLE IF NOT EXISTS "${POSTS}" (
                 "id" SERIAL PRIMARY KEY,
                 "body" TEXT NOT NULL,
+                "excerpt" TEXT DEFAULT '',
                 "title" VARCHAR(255) NOT NULL,
                 "rating" INTEGER DEFAULT 0 NOT NULL,
                 "userIdsVotedUp" INTEGER[] DEFAULT '{}' NOT NULL,

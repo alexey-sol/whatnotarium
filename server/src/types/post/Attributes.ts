@@ -6,6 +6,7 @@ interface Attributes {
     body?: string;
     comments?: Comment[];
     createdAt?: Date;
+    excerpt?: string;
     id?: number;
     isApproved?: boolean;
     isFrozen?: boolean;

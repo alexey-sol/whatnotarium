@@ -10,6 +10,7 @@ function isPostItem (
         author,
         body,
         createdAt,
+        excerpt,
         id,
         isApproved,
         isFrozen,
@@ -31,6 +32,7 @@ function isPostItem (
         updatedAt instanceof Date &&
         authorIsValid &&
         typeof body === "string" &&
+        typeof excerpt === "string" &&
         typeof id === "number" &&
         typeof isApproved === "boolean" &&
         typeof isFrozen === "boolean" &&

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import classnames from "classnames";
 
 import { POST } from "utils/const/pathnames";
@@ -10,27 +10,16 @@ import styles from "./PostPreview.module.scss";
 PostPreview.propTypes = propTypes;
 
 function PostPreview ({ currentUser, post }) {
-    const bodyRef = useRef(null);
-    const [contentIsHiddenPartly, setContentIsHiddenPartly] = useState(false);
-
-    useEffect(() => {
-        const bodyElem = bodyRef.current;
-
-        if (bodyElem) {
-            const { offsetHeight, scrollHeight } = bodyElem;
-            setContentIsHiddenPartly(offsetHeight < scrollHeight);
-        }
-    }, [bodyRef]);
-
     const {
         body,
+        excerpt,
         id,
         isApproved,
         isFrozen,
         title
     } = post;
 
-    const bodyHTML = { __html: body };
+    const bodyHTML = { __html: excerpt };
     const { isAdmin } = currentUser || {};
     const needsFix = !isAdmin && !isApproved && !isFrozen;
 
@@ -40,11 +29,7 @@ function PostPreview ({ currentUser, post }) {
     );
 
     const renderOpenPostLink = (text) => (
-        <Link
-            // className={styles.content}
-            title="Развернуть статью"
-            to={`/${POST}/${id}`}
-        >
+        <Link title={`Развернуть статью "${title}"`} to={`/${POST}/${id}`}>
             {text}
         </Link>
     );
@@ -59,6 +44,8 @@ function PostPreview ({ currentUser, post }) {
         (needsFix) ? styles.rejected : ""
     );
 
+    const hasMoreContent = excerpt?.length < body?.length;
+
     return (
         <article className={containerClassName}>
             <header className={headerClassName}>
@@ -69,12 +56,11 @@ function PostPreview ({ currentUser, post }) {
                 <div
                     className={styles.body}
                     dangerouslySetInnerHTML={bodyHTML}
-                    ref={bodyRef}
                 />
 
-                {contentIsHiddenPartly && (
+                {hasMoreContent && (
                     <div className={styles.openPost}>
-                        {renderOpenPostLink("…читать")}
+                        {renderOpenPostLink("…дальше")}
                     </div>
                 )}
             </section>

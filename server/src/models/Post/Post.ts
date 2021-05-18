@@ -1,4 +1,5 @@
 import { UNPROCESSABLE_ENTITY } from "http-status";
+import trimHtml from "trim-html";
 
 import {
     countRecords,
@@ -18,6 +19,7 @@ import {
 
 import { FULL_POSTS_VIEW } from "#utils/const/database/viewNames";
 import { INVALID_PROPS } from "#utils/const/validationErrors";
+import { POST_EXCERPT_MAX_LENGTH } from "#utils/const/defaultValues";
 import { POST_VOTES, POSTS } from "#utils/const/database/tableNames";
 import Attributes from "#types/post/Attributes";
 import Comment from "#types/Comment";
@@ -40,6 +42,7 @@ class Post implements Model<Attributes, Post> {
     body: string;
     comments: Comment[];
     createdAt: Date;
+    excerpt: string;
     id: number;
     isApproved: boolean;
     isFrozen: boolean;
@@ -56,6 +59,7 @@ class Post implements Model<Attributes, Post> {
         this.body = props.body;
         this.comments = props.comments;
         this.createdAt = props.createdAt;
+        this.excerpt = props.excerpt;
         this.id = props.id;
         this.isApproved = props.isApproved;
         this.isFrozen = props.isFrozen;
@@ -79,7 +83,10 @@ class Post implements Model<Attributes, Post> {
         props: Attributes,
         include?: Include[]
     ): Promise<Post> | never {
-        const record = await createRecord<Attributes, Item>(POSTS, props);
+        const record = await createRecord<Attributes, Item>(POSTS, {
+            excerpt: Post.deriveExcerpt(props),
+            ...props
+        });
 
         return (include)
             ? Post.findById(record.id, include) as Promise<Post>
@@ -157,6 +164,10 @@ class Post implements Model<Attributes, Post> {
             updatedProps.updatedAt = new Date();
         }
 
+        if (props.body) {
+            updatedProps.excerpt = Post.deriveExcerpt(props);
+        }
+
         const record = await updateRecordAttributes<Attributes, Item>(
             POSTS,
             this.id,
@@ -188,6 +199,15 @@ class Post implements Model<Attributes, Post> {
         return (include)
             ? Post.findById(this.id, include) as Promise<Post>
             : Post.formatPropsAndInstantiate(this);
+    }
+
+    static deriveExcerpt (
+        props: Attributes
+    ): string | undefined {
+        if (props.body) {
+            const { html } = trimHtml(props.body, { limit: POST_EXCERPT_MAX_LENGTH });
+            return html;
+        }
     }
 
     static formatPropsAndInstantiate (
