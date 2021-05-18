@@ -1,6 +1,6 @@
 import React from "react";
 
-import UserDetails from "components/UserDetails";
+import UserDetails from "components/users/UserDetails";
 import styles from "./User.module.scss";
 
 function Post () {

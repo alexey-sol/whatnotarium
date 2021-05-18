@@ -1,6 +1,6 @@
 import React from "react";
 
-import PostDetails from "components/PostDetails";
+import PostDetails from "components/posts/PostDetails";
 import styles from "./Post.module.scss";
 
 function Post () {

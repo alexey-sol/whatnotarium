@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import SignInContent from "components/SignInContent";
-import SignUpDialog from "components/Dialog/SignUpDialog";
+import SignInContent from "components/forms/SignInContent";
+import SignUpDialog from "components/ui/Dialog/SignUpDialog";
 import styles from "./SignIn.module.scss";
 
 function Home () {

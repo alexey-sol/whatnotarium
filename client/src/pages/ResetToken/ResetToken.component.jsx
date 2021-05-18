@@ -7,10 +7,10 @@ import { createStructuredSelector } from "reselect";
 import { CONFIRM_NEW_PASSWORD, NEW_PASSWORD } from "utils/const/userData";
 import { EXTENDED_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { SUPPORT_PREFIX } from "utils/const/actionTypeAffixes";
-import BaseButton from "components/BaseButton";
-import FormInput from "components/FormInput";
+import BaseButton from "components/ui/BaseButton";
+import FormInput from "components/forms/FormInput";
 import Notification from "utils/objects/Notification";
-import Spinner from "components/Spinner";
+import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./ResetToken.props";
 import { resetPasswordStart } from "redux/support/support.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -63,9 +63,7 @@ function ResetToken ({
     const elem = (
         <div className={styles.container}>
             <div className={styles.content}>
-                <p>
-                    Пожалуйста, придумайте новый пароль.
-                </p>
+                <p>Пожалуйста, придумайте новый пароль.</p>
 
                 <Formik
                     initialValues={initialValues}

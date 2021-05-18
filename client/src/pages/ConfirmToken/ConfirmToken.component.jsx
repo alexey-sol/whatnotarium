@@ -4,9 +4,9 @@ import { createStructuredSelector } from "reselect";
 
 import { DEFAULT_TIMEOUT_IN_MS, SUCCESS } from "utils/const/notificationProps";
 import { SUPPORT_PREFIX } from "utils/const/actionTypeAffixes";
-import CustomLink from "components/CustomLink";
+import CustomLink from "components/ui/CustomLink";
 import Notification from "utils/objects/Notification";
-import Spinner from "components/Spinner";
+import Spinner from "components/ui/Spinner";
 import { confirmEmailStart, sendConfirmTokenStart } from "redux/support/support.actions";
 import { defaultProps, propTypes } from "./ConfirmToken.props";
 import { selectError } from "redux/support/support.selectors";

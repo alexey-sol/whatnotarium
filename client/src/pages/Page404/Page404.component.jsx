@@ -1,6 +1,6 @@
 import React from "react";
 
-import CustomLink from "components/CustomLink";
+import CustomLink from "components/ui/CustomLink";
 import styles from "./Page404.module.scss";
 
 function Page404 () {

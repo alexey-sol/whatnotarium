@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { ACTIVITY } from "utils/const/profileTabNames";
-import ProfileContent from "components/ProfileContent";
+import ProfileContent from "components/profile/ProfileContent";
 import { defaultProps, propTypes } from "./Activity.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import styles from "./Activity.module.scss";

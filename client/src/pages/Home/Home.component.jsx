@@ -5,8 +5,8 @@ import { createStructuredSelector } from "reselect";
 
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
-import PostList from "components/PostList";
-import Spinner from "components/Spinner";
+import PostList from "components/posts/PostList";
+import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
 

@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import { matchPath } from "react-router";
 
-import * as p from "utils/const/pathnames";
 import { MY_POSTS } from "utils/const/profileTabNames";
-import ProfileContent from "components/ProfileContent";
-import PostList from "components/PostList";
+import ProfileContent from "components/profile/ProfileContent";
+import PostList from "components/posts/PostList";
 import { defaultProps, propTypes } from "./MyPosts.props";
 import { fetchPostsStart } from "redux/posts/posts.actions";
 
@@ -34,12 +32,6 @@ function MyPosts ({
     postsOnPageCount,
     totalCount
 }) {
-    // const match = matchPath(location.pathname, {
-    //     path: `/${p.PROFILE}/${p.MY_POSTS}/page:number`,
-    //     exact: true,
-    //     strict: false
-    // });
-
     const userId = currentUser?.id;
     const locationKey = location.key;
     const pageNumber = match?.params.number || currentPostsPage;

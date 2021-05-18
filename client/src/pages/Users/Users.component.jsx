@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
-import SearchUserInput from "components/SearchUserInput";
-import UserList from "components/UserList";
-import WithSpinner from "components/WithSpinner";
+import SearchUserInput from "components/layout/SearchUserInput";
+import UserList from "components/users/UserList";
+import WithSpinner from "components/ui/WithSpinner";
 import { defaultProps, propTypes } from "./Users.props";
 import { fetchUsersStart } from "redux/users/users.actions";
 import { selectUsers } from "redux/users/users.selectors";

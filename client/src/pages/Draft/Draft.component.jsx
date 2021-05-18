@@ -1,6 +1,6 @@
 import React from "react";
 
-import DraftEditor from "components/DraftEditor";
+import DraftEditor from "components/posts/DraftEditor";
 import styles from "./Draft.module.scss";
 
 function Draft () {

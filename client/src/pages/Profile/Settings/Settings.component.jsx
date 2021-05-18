@@ -2,10 +2,10 @@ import React from "react";
 import classnames from "classnames";
 
 import { SETTINGS } from "utils/const/profileTabNames";
-import PasswordDataForm from "components/PasswordDataForm";
-import ProfileContent from "components/ProfileContent";
-import ProfileDataForm from "components/ProfileDataForm";
-import ProfilePictureForm from "components/ProfilePictureForm";
+import PasswordDataForm from "components/profile/PasswordDataForm";
+import ProfileContent from "components/profile/ProfileContent";
+import ProfileDataForm from "components/profile/ProfileDataForm";
+import ProfilePictureForm from "components/profile/ProfilePictureForm";
 import styles from "./Settings.module.scss";
 
 function Settings () {

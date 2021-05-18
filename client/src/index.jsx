@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "components/App";
+import App from "components/layout/App";
 import { persistor, store } from "redux/store";
 
 const WrappedApp = (
