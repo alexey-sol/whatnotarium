@@ -81,7 +81,7 @@ function SignInContent ({
 
         if (shouldRedirectToSupportPage) {
             const { email } = sessionError.additionalData;
-            history.push(`/${p.SUPPORT}/${p.CONFIRM}/email/${email}`);
+            history.push(`/${p.SUPPORT}/${p.CONFIRM}/${p.EMAIL}/${email}`);
             onResetSessionError();
             onClose();
         }

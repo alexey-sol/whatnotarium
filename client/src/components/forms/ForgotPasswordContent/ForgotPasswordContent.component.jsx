@@ -68,7 +68,7 @@ function ForgotPasswordContent ({
                         <BaseButton
                             className={styles.submitEmailButton}
                             disabled={isPending || Object.keys(errors).length > 0}
-                            text="Отправить"
+                            text="Отправить письмо с инструкциями"
                         />
                     </Form>
                 )}
