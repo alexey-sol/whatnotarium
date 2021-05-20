@@ -8,12 +8,16 @@ import styles from "./PostMetaData.module.scss";
 
 PostMetaData.propTypes = propTypes;
 
-function PostMetaData ({ post }) {
+function PostMetaData ({ post, userId }) {
     const { author, createdAt, viewCount } = post;
 
     return (
         <section className={styles.container}>
-            <PostAuthorInfo createdAt={createdAt} user={author} />
+            <PostAuthorInfo
+                createdAt={createdAt}
+                user={author}
+                userId={userId}
+            />
 
             <section className={styles.stats}>
                 <PostRating

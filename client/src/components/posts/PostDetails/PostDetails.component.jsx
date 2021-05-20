@@ -77,6 +77,7 @@ function PostDetails ({
                 createdAt={createdAt}
                 updatedAt={updatedAt}
                 user={author}
+                userId={userId}
             />
 
             {!isAdmin && isFrozen && (

@@ -16,7 +16,8 @@ function PostPreview ({ currentUser, post }) {
         id,
         isApproved,
         isFrozen,
-        title
+        title,
+        userId
     } = post;
 
     const bodyHTML = { __html: excerpt };
@@ -65,7 +66,7 @@ function PostPreview ({ currentUser, post }) {
                 )}
             </section>
 
-            <PostMetaData post={post} />
+            <PostMetaData post={post} userId={userId} />
         </article>
     );
 }

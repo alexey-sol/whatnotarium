@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 
 import { Link } from "react-router-dom";
 import { USER } from "utils/const/pathnames";
@@ -9,8 +9,13 @@ import styles from "./PostAuthorInfo.module.scss";
 
 PostAuthorInfo.propTypes = propTypes;
 
-function PostAuthorInfo ({ createdAt, updatedAt, user }) {
-    const { id, name, picture } = user;
+function PostAuthorInfo ({
+    createdAt,
+    updatedAt,
+    user,
+    userId
+}) {
+    const { name, picture } = user;
     const formattedCreatedAt = createdAt && new DateFormatter(createdAt).formatByPattern();
     const formattedUpdatedAt = updatedAt && new DateFormatter(updatedAt).formatByPattern();
     const edited = createdAt !== updatedAt;
@@ -29,7 +34,7 @@ function PostAuthorInfo ({ createdAt, updatedAt, user }) {
     return (
         <div className={styles.container}>
             <div className={styles.picture}>
-                <Link title={name} to={`/${USER}/${id}`}>
+                <Link title={name} to={`/${USER}/${userId}`}>
                     <UserPicture
                         name={name}
                         picture={picture}
@@ -39,7 +44,7 @@ function PostAuthorInfo ({ createdAt, updatedAt, user }) {
             </div>
 
             <div className={styles.info}>
-                <Link title={name} to={`/${USER}/${id}`}>
+                <Link title={name} to={`/${USER}/${userId}`}>
                     <span>{name}</span>
                 </Link>
 

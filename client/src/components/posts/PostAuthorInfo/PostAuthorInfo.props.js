@@ -1,4 +1,4 @@
-import { object, string } from "prop-types";
+import { object, number, string } from "prop-types";
 
 export const defaultProps = {
     createdAt: "",
@@ -8,5 +8,6 @@ export const defaultProps = {
 export const propTypes = {
     createdAt: string,
     updatedAt: string,
-    user: object.isRequired
+    user: object.isRequired,
+    userId: number
 };
