@@ -1,12 +1,11 @@
 import SqlGenerator from "#types/SqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
-import generateId from "#utils/helpers/generateId";
 
 abstract class TableSqlGenerator<InputType = unknown>
 implements SqlGenerator<InputType> {
     constructor (
         protected readonly tableName?: string,
-        protected readonly queryName = generateId()
+        protected readonly queryName?: string
     ) {
         this.tableName = tableName;
         this.queryName = queryName;

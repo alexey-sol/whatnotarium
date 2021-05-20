@@ -7,6 +7,7 @@ import express from "express";
 import helmet from "helmet";
 
 import Version from "#utils/helpers/Version";
+import corsOptions from "#config/cors";
 import initMorgan from "./helpers/initMorgan";
 import initSession from "./helpers/initSession";
 import middlewares from "#api/middlewares";
@@ -30,7 +31,7 @@ export default function (options: Options): express.Application {
     const apiRoute = `/api/v${appMajorVersion}`;
 
     app.use(initMorgan());
-    app.use(cors());
+    app.use(cors(corsOptions));
     app.use(helmet());
     app.use(bodyParser.json({ limit: "1mb" }));
     app.use(cookieParser());

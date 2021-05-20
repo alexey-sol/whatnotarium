@@ -1,11 +1,10 @@
 import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
-import generateId from "#utils/helpers/generateId";
 
 class Create<InputType> extends ModelSqlGenerator<InputType> {
     constructor (
         tableName: string,
-        queryName = generateId()
+        queryName?: string
     ) {
         super(tableName, undefined, queryName);
     }

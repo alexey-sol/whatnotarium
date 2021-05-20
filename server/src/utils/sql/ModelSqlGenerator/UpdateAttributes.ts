@@ -1,16 +1,7 @@
 import ModelSqlGenerator from "./ModelSqlGenerator";
 import SqlQueryPayload from "#types/SqlQueryPayload";
-import generateId from "#utils/helpers/generateId";
 
 class UpdateAttributes<InputType> extends ModelSqlGenerator<InputType> {
-    constructor (
-        tableName: string,
-        recordId: number,
-        queryName = generateId()
-    ) {
-        super(tableName, recordId, queryName);
-    }
-
     generate (
         props: InputType,
         returningFields: string[] = []

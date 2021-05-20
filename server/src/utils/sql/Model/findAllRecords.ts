@@ -5,17 +5,16 @@ import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 async function findAllRecords<InputType, OutputType> (
     tableName: string,
     filter?: DbQueryFilter<InputType>,
-    fieldsToSelect?: string[]
+    fieldsToSelect?: string[],
+    queryName?: string
 ): Promise<OutputType[]> | never {
     type FilterType = DbQueryFilter<InputType>;
 
-    const queryPayload = await generateSqlAndQuery<FilterType, OutputType>(
-        new FindAll(tableName),
+    return generateSqlAndQuery<FilterType, OutputType>(
+        new FindAll(tableName, queryName),
         filter,
         fieldsToSelect
     );
-
-    return queryPayload;
 }
 
 export default findAllRecords;
