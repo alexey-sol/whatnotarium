@@ -5,7 +5,7 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
     constructor () {
-        super(PUBLIC, "");
+        super(PUBLIC);
     }
 
     protected getText (): string {

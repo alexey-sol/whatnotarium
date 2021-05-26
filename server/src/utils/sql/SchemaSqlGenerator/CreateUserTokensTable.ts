@@ -4,7 +4,7 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateUserTokensTable extends SchemaSqlGenerator<unknown> {
     constructor () {
-        super(PUBLIC, "");
+        super(PUBLIC);
     }
 
     protected getText (): string {

@@ -4,7 +4,7 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
     constructor () {
-        super(PUBLIC, "");
+        super(PUBLIC);
     }
 
     protected getText (): string {

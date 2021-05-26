@@ -4,7 +4,7 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateProfilesTable extends SchemaSqlGenerator<unknown> {
     constructor () {
-        super(PUBLIC, "");
+        super(PUBLIC);
     }
 
     protected getText (): string {
@@ -25,8 +25,11 @@ class CreateProfilesTable extends SchemaSqlGenerator<unknown> {
                     ON UPDATE CASCADE
             );
 
-            CREATE INDEX IF NOT EXISTS idx_profiles_name ON "${PROFILES}" ("name");
-            CREATE INDEX IF NOT EXISTS idx_profiles_about ON "${PROFILES}" ("about");
+            CREATE INDEX IF NOT EXISTS idx_profiles_name ON "${PROFILES}"
+                USING gin ("name" gin_trgm_ops);
+            CREATE INDEX IF NOT EXISTS idx_profiles_about ON "${PROFILES}"
+                USING gin ("about" gin_trgm_ops);
+
             CREATE INDEX IF NOT EXISTS idx_profiles_last_act ON "${PROFILES}" ("lastActivityDate");
             CREATE INDEX IF NOT EXISTS idx_profiles_user_id ON "${PROFILES}" ("userId");
         `;

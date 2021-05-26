@@ -10,7 +10,7 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreatePostVotesTable extends SchemaSqlGenerator<unknown> {
     constructor () {
-        super(PUBLIC, "");
+        super(PUBLIC);
     }
 
     protected getText (): string {

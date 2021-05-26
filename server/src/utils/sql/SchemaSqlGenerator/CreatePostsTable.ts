@@ -4,7 +4,7 @@ import SchemaSqlGenerator from "./SchemaSqlGenerator";
 
 class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
     constructor () {
-        super(PUBLIC, "");
+        super(PUBLIC);
     }
 
     protected getText (): string {
@@ -28,8 +28,11 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                     ON UPDATE CASCADE
             );
 
-            CREATE INDEX IF NOT EXISTS idx_posts_body ON "${POSTS}" ("body");
-            CREATE INDEX IF NOT EXISTS idx_posts_title ON "${POSTS}" ("title");
+            CREATE INDEX IF NOT EXISTS idx_posts_body ON "${POSTS}"
+                USING gin ("body" gin_trgm_ops);
+            CREATE INDEX IF NOT EXISTS idx_posts_title ON "${POSTS}"
+                USING gin ("title" gin_trgm_ops);
+
             CREATE INDEX IF NOT EXISTS idx_posts_is_approved ON "${POSTS}" ("isApproved");
             CREATE INDEX IF NOT EXISTS idx_posts_user_id ON "${POSTS}" ("userId");
             CREATE INDEX IF NOT EXISTS idx_posts_user_approved ON "${POSTS}"

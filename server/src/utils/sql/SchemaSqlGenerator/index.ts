@@ -1,3 +1,4 @@
+export { default as CreateExtensions } from "./CreateExtensions";
 export { default as CreateFullPostsView } from "./CreateFullPostsView";
 export { default as CreateFullUsersView } from "./CreateFullUsersView";
 export { default as CreateHashOptionsTable } from "./CreateHashOptionsTable";
