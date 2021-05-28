@@ -21,7 +21,6 @@ const Home = lazy(() => import("pages/Home"));
 const OauthCallback = lazy(() => import("pages/OauthCallback"));
 const Page404 = lazy(() => import("pages/Page404"));
 const Post = lazy(() => import("pages/Post"));
-const ProfileActivity = lazy(() => import("pages/Profile/Activity"));
 const ProfileMyPosts = lazy(() => import("pages/Profile/MyPosts"));
 const ProfileSettings = lazy(() => import("pages/Profile/Settings"));
 const ResetToken = lazy(() => import("pages/ResetToken"));
@@ -59,11 +58,6 @@ export function App ({ onCheckSessionStart }) {
                             <Route
                                 component={SignIn}
                                 path={`/${p.SIGN_IN}`}
-                            />
-
-                            <PrivateRoute
-                                component={ProfileActivity}
-                                path={`/${p.PROFILE}/${p.ACTIVITY}`}
                             />
 
                             <PrivateRoute

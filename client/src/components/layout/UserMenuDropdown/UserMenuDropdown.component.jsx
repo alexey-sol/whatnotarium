@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { ACTIVITY, PROFILE } from "utils/const/pathnames";
+import { MY_POSTS, PROFILE } from "utils/const/pathnames";
 import BaseDropdown from "components/ui/BaseDropdown";
 import { propTypes } from "./UserMenuDropdown.props";
 import { signOutStart } from "redux/session/session.actions";
@@ -21,7 +21,7 @@ function UserMenuDropdown ({
         const shouldRedirectToProfile = !location.pathname.includes(`/${PROFILE}`);
 
         if (shouldRedirectToProfile) {
-            history.push(`/${PROFILE}/${ACTIVITY}`);
+            history.push(`/${PROFILE}/${MY_POSTS}`);
         }
 
         onClose();

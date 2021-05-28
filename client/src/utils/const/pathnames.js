@@ -1,4 +1,3 @@
-export const ACTIVITY = "activity";
 export const CONFIRM = "confirm";
 export const DRAFT = "draft";
 export const EDIT = "edit";

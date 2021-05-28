@@ -4,7 +4,7 @@ import { createStructuredSelector } from "reselect";
 import classnames from "classnames";
 
 import * as p from "utils/const/pathnames";
-import { ACTIVITY, MY_POSTS, SETTINGS } from "utils/const/profileTabNames";
+import { MY_POSTS, SETTINGS } from "utils/const/profileTabNames";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import CustomLink from "components/ui/CustomLink";
 import Spinner from "components/ui/Spinner";
@@ -31,7 +31,6 @@ function ProfileContent ({ activeTabName, children, isPending }) {
     return (
         <div className={styles.container}>
             <ul className={styles.tabsList}>
-                {renderTab(ACTIVITY, `/${p.PROFILE}/${p.ACTIVITY}`)}
                 {renderTab(MY_POSTS, `/${p.PROFILE}/${p.MY_POSTS}`)}
                 {renderTab(SETTINGS, `/${p.PROFILE}/${p.SETTINGS}`)}
             </ul>

@@ -1,18 +1,19 @@
 import { RequestHandler } from "express";
 
 import PostService from "#services/PostService/v1";
-import sendResponse from "#utils/http/sendResponse";
 
 const putVote: RequestHandler = async (
     { body, params },
     response,
     next
 ): Promise<void> => {
-    const { id } = params;
-
-    PostService.updateVote(+id, body)
-        .then(post => sendResponse(response, post))
-        .catch(next);
+    try {
+        const { id } = params;
+        response.locals.data = await PostService.updateVote(+id, body);
+        next();
+    } catch (error) {
+        next(error);
+    }
 };
 
 export default putVote;

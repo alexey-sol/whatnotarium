@@ -49,7 +49,8 @@ router.put(
     middlewares.isAuthed,
     schemaValidation.putVote,
     dataValidation.putVote,
-    controllers.putVote
+    controllers.putVote,
+    middlewares.clearRouteCache
 );
 
 router.put(
