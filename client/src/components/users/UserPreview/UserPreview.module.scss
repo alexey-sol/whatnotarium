@@ -7,6 +7,10 @@
     column-gap: 2rem;
     font-family: $font-family--undertone;
 
+    &.inactive {
+        opacity: 0.4;
+    }
+
     .userPicture {
         grid-area: userPicture;
         display: flex;
@@ -26,6 +30,10 @@
             a {
                 color: inherit;
                 text-decoration: none;
+
+                &:hover {
+                    opacity: 0.7;
+                }
             }
         }
 
@@ -42,5 +50,9 @@
         color: $text-color--normal;
         font-family: $font-family--normal;
         font-size: $font-size--medium;
+    }
+
+    a {
+        transition: color 100ms ease;
     }
 }

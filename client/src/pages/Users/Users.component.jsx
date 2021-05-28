@@ -31,7 +31,7 @@ function Users ({
         onFetchUsersStart({
             count: usersOnPageCount,
             page: pageNumber,
-            where: { isAdmin: false }
+            where: { isAdmin: false, isConfirmed: true }
         });
     }, [locationKey, onFetchUsersStart, pageNumber, usersOnPageCount]);
 

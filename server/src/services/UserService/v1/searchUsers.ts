@@ -28,7 +28,7 @@ export default async function (
     };
 
     const rawItems = await User.findAll({ include, operators, where });
-    const items = rawItems.filter(({ isAdmin }) => !isAdmin);
+    const items = rawItems.filter(({ isAdmin, isConfirmed }) => !isAdmin && isConfirmed);
     const totalCount = items.length;
 
     return { items, totalCount };

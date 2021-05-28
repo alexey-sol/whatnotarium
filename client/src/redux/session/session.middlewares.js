@@ -6,14 +6,14 @@ import { setCurrentUser } from "redux/session/session.actions";
 import { setUser } from "redux/users/users.actions";
 
 export const mapper = ({ dispatch }) => (next) => (action) => {
-    const { payload, type } = action;
+    const { payload } = action;
     const shouldIgnoreAction = payload?.error;
 
     if (shouldIgnoreAction) {
         return next(action);
     }
 
-    if (checkIfShouldSetCurrentUser(type)) {
+    if (checkIfShouldSetCurrentUser(action)) {
         dispatch(setCurrentUser(payload));
         dispatch(setUser(payload));
     }
@@ -21,12 +21,12 @@ export const mapper = ({ dispatch }) => (next) => (action) => {
     next(action);
 };
 
-function checkIfShouldSetCurrentUser (type) {
+function checkIfShouldSetCurrentUser ({ payload, type }) {
     return (
         type === oauthTypes.GET_TOKEN_SUCCESS ||
         type === types.CHECK_SESSION_SUCCESS ||
         type === types.SIGN_IN_SUCCESS ||
-        type === types.SIGN_UP_SUCCESS ||
+        (type === types.SIGN_UP_SUCCESS && payload.item) ||
         type === supportTypes.CONFIRM_EMAIL_SUCCESS ||
         type === usersTypes.UPDATE_USER_PICTURE_SUCCESS ||
         type === usersTypes.UPDATE_USER_SUCCESS

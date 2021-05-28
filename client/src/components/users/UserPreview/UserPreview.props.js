@@ -1,4 +1,5 @@
 import {
+    bool,
     number,
     object,
     string
@@ -7,5 +8,6 @@ import {
 export const propTypes = {
     createdAt: string.isRequired,
     id: number.isRequired,
+    isConfirmed: bool.isRequired,
     profile: object.isRequired
 };

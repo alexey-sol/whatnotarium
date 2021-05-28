@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import React from "react";
+import classnames from "classnames";
 
 import { USER } from "utils/const/pathnames";
 import DateFormatter from "utils/formatters/DateFormatter";
@@ -9,12 +10,22 @@ import styles from "./UserPreview.module.scss";
 
 UserPreview.propTypes = propTypes;
 
-function UserPreview ({ createdAt, id, profile }) {
+function UserPreview ({
+    createdAt,
+    id,
+    isConfirmed,
+    profile
+}) {
     const { name, picture } = profile;
     const formattedCreatedAt = new DateFormatter(createdAt).formatByPattern();
 
+    const containerClassName = classnames(
+        styles.container,
+        (isConfirmed) ? "" : styles.inactive
+    );
+
     return (
-        <article className={styles.container}>
+        <article className={containerClassName}>
             <div className={styles.userPicture}>
                 <Link title={name} to={`/${USER}/${id}`}>
                     <UserPicture
@@ -28,6 +39,7 @@ function UserPreview ({ createdAt, id, profile }) {
                 <header className={styles.userName}>
                     <Link title={name} to={`/${USER}/${id}`}>
                         {name}
+                        {!isConfirmed && <span>&nbsp;(email не подтвержден)</span>}
                     </Link>
                 </header>
 
