@@ -13,9 +13,10 @@ import { createStructuredSelector } from "reselect";
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/posts/PostList";
+import QSParser from "utils/parsers/QSParser";
 import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
-import { fetchPostsStart } from "redux/posts/posts.actions";
+import { fetchPostsStart, searchPostsStart } from "redux/posts/posts.actions";
 
 import {
     selectCount,
@@ -39,6 +40,7 @@ function Home ({
     location,
     match,
     onFetchPostsStart,
+    onSearchPostsStart,
     posts,
     postsOnPageCount,
     totalCount
@@ -48,7 +50,12 @@ function Home ({
     const userId = currentUser?.id;
     const isAdmin = currentUser?.isAdmin;
 
-    const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const resetSearchingIsShown = searchTerm.length > 0;
+
+    const qs = location.search;
+    const qsParser = new QSParser(qs);
+    const { st: stFromQuery } = qsParser.parse();
 
     const fetchPosts = useCallback(() => {
         const optionsForRegularUser = {
@@ -67,24 +74,32 @@ function Home ({
         onFetchPostsStart((isAdmin)
             ? optionsForAdmin
             : optionsForRegularUser);
-    }, [isAdmin, locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId]); // eslint-disable-line
+    }, [ // eslint-disable-line
+        isAdmin, locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId
+    ]);
+
+    const searchPosts = useCallback(() => onSearchPostsStart({
+        count: postsOnPageCount,
+        page: pageNumber,
+        searchTerm: stFromQuery
+    }), [onSearchPostsStart, pageNumber, postsOnPageCount, stFromQuery]);
 
     useEffect(() => {
-        fetchPosts();
-    }, [fetchPosts]);
+        if (stFromQuery) {
+            searchPosts();
+        } else {
+            fetchPosts();
+        }
+    }, [fetchPosts, searchPosts, stFromQuery]);
 
     useEffect(() => {
-        const showResetSearchButton = (searchTerm) => {
-            setResetSearchingIsShown(searchTerm.length > 0);
-
-            if (!searchTerm) {
-                fetchPosts();
-            }
+        const showResetSearchButton = (st) => {
+            setSearchTerm(st);
         };
 
         pubsub.subscribe(SEARCH_POSTS, showResetSearchButton);
         return () => pubsub.unsubscribe(SEARCH_POSTS, showResetSearchButton);
-    }, [fetchPosts]);
+    }, []);
 
     if (isPending) {
         return <Spinner />;
@@ -95,7 +110,7 @@ function Home ({
             {resetSearchingIsShown && (
                 <div className={styles.resetSearchingButton}>
                     <Link
-                        onClick={() => setResetSearchingIsShown(false)}
+                        onClick={() => setSearchTerm("")}
                         to="/"
                     >
                         Сбросить поиск
@@ -105,8 +120,8 @@ function Home ({
 
             <PostList
                 currentPage={+pageNumber}
-                hasSearchTerm={resetSearchingIsShown}
                 posts={posts}
+                searchTerm={searchTerm}
                 totalCount={totalCount}
             />
         </Fragment>
@@ -125,7 +140,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onFetchPostsStart: (options) => dispatch(fetchPostsStart(options))
+    onFetchPostsStart: (options) => dispatch(fetchPostsStart(options)),
+    onSearchPostsStart: (options) => dispatch(searchPostsStart(options))
 });
 
 const ConnectedHome = connect(

@@ -21,19 +21,34 @@ class Count<InputType> extends ModelSqlGenerator<InputType> {
     protected getText (
         filter: DbQueryFilter<InputType> = {}
     ): string {
-        const { groupBy, operators, where } = filter;
-        const attributes = Object.keys(where || {});
-        const whereAttributesElement = this.createWhereAttributesClause(attributes, operators);
+        const {
+            include,
+            limit,
+            offset,
+            operators,
+            where = {}
+        } = filter;
 
-        const groupByElement = (groupBy)
-            ? `GROUP BY "${groupBy}"`
+        const attributes = Object.keys(where);
+
+        const joinElem = this.createJoinClause(include);
+        const whereAttribElem = this.createWhereAttributesClause(attributes, operators, include);
+
+        const limitElement = (limit)
+            ? `LIMIT ${limit}`
+            : "";
+
+        const offsetElement = (offset)
+            ? `OFFSET ${offset}`
             : "";
 
         return `
             SELECT COUNT(*)
             FROM "${this.tableName}"
-            ${whereAttributesElement}
-            ${groupByElement};
+            ${joinElem}
+            ${whereAttribElem}
+            ${limitElement}
+            ${offsetElement};
         `;
     }
 }

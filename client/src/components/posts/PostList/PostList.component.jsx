@@ -16,11 +16,11 @@ PostList.propTypes = propTypes;
 function PostList ({
     currentPage,
     currentUser,
-    hasSearchTerm,
     onSetCurrentPage,
     pathPrefix,
     posts,
     postsOnPageCount,
+    searchTerm,
     totalCount
 }) {
     const postElems = posts.map(post => (
@@ -38,17 +38,16 @@ function PostList ({
                 ? <ul className={styles.postList}>{postElems}</ul>
                 : <div>Ничего не нашли</div>}
 
-            {!hasSearchTerm && (
-                <div className={styles.pagingContainer}>
-                    <Paging
-                        count={postsOnPageCount}
-                        currentPage={currentPage}
-                        pathPrefix={pathPrefix}
-                        setCurrentPage={onSetCurrentPage}
-                        totalRecords={totalCount}
-                    />
-                </div>
-            )}
+            <div className={styles.pagingContainer}>
+                <Paging
+                    count={postsOnPageCount}
+                    currentPage={currentPage}
+                    pathPrefix={pathPrefix}
+                    query={searchTerm && `?st=${searchTerm}`}
+                    setCurrentPage={onSetCurrentPage}
+                    totalRecords={totalCount}
+                />
+            </div>
         </article>
     );
 }

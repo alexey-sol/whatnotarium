@@ -6,6 +6,7 @@ import classnames from "classnames";
 import { SEARCH_POSTS } from "utils/const/events";
 import { defaultProps, propTypes } from "./SearchPostInput.props";
 import { searchPostsStart } from "redux/posts/posts.actions";
+import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import pubsub from "utils/pubsub";
 import styles from "./SearchPostInput.module.scss";
 
@@ -18,6 +19,7 @@ function SearchPostInput ({
     location,
     onClose,
     onSearchPostsStart,
+    onSetCurrentPage,
     rootClassName
 }) {
     const [searchTerm, setSearchTerm] = useState("");
@@ -35,21 +37,19 @@ function SearchPostInput ({
         const shouldInitSearching = !searchIsInitiated && searchTerm.length > 0;
 
         if (searchIsInitiated) {
+            onSetCurrentPage(1);
             redirectToPostsIfNeeded();
             pubsub.publish(SEARCH_POSTS, searchTerm);
 
             if (searchTerm.length > 0) {
-                onSearchPostsStart(searchTerm);
+                onSearchPostsStart({ searchTerm });
             }
         } else if (shouldInitSearching) {
             setSearchIsInitiated(true);
         }
     }, [
-        hasManualEnter,
-        onSearchPostsStart,
-        redirectToPostsIfNeeded,
-        searchIsInitiated,
-        searchTerm
+        hasManualEnter, onSearchPostsStart, onSetCurrentPage, redirectToPostsIfNeeded,
+        searchIsInitiated, searchTerm
     ]);
 
     useEffect(() => {
@@ -78,11 +78,7 @@ function SearchPostInput ({
             return () => document.removeEventListener("keydown", handleKeydown);
         }
     }, [
-        hasManualEnter,
-        onClose,
-        onSearchPostsStart,
-        redirectToPostsIfNeeded,
-        searchTerm
+        hasManualEnter, onClose, onSearchPostsStart, redirectToPostsIfNeeded, searchTerm
     ]);
 
     const placeholder = (hasManualEnter)
@@ -107,7 +103,8 @@ function SearchPostInput ({
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    onSearchPostsStart: (searchTerm, cb) => dispatch(searchPostsStart(searchTerm, cb))
+    onSearchPostsStart: (searchTerm, cb) => dispatch(searchPostsStart(searchTerm, cb)),
+    onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 
 const ConnectedSearchPostInput = connect(

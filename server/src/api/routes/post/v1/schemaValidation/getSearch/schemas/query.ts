@@ -5,6 +5,10 @@ export default Joi.object({
         .number()
         .optional(),
 
+    page: Joi
+        .number()
+        .optional(),
+
     searchTerm: Joi
         .string()
         .allow("")

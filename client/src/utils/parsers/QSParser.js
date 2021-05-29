@@ -4,6 +4,10 @@ class QSParser {
     }
 
     parse () {
+        if (!this.qs) {
+            return {};
+        }
+
         const splittedQs = decodeURIComponent(this.qs)
             .split("?")
             .filter(Boolean)[0]

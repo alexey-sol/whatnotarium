@@ -1,1 +1,1 @@
-export const DEFAULT_COUNT = 100;
+export const DEFAULT_COUNT = 10;

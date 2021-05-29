@@ -16,5 +16,6 @@ export const propTypes = {
     location: object,
     onClose: func.isRequired,
     onSearchPostsStart: func.isRequired,
+    onSetCurrentPage: func.isRequired,
     rootClassName: string
 };

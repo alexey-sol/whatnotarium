@@ -11,7 +11,8 @@ export const defaultProps = {
     count: DEFAULT_PAGING_COUNT,
     currentPage: 1,
     pageNeighbours: 4,
-    pathPrefix: ""
+    pathPrefix: "",
+    query: ""
 };
 
 export const propTypes = {
@@ -20,6 +21,7 @@ export const propTypes = {
     history: object.isRequired,
     pageNeighbours: number,
     pathPrefix: string,
+    query: string,
     setCurrentPage: func.isRequired,
     totalRecords: number.isRequired
 };

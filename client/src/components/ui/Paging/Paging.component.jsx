@@ -14,6 +14,7 @@ function Paging ({
     history,
     pageNeighbours,
     pathPrefix,
+    query,
     setCurrentPage,
     totalRecords
 }) {
@@ -35,9 +36,9 @@ function Paging ({
             return;
         }
 
-        const path = (page === 1)
+        const path = (!query && page === 1)
             ? `${pathPrefix}/`
-            : `${pathPrefix}/page${page}`;
+            : `${pathPrefix}/page${page}${query}`;
 
         setCurrentPage(page);
         history.push(path);

@@ -1,10 +1,10 @@
 import superagent from "superagent";
 
-async function searchPosts (searchTerm) {
+async function searchPosts (props) {
     const response = await superagent
         .get("/api/v1/post/search")
         .set("Content-Type", "application/json")
-        .query({ searchTerm });
+        .query(props);
 
     return response?.body;
 }

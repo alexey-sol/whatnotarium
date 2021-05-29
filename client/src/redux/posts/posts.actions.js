@@ -123,10 +123,10 @@ export function searchPostsFailure (error) {
     };
 }
 
-export function searchPostsStart (searchTerm, cb) {
+export function searchPostsStart (payload, cb) {
     return {
         cb,
-        payload: searchTerm,
+        payload,
         type: types.SEARCH_POSTS_START
     };
 }
