@@ -37,7 +37,7 @@ export const mapper = ({ dispatch }) => (next) => (action) => {
 };
 
 function checkIfShouldBePersistent (type) {
-    return ( // TODO: check if is any session type?
+    return (
         type === sessionTypes.SIGN_IN_FAILURE ||
         type === sessionTypes.SIGN_UP_FAILURE ||
         type === usersTypes.UPDATE_USER_FAILURE

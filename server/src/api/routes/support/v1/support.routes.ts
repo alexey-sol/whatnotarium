@@ -6,7 +6,7 @@ import schemaValidation from "./schemaValidation";
 
 const router = express.Router();
 
-router.get( // TODO: ONLY for resend email purposes (auxiliary endpoint)
+router.get(
     "/confirm",
     schemaValidation.sendConfirmToken,
     dataValidation.sendConfirmToken,

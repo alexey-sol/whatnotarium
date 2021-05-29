@@ -5,7 +5,7 @@ const INITIAL_STATE = {
     error: null,
     items: new Map(),
     totalCount: 0
-}; // TODO: create a new item "postsByUser"? With userIds as keys.
+};
 
 export default reduce(INITIAL_STATE, {
     [types.CREATE_POST_FAILURE]: onFailure,

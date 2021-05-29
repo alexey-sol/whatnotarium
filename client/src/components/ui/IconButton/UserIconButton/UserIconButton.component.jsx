@@ -24,7 +24,6 @@ function UserIconButton ({
 
     const { pathname } = location;
     const isSignInPage = pathname === `/${SIGN_IN}`;
-    // TODO: should this component be aware of sign in?
 
     return (
         <IconButton

@@ -24,7 +24,7 @@ function BaseDropdown ({
     const [coords, setCoords] = useState(INITIAL_COORDS);
     const dropdownRef = useRef(null);
 
-    useEffect(() => { // TODO: make it a custom hook?
+    useEffect(() => {
         const handleKeydown = (event) => {
             if (event.key === "Escape") onClose();
         };

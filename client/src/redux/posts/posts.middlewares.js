@@ -30,7 +30,6 @@ export const normalizer = ({ getState }) => (next) => (action) => {
     next(actionWithNormalizedPayload);
 };
 
-// TODO: posts and users have the same middlewares
 export const enricher = ({ getState }) => (next) => (action) => {
     const { payload, type } = action;
 
@@ -60,7 +59,7 @@ export const enricher = ({ getState }) => (next) => (action) => {
 export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
 
-    const shouldIgnoreAction = ( // TODO: duplicates shouldIgnoreAction in enricher
+    const shouldIgnoreAction = (
         payload?.error ||
         !type.startsWith(POSTS_PREFIX) ||
         type.endsWith(START_POSTFIX) ||

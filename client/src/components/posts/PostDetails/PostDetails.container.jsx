@@ -58,7 +58,7 @@ function PostDetailsContainer ({
         if (shouldIncrementViewCount) {
             onIncrementViewCountStart(id, () => setViewCountUpdated(true));
         }
-    }, [id, isAdmin, isFrozen, onIncrementViewCountStart, viewCount, viewCountUpdated]);
+    }, [id, isAdmin, isApproved, isFrozen, onIncrementViewCountStart, viewCount, viewCountUpdated]);
 
     return (
         <PostDetails

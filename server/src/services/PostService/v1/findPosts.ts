@@ -21,7 +21,7 @@ export default async function (
     const updatedFilter = {
         ...filter,
         include,
-        order: filter.order || "\"createdAt\" DESC" // TODO: to const?
+        order: filter.order || "\"createdAt\" DESC"
     };
 
     const { operators, where } = filter;

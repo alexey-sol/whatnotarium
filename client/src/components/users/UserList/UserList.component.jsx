@@ -15,6 +15,7 @@ UserList.propTypes = propTypes;
 
 function UserList ({
     currentPage,
+    hasSearchTerm,
     onSetCurrentPage,
     users,
     usersOnPageCount
@@ -34,14 +35,16 @@ function UserList ({
                 ? <ul className={styles.userList}>{userElems}</ul>
                 : <div>Никого не нашли</div>}
 
-            <div className={styles.pagingContainer}>
-                <Paging
-                    count={usersOnPageCount}
-                    currentPage={currentPage}
-                    setCurrentPage={onSetCurrentPage}
-                    totalRecords={users.length}
-                />
-            </div>
+            {!hasSearchTerm && (
+                <div className={styles.pagingContainer}>
+                    <Paging
+                        count={usersOnPageCount}
+                        currentPage={currentPage}
+                        setCurrentPage={onSetCurrentPage}
+                        totalRecords={users.length}
+                    />
+                </div>
+            )}
         </article>
     );
 }

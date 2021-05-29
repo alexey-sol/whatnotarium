@@ -87,7 +87,7 @@ function SignInContent ({
         }
     }, [history, onClose, onResetSessionError, sessionError]);
 
-    const elem = ( // TODO: does styles.form work?
+    const elem = (
         <div className={styles.container}>
             <Formik
                 initialValues={initialValues}

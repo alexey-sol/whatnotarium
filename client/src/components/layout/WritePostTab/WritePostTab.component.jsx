@@ -19,7 +19,7 @@ function WritePostButton ({ classNameProminent, location }) {
     const resetPost = () => pubsub.publish(RESET_POST);
 
     const startOverTab = (
-        <a
+        <a // eslint-disable-line
             className={classNameProminent}
             onClick={resetPost}
             title="Начать сначала"

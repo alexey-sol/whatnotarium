@@ -16,6 +16,7 @@ PostList.propTypes = propTypes;
 function PostList ({
     currentPage,
     currentUser,
+    hasSearchTerm,
     onSetCurrentPage,
     pathPrefix,
     posts,
@@ -37,15 +38,17 @@ function PostList ({
                 ? <ul className={styles.postList}>{postElems}</ul>
                 : <div>Ничего не нашли</div>}
 
-            <div className={styles.pagingContainer}>
-                <Paging
-                    count={postsOnPageCount}
-                    currentPage={currentPage}
-                    pathPrefix={pathPrefix}
-                    setCurrentPage={onSetCurrentPage}
-                    totalRecords={totalCount}
-                />
-            </div>
+            {!hasSearchTerm && (
+                <div className={styles.pagingContainer}>
+                    <Paging
+                        count={postsOnPageCount}
+                        currentPage={currentPage}
+                        pathPrefix={pathPrefix}
+                        setCurrentPage={onSetCurrentPage}
+                        totalRecords={totalCount}
+                    />
+                </div>
+            )}
         </article>
     );
 }

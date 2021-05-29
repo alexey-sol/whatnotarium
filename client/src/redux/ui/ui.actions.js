@@ -1,6 +1,6 @@
 import * as types from "./ui.types";
 
-export function addActionToPendingApi (actionType, data = null) { // TODO: data -> itemId?
+export function addActionToPendingApi (actionType, data = null) {
     return {
         payload: { actionType, data },
         type: types.ADD_ACTION_TO_PENDING_API

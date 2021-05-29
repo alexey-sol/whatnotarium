@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-import React, { Fragment, useEffect, useState } from "react";
+
+import React, {
+    Fragment,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
+
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -43,16 +50,7 @@ function Home ({
 
     const [resetSearchingIsShown, setResetSearchingIsShown] = useState(false);
 
-    useEffect(() => {
-        const showResetSearchButton = (searchTerm) => {
-            setResetSearchingIsShown(searchTerm.length > 0);
-        };
-
-        pubsub.subscribe(SEARCH_POSTS, showResetSearchButton);
-        return () => pubsub.unsubscribe(SEARCH_POSTS, showResetSearchButton);
-    }, []);
-
-    useEffect(() => {
+    const fetchPosts = useCallback(() => {
         const optionsForRegularUser = {
             count: postsOnPageCount,
             operators: userId && { conjunctionOp: "$or" },
@@ -69,7 +67,24 @@ function Home ({
         onFetchPostsStart((isAdmin)
             ? optionsForAdmin
             : optionsForRegularUser);
-    }, [isAdmin, locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId]);
+    }, [isAdmin, locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId]); // eslint-disable-line
+
+    useEffect(() => {
+        fetchPosts();
+    }, [fetchPosts]);
+
+    useEffect(() => {
+        const showResetSearchButton = (searchTerm) => {
+            setResetSearchingIsShown(searchTerm.length > 0);
+
+            if (!searchTerm) {
+                fetchPosts();
+            }
+        };
+
+        pubsub.subscribe(SEARCH_POSTS, showResetSearchButton);
+        return () => pubsub.unsubscribe(SEARCH_POSTS, showResetSearchButton);
+    }, [fetchPosts]);
 
     if (isPending) {
         return <Spinner />;
@@ -90,6 +105,7 @@ function Home ({
 
             <PostList
                 currentPage={+pageNumber}
+                hasSearchTerm={resetSearchingIsShown}
                 posts={posts}
                 totalCount={totalCount}
             />
