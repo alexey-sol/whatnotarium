@@ -24,8 +24,10 @@ export default async function (
         order: filter.order || "\"createdAt\" DESC"
     };
 
+    const { operators, where } = filter;
+
     return {
         items: await User.findAll(updatedFilter),
-        totalCount: await User.count(updatedFilter)
+        totalCount: await User.count({ operators, where })
     };
 }

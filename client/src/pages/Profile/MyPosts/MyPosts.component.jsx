@@ -34,7 +34,7 @@ function MyPosts ({
 }) {
     const userId = currentUser?.id;
     const locationKey = location.key;
-    const pageNumber = match?.params.number || currentPostsPage;
+    const pageNumber = match.params.number || currentPostsPage;
 
     useEffect(() => {
         onFetchPostsStart({

@@ -1,13 +1,16 @@
 import { $ilike, $or } from "#utils/const/database/modelOperators";
 import { PROFILES } from "#utils/const/database/tableNames";
+import DbQueryFilter from "#types/DbQueryFilter";
 import FetchedList from "#types/FetchedList";
 import User from "#models/User";
+import UserAttributes from "#types/user/Attributes";
 import UserItem from "#types/user/Item";
 
 type UserItemsList = FetchedList<UserItem>;
 
 export default async function (
-    searchTerm: string
+    searchTerm: string,
+    filter: DbQueryFilter<UserAttributes> = {}
 ): Promise<UserItemsList> {
     const include = [{
         as: "profile",
@@ -27,9 +30,26 @@ export default async function (
         name: `%${searchTerm}%`
     };
 
-    const rawItems = await User.findAll({ include, operators, where });
-    const items = rawItems.filter(({ isAdmin, isConfirmed }) => !isAdmin && isConfirmed);
-    const totalCount = items.length;
+    const countFilter = { include, operators, where };
 
-    return { items, totalCount };
+    const itemFilter = {
+        order: "\"createdAt\" DESC",
+        ...countFilter,
+        ...filter
+    };
+
+    const results = await Promise.all([
+        User.findAll(itemFilter),
+        User.findAll(countFilter)
+    ]);
+
+    const rawItems = results[0];
+    const totalItems = results[1];
+    const filteredTotalItems = totalItems
+        .filter(({ isAdmin, isConfirmed }) => !isAdmin && isConfirmed);
+
+    return {
+        items: rawItems.filter(({ isAdmin, isConfirmed }) => !isAdmin && isConfirmed),
+        totalCount: filteredTotalItems.length
+    };
 }

@@ -2,8 +2,8 @@ import { RequestHandler } from "express";
 
 import Attributes from "#types/post/Attributes";
 import PostService from "#services/PostService/v1";
-import sendResponse from "#utils/http/sendResponse";
 import convertPagingOptsToFilter from "#utils/helpers/convertPagingOptsToFilter";
+import sendResponse from "#utils/http/sendResponse";
 
 const getSearch: RequestHandler = async (
     { query },

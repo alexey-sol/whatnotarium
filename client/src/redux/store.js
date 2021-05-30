@@ -21,6 +21,7 @@ const middlewares = [
     ui.mapper,
     users.normalizer,
     users.enricher,
+    users.mapper,
     posts.normalizer,
     posts.enricher,
     posts.mapper,

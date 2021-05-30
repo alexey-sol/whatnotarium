@@ -13,7 +13,9 @@ export const defaultProps = {
     currentUser: null,
     pathPrefix: "",
     posts: [],
-    postsOnPageCount: DEFAULT_PAGING_COUNT
+    postsOnPageCount: DEFAULT_PAGING_COUNT,
+    searchTerm: "",
+    totalCount: 0
 };
 
 export const propTypes = {
@@ -22,5 +24,7 @@ export const propTypes = {
     onSetCurrentPage: func.isRequired,
     pathPrefix: string,
     posts: array,
-    postsOnPageCount: number
+    postsOnPageCount: number,
+    searchTerm: string,
+    totalCount: number
 };

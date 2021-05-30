@@ -39,10 +39,9 @@ function SearchPostInput ({
         if (searchIsInitiated) {
             onSetCurrentPage(1);
             redirectToPostsIfNeeded();
-            pubsub.publish(SEARCH_POSTS, searchTerm);
 
             if (searchTerm.length > 0) {
-                onSearchPostsStart({ searchTerm });
+                onSearchPostsStart({ searchTerm }, () => pubsub.publish(SEARCH_POSTS, searchTerm));
             }
         } else if (shouldInitSearching) {
             setSearchIsInitiated(true);
@@ -57,8 +56,12 @@ function SearchPostInput ({
             const handleKeydown = (event) => {
                 if (event.key === "Enter") {
                     redirectToPostsIfNeeded();
-                    pubsub.publish(SEARCH_POSTS, searchTerm);
-                    onSearchPostsStart(searchTerm, () => setSearchIsInitiated(true));
+
+                    onSearchPostsStart(searchTerm, () => {
+                        pubsub.publish(SEARCH_POSTS, searchTerm);
+                        setSearchIsInitiated(true);
+                    });
+
                     onClose();
                 }
             };
@@ -103,7 +106,7 @@ function SearchPostInput ({
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    onSearchPostsStart: (searchTerm, cb) => dispatch(searchPostsStart(searchTerm, cb)),
+    onSearchPostsStart: (props, cb) => dispatch(searchPostsStart(props, cb)),
     onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 

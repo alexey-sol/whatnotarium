@@ -3,17 +3,23 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router";
 
+import * as p from "utils/const/pathnames";
 import { CancelIconButton } from "components/ui/IconButton";
+import { SEARCH_USERS } from "utils/const/events";
 import { fetchUsersStart, searchUsersStart } from "redux/users/users.actions";
 import { propTypes } from "./SearchUserInput.props";
 import { selectCount } from "redux/usersPaging/usersPaging.selectors";
+import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
+import pubsub from "utils/pubsub";
 import styles from "./SearchUserInput.module.scss";
 
 SearchUserInput.propTypes = propTypes;
 
 function SearchUserInput ({
+    history,
     onFetchUsersStart,
     onSearchUsersStart,
+    onSetCurrentPage,
     usersOnPageCount
 }) {
     const [searchIsInitiated, setSearchIsInitiated] = useState(false);
@@ -30,7 +36,10 @@ function SearchUserInput ({
     const resetSearch = useCallback(() => onFetchUsersStart({
         count: usersOnPageCount,
         page: 1
-    }, () => setSearchTerm("")), [onFetchUsersStart, usersOnPageCount]);
+    }, () => {
+        setSearchTerm("");
+        history.push(`/${p.USERS}`);
+    }), [history, onFetchUsersStart, usersOnPageCount]);
 
     const cancelButtonElem = (
         <CancelIconButton
@@ -41,9 +50,10 @@ function SearchUserInput ({
 
     useEffect(() => {
         if (searchIsInitiated) {
-            onSearchUsersStart(searchTerm);
+            onSetCurrentPage(1);
+            onSearchUsersStart({ searchTerm }, () => pubsub.publish(SEARCH_USERS, searchTerm));
         }
-    }, [onSearchUsersStart, searchIsInitiated, searchTerm]);
+    }, [onSearchUsersStart, searchIsInitiated, onSetCurrentPage, searchTerm]);
 
     return (
         <div className={styles.container}>
@@ -68,7 +78,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchUsersStart: (options, cb) => dispatch(fetchUsersStart(options, cb)),
-    onSearchUsersStart: (searchTerm) => dispatch(searchUsersStart(searchTerm))
+    onSearchUsersStart: (props, cb) => dispatch(searchUsersStart(props, cb)),
+    onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 
 const ConnectedSearchUserInput = connect(

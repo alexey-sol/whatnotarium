@@ -14,7 +14,7 @@ async function countRecords<InputType> (
         filter
     );
 
-    return +queryPayload[0].count;
+    return +queryPayload[0]?.count || 0;
 }
 
 export default countRecords;

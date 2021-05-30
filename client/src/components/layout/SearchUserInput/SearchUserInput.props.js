@@ -1,5 +1,7 @@
-import { func } from "prop-types";
+import { func, object } from "prop-types";
 
 export const propTypes = {
-    onSearchUsersStart: func.isRequired
+    history: object.isRequired,
+    onSearchUsersStart: func.isRequired,
+    onSetCurrentPage: func.isRequired
 };

@@ -1,10 +1,10 @@
 import { $ilike, $or } from "#utils/const/database/modelOperators";
 import { PROFILES } from "#utils/const/database/tableNames";
+import DbQueryFilter from "#types/DbQueryFilter";
 import FetchedList from "#types/FetchedList";
 import Post from "#models/Post";
-import PostItem from "#types/post/Item";
-import DbQueryFilter from "#types/DbQueryFilter";
 import PostAttributes from "#types/post/Attributes";
+import PostItem from "#types/post/Item";
 
 type PostItemsList = FetchedList<PostItem>;
 

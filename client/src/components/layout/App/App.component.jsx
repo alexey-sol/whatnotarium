@@ -98,7 +98,13 @@ export function App ({ onCheckSessionStart }) {
 
                             <Route
                                 component={Users}
+                                exact
                                 path={`/${p.USERS}`}
+                            />
+
+                            <Route
+                                component={Users}
+                                path={`/${p.USERS}/page:number`}
                             />
 
                             <Route

@@ -1,3 +1,4 @@
 export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 export const RESET_POST = "RESET_POST";
 export const SEARCH_POSTS = "SEARCH_POSTS";
+export const SEARCH_USERS = "SEARCH_USERS";

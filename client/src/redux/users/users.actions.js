@@ -50,9 +50,10 @@ export function searchUsersFailure (error) {
     };
 }
 
-export function searchUsersStart (searchTerm) {
+export function searchUsersStart (payload, cb) {
     return {
-        payload: searchTerm,
+        cb,
+        payload,
         type: types.SEARCH_USERS_START
     };
 }

@@ -1,21 +1,27 @@
 import {
     array,
-    bool,
     func,
-    number
+    number,
+    string
 } from "prop-types";
+
+import { DEFAULT_PAGING_COUNT } from "utils/const/defaultValues";
 
 export const defaultProps = {
     currentPage: 1,
-    hasSearchTerm: false,
+    pathPrefix: "",
+    searchTerm: "",
+    totalCount: 0,
     users: [],
-    usersOnPageCount: 20
+    usersOnPageCount: DEFAULT_PAGING_COUNT
 };
 
 export const propTypes = {
     currentPage: number,
-    hasSearchTerm: bool,
     onSetCurrentPage: func.isRequired,
+    pathPrefix: string,
+    searchTerm: string,
+    totalCount: number,
     users: array,
     usersOnPageCount: number
 };

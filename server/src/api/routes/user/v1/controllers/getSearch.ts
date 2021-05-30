@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
 
+import Attributes from "#types/user/Attributes";
 import UserService from "#services/UserService/v1";
+import convertPagingOptsToFilter from "#utils/helpers/convertPagingOptsToFilter";
 import sendResponse from "#utils/http/sendResponse";
 
 const getSearch: RequestHandler = async (
@@ -8,9 +10,14 @@ const getSearch: RequestHandler = async (
     response,
     next
 ): Promise<void> => {
-    const { searchTerm } = query;
+    const { count, page, searchTerm } = query;
 
-    UserService.searchUsers(searchTerm as string)
+    const filter = convertPagingOptsToFilter<Attributes>({
+        count: (count) ? +count : undefined,
+        page: (page) ? +page : undefined
+    });
+
+    UserService.searchUsers(searchTerm as string, filter)
         .then(users => sendResponse(response, users))
         .catch(next);
 };

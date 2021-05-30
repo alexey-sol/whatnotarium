@@ -1,8 +1,9 @@
 import * as types from "./usersPaging.types";
+import { DEFAULT_PAGING_COUNT } from "utils/const/defaultValues";
 import reduce from "utils/redux/reduce";
 
 const INITIAL_STATE = {
-    count: 20,
+    count: DEFAULT_PAGING_COUNT,
     currentPage: 1,
     itemIds: [],
     totalCount: 0

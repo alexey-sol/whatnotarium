@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 import Paging from "components/ui/Paging";
 import UserPreview from "components/users/UserPreview";
 import { defaultProps, propTypes } from "./UserList.props";
-import { selectCount, selectCurrentPage } from "redux/usersPaging/usersPaging.selectors";
+import { selectCount } from "redux/usersPaging/usersPaging.selectors";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
 import styles from "./UserList.module.scss";
 
@@ -15,8 +15,10 @@ UserList.propTypes = propTypes;
 
 function UserList ({
     currentPage,
-    hasSearchTerm,
     onSetCurrentPage,
+    pathPrefix,
+    searchTerm,
+    totalCount,
     users,
     usersOnPageCount
 }) {
@@ -35,22 +37,21 @@ function UserList ({
                 ? <ul className={styles.userList}>{userElems}</ul>
                 : <div>Никого не нашли</div>}
 
-            {!hasSearchTerm && (
-                <div className={styles.pagingContainer}>
-                    <Paging
-                        count={usersOnPageCount}
-                        currentPage={currentPage}
-                        setCurrentPage={onSetCurrentPage}
-                        totalRecords={users.length}
-                    />
-                </div>
-            )}
+            <div className={styles.pagingContainer}>
+                <Paging
+                    count={usersOnPageCount}
+                    currentPage={currentPage}
+                    query={searchTerm && `?st=${searchTerm}`}
+                    pathPrefix={pathPrefix}
+                    setCurrentPage={onSetCurrentPage}
+                    totalRecords={totalCount}
+                />
+            </div>
         </article>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
-    currentPage: selectCurrentPage,
     usersOnPageCount: selectCount
 });
 

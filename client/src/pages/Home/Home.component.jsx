@@ -51,7 +51,7 @@ function Home ({
     const isAdmin = currentUser?.isAdmin;
 
     const [searchTerm, setSearchTerm] = useState("");
-    const resetSearchingIsShown = searchTerm.length > 0;
+    const hasSt = searchTerm.length > 0;
 
     const qs = location.search;
     const qsParser = new QSParser(qs);
@@ -93,12 +93,9 @@ function Home ({
     }, [fetchPosts, searchPosts, stFromQuery]);
 
     useEffect(() => {
-        const showResetSearchButton = (st) => {
-            setSearchTerm(st);
-        };
-
-        pubsub.subscribe(SEARCH_POSTS, showResetSearchButton);
-        return () => pubsub.unsubscribe(SEARCH_POSTS, showResetSearchButton);
+        const setSt = (st) => setSearchTerm(st);
+        pubsub.subscribe(SEARCH_POSTS, setSt);
+        return () => pubsub.unsubscribe(SEARCH_POSTS, setSt);
     }, []);
 
     if (isPending) {
@@ -107,7 +104,7 @@ function Home ({
 
     return (
         <Fragment>
-            {resetSearchingIsShown && (
+            {(hasSt || stFromQuery) && (
                 <div className={styles.resetSearchingButton}>
                     <Link
                         onClick={() => setSearchTerm("")}
@@ -121,7 +118,7 @@ function Home ({
             <PostList
                 currentPage={+pageNumber}
                 posts={posts}
-                searchTerm={searchTerm}
+                searchTerm={searchTerm || stFromQuery}
                 totalCount={totalCount}
             />
         </Fragment>
