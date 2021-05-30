@@ -22,6 +22,7 @@ export const propTypes = {
     match: object.isRequired,
     onFetchUsersStart: func.isRequired,
     onSearchUsersStart: func.isRequired,
+    onSetCurrentPage: func.isRequired,
     users: array,
     usersOnPageCount: number
 };

@@ -39,10 +39,7 @@ function SearchPostInput ({
         if (searchIsInitiated) {
             onSetCurrentPage(1);
             redirectToPostsIfNeeded();
-
-            if (searchTerm.length > 0) {
-                onSearchPostsStart({ searchTerm }, () => pubsub.publish(SEARCH_POSTS, searchTerm));
-            }
+            onSearchPostsStart({ searchTerm }, () => pubsub.publish(SEARCH_POSTS, searchTerm));
         } else if (shouldInitSearching) {
             setSearchIsInitiated(true);
         }

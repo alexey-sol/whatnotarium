@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 import Paging from "components/ui/Paging";
 import PostPreview from "components/posts/PostPreview";
 import { defaultProps, propTypes } from "./PostList.props";
-import { selectCount } from "redux/postsPaging/postsPaging.selectors";
+import { selectCount, selectCurrentPage } from "redux/postsPaging/postsPaging.selectors";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import styles from "./PostList.module.scss";
@@ -53,6 +53,7 @@ function PostList ({
 }
 
 const mapStateToProps = createStructuredSelector({
+    currentPage: selectCurrentPage,
     currentUser: selectCurrentUser,
     postsOnPageCount: selectCount
 });

@@ -27,6 +27,7 @@ import {
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPosts } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
+import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import pubsub from "utils/pubsub";
 import styles from "./Home.module.scss";
 
@@ -41,21 +42,24 @@ function Home ({
     match,
     onFetchPostsStart,
     onSearchPostsStart,
+    onSetCurrentPage,
     posts,
     postsOnPageCount,
     totalCount
 }) {
     const locationKey = location.key;
-    const pageNumber = match.params.number || currentPostsPage;
+    const { number } = match.params;
+    const pageNumber = number || currentPostsPage;
+
     const userId = currentUser?.id;
     const isAdmin = currentUser?.isAdmin;
-
-    const [searchTerm, setSearchTerm] = useState("");
-    const hasSt = searchTerm.length > 0;
 
     const qs = location.search;
     const qsParser = new QSParser(qs);
     const { st: stFromQuery } = qsParser.parse();
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const hasSt = searchTerm || stFromQuery;
 
     const fetchPosts = useCallback(() => {
         const optionsForRegularUser = {
@@ -84,6 +88,17 @@ function Home ({
         searchTerm: stFromQuery
     }), [onSearchPostsStart, pageNumber, postsOnPageCount, stFromQuery]);
 
+    const resetSearch = () => {
+        setSearchTerm("");
+        onSetCurrentPage(1);
+    };
+
+    useEffect(() => {
+        if (number) {
+            onSetCurrentPage(+number);
+        }
+    }, [number, onSetCurrentPage]);
+
     useEffect(() => {
         if (stFromQuery) {
             searchPosts();
@@ -104,10 +119,10 @@ function Home ({
 
     return (
         <Fragment>
-            {(hasSt || stFromQuery) && (
+            {hasSt && (
                 <div className={styles.resetSearchingButton}>
                     <Link
-                        onClick={() => setSearchTerm("")}
+                        onClick={resetSearch}
                         to="/"
                     >
                         Сбросить поиск
@@ -116,7 +131,6 @@ function Home ({
             )}
 
             <PostList
-                currentPage={+pageNumber}
                 posts={posts}
                 searchTerm={searchTerm || stFromQuery}
                 totalCount={totalCount}
@@ -138,7 +152,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchPostsStart: (options) => dispatch(fetchPostsStart(options)),
-    onSearchPostsStart: (options) => dispatch(searchPostsStart(options))
+    onSearchPostsStart: (options) => dispatch(searchPostsStart(options)),
+    onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 
 const ConnectedHome = connect(

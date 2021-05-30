@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router";
 
 import * as p from "utils/const/pathnames";
 import { CancelIconButton } from "components/ui/IconButton";
 import { SEARCH_USERS } from "utils/const/events";
-import { fetchUsersStart, searchUsersStart } from "redux/users/users.actions";
+import QSParser from "utils/parsers/QSParser";
+import { searchUsersStart } from "redux/users/users.actions";
 import { propTypes } from "./SearchUserInput.props";
-import { selectCount } from "redux/usersPaging/usersPaging.selectors";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
 import pubsub from "utils/pubsub";
 import styles from "./SearchUserInput.module.scss";
@@ -17,13 +16,25 @@ SearchUserInput.propTypes = propTypes;
 
 function SearchUserInput ({
     history,
-    onFetchUsersStart,
+    location,
     onSearchUsersStart,
-    onSetCurrentPage,
-    usersOnPageCount
+    onSetCurrentPage
 }) {
+    const qs = location.search;
+    const qsParser = new QSParser(qs);
+    const { st: stFromQuery = "" } = qsParser.parse();
+
     const [searchIsInitiated, setSearchIsInitiated] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(stFromQuery);
+
+    const resetSearch = useCallback(() => {
+        if (searchTerm) {
+            setSearchTerm("");
+        }
+
+        onSetCurrentPage(1);
+        history.push(`/${p.USERS}`);
+    }, [history, onSetCurrentPage, searchTerm]);
 
     const handleChange = ({ target }) => {
         if (!searchIsInitiated) {
@@ -31,15 +42,11 @@ function SearchUserInput ({
         }
 
         setSearchTerm(target.value);
-    };
 
-    const resetSearch = useCallback(() => onFetchUsersStart({
-        count: usersOnPageCount,
-        page: 1
-    }, () => {
-        setSearchTerm("");
-        history.push(`/${p.USERS}`);
-    }), [history, onFetchUsersStart, usersOnPageCount]);
+        if (!target.value) {
+            resetSearch();
+        }
+    };
 
     const cancelButtonElem = (
         <CancelIconButton
@@ -67,23 +74,18 @@ function SearchUserInput ({
                 value={searchTerm}
             />
 
-            {searchTerm.length > 0 && cancelButtonElem}
+            {(searchTerm.length > 0 || stFromQuery) && cancelButtonElem}
         </div>
     );
 }
 
-const mapStateToProps = createStructuredSelector({
-    usersOnPageCount: selectCount
-});
-
 const mapDispatchToProps = (dispatch) => ({
-    onFetchUsersStart: (options, cb) => dispatch(fetchUsersStart(options, cb)),
     onSearchUsersStart: (props, cb) => dispatch(searchUsersStart(props, cb)),
     onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 
 const ConnectedSearchUserInput = connect(
-    mapStateToProps,
+    null,
     mapDispatchToProps
 )(SearchUserInput);
 

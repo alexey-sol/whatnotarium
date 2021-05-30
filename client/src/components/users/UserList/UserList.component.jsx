@@ -6,7 +6,7 @@ import { withRouter } from "react-router";
 import Paging from "components/ui/Paging";
 import UserPreview from "components/users/UserPreview";
 import { defaultProps, propTypes } from "./UserList.props";
-import { selectCount } from "redux/usersPaging/usersPaging.selectors";
+import { selectCount, selectCurrentPage } from "redux/usersPaging/usersPaging.selectors";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
 import styles from "./UserList.module.scss";
 
@@ -52,6 +52,7 @@ function UserList ({
 }
 
 const mapStateToProps = createStructuredSelector({
+    currentPage: selectCurrentPage,
     usersOnPageCount: selectCount
 });
 

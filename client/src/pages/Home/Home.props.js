@@ -25,6 +25,7 @@ export const propTypes = {
     match: object.isRequired,
     onFetchPostsStart: func.isRequired,
     onSearchPostsStart: func.isRequired,
+    onSetCurrentPage: func.isRequired,
     posts: array,
     postsOnPageCount: number,
     totalCount: number

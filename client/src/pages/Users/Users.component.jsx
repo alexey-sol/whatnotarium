@@ -16,6 +16,7 @@ import UserList from "components/users/UserList";
 import WithSpinner from "components/ui/WithSpinner";
 import { defaultProps, propTypes } from "./Users.props";
 import { fetchUsersStart, searchUsersStart } from "redux/users/users.actions";
+import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
 
 import {
     selectCount,
@@ -38,12 +39,14 @@ function Users ({
     match,
     onFetchUsersStart,
     onSearchUsersStart,
+    onSetCurrentPage,
     totalCount,
     users,
     usersOnPageCount
 }) {
     const locationKey = location.key;
-    const pageNumber = match.params.number || currentUsersPage;
+    const { number } = match.params;
+    const pageNumber = number || currentUsersPage;
 
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -64,6 +67,12 @@ function Users ({
     }), [onSearchUsersStart, pageNumber, stFromQuery, usersOnPageCount]);
 
     useEffect(() => {
+        if (number) {
+            onSetCurrentPage(+number);
+        }
+    }, [number, onSetCurrentPage]);
+
+    useEffect(() => {
         if (stFromQuery) {
             searchUsers();
         } else {
@@ -78,7 +87,6 @@ function Users ({
     }, []);
 
     const propsFromUsers = {
-        currentPage: +pageNumber,
         isPending,
         pathPrefix: getPathPrefix(location.pathname, 2),
         searchTerm: searchTerm || stFromQuery,
@@ -108,7 +116,8 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
     onFetchUsersStart: (options) => dispatch(fetchUsersStart(options)),
-    onSearchUsersStart: (options) => dispatch(searchUsersStart(options))
+    onSearchUsersStart: (options) => dispatch(searchUsersStart(options)),
+    onSetCurrentPage: (page) => dispatch(setCurrentPage(page))
 });
 
 const ConnectedUsers = connect(
