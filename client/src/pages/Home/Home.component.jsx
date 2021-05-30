@@ -1,19 +1,11 @@
-import { Link } from "react-router-dom";
-
-import React, {
-    Fragment,
-    useCallback,
-    useEffect,
-    useState
-} from "react";
-
+import React, { Fragment, useCallback } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/posts/PostList";
-import QSParser from "utils/parsers/QSParser";
+import ResetSearchButton from "components/ui/ResetSearchButton";
 import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart, searchPostsStart } from "redux/posts/posts.actions";
@@ -28,8 +20,8 @@ import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPosts } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
-import pubsub from "utils/pubsub";
 import styles from "./Home.module.scss";
+import usePagination from "utils/hooks/usePagination";
 
 Home.defaultProps = defaultProps;
 Home.propTypes = propTypes;
@@ -39,7 +31,6 @@ function Home ({
     currentUser,
     isPending,
     location,
-    match,
     onFetchPostsStart,
     onSearchPostsStart,
     onSetCurrentPage,
@@ -48,30 +39,21 @@ function Home ({
     totalCount
 }) {
     const locationKey = location.key;
-    const { number } = match.params;
-    const pageNumber = number || currentPostsPage;
 
     const userId = currentUser?.id;
     const isAdmin = currentUser?.isAdmin;
 
-    const qs = location.search;
-    const qsParser = new QSParser(qs);
-    const { st: stFromQuery } = qsParser.parse();
-
-    const [searchTerm, setSearchTerm] = useState("");
-    const hasSt = searchTerm || stFromQuery;
-
-    const fetchPosts = useCallback(() => {
+    const fetchPosts = useCallback(({ page }) => {
         const optionsForRegularUser = {
             count: postsOnPageCount,
             operators: userId && { conjunctionOp: "$or" },
-            page: pageNumber,
+            page,
             where: { isApproved: true, userId }
         };
 
         const optionsForAdmin = {
             count: postsOnPageCount,
-            page: pageNumber,
+            page,
             where: { isApproved: false }
         };
 
@@ -79,39 +61,22 @@ function Home ({
             ? optionsForAdmin
             : optionsForRegularUser);
     }, [ // eslint-disable-line
-        isAdmin, locationKey, onFetchPostsStart, pageNumber, postsOnPageCount, userId
+        isAdmin, locationKey, onFetchPostsStart, postsOnPageCount, userId
     ]);
 
-    const searchPosts = useCallback(() => onSearchPostsStart({
+    const searchPosts = useCallback(({ page, searchTerm }) => onSearchPostsStart({
         count: postsOnPageCount,
-        page: pageNumber,
-        searchTerm: stFromQuery
-    }), [onSearchPostsStart, pageNumber, postsOnPageCount, stFromQuery]);
+        page,
+        searchTerm
+    }), [onSearchPostsStart, postsOnPageCount]);
 
-    const resetSearch = () => {
-        setSearchTerm("");
-        onSetCurrentPage(1);
-    };
-
-    useEffect(() => {
-        if (number) {
-            onSetCurrentPage(+number);
-        }
-    }, [number, onSetCurrentPage]);
-
-    useEffect(() => {
-        if (stFromQuery) {
-            searchPosts();
-        } else {
-            fetchPosts();
-        }
-    }, [fetchPosts, searchPosts, stFromQuery]);
-
-    useEffect(() => {
-        const setSt = (st) => setSearchTerm(st);
-        pubsub.subscribe(SEARCH_POSTS, setSt);
-        return () => pubsub.unsubscribe(SEARCH_POSTS, setSt);
-    }, []);
+    const { qs, resetSearch } = usePagination({
+        currentPage: currentPostsPage,
+        fetchRecords: fetchPosts,
+        onSetCurrentPage,
+        searchEventName: SEARCH_POSTS,
+        searchRecords: searchPosts
+    });
 
     if (isPending) {
         return <Spinner />;
@@ -119,20 +84,15 @@ function Home ({
 
     return (
         <Fragment>
-            {hasSt && (
-                <div className={styles.resetSearchingButton}>
-                    <Link
-                        onClick={resetSearch}
-                        to="/"
-                    >
-                        Сбросить поиск
-                    </Link>
+            {Boolean(qs) && (
+                <div className={styles.resetSearchButton}>
+                    <ResetSearchButton onClick={resetSearch} />
                 </div>
             )}
 
             <PostList
                 posts={posts}
-                searchTerm={searchTerm || stFromQuery}
+                qs={qs}
                 totalCount={totalCount}
             />
         </Fragment>

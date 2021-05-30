@@ -1,16 +1,9 @@
-import React, {
-    Fragment,
-    useCallback,
-    useEffect,
-    useState
-} from "react";
-
+import React, { Fragment, useCallback } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { SEARCH_USERS } from "utils/const/events";
 import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
-import QSParser from "utils/parsers/QSParser";
 import SearchUserInput from "components/layout/SearchUserInput";
 import UserList from "components/users/UserList";
 import WithSpinner from "components/ui/WithSpinner";
@@ -27,7 +20,7 @@ import {
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { selectUsers } from "redux/users/users.selectors";
 import getPathPrefix from "utils/helpers/getPathPrefix";
-import pubsub from "utils/pubsub";
+import usePagination from "utils/hooks/usePagination";
 
 Users.defaultProps = defaultProps;
 Users.propTypes = propTypes;
@@ -36,7 +29,6 @@ function Users ({
     currentUsersPage,
     isPending,
     location,
-    match,
     onFetchUsersStart,
     onSearchUsersStart,
     onSetCurrentPage,
@@ -45,56 +37,34 @@ function Users ({
     usersOnPageCount
 }) {
     const locationKey = location.key;
-    const { number } = match.params;
-    const pageNumber = number || currentUsersPage;
 
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const qs = location.search;
-    const qsParser = new QSParser(qs);
-    const { st: stFromQuery } = qsParser.parse();
-
-    const fetchUsers = useCallback(() => onFetchUsersStart({
+    const fetchUsers = useCallback(({ page }) => onFetchUsersStart({
         count: usersOnPageCount,
-        page: pageNumber,
+        page,
         where: { isAdmin: false, isConfirmed: true }
-    }), [locationKey, onFetchUsersStart, pageNumber, usersOnPageCount]); // eslint-disable-line
+    }), [locationKey, onFetchUsersStart, usersOnPageCount]); // eslint-disable-line
 
-    const searchUsers = useCallback(() => onSearchUsersStart({
+    const searchUsers = useCallback(({ page, searchTerm }) => onSearchUsersStart({
         count: usersOnPageCount,
-        page: pageNumber,
-        searchTerm: stFromQuery
-    }), [onSearchUsersStart, pageNumber, stFromQuery, usersOnPageCount]);
+        page,
+        searchTerm
+    }), [onSearchUsersStart, usersOnPageCount]);
 
-    useEffect(() => {
-        if (number) {
-            onSetCurrentPage(+number);
-        }
-    }, [number, onSetCurrentPage]);
+    const { qs } = usePagination({
+        currentPage: currentUsersPage,
+        fetchRecords: fetchUsers,
+        onSetCurrentPage,
+        searchEventName: SEARCH_USERS,
+        searchRecords: searchUsers
+    });
 
-    useEffect(() => {
-        if (stFromQuery) {
-            searchUsers();
-        } else {
-            fetchUsers();
-        }
-    }, [fetchUsers, searchUsers, stFromQuery]);
-
-    useEffect(() => {
-        const setSt = (st) => setSearchTerm(st);
-        pubsub.subscribe(SEARCH_USERS, setSt);
-        return () => pubsub.unsubscribe(SEARCH_USERS, setSt);
-    }, []);
-
-    const propsFromUsers = {
+    const UsersWithSpinner = WithSpinner(UserList, {
         isPending,
         pathPrefix: getPathPrefix(location.pathname, 2),
-        searchTerm: searchTerm || stFromQuery,
+        qs,
         totalCount,
         users
-    };
-
-    const UsersWithSpinner = WithSpinner(UserList, propsFromUsers);
+    });
 
     return (
         <Fragment>

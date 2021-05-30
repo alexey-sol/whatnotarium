@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import * as p from "utils/const/pathnames";
-import { CancelIconButton } from "components/ui/IconButton";
 import { SEARCH_USERS } from "utils/const/events";
 import QSParser from "utils/parsers/QSParser";
+import ResetSearchButton from "components/ui/ResetSearchButton";
 import { searchUsersStart } from "redux/users/users.actions";
 import { propTypes } from "./SearchUserInput.props";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
@@ -27,13 +27,15 @@ function SearchUserInput ({
     const [searchIsInitiated, setSearchIsInitiated] = useState(false);
     const [searchTerm, setSearchTerm] = useState(stFromQuery);
 
+    const finalSt = searchTerm || stFromQuery;
+
     const resetSearch = useCallback(() => {
         if (searchTerm) {
             setSearchTerm("");
+            pubsub.publish(SEARCH_USERS, "");
+            onSetCurrentPage(1);
+            history.push(`/${p.USERS}`);
         }
-
-        onSetCurrentPage(1);
-        history.push(`/${p.USERS}`);
     }, [history, onSetCurrentPage, searchTerm]);
 
     const handleChange = ({ target }) => {
@@ -48,19 +50,12 @@ function SearchUserInput ({
         }
     };
 
-    const cancelButtonElem = (
-        <CancelIconButton
-            className={styles.cancelButton}
-            onClick={resetSearch}
-        />
-    );
-
     useEffect(() => {
         if (searchIsInitiated) {
             onSetCurrentPage(1);
             onSearchUsersStart({ searchTerm }, () => pubsub.publish(SEARCH_USERS, searchTerm));
         }
-    }, [onSearchUsersStart, searchIsInitiated, onSetCurrentPage, searchTerm]);
+    }, [onSearchUsersStart, searchIsInitiated, onSetCurrentPage, resetSearch, searchTerm]);
 
     return (
         <div className={styles.container}>
@@ -74,7 +69,11 @@ function SearchUserInput ({
                 value={searchTerm}
             />
 
-            {(searchTerm.length > 0 || stFromQuery) && cancelButtonElem}
+            {Boolean(finalSt) && (
+                <div className={styles.resetSearchButton}>
+                    <ResetSearchButton onClick={resetSearch} />
+                </div>
+            )}
         </div>
     );
 }

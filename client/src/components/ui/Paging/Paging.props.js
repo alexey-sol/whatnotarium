@@ -12,7 +12,7 @@ export const defaultProps = {
     currentPage: 1,
     pageNeighbours: 4,
     pathPrefix: "",
-    query: ""
+    qs: ""
 };
 
 export const propTypes = {
@@ -21,7 +21,7 @@ export const propTypes = {
     history: object.isRequired,
     pageNeighbours: number,
     pathPrefix: string,
-    query: string,
+    qs: string,
     setCurrentPage: func.isRequired,
     totalRecords: number.isRequired
 };

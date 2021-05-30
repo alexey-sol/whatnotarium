@@ -20,7 +20,7 @@ function PostList ({
     pathPrefix,
     posts,
     postsOnPageCount,
-    searchTerm,
+    qs,
     totalCount
 }) {
     const postElems = posts.map(post => (
@@ -43,7 +43,7 @@ function PostList ({
                     count={postsOnPageCount}
                     currentPage={currentPage}
                     pathPrefix={pathPrefix}
-                    query={searchTerm && `?st=${searchTerm}`}
+                    qs={qs}
                     setCurrentPage={onSetCurrentPage}
                     totalRecords={totalCount}
                 />

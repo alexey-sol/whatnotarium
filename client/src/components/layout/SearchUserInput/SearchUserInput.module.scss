@@ -2,7 +2,8 @@
 
 .container {
     display: flex;
-    width: 40rem;
+    max-width: 40rem;
+    align-items: center;
 
     .input {
         display: block;
@@ -18,7 +19,8 @@
         font-size: $font-size--medium;
     }
 
-    .cancelButton {
-
+    .resetSearchButton {
+        min-width: fit-content;
+        margin-left: 2rem;
     }
 }

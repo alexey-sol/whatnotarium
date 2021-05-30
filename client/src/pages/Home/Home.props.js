@@ -22,7 +22,6 @@ export const propTypes = {
     currentUser: object,
     isPending: bool,
     location: object.isRequired,
-    match: object.isRequired,
     onFetchPostsStart: func.isRequired,
     onSearchPostsStart: func.isRequired,
     onSetCurrentPage: func.isRequired,

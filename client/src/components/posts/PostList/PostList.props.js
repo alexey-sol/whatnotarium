@@ -14,7 +14,7 @@ export const defaultProps = {
     pathPrefix: "",
     posts: [],
     postsOnPageCount: DEFAULT_PAGING_COUNT,
-    searchTerm: "",
+    qs: "",
     totalCount: 0
 };
 
@@ -25,6 +25,6 @@ export const propTypes = {
     pathPrefix: string,
     posts: array,
     postsOnPageCount: number,
-    searchTerm: string,
+    qs: string,
     totalCount: number
 };

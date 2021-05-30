@@ -17,7 +17,7 @@ function UserList ({
     currentPage,
     onSetCurrentPage,
     pathPrefix,
-    searchTerm,
+    qs,
     totalCount,
     users,
     usersOnPageCount
@@ -41,7 +41,7 @@ function UserList ({
                 <Paging
                     count={usersOnPageCount}
                     currentPage={currentPage}
-                    query={searchTerm && `?st=${searchTerm}`}
+                    qs={qs}
                     pathPrefix={pathPrefix}
                     setCurrentPage={onSetCurrentPage}
                     totalRecords={totalCount}
