@@ -1,26 +1,32 @@
 version: "3.3"
+
 services:
     client:
+        container_name: geek-regime_client
         networks:
             - geek-regime
         depends_on:
             - server
             - postgres
             - redis
+        ports:
+            - ${CLIENT_PORT_EXTERNAL}:${CLIENT_PORT}
+        environment:
+            - NODE_ENV
     server:
+        container_name: geek-regime_server
         networks:
             - geek-regime
         depends_on:
             - postgres
             - redis
         ports:
-            - ${PORT}:${PORT}
+            - ${SERVER_PORT_EXTERNAL}:${SERVER_PORT}
         environment:
             - GOOGLE_CLIENT_ID
             - GOOGLE_CLIENT_SECRET
             - GOOGLE_OAUTH_REDIRECT_URI
-            - HOST
-            - PORT
+            - NODE_ENV
             - POSTGRES_URL
             - POSTGRES_URL_TEST
             - PROJECT_NAME_FULL
@@ -29,37 +35,42 @@ services:
             - REDIS_PORT
             - SENDER_EMAIL
             - SENDGRID_API_KEY
+            - SERVER_PORT
+            - SERVER_PORT_EXTERNAL
             - SESSION_NAME
             - SESSION_SECRET
-            - URL
             - YANDEX_CLIENT_ID
             - YANDEX_CLIENT_SECRET
     postgres:
+        container_name: geek-regime_postgres
         image: postgres:12.1-alpine
         restart: always
         volumes:
             - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-            - postgres-data:${PGDATA}
+            - postgres-data:${POSTGRES_DATA_PATH}
         networks:
             - geek-regime
         ports:
-            - 5433:${POSTGRES_PORT}
+            - ${POSTGRES_PORT_EXTERNAL}:${POSTGRES_PORT}
         environment:
-            - PGDATA=${PGDATA}
-            - POSTGRES_DB=${POSTGRES_DB}
-            - POSTGRES_DB_TEST=${POSTGRES_DB_TEST}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-            - POSTGRES_USER=${POSTGRES_USER}
+            - PGDATA=${POSTGRES_DATA_PATH}
+            - POSTGRES_DB
+            - POSTGRES_DB_TEST
+            - POSTGRES_PASSWORD
+            - POSTGRES_USER
     redis:
+        container_name: geek-regime_redis
         image: redis:5.0.7-alpine
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - redis-data:/data
         networks:
             - geek-regime
+
 networks:
     geek-regime:
         driver: bridge
+
 volumes:
     postgres-data:
         driver: local

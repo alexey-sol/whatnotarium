@@ -4,8 +4,8 @@
   "description": "A collective blog on geek-wise stuff",
   "author": "Alexey Soloviev",
   "scripts": {
-    "start": "docker-compose -f docker-compose.yml -f docker-compose.production.yml up --detach",
-    "down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down",
+    "prod:up": "docker-compose -f docker-compose.yml -f docker-compose.production.yml up --detach",
+    "prod:down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down",
     "dev:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up",
     "dev:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down"
   },

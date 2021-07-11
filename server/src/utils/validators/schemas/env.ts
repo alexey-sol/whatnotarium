@@ -3,10 +3,6 @@ import Joi from "@hapi/joi";
 import { DEVELOPMENT, PRODUCTION } from "#utils/const/nodeEnv";
 
 export default Joi.object({
-    HOST: Joi
-        .string()
-        .required(),
-
     GOOGLE_CLIENT_ID: Joi
         .string()
         .required(),
@@ -23,10 +19,6 @@ export default Joi.object({
         .string()
         .trim()
         .valid(DEVELOPMENT, PRODUCTION)
-        .required(),
-
-    PORT: Joi
-        .number()
         .required(),
 
     POSTGRES_URL: Joi
@@ -57,15 +49,19 @@ export default Joi.object({
         .string()
         .required(),
 
+    SERVER_PORT: Joi
+        .number()
+        .required(),
+
+    SERVER_PORT_EXTERNAL: Joi
+        .number()
+        .required(),
+
     SESSION_NAME: Joi
         .string()
         .required(),
 
     SESSION_SECRET: Joi
-        .string()
-        .required(),
-
-    URL: Joi
         .string()
         .required(),
 

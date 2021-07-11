@@ -1,22 +1,19 @@
 import ProcessManager from "#utils/wrappers/ProcessManager";
 
 interface ValidatedEnv {
-    HOST: string;
-    PORT: string;
-    URL: string;
+    SERVER_PORT: string;
+    SERVER_PORT_EXTERNAL: string;
 }
 
 const { processEnv } = new ProcessManager();
 const validatedEnv = processEnv as unknown as ValidatedEnv;
 
 const {
-    HOST,
-    PORT,
-    URL
+    SERVER_PORT,
+    SERVER_PORT_EXTERNAL
 } = validatedEnv;
 
 export default {
-    host: HOST,
-    port: PORT,
-    url: URL
+    port: SERVER_PORT,
+    url: `http://localhost:${SERVER_PORT_EXTERNAL}`
 };
