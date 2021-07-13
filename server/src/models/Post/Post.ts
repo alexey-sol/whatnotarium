@@ -30,7 +30,7 @@ import Model from "#types/Model";
 import PostError from "#utils/errors/PostError";
 import PostVote from "#types/PostVote";
 import Profile from "#types/UserProfile";
-import VoteUpdate from "#types/VoteUpdate";
+import UpdatePostVoteDto from "#types/post/UpdatePostVoteDto";
 import generateSqlAndQuery from "#utils/sql/generateSqlAndQuery";
 import isPostItem from "#utils/typeGuards/isPostItem";
 import separateIncludedAttributes from "#utils/helpers/separateIncludedAttributes";
@@ -180,7 +180,7 @@ class Post implements Model<Attributes, Post> {
     }
 
     async updateVote (
-        props: VoteUpdate,
+        props: UpdatePostVoteDto,
         include?: Include[]
     ): Promise<Post | null> | never {
         const { value, userId } = props;

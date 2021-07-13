@@ -1,15 +1,10 @@
 import { PROFILES } from "#utils/const/database/tableNames";
+import CreatePostDto from "#types/post/CreatePostDto";
 import Post from "#models/Post";
 import PostItem from "#types/post/Item";
 
-interface Props {
-    body: string;
-    title: string;
-    userId: number;
-}
-
 export default async function (
-    props: Props
+    props: CreatePostDto
 ): Promise<PostItem> | never {
     const include = [{
         as: "author",

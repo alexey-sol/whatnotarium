@@ -5,19 +5,11 @@ import User from "#models/User";
 import UserError from "#utils/errors/UserError";
 import UserItem from "#types/user/Item";
 import hashPassword from "#utils/helpers/hashPassword";
-
-interface Props {
-    email?: string;
-    isConfirmed?: boolean;
-    name?: string;
-    newPassword?: string;
-    password?: string;
-    picture?: Express.Multer.File;
-}
+import UpdateUserDto from "#root/src/types/user/UpdateUserDto";
 
 export default async function (
     id: number,
-    props: Props
+    props: UpdateUserDto
 ): Promise<UserItem> | never {
     const user = await User.findById(id);
 

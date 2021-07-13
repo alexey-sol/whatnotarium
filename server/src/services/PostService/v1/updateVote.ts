@@ -2,11 +2,11 @@ import { NOT_FOUND } from "#utils/const/validationErrors";
 import { PROFILES } from "#utils/const/database/tableNames";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
-import VoteUpdate from "#types/VoteUpdate";
+import UpdatePostVoteDto from "#types/post/UpdatePostVoteDto";
 
 export default async function (
     id: number,
-    props: VoteUpdate
+    props: UpdatePostVoteDto
 ): Promise<Post | null> | never {
     const post = await Post.findById(id);
 

@@ -3,18 +3,11 @@ import { PROFILES } from "#utils/const/database/tableNames";
 import Post from "#models/Post";
 import PostError from "#utils/errors/PostError";
 import PostItem from "#types/post/Item";
-
-interface Props {
-    body?: string;
-    isApproved?: boolean;
-    isFrozen?: boolean;
-    title?: string;
-    viewCount?: number;
-}
+import UpdatePostDto from "#types/post/UpdatePostDto";
 
 export default async function (
     id: number,
-    props: Props
+    props: UpdatePostDto
 ): Promise<PostItem> | never {
     const post = await Post.findById(id);
 
@@ -44,7 +37,7 @@ export default async function (
     return post.updateAttributes(updatedProps, include, options);
 }
 
-function checkIfShouldRetainUpdatedAt (props: Props): boolean {
+function checkIfShouldRetainUpdatedAt (props: UpdatePostDto): boolean {
     const isFrozen = typeof props.isFrozen === "boolean";
     const isMinorUpdate = (
         Number.isInteger(props.viewCount) ||

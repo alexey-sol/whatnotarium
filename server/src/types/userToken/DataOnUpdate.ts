@@ -1,7 +1,5 @@
-interface DataOnUpdate {
-    token?: string;
-    typeId?: number;
-    userId?: number;
-}
+import DataOnCreate from "./DataOnCreate";
+
+type DataOnUpdate = Partial<DataOnCreate>;
 
 export default DataOnUpdate;

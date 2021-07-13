@@ -6,6 +6,7 @@ interface DataOnCreate {
     isConfirmed?: boolean;
     iterations?: number;
     keyLength?: number;
+    lastActivityDate?: Date;
     name: string;
     picture?: Buffer;
     salt?: string;

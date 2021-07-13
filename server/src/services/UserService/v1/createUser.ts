@@ -1,19 +1,11 @@
 import { PROFILES } from "#utils/const/database/tableNames";
+import CreateUserDto from "#types/user/CreateUserDto";
 import User from "#models/User";
 import UserItem from "#types/user/Item";
 import hashPassword from "#utils/helpers/hashPassword";
 
-interface Props {
-    birthdate?: Date;
-    email: string;
-    isConfirmed?: boolean;
-    name: string;
-    password?: string;
-    picture?: Buffer;
-}
-
 export default async function (
-    props: Props
+    props: CreateUserDto
 ): Promise<UserItem> {
     const { password, ...restProps } = props;
 
@@ -31,6 +23,6 @@ export default async function (
 
     return User.create({
         ...restProps,
-        ...hashOptions,
+        ...hashOptions
     }, [includeProfile]);
 }
