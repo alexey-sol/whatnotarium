@@ -149,10 +149,6 @@ class Post implements Model<Attributes, Post> {
         return Post.findOne({ include, where });
     }
 
-    async save (): Promise<Post> | never {
-        return this.updateAttributes(this);
-    }
-
     async updateAttributes (
         props: Attributes,
         include?: Include[],

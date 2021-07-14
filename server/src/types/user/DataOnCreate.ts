@@ -3,6 +3,7 @@ interface DataOnCreate {
     digest?: string;
     email: string;
     hash?: Buffer;
+    isAdmin?: boolean;
     isConfirmed?: boolean;
     iterations?: number;
     keyLength?: number;

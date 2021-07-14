@@ -156,10 +156,6 @@ class User implements Model<DataOnUpdate, User> {
         return User.findOne({ include, where });
     }
 
-    async save (): Promise<User> | never {
-        return this.updateAttributes(this);
-    }
-
     async updateAttributes (
         props: DataOnUpdate,
         include?: Include[]

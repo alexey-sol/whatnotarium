@@ -27,11 +27,13 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                 IF (TG_OP = 'INSERT') THEN
                     INSERT INTO "${USERS}" (
                         "email",
-                        "isConfirmed"
+                        "isConfirmed",
+                        "isAdmin"
                     )
                     VALUES (
                         new."email",
-                        new."isConfirmed"
+                        new."isConfirmed",
+                        new."isAdmin"
                     )
                     RETURNING "id", "createdAt", "updatedAt"
                     INTO new_user_id, new_created_at, new_updated_at;
@@ -64,6 +66,10 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                             new."keyLength",
                             new_user_id
                         );
+
+                        new."hasPassword" = true;
+                    ELSE
+                        new."hasPassword" = false;
                     END IF;
 
                     new."id" = new_user_id;
@@ -76,10 +82,12 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                     UPDATE "${USERS}" SET
                         "email" = COALESCE(new."email", old."email"),
                         "isConfirmed" = COALESCE(new."isConfirmed", old."isConfirmed"),
+                        "isAdmin" = COALESCE(new."isAdmin", old."isAdmin"),
                         "updatedAt" = NOW()
                     WHERE "id" = old."id" AND (
                         new."email" IS DISTINCT FROM old."email" OR
-                        new."isConfirmed" IS DISTINCT FROM old."isConfirmed"
+                        new."isConfirmed" IS DISTINCT FROM old."isConfirmed" OR
+                        new."isAdmin" IS DISTINCT FROM old."isAdmin"
                     );
 
                     UPDATE "${PROFILES}" SET
@@ -114,6 +122,8 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                             new."keyLength",
                             old."id"
                         );
+
+                        new."hasPassword" = true;
                     ELSE
                         UPDATE "${HASH_OPTIONS}" SET
                             "hash" = new."hash",
@@ -129,6 +139,8 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                             new."iterations" IS DISTINCT FROM old."iterations" OR
                             new."keyLength" IS DISTINCT FROM old."keyLength"
                         );
+
+                        new."hasPassword" = true;
                     END IF;
 
                     IF NOT FOUND THEN RETURN NULL; END IF;

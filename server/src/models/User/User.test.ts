@@ -3,59 +3,111 @@ import chaiAsPromised from "chai-as-promised";
 import faker from "faker";
 
 import { INVALID_PROPS } from "#utils/const/validationErrors";
-import { USERS } from "#utils/const/database/tableNames";
+import { HASH_OPTIONS, PROFILES, USERS } from "#utils/const/database/tableNames";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
-import createFakeUser from "#utils/test/createFakeUser";
+import createAndSaveFakeUser from "#utils/test/createAndSaveFakeUser";
 import generateFakeUserProps from "#utils/test/generateFakeUserProps";
 import resetSchema from "#utils/test/resetSchema";
 import resetTables from "#utils/test/resetTables";
 import tableExists from "#utils/test/tableExists";
+import Attributes from "#root/src/types/user/Attributes";
+import { FakeDataOnCreate } from "#root/src/types/test/user";
 
 chai.use(chaiAsPromised);
 const { expect } = chai;
+
+function expectUserToBeOk (user: User | null, props: FakeDataOnCreate): void {
+    expect(User.create).to.be.a("function");
+    expect(user).to.be.an("object").instanceOf(User);
+    expect(user?.id).to.be.a("number").equal(props.id);
+    expect(user?.email).to.equal(props.email);
+    expect(user?.createdAt).instanceof(Date);
+    expect(user?.updatedAt).instanceof(Date);
+    expect(user?.isConfirmed).to.be.a("boolean").equal(props.isConfirmed);
+}
+
+const includeFullProfile = {
+    as: "profile",
+    attributes: ["about", "birthdate", "lastActivityDate", "name", "picture", "totalVoteCount"],
+    referencedKey: "userId",
+    ownKey: "id",
+    tableName: PROFILES
+};
+
+const includePartialProfile = {
+    as: "profile",
+    attributes: ["name", "picture"],
+    referencedKey: "userId",
+    ownKey: "id",
+    tableName: PROFILES
+};
+
+const includeFullHashOptions = {
+    as: "hashOptions",
+    attributes: ["digest", "hash", "iterations", "keyLength", "salt"],
+    referencedKey: "userId",
+    ownKey: "id",
+    tableName: HASH_OPTIONS
+};
 
 describe("User", async () => {
     beforeEach(() => resetTables());
 
     describe("create", () => {
-        it("should add new users to DB and return UserToken instance", async () => {
-            const { email, name, password } = await generateFakeUserProps();
+        it("should add new user to DB and return User instance", async () => {
+            const props = await generateFakeUserProps({ id: 1 });
+            const user = await User.create(props);
 
-            const user = await User.create({
-                email,
-                name,
-                password
-            });
+            expectUserToBeOk(user, props);
+        });
 
-            expect(User.create).to.be.a("function");
-            expect(user).to.be.an("object").instanceOf(User);
-            expect(user.createdAt).instanceof(Date);
-            expect(user.email).to.equal(email);
-            expect(user.id).to.be.a("number").equal(1);
-            expect(user.name).to.equal(name);
-            expect(user.password).to.deep.equal(password);
-            expect(user.updatedAt).instanceof(Date);
+        it("should add new user to DB and return User instance with included Profile", async () => {
+            const props = await generateFakeUserProps({ id: 1 });
+            const user = await User.create(props, [includeFullProfile]);
+
+            expectUserToBeOk(user, props);
+
+            expect(user.profile).to.be.an("object");
+            expect(user.profile).to.have.property("about").be.a("string").empty;
+            expect(user.profile).to.have.property("name").equal(props.name);
+            expect(user.profile).to.have.property("picture").be.null;
+            expect(user.profile).to.have.property("totalVoteCount").equal(0);
+        });
+
+        it("should add new user to DB and return User instance with included partial Profile and " +
+        "full HashOptions", async () => {
+            const props = await generateFakeUserProps({ id: 1 });
+            const user = await User.create(props, [includePartialProfile, includeFullHashOptions]);
+
+            expectUserToBeOk(user, props);
+
+            expect(user.profile).to.be.an("object");
+            expect(user.profile).to.have.property("name").equal(props.name);
+            expect(user.profile).to.have.property("picture").be.null;
+            expect(user.profile).to.not.have.property("about");
+            expect(user.profile).to.not.have.property("totalVoteCount");
+
+            expect(user.hashOptions).to.be.an("object");
+            expect(user.hashOptions).to.have.property("digest").equal(props.digest);
+            expect(user.hashOptions).to.have.property("hash").deep.equal(props.hash);
+            expect(user.hashOptions).to.have.property("iterations").equal(props.iterations);
+            expect(user.hashOptions).to.have.property("keyLength").equal(props.keyLength);
+            expect(user.hashOptions).to.have.property("salt").equal(props.salt);
         });
     });
 
     describe("destroyById", () => {
-        it("should delete users from DB and return ID of deleted users", async () => {
-            const { email, name, password } = await generateFakeUserProps();
-
-            const user = await User.create({
-                email,
-                name,
-                password
-            });
-
+        it("should delete user from DB and return ID of deleted user", async () => {
+            const props = await generateFakeUserProps();
+            const user = await User.create(props);
             const result = await User.destroyById(user.id);
 
             expect(User.destroyById).to.be.a("function");
             expect(result).to.be.a("number").equal(user.id);
         });
 
-        it("should return null if no users found in DB for given ID", async () => {
+        it("should return null if no user found in DB for given ID", async () => {
             const userId = faker.random.number({ min: 1 });
             const result = await User.destroyById(userId);
 
@@ -66,11 +118,10 @@ describe("User", async () => {
 
     describe("findAll", () => {
         it("should fetch all users from DB", async () => {
-            const user1 = await createFakeUser();
-            const user2 = await createFakeUser();
-            const user3 = await createFakeUser();
+            const user1 = await createAndSaveFakeUser();
+            const user2 = await createAndSaveFakeUser();
+            const user3 = await createAndSaveFakeUser();
             const expectedUsers = [user1, user2, user3];
-
             const result = await User.findAll();
 
             expect(User.findAll).to.be.a("function");
@@ -80,14 +131,15 @@ describe("User", async () => {
                 .that.deep.include.members(expectedUsers);
         });
 
-        it("should fetch users from DB that match search condition", async () => {
-            const user1 = await createFakeUser({ name: "Fagin" });
-            const user2 = await createFakeUser({ name: "Benjamin" });
-            const user3 = await createFakeUser({ name: "Benjamin" });
+        it("should fetch users from DB that match where filter", async () => {
+            const user1 = await createAndSaveFakeUser({ name: "Fagin" }, [includePartialProfile]);
+            const user2 = await createAndSaveFakeUser({ name: "Benjamin" }, [includePartialProfile]);
+            const user3 = await createAndSaveFakeUser({ name: "Benjamin" }, [includePartialProfile]);
             const expectedUsers = [user2, user3];
 
             const result = await User.findAll({
-                where: { name: "Benjamin" }
+                include: [includePartialProfile],
+                where: { name: "Benjamin" } as Attributes
             });
 
             expect(User.findAll).to.be.a("function");
@@ -99,13 +151,14 @@ describe("User", async () => {
         });
 
         it("should fetch all users from DB in descending order by name", async () => {
-            const user1 = await createFakeUser({ name: "Adams" });
-            const user2 = await createFakeUser({ name: "Barley" });
-            const user3 = await createFakeUser({ name: "Duff" });
-            const expectedUsers = [user3, user2, user1];
+            const user1 = await createAndSaveFakeUser({ name: "Adams" }, [includePartialProfile]);
+            const user2 = await createAndSaveFakeUser({ name: "Duff" }, [includePartialProfile]);
+            const user3 = await createAndSaveFakeUser({ name: "Barley" }, [includePartialProfile]);
+            const expectedUsers = [user2, user3, user1];
 
             const result = await User.findAll({
-                order: "name DESC"
+                include: [includePartialProfile],
+                order: `${PROFILES}.name DESC`
             });
 
             expect(User.findAll).to.be.a("function");
@@ -116,12 +169,11 @@ describe("User", async () => {
         });
 
         it("should fetch first 2 users from DB", async () => {
-            const user1 = await createFakeUser();
-            const user2 = await createFakeUser();
-            const user3 = await createFakeUser();
+            const user1 = await createAndSaveFakeUser();
+            const user2 = await createAndSaveFakeUser();
+            const user3 = await createAndSaveFakeUser();
             const limit = 2;
             const expectedUsers = [user1, user2];
-
             const result = await User.findAll({ limit });
 
             expect(User.findAll).to.be.a("function");
@@ -132,13 +184,12 @@ describe("User", async () => {
                 .that.does.not.deep.include(user3);
         });
 
-        it("should skip 1st users and fetch rest users from DB", async () => {
-            const user1 = await createFakeUser();
-            const user2 = await createFakeUser();
-            const user3 = await createFakeUser();
+        it("should skip 1st user and fetch rest users from DB", async () => {
+            const user1 = await createAndSaveFakeUser();
+            const user2 = await createAndSaveFakeUser();
+            const user3 = await createAndSaveFakeUser();
             const offset = 1;
             const expectedUsers = [user2, user3];
-
             const result = await User.findAll({ offset });
 
             expect(User.findAll).to.be.a("function");
@@ -149,40 +200,41 @@ describe("User", async () => {
                 .that.does.not.deep.include(user1);
         });
 
-        it("should skip 1st users and fetch next 2 users (but not more) matching search condition " +
+        it("should skip 1st users and fetch next 2 users (but not more) matching where filter " +
         "from DB, in descending order by ID", async () => {
-            await createFakeUser({
+            await createAndSaveFakeUser({
                 id: 1,
                 name: "Nameless Ghoul"
-            });
+            }, [includePartialProfile]);
 
-            const user2 = await createFakeUser({
+            const user2 = await createAndSaveFakeUser({
                 id: 2,
                 name: "Nameless Ghoul"
-            });
+            }, [includePartialProfile]);
 
-            await createFakeUser({
+            await createAndSaveFakeUser({
                 id: 3,
                 name: "Papa Nihil"
-            });
+            }, [includePartialProfile]);
 
-            const user4 = await createFakeUser({
+            const user4 = await createAndSaveFakeUser({
                 id: 4,
                 name: "Nameless Ghoul"
-            });
+            }, [includePartialProfile]);
 
-            await createFakeUser({
+            await createAndSaveFakeUser({
                 id: 5,
                 name: "Nameless Ghoul"
-            });
+            }, [includePartialProfile]);
 
-            const where = { name: "Nameless Ghoul" };
+            const where = { name: "Nameless Ghoul" } as Attributes;
             const limit = 2;
             const offset = 1;
             const order = "id DESC";
             const expectedUsers = [user4, user2];
 
             const result = await User.findAll({
+                include: [includePartialProfile],
                 limit,
                 offset,
                 order,
@@ -196,11 +248,12 @@ describe("User", async () => {
                 .that.deep.ordered.members(expectedUsers);
         });
 
-        it("should return empty array if no users matching search condition were found in DB", async () => {
+        it("should return empty array if no users matching where filter were found in DB", async () => {
             const name = faker.name.findName();
 
             const result = await User.findAll({
-                where: { name }
+                include: [includePartialProfile],
+                where: { name } as Attributes
             });
 
             expect(User.findAll).to.be.a("function");
@@ -209,30 +262,18 @@ describe("User", async () => {
     });
 
     describe("findOne", () => {
-        it("should fetch users from DB that matches search condition", async () => {
-            const { email, name, password } = await generateFakeUserProps();
-
-            await User.create({
-                email,
-                name,
-                password
-            });
+        it("should fetch user from DB that matches where filter", async () => {
+            const props = await generateFakeUserProps({ id: 1 });
+            await User.create(props);
 
             const user = await User.findOne({
-                where: { email }
+                where: { email: props.email }
             });
 
-            expect(User.findOne).to.be.a("function");
-            expect(user).to.be.an("object").instanceOf(User);
-            expect(user!.createdAt).instanceof(Date);
-            expect(user!.email).to.equal(email);
-            expect(user!.id).to.be.a("number").equal(1);
-            expect(user!.name).to.equal(name);
-            expect(user!.password).to.deep.equal(password);
-            expect(user!.updatedAt).instanceof(Date);
+            expectUserToBeOk(user, props);
         });
 
-        it("should return null if no users matching search condition was found in DB", async () => {
+        it("should return null if no user matching where filter was found in DB", async () => {
             const id = faker.random.number({ min: 1 });
 
             const result = await User.findOne({
@@ -245,21 +286,16 @@ describe("User", async () => {
     });
 
     describe("formatPropsAndInstantiate", () => {
-        it("should return UserToken instance if valid users props were given", async () => {
-            const props = await generateFakeUserProps();
-            props.createdAt = new Date();
-            props.updatedAt = new Date();
+        it("should return User instance if valid users props were given", async () => {
+            const props = await generateFakeUserProps({
+                createdAt: new Date(),
+                hasPassword: true,
+                updatedAt: new Date()
+            });
 
             const user = User.formatPropsAndInstantiate(props);
 
-            expect(User.formatPropsAndInstantiate).to.be.a("function");
-            expect(user).to.be.an("object").instanceOf(User);
-            expect(user.createdAt).instanceof(Date);
-            expect(user.email).to.equal(user.email);
-            expect(user.id).to.be.a("number");
-            expect(user.name).to.equal(user.name);
-            expect(user.password).to.deep.equal(user.password);
-            expect(user.updatedAt).instanceof(Date);
+            expectUserToBeOk(user, props);
         });
 
         it("should throw error if invalid users props were given", async () => {
@@ -268,26 +304,6 @@ describe("User", async () => {
             return expect(() => User.formatPropsAndInstantiate(propsWithoutDates))
                 .to.throw(UserError)
                 .with.property("message", INVALID_PROPS);
-        });
-    });
-
-    describe("save", () => {
-        it("should save updated properties and return updated UserToken instance", async () => {
-            const originalProps = await generateFakeUserProps({ name: "Pip" });
-            const user = await createFakeUser(originalProps);
-            user.name = "Philip Pirrip";
-
-            const updatedUser = await user.save();
-
-            expect(updatedUser.save).to.be.a("function");
-            expect(updatedUser).to.be.an("object").instanceOf(User);
-            expect(updatedUser.createdAt).to.deep.equal(user.createdAt);
-            expect(updatedUser.email).to.equal(user.email);
-            expect(updatedUser.id).to.equal(user.id);
-            expect(updatedUser.name).to.equal(user.name);
-            expect(updatedUser.name).not.to.equal(originalProps.name);
-            expect(updatedUser.password).to.deep.equal(user.password);
-            expect(updatedUser.updatedAt).not.to.deep.equal(user.updatedAt);
         });
     });
 
@@ -306,22 +322,26 @@ describe("User", async () => {
     });
 
     describe("updateAttributes", () => {
-        it("should update properties and return updated UserToken instance", async () => {
-            const originalProps = await generateFakeUserProps({ name: "Pip" });
-            const user = await User.create(originalProps);
+        it("should update properties and return updated User instance", async () => {
+            const originalProps = await generateFakeUserProps({ id: 1, name: "Pip" });
+            const user = await User.create(originalProps, [includePartialProfile]);
 
-            const updatedUser = await user.updateAttributes({ name: "Philip Pirrip" });
+            const newName = "Philip Pirrip";
+            const updatedUser = await user.updateAttributes({ name: newName }, [includePartialProfile]);
 
-            expect(updatedUser.save).to.be.a("function");
+            expectUserToBeOk(updatedUser, {
+                ...originalProps,
+                name: newName
+            });
+
+            expect(User.create).to.be.a("function");
             expect(updatedUser).to.be.an("object").instanceOf(User);
-            expect(updatedUser.createdAt).to.deep.equal(user.createdAt);
+            expect(updatedUser.id).to.be.a("number").equal(user.id);
             expect(updatedUser.email).to.equal(user.email);
-            expect(updatedUser.id).to.equal(user.id);
-            expect(updatedUser.name).to.equal(updatedUser.name);
-            expect(updatedUser.name).not.to.equal(user.name);
-            expect(updatedUser.name).not.to.equal(originalProps.name);
-            expect(updatedUser.password).to.deep.equal(user.password);
-            expect(updatedUser.updatedAt).not.to.deep.equal(user.createdAt);
+            expect(updatedUser.isConfirmed).to.be.a("boolean").equal(user.isConfirmed);
+            expect(updatedUser.profile?.name).to.be.a("string").equal(newName);
+            expect(updatedUser.profile?.name).to.not.equal(user.profile?.name);
+            expect(updatedUser.createdAt).instanceof(Date).to.deep.equal(user.createdAt);
         });
     });
 });

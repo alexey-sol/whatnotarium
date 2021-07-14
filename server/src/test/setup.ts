@@ -24,12 +24,16 @@ const pool = require("#connectionPool").default;
 const resetTables = require("#utils/test/resetTables").default;
 
 before(() => resetTables());
-after(exit);
+
+after(async () => {
+    await resetTables();
+    exit();
+});
 
 function logErrorAndExit (errorToLog: Error | string): void {
     new ProcessManager(pool).exit(errorToLog);
 }
 
 function exit (): void {
-    new ProcessManager(pool).exit(undefined, 0);
+    new ProcessManager(pool).exit("Testing is done", 0);
 }

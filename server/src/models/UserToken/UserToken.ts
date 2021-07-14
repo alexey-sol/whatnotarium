@@ -126,10 +126,6 @@ class UserToken implements Model<DataOnUpdate, UserToken> {
         return UserToken.findOne({ include, where });
     }
 
-    async save (): Promise<UserToken> | never {
-        return this.updateAttributes(this);
-    }
-
     async updateAttributes (
         props: DataOnUpdate,
         include?: Include[]
