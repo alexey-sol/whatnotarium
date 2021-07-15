@@ -21,7 +21,27 @@ export default Joi.object({
         .valid(DEVELOPMENT, PRODUCTION)
         .required(),
 
-    POSTGRES_URL: Joi
+    POSTGRES_DB: Joi
+        .string()
+        .required(),
+
+    POSTGRES_DB_TEST: Joi
+        .string()
+        .required(),
+
+    POSTGRES_HOST: Joi
+        .string()
+        .required(),
+
+    POSTGRES_PASSWORD: Joi
+        .string()
+        .required(),
+
+    POSTGRES_PORT: Joi
+        .string()
+        .required(),
+
+    POSTGRES_USER: Joi
         .string()
         .required(),
 

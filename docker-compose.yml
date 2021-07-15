@@ -27,8 +27,12 @@ services:
             - GOOGLE_CLIENT_SECRET
             - GOOGLE_OAUTH_REDIRECT_URI
             - NODE_ENV
-            - POSTGRES_URL
-            - POSTGRES_URL_TEST
+            - POSTGRES_DB
+            - POSTGRES_DB_TEST
+            - POSTGRES_HOST
+            - POSTGRES_PASSWORD
+            - POSTGRES_PORT
+            - POSTGRES_USER
             - PROJECT_NAME_FULL
             - PROJECT_NAME_SHORT
             - REDIS_HOST
