@@ -8,6 +8,7 @@
     "prod:down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down",
     "dev:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up",
     "dev:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down",
+    "client:test": "docker exec --tty -it geek-regime_client npm run test",
     "server:test": "docker exec --tty geek-regime_server npm run test"
   },
   "license": "ISC",

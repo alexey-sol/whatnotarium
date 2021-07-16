@@ -10,10 +10,29 @@ exports[`should render ActionsMenu 1`] = `
     <span
       className="iconButton"
     >
+      <SearchIconButton
+        className="iconButton"
+        onClick={[Function]}
+        size={24}
+      />
+    </span>
+    <span
+      className="iconButton"
+    >
       <withRouter(Connect(UserIconButton))
         onClick={[Function]}
       />
     </span>
+  </div>
+  <div
+    className="mobileContent"
+  >
+    <MenuIconButton
+      className="menuButton"
+      onClick={[Function]}
+      size={24}
+      theme="dark"
+    />
   </div>
 </div>
 `;

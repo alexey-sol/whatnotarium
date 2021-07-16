@@ -5,7 +5,8 @@ exports[`should render App 1`] = `
   className="container"
 >
   <Header />
-  <Main>
+  <Menu />
+  <Connect(Main)>
     <ErrorBoundary>
       <Suspense
         fallback={<Spinner />}
@@ -32,6 +33,17 @@ exports[`should render App 1`] = `
                 "_status": -1,
               }
             }
+            path="/page:number"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
             path="/sign-in"
           />
           <Connect(PrivateRoute)
@@ -43,7 +55,30 @@ exports[`should render App 1`] = `
                 "_status": -1,
               }
             }
-            path="/profile"
+            exact={true}
+            path="/profile/my-posts"
+          />
+          <Connect(PrivateRoute)
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/profile/my-posts/page:number"
+          />
+          <Connect(PrivateRoute)
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/profile/settings"
           />
           <Connect(PrivateRoute)
             component={
@@ -87,12 +122,89 @@ exports[`should render App 1`] = `
                 "_status": -1,
               }
             }
+            path="/user/:id"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            exact={true}
+            path="/users"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/users/page:number"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/support/confirm/email/:email"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/support/confirm/token/:token"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/support/reset/token/:token"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
+            path="/support/oauth/:provider"
+          />
+          <Route
+            component={
+              Object {
+                "$$typeof": Symbol(react.lazy),
+                "_ctor": [Function],
+                "_result": null,
+                "_status": -1,
+              }
+            }
           />
         </Switch>
       </Suspense>
     </ErrorBoundary>
-  </Main>
-  <Nav />
+  </Connect(Main)>
   <Footer />
 </div>
 `;
