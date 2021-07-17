@@ -8,29 +8,30 @@
     .form {
         display: flex;
         flex-direction: column;
-        min-width: 30rem;
 
         .signInButton {
-            margin-top: 4rem;
+            margin-top: 3.5rem;
         }
     }
 
     .otherOptions {
-        margin-top: 4rem;
+        margin-top: 3.5rem;
 
-        .oauthProvidersContainer {
-            margin-top: 4rem;
+        .oauthProvidersList {
+            padding: 0;
+            margin: 0;
+            margin-top: 3.5rem;
+            list-style-type: none;
 
-            .oauthProvidersList {
-                padding: 0;
-                margin: 0;
-                margin-top: 4rem;
-                list-style-type: none;
-
-                :not(:first-child) {
-                    margin-top: 0.5rem;
-                }
+            :not(:first-child) {
+                margin-top: 0.5rem;
             }
+        }
+    }
+
+    @media screen and (max-width: 500px) {
+        .otherOptions {
+            text-align: center;
         }
     }
 }

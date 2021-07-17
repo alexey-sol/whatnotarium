@@ -83,4 +83,12 @@
     .fadedIn {
         animation: fade-in 0.1s;
     }
+
+    @media screen and (max-width: 500px) {
+        .editorContainer {
+            .controls {
+                justify-content: center;
+            }
+        }
+    }
 }

@@ -13,12 +13,10 @@ function BaseDialog ({
     children,
     className,
     onClose,
-    title,
-    width
+    title
 }) {
     const containerClassName = classnames(
         styles.container,
-        styles[`${width}Width`],
         className
     );
 

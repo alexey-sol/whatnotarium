@@ -2,25 +2,17 @@
 
 .root {
     display: flex;
+    align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.2);
 
     .container {
         position: relative;
         display: flex;
-        align-self: center;
+        box-sizing: border-box;
         justify-content: center;
-        height: fit-content;
-        padding: 3rem 0;
+        padding: 2rem;
         background-color: $base-dialog-bg-color;
-
-        &.autoWidth {
-            width: auto;
-        }
-
-        &.fixedWidth {
-            width: 40rem;
-        }
 
         .closeIconButton {
             position: absolute;
@@ -39,10 +31,11 @@
     }
 
     @media screen and (max-width: 500px) {
-        .container {
-            align-self: auto;
-            width: 100% !important;
-            height: 100%;
+        & {
+            .container {
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }

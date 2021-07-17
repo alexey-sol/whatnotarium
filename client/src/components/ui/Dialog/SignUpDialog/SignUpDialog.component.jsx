@@ -11,7 +11,6 @@ function SignUpDialog ({ onClose }) {
         <BaseDialog
             onClose={onClose}
             title="Регистрация"
-            width="fixed"
         >
             <SignUpContent onClose={onClose} />
         </BaseDialog>

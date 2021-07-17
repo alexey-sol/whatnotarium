@@ -12,7 +12,6 @@ function SignInDialog ({ onClose, showForgotPass, showSignUp }) {
         <BaseDialog
             onClose={onClose}
             title="Вход"
-            width="fixed"
         >
             <SignInContent
                 onClose={onClose}

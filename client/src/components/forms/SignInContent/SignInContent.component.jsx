@@ -141,14 +141,13 @@ function SignInContent ({
                     >
                         зарегистрироваться!
                     </CustomLink>
+
+                    <span>
+                        &nbsp;А еще можно войти с помощью таких сервисов:
+                    </span>
                 </p>
 
-                <div className={styles.oauthProvidersContainer}>
-                    <p>
-                        А еще можно войти с помощью таких сервисов:
-                    </p>
-
-                    <ul className={styles.oauthProvidersList}>
+                <ul className={styles.oauthProvidersList}>
                         <li>
                             <BaseButton
                                 onClick={openWindowToSignUpViaGoogle}
@@ -167,7 +166,6 @@ function SignInContent ({
                             />
                         </li>
                     </ul>
-                </div>
             </div>
         </div>
     );

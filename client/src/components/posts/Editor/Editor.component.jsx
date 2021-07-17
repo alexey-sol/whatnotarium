@@ -45,6 +45,9 @@ function getMceEditorInitOptions (setEditor) {
         menubar: false,
         min_height: 200,
         min_width: 300,
+        mobile: {
+            toolbar_drawer: "floating"
+        },
         plugins,
         resize: false,
         setup: (editor) => editor.on("init", () => setEditor(editor)),

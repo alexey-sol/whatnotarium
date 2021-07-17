@@ -1,7 +1,6 @@
 import {
     arrayOf,
     func,
-    oneOf,
     oneOfType,
     node,
     string
@@ -10,8 +9,7 @@ import {
 export const defaultProps = {
     children: null,
     className: "",
-    title: "",
-    width: "auto"
+    title: ""
 };
 
 export const propTypes = {
@@ -21,6 +19,5 @@ export const propTypes = {
     ]),
     className: string,
     onClose: func.isRequired,
-    title: string,
-    width: oneOf(["auto", "fixed"])
+    title: string
 };

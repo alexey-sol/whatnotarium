@@ -11,7 +11,6 @@ function ForgotPasswordDialog ({ onClose }) {
         <BaseDialog
             onClose={onClose}
             title="Восстановление пароля"
-            width="fixed"
         >
             <ForgotPasswordContent onClose={onClose} />
         </BaseDialog>

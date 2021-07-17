@@ -64,7 +64,6 @@ export function MobileActionsMenu ({
         <BaseDialog
             onClose={onClose}
             className={styles.container}
-            width="fixed"
         >
             <ul className={styles.content}>
                 <li className={styles.item}>
