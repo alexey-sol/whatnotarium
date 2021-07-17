@@ -13,11 +13,13 @@ function PostMetaData ({ post, userId }) {
 
     return (
         <section className={styles.container}>
-            <PostAuthorInfo
-                createdAt={createdAt}
-                user={author}
-                userId={userId}
-            />
+            <section className={styles.authorInfoContainer}>
+                <PostAuthorInfo
+                    createdAt={createdAt}
+                    user={author}
+                    userId={userId}
+                />
+            </section>
 
             <section className={styles.stats}>
                 <PostRating

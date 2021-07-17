@@ -3,6 +3,7 @@
 .container {
     display: flex;
     align-items: center;
+    padding-right: 1rem;
     font-family: $font-family--undertone;
     font-weight: 300;
 
@@ -23,6 +24,8 @@
     span {
         display: flex;
         align-items: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
         color: $text-color--normal;
         font-size: $font-size--small;
     }
@@ -30,5 +33,15 @@
     .date {
         color: $text-color--undertone;
         font-size: $font-size--smaller;
+    }
+
+    @media screen and (max-width: 500px) {
+        & {
+            // max-width: 18rem;
+
+            span {
+                // max-width: 12rem;
+            }
+        }
     }
 }

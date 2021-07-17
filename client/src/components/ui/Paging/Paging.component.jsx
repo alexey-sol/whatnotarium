@@ -88,6 +88,7 @@ function Paging ({
                         <button
                             disabled={isFirstPage}
                             onClick={moveLeft}
+                            title="На предыдущую страницу"
                         >
                             {" Назад"}
                         </button>
@@ -97,6 +98,7 @@ function Paging ({
                         <button
                             disabled={isLastPage}
                             onClick={moveRight}
+                            title="На следующую страницу"
                         >
                             {"Вперед "}
                         </button>
@@ -104,8 +106,8 @@ function Paging ({
                 </ul>
             )}
 
-            <ul className={styles.paging}>
-                <li
+            <section className={styles.paging}>
+                <div
                     className={styles.spill}
                     title="На первую страницу"
                 >
@@ -115,13 +117,15 @@ function Paging ({
                     >
                         <span>&laquo;</span>
                     </button>
-                </li>
+                </div>
 
-                {numberItems}
+                <ul className={styles.list}>
+                    {numberItems}
+                </ul>
 
-                <li
+                <div
                     className={styles.spill}
-                    title="На последнюю страницу"
+                    title={`На последнюю страницу - ${lastNumber}`}
                 >
                     <button
                         disabled={!hasRightSpill}
@@ -129,8 +133,8 @@ function Paging ({
                     >
                         <span>&raquo;</span>
                     </button>
-                </li>
-            </ul>
+                </div>
+            </section>
         </nav>
     );
 }

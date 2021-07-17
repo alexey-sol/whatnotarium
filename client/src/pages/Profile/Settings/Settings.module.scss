@@ -13,7 +13,7 @@
     }
 
     .formContainer {
-        min-width: 18rem;
+        min-width: 28rem;
 
         &:not(:first-of-type) {
             margin-top: 3rem;
@@ -30,5 +30,14 @@
 
     .profilePasswordForm {
         grid-area: profile-password-form;
+    }
+
+    @media screen and (max-width: 500px) {
+        .forms {
+            grid-template-areas:
+                "profile-picture-form"
+                "profile-data-form"
+                "profile-password-form";
+        }
     }
 }

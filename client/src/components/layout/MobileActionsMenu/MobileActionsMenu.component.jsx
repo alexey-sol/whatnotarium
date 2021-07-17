@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { PROFILE } from "utils/const/pathnames";
+import { MY_POSTS, PROFILE } from "utils/const/pathnames";
 import BaseButton from "components/ui/BaseButton";
 import BaseDialog from "components/ui/BaseDialog";
 import NavbarList from "components/layout/NavbarList";
@@ -26,7 +26,7 @@ export function MobileActionsMenu ({
         onClose();
     };
 
-    const redirectToProfile = () => history.push(`/${PROFILE}`);
+    const redirectToProfile = () => history.push(`/${PROFILE}/${MY_POSTS}`);
 
     const signOut = () => {
         onSignOutStart(() => history.push("/"));

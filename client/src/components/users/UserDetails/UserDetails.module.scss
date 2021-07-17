@@ -10,6 +10,7 @@
 
         .name {
             margin-left: 2rem;
+            overflow-wrap: anywhere;
             font-family: $font-family--caption;
             font-size: $font-size--medium;
             font-weight: 400;

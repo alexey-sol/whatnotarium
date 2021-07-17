@@ -54,7 +54,7 @@ function SearchPostInput ({
                 if (event.key === "Enter") {
                     redirectToPostsIfNeeded();
 
-                    onSearchPostsStart(searchTerm, () => {
+                    onSearchPostsStart({ searchTerm }, () => {
                         pubsub.publish(SEARCH_POSTS, searchTerm);
                         setSearchIsInitiated(true);
                     });

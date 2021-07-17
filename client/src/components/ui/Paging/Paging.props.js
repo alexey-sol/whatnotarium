@@ -5,12 +5,12 @@ import {
     string
 } from "prop-types";
 
-import { DEFAULT_PAGING_COUNT } from "utils/const/defaultValues";
+import { DEFAULT_PAGE_NEIGHBOURS, DEFAULT_PAGING_COUNT } from "utils/const/defaultValues";
 
 export const defaultProps = {
     count: DEFAULT_PAGING_COUNT,
     currentPage: 1,
-    pageNeighbours: 4,
+    pageNeighbours: DEFAULT_PAGE_NEIGHBOURS,
     pathPrefix: "",
     qs: ""
 };
