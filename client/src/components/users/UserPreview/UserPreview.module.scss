@@ -28,6 +28,7 @@
             font-weight: 400;
 
             a {
+                overflow-wrap: anywhere;
                 color: inherit;
                 text-decoration: none;
 
@@ -41,6 +42,10 @@
             color: $text-color--undertone;
             font-family: $font-family--normal;
             font-size: $font-size--small;
+
+            span {
+                overflow-wrap: anywhere;
+            }
         }
     }
 

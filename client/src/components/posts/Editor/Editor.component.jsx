@@ -41,9 +41,9 @@ function getMceEditorInitOptions (setEditor) {
 
     return {
         content_style: contentStyle,
-        height: 500,
+        max_height: 500,
         menubar: false,
-        min_height: 200,
+        min_height: 430,
         min_width: 300,
         mobile: {
             toolbar_drawer: "floating"

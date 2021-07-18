@@ -27,6 +27,7 @@
     }
 
     .infoBlock {
+        overflow-wrap: anywhere;
         color: $text-color--normal;
         font-family: $font-family--normal;
         font-size: $font-size--medium;

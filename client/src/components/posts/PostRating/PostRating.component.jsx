@@ -62,6 +62,7 @@ function PostRating ({
         : "";
 
     const commonProps = {
+        className: (isDisabled) ? styles.disabledIconButton : "",
         disabled: isDisabled || isPending,
         title
     };
@@ -88,6 +89,7 @@ function PostRating ({
                 : <Rating size={30} />}
 
             <div className={styles.rating}>
+                <span className={styles.description}>Оценка:&nbsp;</span>
                 <CappedCount count={rating} showDynamics />
             </div>
 

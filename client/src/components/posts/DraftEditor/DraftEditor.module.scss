@@ -17,10 +17,6 @@
             height: 4.5rem;
         }
 
-        .body {
-            height: 50rem;
-        }
-
         .warning {
             color: $color-error;
             text-align: center;
@@ -89,6 +85,16 @@
             .controls {
                 justify-content: center;
             }
+
+            .metadata {
+                flex-direction: column;
+            }
+        }
+    }
+
+    @media screen and (min-width: 500px) {
+        & {
+            max-width: 80rem;
         }
     }
 }

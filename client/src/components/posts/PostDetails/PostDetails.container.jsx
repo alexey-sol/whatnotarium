@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
 import * as p from "utils/const/pathnames";
@@ -25,24 +26,23 @@ function PostDetailsContainer ({
     match,
     onApprovePostStart,
     onFetchPostStart,
+    onIncrementViewCountStart,
     onRejectPostStart,
     onShowNotification,
-    onIncrementViewCountStart,
     post
 }) {
     const [viewCountUpdated, setViewCountUpdated] = useState(false);
+
     const { push } = history;
     const { isAdmin } = currentUser || {};
-    const { isApproved, isFrozen, viewCount } = post;
-
     const id = +match.params.id;
-    const shouldFetchPost = !post.id;
-    const redirectToDraft = useCallback(() => push(`/${p.POST}/${id}/${p.EDIT}`), [id, push]);
 
-    const redirectToListAndShowSuccess = useCallback(() => {
-        push("/");
-        onShowNotification(successNotification);
-    }, [onShowNotification, push]);
+    const shouldFetchPost = !post.id;
+
+    const shouldIncrementViewCount = (
+        !shouldFetchPost && !viewCountUpdated && !isAdmin &&
+        !post.isFrozen && post.isApproved
+    );
 
     useEffect(() => {
         if (shouldFetchPost) {
@@ -51,16 +51,17 @@ function PostDetailsContainer ({
     }, [id, onFetchPostStart, shouldFetchPost]);
 
     useEffect(() => {
-        const shouldIncrementViewCount = (
-            Number.isInteger(viewCount) && !viewCountUpdated && !isAdmin && !isFrozen && isApproved
-        );
-
         if (shouldIncrementViewCount) {
             onIncrementViewCountStart(id, () => setViewCountUpdated(true));
         }
-    }, [
-        id, isAdmin, isApproved, isFrozen, onIncrementViewCountStart, viewCount, viewCountUpdated
-    ]);
+    }, [id, onIncrementViewCountStart, shouldIncrementViewCount]);
+
+    const redirectToDraft = useCallback(() => push(`/${p.POST}/${id}/${p.EDIT}`), [id, push]);
+
+    const redirectToListAndShowSuccess = useCallback(() => {
+        push("/");
+        onShowNotification(successNotification);
+    }, [onShowNotification, push]);
 
     return (
         <PostDetails
@@ -73,16 +74,10 @@ function PostDetailsContainer ({
     );
 }
 
-const mapStateToProps = () => {
-    return (state, ownProps) => {
-        const id = +ownProps.match.params.id;
-
-        return ({
-            currentUser: selectCurrentUser(state),
-            post: selectPostById(state, id)
-        });
-    };
-};
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    post: (state, ownProps) => selectPostById(state, +ownProps.match.params.id)
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onApprovePostStart: (payload, cb) => dispatch(approvePostStart(payload, cb)),
