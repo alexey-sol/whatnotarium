@@ -21,7 +21,9 @@ function Main ({ children, onHideNotification, notification }) {
 
     return (
         <main className={styles.container}>
-            {children}
+            <section className={styles.content}>
+                {children}
+            </section>
 
             {Boolean(notification) && (
                 <Popup

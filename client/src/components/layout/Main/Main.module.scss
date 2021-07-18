@@ -2,5 +2,19 @@
 
 .container {
     grid-area: main;
-    padding: 2rem 1rem;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+
+    .content {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 2rem 1rem;
+    }
+
+    @media screen and (min-width: 1600px) {
+        .content {
+            width: 1024px;
+        }
+    }
 }

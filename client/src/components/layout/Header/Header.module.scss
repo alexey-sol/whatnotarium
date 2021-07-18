@@ -15,12 +15,21 @@
     .content {
         grid-area: content;
         display: flex;
-        padding: 0 3vw;
+        box-sizing: border-box;
+        max-width: 1024px;
+        padding: 0 1rem;
     }
 
     @media screen and (max-width: 1024px) {
         & {
             display: none;
+        }
+    }
+
+    @media screen and (min-width: 1600px) {
+        .content {
+            justify-self: center;
+            width: 1024px;
         }
     }
 }
