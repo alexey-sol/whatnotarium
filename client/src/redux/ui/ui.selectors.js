@@ -3,6 +3,13 @@ import { createSelector } from "reselect";
 const getUi = ({ ui }) => ui;
 const getActionPrefix = (state, actionPrefix) => actionPrefix;
 
+export const selectIsPending = createSelector(
+    [getUi],
+    ({ pendingApi }) => {
+        return Object.values(pendingApi).length > 0;
+    }
+);
+
 export const selectRelevantPendingAction = createSelector(
     [getUi, getActionPrefix],
     ({ pendingApi }, { actionPrefix, prop = null } = {}) => {

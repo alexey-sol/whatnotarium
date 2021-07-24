@@ -4,15 +4,22 @@ import { createStructuredSelector } from "reselect";
 
 import { ERROR, SUCCESS } from "utils/const/notificationProps";
 import Popup from "components/ui/Popup";
+import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./Main.props";
 import { hideNotification } from "redux/ui/ui.actions";
+import { selectIsPending } from "redux/ui/ui.selectors";
 import { selectNotification } from "redux/ui/ui.selectors";
 import styles from "./Main.module.scss";
 
 Main.defaultProps = defaultProps;
 Main.propTypes = propTypes;
 
-function Main ({ children, onHideNotification, notification }) {
+function Main ({
+    children,
+    isPending,
+    notification,
+    onHideNotification
+}) {
     const didErrorOccur = notification?.type === ERROR;
 
     const popupTheme = (didErrorOccur)
@@ -22,6 +29,7 @@ function Main ({ children, onHideNotification, notification }) {
     return (
         <main className={styles.container}>
             <section className={styles.content}>
+                {isPending && <Spinner />}
                 {children}
             </section>
 
@@ -38,6 +46,7 @@ function Main ({ children, onHideNotification, notification }) {
 }
 
 const mapStateToProps = createStructuredSelector({
+    isPending: selectIsPending,
     notification: selectNotification
 });
 

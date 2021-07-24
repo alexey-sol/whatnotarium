@@ -3,7 +3,7 @@ import * as types from "./support.types";
 export function confirmEmailFailure (error) {
     return {
         payload: { error },
-        type: types.CHECK_RESET_TOKEN_FAILURE
+        type: types.CONFIRM_EMAIL_FAILURE
     };
 }
 

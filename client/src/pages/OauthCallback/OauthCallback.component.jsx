@@ -6,7 +6,6 @@ import { DEFAULT_TIMEOUT_IN_MS, ERROR } from "utils/const/notificationProps";
 import Notification from "utils/objects/Notification";
 import OauthError from "utils/errors/OauthError";
 import QSParser from "utils/parsers/QSParser";
-import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./OauthCallback.props";
 import { getTokenStart, resetOauthError } from "redux/oauth/oauth.actions";
 import { selectError } from "redux/oauth/oauth.selectors";
@@ -52,10 +51,6 @@ function OauthCallback ({
             onGetTokenStart({ code, provider }, () => history.push("/"));
         }
     }, [code, error, history, onGetTokenStart, onShowNotification, provider]);
-
-    if (!error) {
-        return <Spinner />;
-    }
 
     return (
         <article className={styles.container} />

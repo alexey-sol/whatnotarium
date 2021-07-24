@@ -3,10 +3,8 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { SEARCH_USERS } from "utils/const/events";
-import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import SearchUserInput from "components/layout/SearchUserInput";
 import UserList from "components/users/UserList";
-import WithSpinner from "components/ui/WithSpinner";
 import { defaultProps, propTypes } from "./Users.props";
 import { fetchUsersStart, searchUsersStart } from "redux/users/users.actions";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
@@ -17,7 +15,6 @@ import {
     selectTotalCount
 } from "redux/usersPaging/usersPaging.selectors";
 
-import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { selectUsers } from "redux/users/users.selectors";
 import getPathPrefix from "utils/helpers/getPathPrefix";
 import usePagination from "utils/hooks/usePagination";
@@ -27,7 +24,6 @@ Users.propTypes = propTypes;
 
 function Users ({
     currentUsersPage,
-    isPending,
     location,
     onFetchUsersStart,
     onSearchUsersStart,
@@ -58,27 +54,22 @@ function Users ({
         searchRecords: searchUsers
     });
 
-    const UsersWithSpinner = WithSpinner(UserList, {
-        isPending,
-        pathPrefix: getPathPrefix(location.pathname, 2),
-        qs,
-        totalCount,
-        users
-    });
-
     return (
         <Fragment>
             <SearchUserInput />
-            <UsersWithSpinner />
+
+            <UserList
+                pathPrefix={getPathPrefix(location.pathname, 2)}
+                qs={qs}
+                totalCount={totalCount}
+                users={users}
+            />
         </Fragment>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
     currentUsersPage: selectCurrentPage,
-    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
-        actionPrefix: USERS_PREFIX
-    })),
     totalCount: selectTotalCount,
     users: selectUsers,
     usersOnPageCount: selectCount

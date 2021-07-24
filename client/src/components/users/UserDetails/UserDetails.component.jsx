@@ -4,15 +4,12 @@ import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 
 import * as p from "utils/const/pathnames";
-import { USERS_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/ui/BaseButton";
 import DateFormatter from "utils/formatters/DateFormatter";
-import Spinner from "components/ui/Spinner";
 import UserPicture from "components/ui/UserPicture";
 import { defaultProps, propTypes } from "./UserDetails.props";
 import { fetchUserStart } from "redux/users/users.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { selectUserById } from "redux/users/users.selectors";
 import styles from "./UserDetails.module.scss";
 
@@ -22,7 +19,6 @@ UserDetailsComponent.propTypes = propTypes;
 function UserDetailsComponent ({
     currentUser,
     history,
-    isPending,
     match,
     onFetchUserStart,
     user
@@ -65,10 +61,6 @@ function UserDetailsComponent ({
         )
         : null;
 
-    if (isPending) {
-        return <Spinner />;
-    }
-
     return (
         <article className={styles.container}>
             <header className={styles.firstImpression}>
@@ -107,10 +99,6 @@ function UserDetailsComponent ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
-    isPending: (state, ownProps) => Boolean(selectRelevantPendingAction(state, {
-        actionPrefix: USERS_PREFIX,
-        prop: { id: +ownProps.match.params.id }
-    })),
     user: (state, ownProps) => selectUserById(state, +ownProps.match.params.id)
 });
 

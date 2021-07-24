@@ -10,7 +10,6 @@ import { SUPPORT_PREFIX } from "utils/const/actionTypeAffixes";
 import BaseButton from "components/ui/BaseButton";
 import FormInput from "components/forms/FormInput";
 import Notification from "utils/objects/Notification";
-import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./ResetToken.props";
 import { resetPasswordStart } from "redux/support/support.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -55,10 +54,6 @@ function ResetToken ({
 
         cb(event);
     };
-
-    if (isPending) {
-        return <Spinner />;
-    }
 
     const elem = (
         <div className={styles.container}>

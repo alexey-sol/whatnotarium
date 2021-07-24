@@ -57,6 +57,7 @@ function Menu () {
                 {userMenuIsShown && (
                     <UserMenuDropdown
                         elemRef={menuRef}
+                        isVisible={userMenuIsShown}
                         onClose={hideUserMenu}
                     />
                 )}

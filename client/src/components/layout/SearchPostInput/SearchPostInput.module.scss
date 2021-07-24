@@ -3,6 +3,7 @@
 .container {
     display: flex;
     align-items: center;
+    animation: fade-in 0.2s;
 
     .input {
         display: block;

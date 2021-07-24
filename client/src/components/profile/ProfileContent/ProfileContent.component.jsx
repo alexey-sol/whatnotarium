@@ -5,18 +5,15 @@ import classnames from "classnames";
 
 import * as p from "utils/const/pathnames";
 import { MY_POSTS, SETTINGS } from "utils/const/profileTabNames";
-import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import CustomLink from "components/ui/CustomLink";
-import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./ProfileContent.component.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import styles from "./ProfileContent.module.scss";
 
 ProfileContent.propTypes = propTypes;
 ProfileContent.defaultProps = defaultProps;
 
-function ProfileContent ({ activeTabName, children, isPending }) {
+function ProfileContent ({ activeTabName, children }) {
     const renderTab = (tabName, path) => (
         <li
             className={classnames(styles.tab, (tabName === activeTabName) ? styles.active : "")}
@@ -36,19 +33,14 @@ function ProfileContent ({ activeTabName, children, isPending }) {
             </ul>
 
             <div className={styles.tabContent}>
-                {(isPending)
-                    ? <Spinner />
-                    : children}
+                {children}
             </div>
         </div>
     );
 }
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
-        actionPrefix: POSTS_PREFIX
-    }))
+    currentUser: selectCurrentUser
 });
 
 const ConnectedProfileContent = connect(

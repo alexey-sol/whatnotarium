@@ -1,6 +1,5 @@
 import {
     arrayOf,
-    bool,
     node,
     oneOfType,
     string
@@ -8,8 +7,7 @@ import {
 
 export const defaultProps = {
     activeTabName: "",
-    children: null,
-    isPending: false
+    children: null
 };
 
 export const propTypes = {
@@ -17,6 +15,5 @@ export const propTypes = {
     children: oneOfType([
         arrayOf(node),
         node
-    ]),
-    isPending: bool
+    ])
 };

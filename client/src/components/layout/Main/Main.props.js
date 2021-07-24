@@ -1,5 +1,6 @@
 import {
     arrayOf,
+    bool,
     func,
     node,
     object,
@@ -8,6 +9,7 @@ import {
 
 export const defaultProps = {
     children: null,
+    isPending: false,
     notification: null
 };
 
@@ -16,6 +18,7 @@ export const propTypes = {
         arrayOf(node),
         node
     ]),
-    onHideNotification: func.isRequired,
-    notification: object
+    isPending: bool,
+    notification: object,
+    onHideNotification: func.isRequired
 };

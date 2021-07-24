@@ -2,11 +2,9 @@ import React, { Fragment, useCallback } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { POSTS_PREFIX } from "utils/const/actionTypeAffixes";
 import { SEARCH_POSTS } from "utils/const/events";
 import PostList from "components/posts/PostList";
 import ResetSearchButton from "components/ui/ResetSearchButton";
-import Spinner from "components/ui/Spinner";
 import { defaultProps, propTypes } from "./Home.props";
 import { fetchPostsStart, searchPostsStart } from "redux/posts/posts.actions";
 
@@ -17,8 +15,8 @@ import {
 } from "redux/postsPaging/postsPaging.selectors";
 
 import { selectCurrentUser } from "redux/session/session.selectors";
+import { selectError } from "redux/session/session.selectors";
 import { selectPosts } from "redux/posts/posts.selectors";
-import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import styles from "./Home.module.scss";
 import usePagination from "utils/hooks/usePagination";
@@ -29,19 +27,20 @@ Home.propTypes = propTypes;
 function Home ({
     currentPostsPage,
     currentUser,
-    isPending,
     location,
     onFetchPostsStart,
     onSearchPostsStart,
     onSetCurrentPage,
     posts,
     postsOnPageCount,
+    sessionError,
     totalCount
 }) {
     const locationKey = location.key;
 
     const userId = currentUser?.id;
     const isAdmin = currentUser?.isAdmin;
+    const hasSessionInfo = Boolean(sessionError || currentUser);
 
     const fetchPosts = useCallback(({ page }) => {
         const optionsForRegularUser = {
@@ -57,11 +56,13 @@ function Home ({
             where: { isApproved: false }
         };
 
-        onFetchPostsStart((isAdmin)
-            ? optionsForAdmin
-            : optionsForRegularUser);
+        if (hasSessionInfo) {
+            onFetchPostsStart((isAdmin)
+                ? optionsForAdmin
+                : optionsForRegularUser);
+        }
     }, [ // eslint-disable-line
-        isAdmin, locationKey, onFetchPostsStart, postsOnPageCount, userId
+        hasSessionInfo, isAdmin, locationKey, postsOnPageCount, userId
     ]);
 
     const searchPosts = useCallback(({ page, searchTerm }) => onSearchPostsStart({
@@ -77,10 +78,6 @@ function Home ({
         searchEventName: SEARCH_POSTS,
         searchRecords: searchPosts
     });
-
-    if (isPending) {
-        return <Spinner />;
-    }
 
     return (
         <Fragment>
@@ -102,11 +99,9 @@ function Home ({
 const mapStateToProps = createStructuredSelector({
     currentPostsPage: selectCurrentPage,
     currentUser: selectCurrentUser,
-    isPending: (state) => Boolean(selectRelevantPendingAction(state, {
-        actionPrefix: POSTS_PREFIX
-    })),
     posts: selectPosts,
     postsOnPageCount: selectCount,
+    sessionError: selectError,
     totalCount: selectTotalCount
 });
 

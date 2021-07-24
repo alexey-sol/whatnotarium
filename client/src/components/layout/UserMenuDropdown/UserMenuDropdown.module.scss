@@ -1,22 +1,23 @@
 @import "styles/style.scss";
 
-.container {
-    padding: 0.8rem 1rem;
-    margin: 0;
-    list-style-type: none;
-
-    li:not(:first-of-type) {
-        margin-top: 0.4rem;
-    }
-
-    span {
-        cursor: pointer;
-    }
-}
-
 .dropdownContainer {
     position: absolute;
     top: $actions-menu-height !important;
     right: 2rem;
     left: 0 !important;
+    animation: fade-in 0.1s;
+
+    .container {
+        padding: 0.8rem 1rem;
+        margin: 0;
+        list-style-type: none;
+
+        li:not(:first-of-type) {
+            margin-top: 0.4rem;
+        }
+
+        span {
+            cursor: pointer;
+        }
+    }
 }
