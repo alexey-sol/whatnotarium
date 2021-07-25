@@ -9,8 +9,10 @@ export const propTypes = {
     deletePost: func.isRequired,
     handleChange: func.isRequired,
     handleSubmit: func.isRequired,
+    hideLoader: func.isRequired,
     isPending: bool,
     match: object.isRequired,
     post: object,
-    setSelectedPost: func.isRequired
+    setSelectedPost: func.isRequired,
+    showLoader: func.isRequired
 };

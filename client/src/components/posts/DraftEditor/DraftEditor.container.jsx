@@ -21,7 +21,7 @@ import { defaultProps, propTypes } from "./DraftEditor.container.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectPostById } from "redux/posts/posts.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
-import { showNotification } from "redux/ui/ui.actions";
+import { hideLoader, showLoader, showNotification } from "redux/ui/ui.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
 
@@ -36,6 +36,8 @@ function DraftEditorContainer ({
     onCreatePostStart,
     onDeletePostStart,
     onFetchPostStart,
+    onHideLoader,
+    onShowLoader,
     onShowNotification,
     onUpdatePostStart,
     post
@@ -126,9 +128,11 @@ function DraftEditorContainer ({
             deletePost={deletePost}
             handleChange={handleChange}
             handleSubmit={createOrUpdatePost}
+            hideLoader={onHideLoader}
             isPending={isPending}
             post={selectedPost}
             setSelectedPost={setSelectedPost}
+            showLoader={onShowLoader}
         />
     );
 }
@@ -145,6 +149,8 @@ const mapDispatchToProps = (dispatch) => ({
     onCreatePostStart: (props, cb) => dispatch(createPostStart(props, cb)),
     onDeletePostStart: (id, cb) => dispatch(deletePostStart(id, cb)),
     onFetchPostStart: (id, cb) => dispatch(fetchPostStart(id, cb)),
+    onHideLoader: () => dispatch(hideLoader()),
+    onShowLoader: () => dispatch(showLoader()),
     onShowNotification: (notification) => dispatch(showNotification(notification)),
     onUpdatePostStart: (props, cb) => dispatch(updatePostStart(props, cb))
 });

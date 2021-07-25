@@ -1,12 +1,18 @@
 import * as sessionTypes from "redux/session/session.types";
 import * as usersTypes from "redux/users/users.types";
-import { DEFAULT_TIMEOUT_IN_MS, ERROR } from "utils/const/notificationProps";
+
+import {
+    DEFAULT_TIMEOUT_IN_MS,
+    ERROR,
+    PERSISTENT_TIMEOUT_IN_MS
+} from "utils/const/notificationProps";
+
 import { FAILURE_POSTFIX, START_POSTFIX, SUCCESS_POSTFIX } from "utils/const/actionTypeAffixes";
+import { UNAUTHORIZED_ERROR } from "utils/const/errorNames";
 import Notification from "utils/objects/Notification";
 import { addActionToPendingApi, removeActionFromPendingApi, showNotification } from "./ui.actions";
 import removePostfix from "utils/redux/removePostfixFromActionType";
 import translateError from "utils/helpers/translateError";
-import { UNAUTHORIZED_ERROR } from "utils/const/errorNames";
 
 export const mapper = ({ dispatch }) => (next) => (action) => {
     const { payload, type } = action;
@@ -17,7 +23,7 @@ export const mapper = ({ dispatch }) => (next) => (action) => {
     if (shouldShowError) {
         const translatedError = translateError(payload.error);
         const timeoutInMs = (checkIfShouldBePersistent(type))
-            ? null
+            ? PERSISTENT_TIMEOUT_IN_MS
             : DEFAULT_TIMEOUT_IN_MS;
 
         const notification = new Notification(translatedError, ERROR, timeoutInMs);

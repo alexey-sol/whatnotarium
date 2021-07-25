@@ -13,6 +13,7 @@
     background-color: $tooltip-bg-color;
     text-align: center;
     pointer-events: none;
+    animation: fade-in 0.1s;
 
     &.smallWidth {
         width: 6rem;

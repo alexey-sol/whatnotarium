@@ -4,7 +4,7 @@ interface CreateUserDto {
     isConfirmed?: boolean;
     name: string;
     password?: string;
-    picture?: Buffer;
+    picture?: Buffer | null;
 }
 
 export default CreateUserDto;

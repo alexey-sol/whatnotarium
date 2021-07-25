@@ -19,7 +19,6 @@ import Checkbox from "components/forms/Checkbox";
 import DateFormatter from "utils/formatters/DateFormatter";
 import Editor from "components/posts/Editor";
 import Input from "components/forms/Input";
-import Spinner from "components/ui/Spinner";
 import StringFormatter from "utils/formatters/StringFormatter";
 import Tooltip from "components/ui/Tooltip";
 import { defaultProps, propTypes } from "./DraftEditor.component.props";
@@ -33,10 +32,12 @@ function DraftEditor ({
     deletePost,
     handleChange,
     handleSubmit,
+    hideLoader,
     isPending,
     match,
     post,
-    setSelectedPost
+    setSelectedPost,
+    showLoader
 }) {
     const paramId = match.params.id;
     const charsCountRef = useRef(null);
@@ -105,14 +106,20 @@ function DraftEditor ({
         return () => pubsub.unsubscribe(RESET_POST, resetPost);
     }, [resetPost]);
 
+    useEffect(() => {
+        if (editor) {
+            hideLoader();
+        } else {
+            showLoader();
+        }
+    }, [editor, hideLoader, showLoader]);
+
     if (isFrozenPost) {
         return <Redirect to={`/${p.POST}/${paramId}`} />;
     }
 
     return (
         <article className={styles.container}>
-            {!editor && <Spinner />}
-
             <section className={editorContainerClassName}>
                 <form
                     className={styles.form}

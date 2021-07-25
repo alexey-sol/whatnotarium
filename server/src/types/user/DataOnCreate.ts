@@ -9,7 +9,7 @@ interface DataOnCreate {
     keyLength?: number;
     lastActivityDate?: Date;
     name: string;
-    picture?: Buffer;
+    picture?: Buffer | null;
     salt?: string;
 }
 

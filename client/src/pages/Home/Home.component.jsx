@@ -15,7 +15,6 @@ import {
 } from "redux/postsPaging/postsPaging.selectors";
 
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectError } from "redux/session/session.selectors";
 import { selectPosts } from "redux/posts/posts.selectors";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import styles from "./Home.module.scss";
@@ -33,14 +32,12 @@ function Home ({
     onSetCurrentPage,
     posts,
     postsOnPageCount,
-    sessionError,
     totalCount
 }) {
     const locationKey = location.key;
 
     const userId = currentUser?.id;
     const isAdmin = currentUser?.isAdmin;
-    const hasSessionInfo = Boolean(sessionError || currentUser);
 
     const fetchPosts = useCallback(({ page }) => {
         const optionsForRegularUser = {
@@ -56,13 +53,11 @@ function Home ({
             where: { isApproved: false }
         };
 
-        if (hasSessionInfo) {
-            onFetchPostsStart((isAdmin)
-                ? optionsForAdmin
-                : optionsForRegularUser);
-        }
+        onFetchPostsStart((isAdmin)
+            ? optionsForAdmin
+            : optionsForRegularUser);
     }, [ // eslint-disable-line
-        hasSessionInfo, isAdmin, locationKey, postsOnPageCount, userId
+        isAdmin, locationKey, onFetchPostsStart, postsOnPageCount, userId
     ]);
 
     const searchPosts = useCallback(({ page, searchTerm }) => onSearchPostsStart({
@@ -101,7 +96,6 @@ const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
     posts: selectPosts,
     postsOnPageCount: selectCount,
-    sessionError: selectError,
     totalCount: selectTotalCount
 });
 

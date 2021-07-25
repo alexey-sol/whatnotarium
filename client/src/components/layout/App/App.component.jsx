@@ -7,9 +7,9 @@ import { PrivateRoute } from "components/routes/Route";
 import ErrorBoundary from "components/layout/ErrorBoundary";
 import Footer from "components/layout/Footer";
 import Header from "components/layout/Header";
+import Loader from "components/ui/Loader";
 import Main from "components/layout/Main";
 import Menu from "components/layout/Menu";
-import Spinner from "components/ui/Spinner";
 import { checkSessionStart } from "redux/session/session.actions";
 import { propTypes } from "./App.props";
 import styles from "./App.module.scss";
@@ -42,7 +42,7 @@ export function App ({ onCheckSessionStart }) {
 
             <Main>
                 <ErrorBoundary>
-                    <Suspense fallback={<Spinner />}>
+                    <Suspense fallback={<Loader />}>
                         <Switch>
                             <Route
                                 component={Home}

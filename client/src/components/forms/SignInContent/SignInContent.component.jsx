@@ -148,24 +148,24 @@ function SignInContent ({
                 </p>
 
                 <ul className={styles.oauthProvidersList}>
-                        <li>
-                            <BaseButton
-                                onClick={openWindowToSignUpViaGoogle}
-                                text="Google"
-                                theme="neutral"
-                                width="full"
-                            />
-                        </li>
+                    <li>
+                        <BaseButton
+                            onClick={openWindowToSignUpViaGoogle}
+                            text="Google"
+                            theme="neutral"
+                            width="full"
+                        />
+                    </li>
 
-                        <li>
-                            <BaseButton
-                                onClick={openWindowToSignUpViaYandex}
-                                text="Яндекс"
-                                theme="neutral"
-                                width="full"
-                            />
-                        </li>
-                    </ul>
+                    <li>
+                        <BaseButton
+                            onClick={openWindowToSignUpViaYandex}
+                            text="Яндекс"
+                            theme="neutral"
+                            width="full"
+                        />
+                    </li>
+                </ul>
             </div>
         </div>
     );
