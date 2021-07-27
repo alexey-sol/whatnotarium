@@ -6,13 +6,13 @@ import {
 } from "prop-types";
 
 export const defaultProps = {
-    hasManualEnter: false,
+    isCompactView: false,
     rootClassName: ""
 };
 
 export const propTypes = {
-    hasManualEnter: bool,
     history: object,
+    isCompactView: bool,
     location: object,
     onClose: func.isRequired,
     onSearchPostsStart: func.isRequired,

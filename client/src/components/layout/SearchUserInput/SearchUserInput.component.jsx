@@ -1,61 +1,31 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import * as p from "utils/const/pathnames";
 import { SEARCH_USERS } from "utils/const/events";
-import QSParser from "utils/parsers/QSParser";
 import ResetSearchButton from "components/ui/ResetSearchButton";
 import { searchUsersStart } from "redux/users/users.actions";
 import { propTypes } from "./SearchUserInput.props";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
-import pubsub from "utils/pubsub";
 import styles from "./SearchUserInput.module.scss";
+import useSearch from "utils/hooks/useSearch";
 
 SearchUserInput.propTypes = propTypes;
 
-function SearchUserInput ({
-    history,
-    location,
-    onSearchUsersStart,
-    onSetCurrentPage
-}) {
-    const qs = location.search;
-    const qsParser = new QSParser(qs);
-    const { st: stFromQuery = "" } = qsParser.parse();
+function SearchUserInput ({ onSearchUsersStart, onSetCurrentPage }) {
+    const {
+        prevSearchTerm,
+        resetSearch,
+        searchTerm,
+        setSearchTerm
+    } = useSearch({
+        onSetCurrentPage,
+        searchEventName: SEARCH_USERS,
+        searchRecords: onSearchUsersStart
+    });
 
-    const [searchIsInitiated, setSearchIsInitiated] = useState(false);
-    const [searchTerm, setSearchTerm] = useState(stFromQuery);
-
-    const finalSt = searchTerm || stFromQuery;
-
-    const resetSearch = useCallback(() => {
-        if (searchTerm) {
-            setSearchTerm("");
-            pubsub.publish(SEARCH_USERS, "");
-            onSetCurrentPage(1);
-            history.push(`/${p.USERS}`);
-        }
-    }, [history, onSetCurrentPage, searchTerm]);
-
-    const handleChange = ({ target }) => {
-        if (!searchIsInitiated) {
-            setSearchIsInitiated(true);
-        }
-
-        setSearchTerm(target.value);
-
-        if (!target.value) {
-            resetSearch();
-        }
-    };
-
-    useEffect(() => {
-        if (searchIsInitiated) {
-            onSetCurrentPage(1);
-            onSearchUsersStart({ searchTerm }, () => pubsub.publish(SEARCH_USERS, searchTerm));
-        }
-    }, [onSearchUsersStart, searchIsInitiated, onSetCurrentPage, resetSearch, searchTerm]);
+    const submittedSearch = prevSearchTerm.length > 0;
 
     return (
         <div className={styles.container}>
@@ -64,14 +34,14 @@ function SearchUserInput ({
                 className={styles.input}
                 maxLength={100}
                 name="searchTerm"
-                onChange={handleChange}
+                onChange={({ target }) => setSearchTerm(target.value)}
                 placeholder={"Найти автора по имени или по полю о \"себе\""}
                 value={searchTerm}
             />
 
-            {Boolean(finalSt) && (
+            {submittedSearch && (
                 <div className={styles.resetSearchButton}>
-                    <ResetSearchButton onClick={resetSearch} />
+                    <ResetSearchButton onClick={resetSearch} to={`/${p.USERS}`} />
                 </div>
             )}
         </div>

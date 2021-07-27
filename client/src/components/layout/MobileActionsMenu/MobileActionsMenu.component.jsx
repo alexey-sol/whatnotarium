@@ -68,7 +68,7 @@ export function MobileActionsMenu ({
             <ul className={styles.content}>
                 <li className={styles.item}>
                     <SearchPostInput
-                        hasManualEnter
+                        isCompactView
                         onClose={onClose}
                         rootClassName={styles.searchInputContainer}
                     />
