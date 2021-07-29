@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { USERS } from "utils/const/pathnames";
+import { DRAFT, POST, USERS } from "utils/const/pathnames";
+import NavbarTab from "components/layout/NavbarTab";
 import WritePostTab from "components/layout/WritePostTab";
 import { defaultProps, propTypes } from "./NavbarList.props";
 import { selectCurrentUser } from "redux/session/session.selectors";
@@ -12,39 +13,40 @@ import styles from "./NavbarList.module.scss";
 Navbar.defaultProps = defaultProps;
 Navbar.propTypes = propTypes;
 
-function Navbar ({ currentUser, onClose }) {
+function Navbar ({ currentUser, location, onClose }) {
     const userIsAuthed = Boolean(currentUser);
     const { isAdmin } = currentUser || {};
 
-    const articleButtonTitle = (isAdmin)
+    const articlesButtonTitle = (isAdmin)
         ? "Статьи на проверку"
         : "Статьи";
 
+    const draftSelected = location.pathname.startsWith(`/${DRAFT}`);
+    const authorsSelected = location.pathname.startsWith(`/${USERS}`);
+    const somethingOtherSelected = !draftSelected && !authorsSelected;
+    const postsSelected = location.pathname.startsWith(`/${POST}`) || somethingOtherSelected;
+
+    const allowedToWritePosts = userIsAuthed && !isAdmin;
+
     return (
         <ul className={styles.container} onClick={onClose}>
-            {userIsAuthed && !isAdmin && (
-                <li className={styles.item}>
-                    <WritePostTab classNameProminent={styles.prominentItem} />
-                </li>
-            )}
-
-            <li className={styles.item}>
-                <Link
-                    title={articleButtonTitle}
-                    to="/"
-                >
-                    {articleButtonTitle}
+            <NavbarTab isActive={postsSelected}>
+                <Link title={articlesButtonTitle} to="/">
+                    {articlesButtonTitle}
                 </Link>
-            </li>
+            </NavbarTab>
 
-            <li className={styles.item}>
-                <Link
-                    title="Авторы"
-                    to={`/${USERS}`}
-                >
+            <NavbarTab isActive={authorsSelected}>
+                <Link title="Авторы" to={`/${USERS}`}>
                     Авторы
                 </Link>
-            </li>
+            </NavbarTab>
+
+            {allowedToWritePosts && (
+                <NavbarTab isActive={draftSelected} className={styles.writePostTab}>
+                    <WritePostTab />
+                </NavbarTab>
+            )}
         </ul>
     );
 }
@@ -57,4 +59,4 @@ const ConnectedNavbar = connect(
     mapStateToProps
 )(Navbar);
 
-export default ConnectedNavbar;
+export default withRouter(ConnectedNavbar);

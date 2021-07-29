@@ -9,7 +9,7 @@ import pubsub from "utils/pubsub";
 
 WritePostButton.propTypes = propTypes;
 
-function WritePostButton ({ classNameProminent, location }) {
+function WritePostButton ({ location }) {
     const match = matchPath(location.pathname, {
         path: `/${DRAFT}`,
         exact: true,
@@ -20,7 +20,6 @@ function WritePostButton ({ classNameProminent, location }) {
 
     const startOverTab = (
         <a // eslint-disable-line
-            className={classNameProminent}
             onClick={resetPost}
             title="Начать сначала"
         >
