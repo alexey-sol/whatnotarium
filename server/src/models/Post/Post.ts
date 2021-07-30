@@ -84,8 +84,8 @@ class Post implements Model<Attributes, Post> {
         include?: Include[]
     ): Promise<Post> | never {
         const record = await createRecord<Attributes, Item>(POSTS, {
-            excerpt: Post.deriveExcerpt(props),
-            ...props
+            ...props,
+            excerpt: Post.deriveExcerpt(props)
         });
 
         return (include)

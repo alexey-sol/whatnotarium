@@ -95,6 +95,7 @@ function ProfileDataForm ({
 
                     <FormInput
                         label="Имя"
+                        maxLength="100"
                         name={NAME}
                         onChange={event => handleChangeWrapper(event, handleChange)}
                         type="text"
@@ -105,6 +106,7 @@ function ProfileDataForm ({
                             disabled={!hasPassword}
                             hasFixedTooltip
                             label="Email"
+                            maxLength="100"
                             name={EMAIL}
                             onChange={event => handleChangeWrapper(event, handleChange)}
                             type="email"

@@ -33,7 +33,7 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                     VALUES (
                         new."email",
                         new."isConfirmed",
-                        new."isAdmin"
+                        COALESCE(new."isAdmin", false)
                     )
                     RETURNING "id", "createdAt", "updatedAt"
                     INTO new_user_id, new_created_at, new_updated_at;

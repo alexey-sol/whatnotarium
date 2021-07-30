@@ -19,7 +19,7 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
                 "userIdsVotedDown" INTEGER[] DEFAULT '{}' NOT NULL,
                 "isApproved" BOOLEAN DEFAULT FALSE NOT NULL,
                 "isFrozen" BOOLEAN DEFAULT FALSE NOT NULL,
-                "viewCount" BIGINT DEFAULT 0 NOT NULL,
+                "viewCount" INTEGER DEFAULT 0 NOT NULL CHECK ("viewCount" <= 2147483647),
                 "createdAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "updatedAt" TIMESTAMP DEFAULT NOW() NOT NULL,
                 "userId" INTEGER NOT NULL
@@ -37,6 +37,27 @@ class CreateHashOptionsTable extends SchemaSqlGenerator<unknown> {
             CREATE INDEX IF NOT EXISTS idx_posts_user_id ON "${POSTS}" ("userId");
             CREATE INDEX IF NOT EXISTS idx_posts_user_approved ON "${POSTS}"
                 ("userId", "isApproved");
+
+            CREATE OR REPLACE FUNCTION cap_view_count()
+            RETURNS TRIGGER AS $$
+            DECLARE int_cap INTEGER;
+            BEGIN
+                int_cap := 2147483647;
+
+                IF (new."viewCount" >= int_cap) THEN
+                    new."viewCount" = int_cap;
+                END IF;
+
+                RETURN new;
+            END;
+            $$ LANGUAGE plpgsql;
+
+            DROP TRIGGER IF EXISTS trigger_cap_view_count ON "${POSTS}";
+
+            CREATE TRIGGER trigger_cap_view_count
+            BEFORE INSERT OR UPDATE ON "${POSTS}"
+            FOR EACH ROW
+            EXECUTE PROCEDURE cap_view_count();
         `;
     }
 }

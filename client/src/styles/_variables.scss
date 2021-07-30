@@ -25,7 +25,8 @@ $color-secondary: #87666c;
 $color-tertiary: #be6361;
 $color-quaternary: #663939;
 
-$color-error: red;
+$color-error: #ff6d6d;
+$color-success: #1ac688;
 
 $selection-bg-color: $color-primary;
 $text-color--caption: $gray--darkest;
@@ -91,7 +92,7 @@ $logo-bg-color--hover: $color-secondary;
 $logo-text-color: white;
 
 $menu-item-bg-color: $color-quaternary;
-$menu-item-bg-color--active: #f8ecec;
+$menu-item-bg-color--active: #f8f0f0;
 $menu-item-bg-color--hover: $color-tertiary;
 $menu-item-border-color: $gray--light;
 $menu-item-text-color: $gray--darkest;
@@ -155,7 +156,7 @@ $popup-width: 35rem;
 $popup-height: 6rem;
 
 $rating-text-color--def: $gray--darken;
-$rating-text-color--neg: #ff6d6d;
-$rating-text-color--pos: #1ac688;
+$rating-text-color--neg: $color-error;
+$rating-text-color--pos: $color-success;
 
 // Used color palette: https://coolors.co/663939-87666c-ffd275-fcb982-be6361
