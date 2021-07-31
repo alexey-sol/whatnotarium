@@ -1,0 +1,32 @@
+name: CI
+
+on: [push]
+
+env:
+  DEPLOY_PATH: /home/ubuntu/Projects/geek-regime
+  BUILD_SCRIPT: npm run prod:up
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Extract Branch Name
+      shell: bash
+      run: echo "##[set-output name=branch_name;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+    - name: Deliver to Server
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DEPLOY_SERVER_HOST }}
+        port: ${{ secrets.DEPLOY_SERVER_PORT }}
+        username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        source: .
+        target: ${{ env.DEPLOY_PATH }}/${{ steps.extract_branch.outputs.branch_name }}
+        strip_components: 1
+    - name: Build Application
+      run: $BUILD_SCRIPT
+    - name: Print Result
+      run: echo "Deployed at ${secrets.DEPLOY_SERVER_HOST}"
+ 
