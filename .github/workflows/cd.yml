@@ -17,7 +17,7 @@ jobs:
         echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
     - name: Deliver to server
       env:
-        DEPLOY_PATH: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/environments
+        DEPLOY_DIRECTORY: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/environments
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_SERVER_HOST }}
@@ -54,6 +54,16 @@ jobs:
           export TINY_API_KEY=${{ secrets.TINY_API_KEY }}
           export YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
           export YANDEX_CLIENT_SECRET=${{ secrets.YANDEX_CLIENT_SECRET }}
-          cd ${{ env.DEPLOY_PATH }} && rm -rf ${{ env.BRANCH_NAME }} && mkdir "$_" && cd "$_"
-          git clone ${{ secrets.REPO_SSH_URL }}
-          cd ${{ github.event.repository.name }} && npm run prod:restart
+
+          cd ${{ env.DEPLOY_DIRECTORY }}
+
+          if [ -d ${{ env.BRANCH_NAME }} ]; then
+            cd ${{ env.BRANCH_NAME }}/${{ github.event.repository.name }}
+            git pull origin ${{ env.BRANCH_NAME }}
+          else
+            mkdir ${{ env.BRANCH_NAME }} && cd "$_"
+            git clone ${{ secrets.REPO_SSH_URL }}
+            cd ${{ github.event.repository.name }}
+          fi
+
+          npm run prod:restart
