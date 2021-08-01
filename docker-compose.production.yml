@@ -2,12 +2,18 @@ version: "3.3"
 
 services:
     client:
+        container_name: geek-regime_prod_client
         build:
             context: ./client
             dockerfile: ./builder/Dockerfile.production
         command: nginx -g "daemon off;"
     server:
+        container_name: geek-regime_prod_server
         build:
             context: ./server
             dockerfile: ./builder/Dockerfile.production
         command: pm2-runtime npm -- start
+    postgres:
+        container_name: geek-regime_prod_postgres
+    redis:
+        container_name: geek-regime_prod_redis

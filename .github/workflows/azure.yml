@@ -1,32 +1,65 @@
-name: CI
+name: CD
 
-on: [push]
-
-env:
-  DEPLOY_PATH: /home/ubuntu/Projects/geek-regime
-  BUILD_SCRIPT: npm run prod:up
+on:
+  push:
+    branches: [ master ]
 
 jobs:
-  deploy:
+  deliver-production:
     runs-on: ubuntu-latest
+    environment: production
     steps:
     - uses: actions/checkout@v2
-    - name: Extract Branch Name
+    - name: Extract branch name
       shell: bash
-      run: echo "##[set-output name=branch_name;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: Deliver to Server
-      uses: appleboy/scp-action@master
+      run: |
+        echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
+        echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
+    - name: Deliver to server
+      env:
+        DEPLOY_PATH: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/environments
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_SERVER_HOST }}
         port: ${{ secrets.DEPLOY_SERVER_PORT }}
         username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
-        source: .
-        target: ${{ env.DEPLOY_PATH }}/${{ steps.extract_branch.outputs.branch_name }}
-        strip_components: 1
-    - name: Build Application
-      run: $BUILD_SCRIPT
-    - name: Print Result
-      run: echo "Deployed at ${secrets.DEPLOY_SERVER_HOST}"
- 
+        script: |
+          export CLIENT_HOST=${{ secrets.CLIENT_HOST }}
+          export CLIENT_PORT=${{ secrets.CLIENT_PORT }}
+          export CLIENT_PORT_EXTERNAL=${{ secrets.CLIENT_PORT_EXTERNAL }}
+          export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          export GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          export GOOGLE_OAUTH_REDIRECT_URI=${{ secrets.GOOGLE_OAUTH_REDIRECT_URI }}
+          export NODE_ENV=${{ secrets.NODE_ENV }}
+          export POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}
+          export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          export POSTGRES_DB_TEST=${{ secrets.POSTGRES_DB_TEST }}
+          export POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          export POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          export POSTGRES_PORT_EXTERNAL=${{ secrets.POSTGRES_PORT_EXTERNAL }}
+          export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          export PROJECT_NAME_FULL=${{ secrets.PROJECT_NAME_FULL }}
+          export PROJECT_NAME_SHORT=${{ secrets.PROJECT_NAME_SHORT }}
+          export REDIS_HOST=${{ secrets.REDIS_HOST }}
+          export REDIS_PORT=${{ secrets.REDIS_PORT }}
+          export SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}
+          export SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
+          export SERVER_HOST=${{ secrets.SERVER_HOST }}
+          export SERVER_PORT=${{ secrets.SERVER_PORT }}
+          export SERVER_PORT_EXTERNAL=${{ secrets.SERVER_PORT_EXTERNAL }}
+          export SESSION_NAME=${{ secrets.SESSION_NAME }}
+          export SESSION_SECRET=${{ secrets.SESSION_SECRET }}
+          export YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
+          export YANDEX_CLIENT_SECRET=${{ secrets.YANDEX_CLIENT_SECRET }}
+          export REACT_APP_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
+          export REACT_APP_GOOGLE_OAUTH_REDIRECT_URI=${{ secrets.REACT_APP_GOOGLE_OAUTH_REDIRECT_URI }}
+          export REACT_APP_PROJECT_NAME_FULL=${{ secrets.REACT_APP_PROJECT_NAME_FULL }}
+          export REACT_APP_PROJECT_NAME_SHORT=${{ secrets.REACT_APP_PROJECT_NAME_SHORT }}
+          export REACT_APP_TINY_API_KEY=${{ secrets.REACT_APP_TINY_API_KEY }}
+          export REACT_APP_YANDEX_CLIENT_ID=${{ secrets.REACT_APP_YANDEX_CLIENT_ID }}
+          cd ${{ env.DEPLOY_PATH }}
+          rm -rf ${{ env.BRANCH_NAME }} && mkdir "$_" && cd "$_"
+          git clone ${{ secrets.REPO_SSH_URL }}
+          cd ${{ github.event.repository.name }} && npm run prod:up

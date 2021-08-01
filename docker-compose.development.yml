@@ -2,6 +2,7 @@ version: "3.3"
 
 services:
     client:
+        container_name: geek-regime_dev_client
         build:
             context: ./client
             dockerfile: ./builder/Dockerfile.development
@@ -14,6 +15,7 @@ services:
             - HOST=${CLIENT_HOST}
             - PORT=${CLIENT_PORT}
     server:
+        container_name: geek-regime_dev_server
         build:
             context: ./server
             dockerfile: ./builder/Dockerfile.development
@@ -21,6 +23,10 @@ services:
         volumes:
             - ./server:/app
             - /app/node_modules
+    postgres:
+        container_name: geek-regime_dev_postgres
+    redis:
+        container_name: geek-regime_dev_redis
 
 # [1]. A trick which allows to exlude the host's node_modules from the container's app directory
 # after attaching shared volume: https://stackoverflow.com/a/37898591
