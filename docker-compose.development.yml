@@ -2,7 +2,8 @@ version: "3.3"
 
 services:
     client:
-        container_name: geek-regime_dev_client
+        image: geek-regime_client:dev
+        container_name: geek-regime_client_dev
         build:
             context: ./client
             dockerfile: ./builder/Dockerfile.development
@@ -14,8 +15,16 @@ services:
         environment:
             - HOST=${CLIENT_HOST}
             - PORT=${CLIENT_PORT}
+            - NODE_ENV
+            - REACT_APP_GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+            - REACT_APP_GOOGLE_OAUTH_REDIRECT_URI=${GOOGLE_OAUTH_REDIRECT_URI}
+            - REACT_APP_PROJECT_NAME_FULL=${PROJECT_NAME_FULL}
+            - REACT_APP_PROJECT_NAME_SHORT=${PROJECT_NAME_SHORT}
+            - REACT_APP_TINY_API_KEY=${TINY_API_KEY}
+            - REACT_APP_YANDEX_CLIENT_ID=${YANDEX_CLIENT_ID}
     server:
-        container_name: geek-regime_dev_server
+        image: geek-regime_server:dev
+        container_name: geek-regime_server_dev
         build:
             context: ./server
             dockerfile: ./builder/Dockerfile.development

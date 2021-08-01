@@ -51,15 +51,9 @@ jobs:
           export SERVER_PORT_EXTERNAL=${{ secrets.SERVER_PORT_EXTERNAL }}
           export SESSION_NAME=${{ secrets.SESSION_NAME }}
           export SESSION_SECRET=${{ secrets.SESSION_SECRET }}
+          export TINY_API_KEY=${{ secrets.TINY_API_KEY }}
           export YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
           export YANDEX_CLIENT_SECRET=${{ secrets.YANDEX_CLIENT_SECRET }}
-          export REACT_APP_GOOGLE_CLIENT_ID=${{ secrets.REACT_APP_GOOGLE_CLIENT_ID }}
-          export REACT_APP_GOOGLE_OAUTH_REDIRECT_URI=${{ secrets.REACT_APP_GOOGLE_OAUTH_REDIRECT_URI }}
-          export REACT_APP_PROJECT_NAME_FULL=${{ secrets.REACT_APP_PROJECT_NAME_FULL }}
-          export REACT_APP_PROJECT_NAME_SHORT=${{ secrets.REACT_APP_PROJECT_NAME_SHORT }}
-          export REACT_APP_TINY_API_KEY=${{ secrets.REACT_APP_TINY_API_KEY }}
-          export REACT_APP_YANDEX_CLIENT_ID=${{ secrets.REACT_APP_YANDEX_CLIENT_ID }}
-          cd ${{ env.DEPLOY_PATH }}
-          rm -rf ${{ env.BRANCH_NAME }} && mkdir "$_" && cd "$_"
+          cd ${{ env.DEPLOY_PATH }} && rm -rf ${{ env.BRANCH_NAME }} && mkdir "$_" && cd "$_"
           git clone ${{ secrets.REPO_SSH_URL }}
-          cd ${{ github.event.repository.name }} && npm run prod:up
+          cd ${{ github.event.repository.name }} && npm run prod:restart

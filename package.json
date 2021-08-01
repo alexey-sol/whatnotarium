@@ -4,7 +4,8 @@
   "description": "A collective blog on geek-wise stuff",
   "author": "Alexey Soloviev",
   "scripts": {
-    "prod:up": "docker-compose -f docker-compose.yml -f docker-compose.production.yml up --detach --force-recreate",
+    "prod:restart": "npm run prod:down && npm run prod:up",
+    "prod:up": "docker-compose -f docker-compose.yml -f docker-compose.production.yml up --build --detach",
     "prod:down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down",
     "dev:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up",
     "dev:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down",

@@ -10,8 +10,6 @@ services:
             - redis
         ports:
             - ${CLIENT_PORT_EXTERNAL}:${CLIENT_PORT}
-        environment:
-            - NODE_ENV
     server:
         networks:
             - geek-regime

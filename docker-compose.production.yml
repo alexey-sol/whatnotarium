@@ -2,13 +2,23 @@ version: "3.3"
 
 services:
     client:
-        container_name: geek-regime_prod_client
+        image: geek-regime_client:prod
+        container_name: geek-regime_client_prod
         build:
             context: ./client
             dockerfile: ./builder/Dockerfile.production
+            args: # [1]
+                NODE_ENV: ${NODE_ENV}
+                REACT_APP_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+                REACT_APP_GOOGLE_OAUTH_REDIRECT_URI: ${GOOGLE_OAUTH_REDIRECT_URI}
+                REACT_APP_PROJECT_NAME_FULL: ${PROJECT_NAME_FULL}
+                REACT_APP_PROJECT_NAME_SHORT: ${PROJECT_NAME_SHORT}
+                REACT_APP_TINY_API_KEY: ${TINY_API_KEY}
+                REACT_APP_YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
         command: nginx -g "daemon off;"
     server:
-        container_name: geek-regime_prod_server
+        image: geek-regime_server:prod
+        container_name: geek-regime_server_prod
         build:
             context: ./server
             dockerfile: ./builder/Dockerfile.production
@@ -17,3 +27,8 @@ services:
         container_name: geek-regime_prod_postgres
     redis:
         container_name: geek-regime_prod_redis
+
+# [1]. The production environment gets variables from GitHub secrets, the local one -
+# from .env file.
+# So on prod, we need to pass variables to Dockerfile, otherwise the React build will
+# miss these.

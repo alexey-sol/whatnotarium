@@ -1,5 +1,13 @@
 FROM node:12.8.1-alpine as client-build
 
+ARG NODE_ENV=${NODE_ENV}
+ARG REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID}
+ARG REACT_APP_GOOGLE_OAUTH_REDIRECT_URI=${REACT_APP_GOOGLE_OAUTH_REDIRECT_URI}
+ARG REACT_APP_PROJECT_NAME_FULL=${REACT_APP_PROJECT_NAME_FULL}
+ARG REACT_APP_PROJECT_NAME_SHORT=${REACT_APP_PROJECT_NAME_SHORT}
+ARG REACT_APP_TINY_API_KEY=${REACT_APP_TINY_API_KEY}
+ARG REACT_APP_YANDEX_CLIENT_ID=${REACT_APP_YANDEX_CLIENT_ID}
+
 RUN mkdir -p /app
 WORKDIR /app
 COPY package.json /app
@@ -8,7 +16,7 @@ RUN npm install --quiet
 COPY . /app
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginx:1.21.1-alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=client-build /app/build /usr/share/nginx/html
