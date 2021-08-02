@@ -1,13 +1,27 @@
-name: CD
+name: Deploy production
 
 on:
   push:
-    branches: [ master ]
+    branches: [ develop, production ]
 
 jobs:
-  deliver-production:
+  get-environment-name: # [1]
+    name: "Extract environment name"
     runs-on: ubuntu-latest
-    environment: production
+    outputs:
+      environment: ${{ steps.extract.outputs.environment }}
+    steps:
+      - id: extract
+        run: echo "::set-output name=environment::$(echo $GITHUB_REF | sed -e '/^refs\/heads\/\(.*\)$/!d;s//\1/')"
+
+  deploy:
+    name: "Deploy: ${{ needs.get-environment-name.outputs.environment }}"
+    if: ${{ needs.get-environment-name.outputs.environment }}
+    needs:
+      - get-environment-name
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.get-environment-name.outputs.environment }}
     steps:
     - uses: actions/checkout@v2
     - name: Extract branch name
@@ -15,7 +29,9 @@ jobs:
       run: |
         echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
         echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
-    - name: Deliver to server
+        sudo apt-get update
+        sudo apt-get install jq -y
+    - name: Deliver to remote host
       env:
         DEPLOY_DIRECTORY: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/environments
       uses: appleboy/ssh-action@master
@@ -25,45 +41,27 @@ jobs:
         username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
-          export CLIENT_HOST=${{ secrets.CLIENT_HOST }}
-          export CLIENT_PORT=${{ secrets.CLIENT_PORT }}
-          export CLIENT_PORT_EXTERNAL=${{ secrets.CLIENT_PORT_EXTERNAL }}
-          export GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
-          export GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
-          export GOOGLE_OAUTH_REDIRECT_URI=${{ secrets.GOOGLE_OAUTH_REDIRECT_URI }}
-          export NODE_ENV=${{ secrets.NODE_ENV }}
-          export POSTGRES_DATA_PATH=${{ secrets.POSTGRES_DATA_PATH }}
-          export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          export POSTGRES_DB_TEST=${{ secrets.POSTGRES_DB_TEST }}
-          export POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-          export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-          export POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-          export POSTGRES_PORT_EXTERNAL=${{ secrets.POSTGRES_PORT_EXTERNAL }}
-          export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-          export PROJECT_NAME_FULL=${{ secrets.PROJECT_NAME_FULL }}
-          export PROJECT_NAME_SHORT=${{ secrets.PROJECT_NAME_SHORT }}
-          export REDIS_HOST=${{ secrets.REDIS_HOST }}
-          export REDIS_PORT=${{ secrets.REDIS_PORT }}
-          export SENDER_EMAIL=${{ secrets.SENDER_EMAIL }}
-          export SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
-          export SERVER_HOST=${{ secrets.SERVER_HOST }}
-          export SERVER_PORT=${{ secrets.SERVER_PORT }}
-          export SERVER_PORT_EXTERNAL=${{ secrets.SERVER_PORT_EXTERNAL }}
-          export SESSION_NAME=${{ secrets.SESSION_NAME }}
-          export SESSION_SECRET=${{ secrets.SESSION_SECRET }}
-          export TINY_API_KEY=${{ secrets.TINY_API_KEY }}
-          export YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
-          export YANDEX_CLIENT_SECRET=${{ secrets.YANDEX_CLIENT_SECRET }}
+          for s in $(echo '${{ toJSON(secrets) }}' | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
+            export $s
+          done
 
           cd ${{ env.DEPLOY_DIRECTORY }}
 
           if [ -d ${{ env.BRANCH_NAME }} ]; then
             cd ${{ env.BRANCH_NAME }}/${{ github.event.repository.name }}
-            git pull origin ${{ env.BRANCH_NAME }}
+            git pull
           else
             mkdir ${{ env.BRANCH_NAME }} && cd "$_"
             git clone ${{ secrets.REPO_SSH_URL }}
             cd ${{ github.event.repository.name }}
           fi
 
+          git checkout ${{ env.BRANCH_NAME }}
+
           npm run prod:restart
+
+# [1]. Took this brilliant solution from here: https://stackoverflow.com/a/65358831
+# The idea is to take the name of the branch ("production") and dynamically pull off the relevant
+# environment (which is also named "production" in the case). It prevents a lot of code duplication.
+# Also it allows using environments feature instead of using only repo-level variables prefixed with
+# "PRODUCTION_" or "DEVELOP_".

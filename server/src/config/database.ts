@@ -2,12 +2,12 @@ import { TEST } from "#utils/const/nodeEnv";
 import ProcessManager from "#utils/wrappers/ProcessManager";
 
 interface ValidatedEnv {
-    POSTGRES_DB: string;
-    POSTGRES_DB_TEST: string;
-    POSTGRES_HOST: string;
-    POSTGRES_PASSWORD: string;
-    POSTGRES_PORT: string;
-    POSTGRES_USER: string;
+    DATABASE_DB: string;
+    DATABASE_DB_TEST: string;
+    DATABASE_HOST: string;
+    DATABASE_PASSWORD: string;
+    DATABASE_PORT: string;
+    DATABASE_USER: string;
 }
 
 const { nodeEnv, processEnv } = new ProcessManager();
@@ -15,10 +15,10 @@ const env = processEnv as unknown as ValidatedEnv;
 const isTest = nodeEnv === TEST;
 
 const databaseName = (isTest)
-    ? env.POSTGRES_DB_TEST
-    : env.POSTGRES_DB;
+    ? env.DATABASE_DB_TEST
+    : env.DATABASE_DB;
 
 export default {
-    url: `postgres://${env.POSTGRES_USER}:${env.POSTGRES_PASSWORD}` +
-        `@${env.POSTGRES_HOST}:${env.POSTGRES_PORT}/${databaseName}`
+    url: `postgres://${env.DATABASE_USER}:${env.DATABASE_PASSWORD}` +
+        `@${env.DATABASE_HOST}:${env.DATABASE_PORT}/${databaseName}`
 };

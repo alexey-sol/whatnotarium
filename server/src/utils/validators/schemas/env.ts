@@ -3,6 +3,42 @@ import Joi from "@hapi/joi";
 import { DEVELOPMENT, PRODUCTION } from "#utils/const/nodeEnv";
 
 export default Joi.object({
+    CACHE_STORE_HOST: Joi
+        .string()
+        .required(),
+
+    CACHE_STORE_PORT: Joi
+        .number()
+        .required(),
+
+    DATABASE_DB: Joi
+        .string()
+        .required(),
+
+    DATABASE_DB_TEST: Joi
+        .string()
+        .required(),
+
+    DATABASE_HOST: Joi
+        .string()
+        .required(),
+
+    DATABASE_PASSWORD: Joi
+        .string()
+        .required(),
+
+    DATABASE_PORT: Joi
+        .string()
+        .required(),
+
+    DATABASE_USER: Joi
+        .string()
+        .required(),
+
+    EMAIL_TRANSPORTER_API_KEY: Joi
+        .string()
+        .required(),
+
     GOOGLE_CLIENT_ID: Joi
         .string()
         .required(),
@@ -21,30 +57,6 @@ export default Joi.object({
         .valid(DEVELOPMENT, PRODUCTION)
         .required(),
 
-    POSTGRES_DB: Joi
-        .string()
-        .required(),
-
-    POSTGRES_DB_TEST: Joi
-        .string()
-        .required(),
-
-    POSTGRES_HOST: Joi
-        .string()
-        .required(),
-
-    POSTGRES_PASSWORD: Joi
-        .string()
-        .required(),
-
-    POSTGRES_PORT: Joi
-        .string()
-        .required(),
-
-    POSTGRES_USER: Joi
-        .string()
-        .required(),
-
     PROJECT_NAME_FULL: Joi
         .string()
         .required(),
@@ -53,19 +65,7 @@ export default Joi.object({
         .string()
         .required(),
 
-    REDIS_HOST: Joi
-        .string()
-        .required(),
-
-    REDIS_PORT: Joi
-        .number()
-        .required(),
-
     SENDER_EMAIL: Joi
-        .string()
-        .required(),
-
-    SENDGRID_API_KEY: Joi
         .string()
         .required(),
 
