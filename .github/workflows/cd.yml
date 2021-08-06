@@ -5,14 +5,17 @@ on:
     branches: [ develop, production ]
 
 jobs:
-  get-environment-name: # [1]
+  get-environment-name:
     name: "Extract environment name"
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: extract
+        uses: alexey-sol/extract-environment-name@master
+        with:
+          github-ref: $GITHUB_REF
     outputs:
       environment: ${{ steps.extract.outputs.environment }}
-    steps:
-      - id: extract
-        run: echo "::set-output name=environment::$(echo $GITHUB_REF | sed -e '/^refs\/heads\/\(.*\)$/!d;s//\1/')"
 
   deploy:
     name: "Deploy: ${{ needs.get-environment-name.outputs.environment }}"
@@ -23,8 +26,7 @@ jobs:
     environment:
       name: ${{ needs.get-environment-name.outputs.environment }}
     steps:
-    - uses: actions/checkout@v2
-    - name: Extract branch name
+    - name: Setup dependencies
       shell: bash
       run: |
         echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
@@ -41,9 +43,12 @@ jobs:
         username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
-          for s in $(echo '${{ toJSON(secrets) }}' | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
-            export $s
-          done
+          while read -rd $'' line # [1]
+          do
+            if [[ $s != DEPLOY_* ]]; then
+              export "$line"
+            fi
+          done < <(jq -r <<< '${{ toJSON(secrets) }}' 'to_entries|map("\(.key)=\(.value)\u0000")[]')
 
           cd ${{ env.DEPLOY_DIRECTORY }}
 
@@ -60,8 +65,5 @@ jobs:
 
           npm run prod:restart
 
-# [1]. Took this brilliant solution from here: https://stackoverflow.com/a/65358831
-# The idea is to take the name of the branch ("production") and dynamically pull off the relevant
-# environment (which is also named "production" in the case). It prevents a lot of code duplication.
-# Also it allows using environments feature instead of using only repo-level variables prefixed with
-# "PRODUCTION_" or "DEVELOP_".
+# [1]. Export all available secrets as environment variables automatically (excluding those which
+# start with "DEPLOY_" prefix). https://stackoverflow.com/a/48513046/10874193
