@@ -21,23 +21,32 @@ function useSearch ({
         }
     }, [onSetCurrentPage, searchEventName, searchTerm]);
 
+    const onSearch = useCallback((cb) => {
+        if (redirectToSearchPage) redirectToSearchPage();
+
+        onSetCurrentPage(1);
+
+        searchRecords({ searchTerm }, () => {
+            pubsub.publish(searchEventName, searchTerm);
+            setPrevSearchTerm(searchTerm);
+            if (cb) cb();
+        });
+    }, [
+        onSetCurrentPage, redirectToSearchPage, searchEventName, searchRecords,
+        searchTerm
+    ]);
+
+    const isIdleSearch = !prevSearchTerm && !searchTerm;
+    const isSameSearch = prevSearchTerm === searchTerm;
+    const hasNewSearchTerm = !isIdleSearch && !isSameSearch;
+
     useEffect(() => {
         const handleKeydown = (event) => {
             const pressedSubmit = event.key === "Enter";
-            const isIdleSearch = !prevSearchTerm && !searchTerm;
-            const isSameSearch = prevSearchTerm === searchTerm;
-            const shouldSubmit = pressedSubmit && !isIdleSearch && !isSameSearch;
+            const shouldSubmit = pressedSubmit && hasNewSearchTerm;
 
             if (shouldSubmit) {
-                if (redirectToSearchPage) redirectToSearchPage();
-
-                onSetCurrentPage(1);
-
-                searchRecords({ searchTerm }, () => {
-                    pubsub.publish(searchEventName, searchTerm);
-                    setPrevSearchTerm(searchTerm);
-                    if (cbOnSubmit) cbOnSubmit();
-                });
+                onSearch(cbOnSubmit);
             }
         };
 
@@ -45,12 +54,11 @@ function useSearch ({
         document.addEventListener("keydown", handleKeydown);
 
         return () => document.removeEventListener("keydown", handleKeydown);
-    }, [
-        cbOnSubmit, onSetCurrentPage, prevSearchTerm, redirectToSearchPage,
-        searchEventName, searchRecords, searchTerm
-    ]);
+    }, [cbOnSubmit, hasNewSearchTerm, onSearch]);
 
     return {
+        hasNewSearchTerm,
+        onSearch,
         prevSearchTerm,
         resetSearch,
         searchTerm,

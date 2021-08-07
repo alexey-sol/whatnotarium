@@ -9,10 +9,8 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import {
-    BookmarkIconButton,
     CancelIconButton,
     MenuIconButton,
-    NotificationIconButton,
     SearchIconButton,
     UserIconButton
 } from "components/ui/IconButton";
@@ -119,24 +117,6 @@ export function ActionsMenu ({
 
                     {toggleSearchInputElem}
                 </span>
-
-                {false && currentUser && (
-                    <span className={styles.iconButton}>
-                        <BookmarkIconButton
-                            className={styles.iconButton}
-                            onClick={() => console.log("Click on bm icon")}
-                        />
-                    </span>
-                )}
-
-                {false && currentUser && (
-                    <span className={styles.iconButton}>
-                        <NotificationIconButton
-                            className={styles.iconButton}
-                            onClick={() => console.log("Click on notif icon")}
-                        />
-                    </span>
-                )}
 
                 <span
                     className={styles.iconButton}

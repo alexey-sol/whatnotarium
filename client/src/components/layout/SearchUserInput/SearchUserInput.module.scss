@@ -1,26 +1,39 @@
 @import "styles/style.scss";
 
 .container {
+    box-sizing: border-box;
     display: flex;
-    max-width: 40rem;
+    max-width: 31rem;
     align-items: center;
+
+    .inputContainer {
+        position: relative;
+        width: 100%;
+    }
 
     .input {
         display: block;
         width: 100%;
         height: 100%;
         padding: 0.2rem 0.5rem;
+        padding-right: $search-prompt-width;
         border: none;
-        border-bottom: 1px solid $search-post-input-border-color;
+        border-bottom: 1px solid $search-input-border-color;
         outline: none;
-        background-color: $search-post-input-bg-color;
-        color: $search-post-input-text-color;
+        background-color: $search-input-bg-color;
+        color: $search-input-text-color;
         font-family: $font-family--normal;
         font-size: $font-size--medium;
     }
 
+    .searchPrompt {
+        position: absolute;
+        top: 0;
+        right: -$search-prompt-width - 0.5rem;
+    }
+
     .resetSearchButton {
         min-width: fit-content;
-        margin-left: 2rem;
+        margin-left: 2rem + $search-prompt-width;
     }
 }

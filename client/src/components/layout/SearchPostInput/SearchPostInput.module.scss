@@ -1,6 +1,7 @@
 @import "styles/style.scss";
 
 .container {
+    position: relative;
     display: flex;
     align-items: center;
     animation: fade-in 0.2s;
@@ -10,20 +11,26 @@
         box-sizing: border-box;
         width: 100%;
         padding: 0.2rem 0.5rem;
+        padding-right: $search-prompt-width;
         border: none;
-        border-bottom: 1px solid $search-post-input-border-color;
+        border-bottom: 1px solid $search-input-border-color;
         outline: none;
-        background-color: $search-post-input-bg-color;
-        color: $search-post-input-text-color;
+        background-color: $search-input-bg-color;
+        color: $search-input-text-color;
         font-family: $font-family--normal;
         font-size: $font-size--medium;
+    }
+
+    .searchPrompt {
+        position: absolute;
+        right: 0;
     }
 
     @media screen and (max-width: 1024px) {
         & {
             .input {
                 height: 5rem;
-                border: 1px solid $search-post-input-border-color;
+                border: 1px solid $search-input-border-color;
             }
         }
     }

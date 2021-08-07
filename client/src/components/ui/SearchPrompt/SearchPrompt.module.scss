@@ -1,0 +1,20 @@
+@import "styles/style.scss";
+
+.container {
+    box-sizing: border-box;
+    cursor: pointer;
+    animation: fade-in 0.1s;
+
+    .enter {
+        box-sizing: border-box;
+        width: 0;
+        height: 0;
+        border-bottom: $search-prompt-width solid $search-input-enter-bg-color;
+        border-left: $search-prompt-width solid transparent;
+        transition: border-bottom-color 50ms ease;
+        
+        &:hover {
+            border-bottom-color: $search-input-enter-bg-color--hover;
+        }
+    }
+}

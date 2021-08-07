@@ -92,7 +92,7 @@ $logo-bg-color--hover: $color-secondary;
 $logo-text-color: white;
 
 $menu-item-bg-color: $color-quaternary;
-$menu-item-bg-color--active: #f8f0f0;
+$menu-item-bg-color--active: #f7f7f7;
 $menu-item-bg-color--hover: $color-tertiary;
 $menu-item-border-color: $gray--light;
 $menu-item-text-color: $gray--darkest;
@@ -134,14 +134,16 @@ $profile-tab-color--active: $gray--darken;
 $profile-tab-border-color: $gray--light;
 $profile-tab-border-color--active: $gray--darken;
 
-$reset-search-post-button-bg-color: white;
-$reset-search-post-button-bg-color--hover: $gray--lightest;
-$reset-search-post-button-border-color: $gray--light;
-$reset-search-post-button-text-color: $text-color--undertone;
+$reset-search-button-bg-color: white;
+$reset-search-button-bg-color--hover: $gray--lightest;
+$reset-search-button-border-color: $gray--light;
+$reset-search-button-text-color: $text-color--undertone;
 
-$search-post-input-bg-color: white;
-$search-post-input-border-color: $gray--light;
-$search-post-input-text-color: $gray--dark;
+$search-input-bg-color: white;
+$search-input-border-color: $gray--light;
+$search-input-enter-bg-color: #eeeeee;
+$search-input-enter-bg-color--hover: #cc9594;
+$search-input-text-color: $gray--dark;
 
 $tooltip-bg-color: white;
 $tooltip-border-color: $gray--light;
@@ -154,6 +156,7 @@ $menu-width: 17rem;
 $menu-height--small: 4rem;
 $popup-width: 35rem;
 $popup-height: 6rem;
+$search-prompt-width: 2.9rem;
 
 $rating-text-color--def: $gray--darken;
 $rating-text-color--neg: $color-error;

@@ -5,6 +5,7 @@ import { withRouter } from "react-router";
 import * as p from "utils/const/pathnames";
 import { SEARCH_USERS } from "utils/const/events";
 import ResetSearchButton from "components/ui/ResetSearchButton";
+import SearchPrompt from "components/ui/SearchPrompt";
 import { searchUsersStart } from "redux/users/users.actions";
 import { propTypes } from "./SearchUserInput.props";
 import { setCurrentPage } from "redux/usersPaging/usersPaging.actions";
@@ -15,6 +16,8 @@ SearchUserInput.propTypes = propTypes;
 
 function SearchUserInput ({ onSearchUsersStart, onSetCurrentPage }) {
     const {
+        hasNewSearchTerm,
+        onSearch,
         prevSearchTerm,
         resetSearch,
         searchTerm,
@@ -25,19 +28,29 @@ function SearchUserInput ({ onSearchUsersStart, onSetCurrentPage }) {
         searchRecords: onSearchUsersStart
     });
 
+    const handleClickOnPrompt = () => onSearch();
+
     const submittedSearch = prevSearchTerm.length > 0;
 
     return (
         <div className={styles.container}>
-            <input
-                autoComplete="off"
-                className={styles.input}
-                maxLength={100}
-                name="searchTerm"
-                onChange={({ target }) => setSearchTerm(target.value)}
-                placeholder={"Найти автора по имени или по полю о \"себе\""}
-                value={searchTerm}
-            />
+            <div className={styles.inputContainer}>
+                <input
+                    autoComplete="off"
+                    className={styles.input}
+                    maxLength={100}
+                    name="searchTerm"
+                    onChange={({ target }) => setSearchTerm(target.value)}
+                    placeholder={"Найти автора по имени или по полю о \"себе\""}
+                    value={searchTerm}
+                />
+
+                {hasNewSearchTerm && (
+                    <div className={styles.searchPrompt}>
+                        <SearchPrompt onClick={handleClickOnPrompt} title="Найти пользователя" />
+                    </div>
+                )}
+            </div>
 
             {submittedSearch && (
                 <div className={styles.resetSearchButton}>

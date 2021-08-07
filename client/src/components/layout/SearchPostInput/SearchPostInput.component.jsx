@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import classnames from "classnames";
 
 import { SEARCH_POSTS } from "utils/const/events";
+import SearchPrompt from "components/ui/SearchPrompt";
 import { defaultProps, propTypes } from "./SearchPostInput.props";
 import { searchPostsStart } from "redux/posts/posts.actions";
 import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
@@ -22,6 +23,8 @@ function SearchPostInput ({
     onSetCurrentPage,
     rootClassName
 }) {
+    const rootRef = useRef(null);
+
     const redirectToPostsIfNeeded = useCallback(() => {
         if (location.pathname !== "/") {
             history.push("/");
@@ -29,7 +32,8 @@ function SearchPostInput ({
     }, [history, location]);
 
     const {
-        searchOnTyping,
+        hasNewSearchTerm,
+        onSearch,
         searchTerm,
         setSearchTerm
     } = useSearch({
@@ -40,17 +44,30 @@ function SearchPostInput ({
         searchRecords: onSearchPostsStart
     });
 
+    const handleClickOnPrompt = () => onSearch();
+
     useEffect(() => {
+        const handleClick = ({ target }) => {
+            const isClickOutside = !rootRef.current.contains(target);
+
+            if (isClickOutside) {
+                onClose();
+            }
+        };
+
         const handleKeydown = (event) => {
             if (onClose && event.key === "Escape") {
                 onClose();
             }
         };
 
-        document.removeEventListener("keydown", handleKeydown);
         document.addEventListener("keydown", handleKeydown);
+        document.addEventListener("click", handleClick);
 
-        return () => document.removeEventListener("keydown", handleKeydown);
+        return () => {
+            document.removeEventListener("keydown", handleKeydown);
+            document.removeEventListener("click", handleClick);
+        };
     }, [onClose]);
 
     const placeholder = (isCompactView)
@@ -58,19 +75,23 @@ function SearchPostInput ({
         : "Найти статью по названию, содержанию или имени автора";
 
     return (
-        <div className={classnames(styles.container, rootClassName)}>
+        <div className={classnames(styles.container, rootClassName)} ref={rootRef}>
             <input
                 autoComplete="off"
                 autoFocus={!isCompactView} // eslint-disable-line
                 className={styles.input}
                 maxLength={100}
                 name="searchTerm"
-                onBlur={(isCompactView) ? null : onClose}
                 onChange={({ target }) => setSearchTerm(target.value)}
-                onKeyUp={searchOnTyping}
                 placeholder={placeholder}
                 value={searchTerm}
             />
+
+            {hasNewSearchTerm && !isCompactView && (
+                <div className={styles.searchPrompt}>
+                    <SearchPrompt onClick={handleClickOnPrompt} title="Найти статью" />
+                </div>
+            )}
         </div>
     );
 }
