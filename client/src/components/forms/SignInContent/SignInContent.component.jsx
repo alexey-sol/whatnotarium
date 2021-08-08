@@ -18,7 +18,7 @@ import { resetSessionError, signInStart } from "redux/session/session.actions";
 import { selectCurrentUser, selectError } from "redux/session/session.selectors";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import pubsub from "utils/pubsub";
-import signInSchema from "utils/validators/shemas/signIn";
+import signInSchema from "utils/validators/schemas/signIn";
 import styles from "./SignInContent.module.scss";
 
 const initialValues = {
@@ -116,7 +116,6 @@ function SignInContent ({
                             className={styles.signInButton}
                             disabled={isPending || Object.keys(errors).length > 0}
                             text="Войти"
-                            theme="dark"
                         />
                     </Form>
                 )}

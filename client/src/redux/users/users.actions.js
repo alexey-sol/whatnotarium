@@ -1,5 +1,27 @@
 import * as types from "./users.types";
 
+export function deleteUserFailure (error) {
+    return {
+        payload: { error },
+        type: types.DELETE_USER_FAILURE
+    };
+}
+
+export function deleteUserStart (id, cb) {
+    return {
+        cb,
+        payload: { id },
+        type: types.DELETE_USER_START
+    };
+}
+
+export function deleteUserSuccess (item) {
+    return {
+        payload: { item },
+        type: types.DELETE_USER_SUCCESS
+    };
+}
+
 export function fetchUserFailure (error) {
     return {
         payload: { error },

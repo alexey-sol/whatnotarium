@@ -16,7 +16,7 @@ import { selectCurrentUser } from "redux/session/session.selectors";
 import { selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { showNotification } from "redux/ui/ui.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
-import resetPasswordSchema from "utils/validators/shemas/resetPassword";
+import resetPasswordSchema from "utils/validators/schemas/resetPassword";
 import styles from "./ResetToken.module.scss";
 
 const initialValues = {

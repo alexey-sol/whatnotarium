@@ -4,6 +4,17 @@ import * as actions from "./users.actions";
 import * as api from "utils/api/users";
 import getErrorFromResponse from "utils/helpers/getErrorFromResponse";
 
+export function * doDeleteUser ({ cb, payload: id }) {
+    try {
+        const item = yield api.deleteUser(id);
+        yield put(actions.deleteUserSuccess(item));
+        if (cb) cb();
+    } catch (errorResponse) {
+        const error = getErrorFromResponse(errorResponse);
+        yield put(actions.deleteUserFailure(error));
+    }
+}
+
 export function * doFetchUser ({ payload: id }) {
     try {
         const item = yield api.fetchUser(id);

@@ -3,6 +3,10 @@ import { all, call, takeLatest } from "redux-saga/effects";
 import * as types from "./users.types";
 import * as workers from "./users.workers";
 
+function * onDeleteUserStart () {
+    yield takeLatest(types.DELETE_USER_START, workers.doDeleteUser);
+}
+
 function * onFetchUserStart () {
     yield takeLatest(types.FETCH_USER_START, workers.doFetchUser);
 }
@@ -25,6 +29,7 @@ function * onUpdateUserStart () {
 
 function * usersSagas () {
     yield all([
+        call(onDeleteUserStart),
         call(onFetchUserStart),
         call(onFetchUsersStart),
         call(onSearchUsersStart),

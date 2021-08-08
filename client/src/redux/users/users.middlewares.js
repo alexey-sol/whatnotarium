@@ -1,5 +1,6 @@
 import * as types from "./users.types";
 import { FAILURE_POSTFIX, START_POSTFIX, USERS_PREFIX } from "utils/const/actionTypeAffixes";
+import { resetCurrentUser } from "redux/session/session.actions";
 import { setPaging } from "redux/usersPaging/usersPaging.actions";
 import convertItemsArrayToMap from "utils/redux/convertItemsArrayToMap";
 import enrichPayload from "utils/redux/enrichPayload";
@@ -72,6 +73,10 @@ export const mapper = ({ dispatch }) => (next) => (action) => {
         };
 
         dispatch(setPaging(pagingOptions));
+    }
+
+    if (type === types.DELETE_USER_SUCCESS) {
+        dispatch(resetCurrentUser());
     }
 
     next(action);

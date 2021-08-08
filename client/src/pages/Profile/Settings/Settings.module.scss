@@ -8,7 +8,8 @@
         display: grid;
         grid-template-areas:
             "profile-data-form profile-picture-form"
-            "profile-password-form .";
+            "profile-password-form ."
+            "delete-profile-form .";
         column-gap: 7rem;
     }
 
@@ -32,12 +33,17 @@
         grid-area: profile-password-form;
     }
 
+    .deleteProfileForm {
+        grid-area: delete-profile-form;
+    }
+
     @media screen and (max-width: 500px) {
         .forms {
             grid-template-areas:
                 "profile-picture-form"
                 "profile-data-form"
-                "profile-password-form";
+                "profile-password-form"
+                "delete-profile-form";
         }
     }
 }

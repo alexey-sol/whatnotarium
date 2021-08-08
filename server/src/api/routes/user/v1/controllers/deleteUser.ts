@@ -9,8 +9,9 @@ const deleteUser: RequestHandler = async (
 ): Promise<void> => {
     try {
         const { id } = params;
-        response.locals.data = await UserService.deleteUser(+id);
-        next();
+        await UserService.deleteUser(+id);
+
+        response.redirect("/api/v1/session");
     } catch (error) {
         next(error);
     }

@@ -64,8 +64,7 @@ router.delete(
     middlewares.isAuthed,
     schemaValidation.deleteUser,
     dataValidation.deleteUser,
-    controllers.deleteUser,
-    middlewares.clearRouteCache
+    controllers.deleteUser
 );
 
 export default router;

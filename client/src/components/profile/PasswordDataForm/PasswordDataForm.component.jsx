@@ -17,9 +17,9 @@ import { showNotification } from "redux/ui/ui.actions";
 import { updateUserStart } from "redux/users/users.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
-import setUpPasswordSchema from "utils/validators/shemas/setUpPassword";
+import setUpPasswordSchema from "utils/validators/schemas/setUpPassword";
 import styles from "./PasswordDataForm.module.scss";
-import updatePasswordSchema from "utils/validators/shemas/updatePassword";
+import updatePasswordSchema from "utils/validators/schemas/updatePassword";
 
 PasswordDataForm.defaultProps = defaultProps;
 PasswordDataForm.propTypes = propTypes;

@@ -2,6 +2,7 @@ import React from "react";
 import classnames from "classnames";
 
 import { SETTINGS } from "utils/const/profileTabNames";
+import DeleteProfileForm from "components/profile/DeleteProfileForm";
 import PasswordDataForm from "components/profile/PasswordDataForm";
 import ProfileContent from "components/profile/ProfileContent";
 import ProfileDataForm from "components/profile/ProfileDataForm";
@@ -38,6 +39,15 @@ function Settings () {
                         )}
                     >
                         <PasswordDataForm />
+                    </section>
+
+                    <section
+                        className={classnames(
+                            styles.formContainer,
+                            styles.deleteProfileForm
+                        )}
+                    >
+                        <DeleteProfileForm />
                     </section>
                 </section>
             </section>

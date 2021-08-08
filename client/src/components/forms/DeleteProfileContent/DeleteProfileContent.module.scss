@@ -1,0 +1,19 @@
+@import "styles/style.scss";
+
+.container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-width: 30rem;
+    margin-top: 3.5rem;
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        margin-top: 3rem;
+
+        :not(:first-child) {
+            margin-top: 1rem;
+        }
+    }
+}

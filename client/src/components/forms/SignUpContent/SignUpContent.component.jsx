@@ -23,7 +23,7 @@ import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.sel
 import { signUpStart } from "redux/session/session.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
-import signUpSchema from "utils/validators/shemas/signUp";
+import signUpSchema from "utils/validators/schemas/signUp";
 import styles from "./SignUpContent.module.scss";
 
 const initialValues = {

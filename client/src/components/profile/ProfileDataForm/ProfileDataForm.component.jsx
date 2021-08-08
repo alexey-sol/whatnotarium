@@ -23,7 +23,7 @@ import { updateUserStart } from "redux/users/users.actions";
 import phrases from "utils/resources/text/ru/commonPhrases";
 import pubsub from "utils/pubsub";
 import styles from "./ProfileDataForm.module.scss";
-import updateUserSchema from "utils/validators/shemas/updateUser";
+import updateUserSchema from "utils/validators/schemas/updateUser";
 
 const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
 
@@ -124,7 +124,6 @@ function ProfileDataForm ({
                         className={styles.updateUserDataButton}
                         disabled={isPending || Object.keys(errors).length > 0}
                         text="Сохранить"
-                        theme="dark"
                     />
 
                     {!hasPassword && (

@@ -14,7 +14,7 @@ import { defaultProps, propTypes } from "./ForgotPasswordContent.props";
 import { selectNotification, selectRelevantPendingAction } from "redux/ui/ui.selectors";
 import { sendResetTokenStart } from "redux/support/support.actions";
 import { showNotification } from "redux/ui/ui.actions";
-import forgotPasswordSchema from "utils/validators/shemas/forgotPassword";
+import forgotPasswordSchema from "utils/validators/schemas/forgotPassword";
 import pubsub from "utils/pubsub";
 import styles from "./ForgotPasswordContent.module.scss";
 

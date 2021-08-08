@@ -1,3 +1,4 @@
+export { default as deleteUser } from "./deleteUser";
 export { default as fetchUser } from "./fetchUser";
 export { default as fetchUsers } from "./fetchUsers";
 export { default as searchUsers } from "./searchUsers";
