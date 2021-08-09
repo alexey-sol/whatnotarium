@@ -9,7 +9,7 @@ exports[`should render App 1`] = `
   <Connect(Main)>
     <ErrorBoundary>
       <Suspense
-        fallback={<Spinner />}
+        fallback={<Loader />}
       >
         <Switch>
           <Route

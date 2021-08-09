@@ -1,8 +1,8 @@
-name: Deploy production
+name: CD
 
 on:
-  push:
-    branches: [ develop, production ]
+  repository_dispatch:
+    types: [start-deploying]
 
 jobs:
   get-environment-name:
@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.sha }}
       - id: extract
         uses: alexey-sol/extract-environment-name@master
         with:

@@ -9,7 +9,7 @@
   "scripts": {
     "start": "npx ts-node src/index.ts",
     "dev": "npx nodemon src/index.ts",
-    "test": "env NODE_ENV=test nyc ts-mocha -p tsconfig.json"
+    "test": "env NODE_ENV=test nyc ts-mocha -p tsconfig.json --timeout 5000"
   },
   "author": "Alexey Soloviev",
   "license": "ISC",

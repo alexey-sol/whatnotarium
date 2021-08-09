@@ -13,6 +13,7 @@ services:
             - /app/node_modules # [1]
         stdin_open: true
         environment:
+            - CI=${CI}
             - HOST=${CLIENT_HOST}
             - PORT=${CLIENT_PORT}
             - NODE_ENV

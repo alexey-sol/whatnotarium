@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ develop, production ]
+
+jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: "12"
+    - name: Setup dependencies
+      run: |
+        while read -rd $'' line # [1]
+          do
+            if [[ $s != DEPLOY_* ]]; then # and not REPOSITORY_*
+              export "$line"
+            fi
+          done < <(jq -r <<< '${{ toJSON(secrets) }}' 'to_entries|map("\(.key)=\(.value)\u0000")[]')
+        # env
+
+        npm run test:up
+    - name: Test
+      run: npm run prod:test
+    - name: Start deploying
+      if: success()
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+        repository: ${{ github.repository }}
+        event-type: start-deploying
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'

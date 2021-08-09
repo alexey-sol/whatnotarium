@@ -9,8 +9,14 @@
     "prod:down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down",
     "dev:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up",
     "dev:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down",
-    "client:test": "docker exec --tty -it geek-regime_client npm run test",
-    "server:test": "docker exec --tty geek-regime_server npm run test"
+    "test:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up --build --detach",
+    "test:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down",
+    "prod:test": "npm run prod:client-test && npm run prod:server-test",
+    "dev:test": "npm run dev:client-test && npm run dev:server-test",
+    "prod:client-test": "docker exec geek-regime_client_dev npm run test",
+    "prod:server-test": "docker exec geek-regime_server_dev npm run test",
+    "dev:client-test": "docker exec --tty -it geek-regime_client_dev npm run dev:test",
+    "dev:server-test": "docker exec --tty geek-regime_server_dev npm run test"
   },
   "license": "ISC",
   "dependencies": {}
