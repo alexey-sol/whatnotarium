@@ -5,28 +5,12 @@ on:
     types: [start-deploying]
 
 jobs:
-  get-environment-name:
-    name: "Extract environment name"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.client_payload.sha }}
-      - id: extract
-        uses: alexey-sol/extract-environment-name@master
-        with:
-          github-ref: $GITHUB_REF
-    outputs:
-      environment: ${{ steps.extract.outputs.environment }}
-
   deploy:
-    name: "Deploy: ${{ needs.get-environment-name.outputs.environment }}"
-    if: ${{ needs.get-environment-name.outputs.environment }}
-    needs:
-      - get-environment-name
+    name: "Deploy: ${{ github.event.client_payload.environment }}"
+    if: ${{ github.event.client_payload.environment }}
     runs-on: ubuntu-latest
     environment:
-      name: ${{ needs.get-environment-name.outputs.environment }}
+      name: ${{ github.event.client_payload.environment }}
     steps:
     - name: Setup dependencies
       shell: bash
