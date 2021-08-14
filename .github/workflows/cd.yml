@@ -1,16 +1,54 @@
-name: CD
+name: CI/CD
 
 on:
-  repository_dispatch:
-    types: [start-deploying]
+  push:
+    branches: [ develop, production ]
+
+env:
+  GITHUB_USER_CONTENT_URL: "https://raw.githubusercontent.com"
+  SET_ENV_PATH: "shell-scripts/set-env.sh"
 
 jobs:
+  test:
+    name: "Test"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: "12"
+    - name: Setup dependencies
+      shell: bash
+      run: |
+        chmod +x ./${{ env.SET_ENV_PATH }}
+        . ./${{ env.SET_ENV_PATH }} '${{ toJSON(secrets) }}'
+
+        npm run test:up
+    - name: Test
+      run: npm run prod:test
+
+  get-environment-name:
+    name: "Extract environment name"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: extract
+        uses: alexey-sol/extract-environment-name@master
+        with:
+          github-ref: $GITHUB_REF
+    outputs:
+      environment: ${{ steps.extract.outputs.environment }}
+
   deploy:
-    name: "Deploy: ${{ github.event.client_payload.environment }}"
-    if: ${{ github.event.client_payload.environment }}
+    name: "Deploy: ${{ needs.get-environment-name.outputs.environment }}"
+    if: ${{ needs.get-environment-name.outputs.environment }}
+    needs:
+      - test
+      - get-environment-name
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.event.client_payload.environment }}
+      name: ${{ needs.get-environment-name.outputs.environment }}
     steps:
     - name: Setup dependencies
       shell: bash
@@ -22,6 +60,7 @@ jobs:
     - name: Deliver to remote host
       env:
         DEPLOY_DIRECTORY: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/environments
+        SET_ENV_URL: ${{ github.repository }}/${{ env.BRANCH_NAME }}/${{ env.SET_ENV_PATH }}
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_SERVER_HOST }}
@@ -29,12 +68,7 @@ jobs:
         username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
         key: ${{ secrets.DEPLOY_SSH_KEY }}
         script: |
-          while read -rd $'' line # [1]
-          do
-            if [[ $s != DEPLOY_* ]]; then
-              export "$line"
-            fi
-          done < <(jq -r <<< '${{ toJSON(secrets) }}' 'to_entries|map("\(.key)=\(.value)\u0000")[]')
+          . <(curl -Ls ${{ env.GITHUB_USER_CONTENT_URL }}/${{ env.SET_ENV_URL }}) '${{ toJSON(secrets) }}'
 
           cd ${{ env.DEPLOY_DIRECTORY }}
 
@@ -51,5 +85,5 @@ jobs:
 
           npm run prod:restart
 
-# [1]. Export all available secrets as environment variables automatically (excluding those which
-# start with "DEPLOY_" prefix). https://stackoverflow.com/a/48513046/10874193
+# How to run standalone shell scripts in GitHub Actions:
+# https://github.community/t/how-to-run-shell-script-which-has-functions/131280/2
