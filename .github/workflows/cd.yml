@@ -1,89 +1,92 @@
 name: CI/CD
 
 on:
-  push:
-    branches: [ develop, production ]
+    push:
+        branches: [ develop, production ]
 
 env:
-  GITHUB_USER_CONTENT_URL: "https://raw.githubusercontent.com"
-  SET_ENV_PATH: "shell-scripts/set-env.sh"
+    GITHUB_USER_CONTENT_URL: "https://raw.githubusercontent.com"
+    PROJECTS_DIRECTORY: environments
+    SET_ENV_PATH: "shell-scripts/set-env.sh"
 
 jobs:
-  test:
-    name: "Test"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup Node
-      uses: actions/setup-node@v2
-      with:
-        node-version: "12"
-    - name: Setup dependencies
-      shell: bash
-      run: |
-        chmod +x ./${{ env.SET_ENV_PATH }}
-        . ./${{ env.SET_ENV_PATH }} '${{ toJSON(secrets) }}'
+    test:
+        name: "Test: \"${{ github.event.head_commit.message }}\""
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          - name: Setup Node
+            uses: actions/setup-node@v2
+            with:
+                node-version: "12"
+          - name: Setup dependencies
+            shell: bash
+            run: |
+                chmod +x ./${{ env.SET_ENV_PATH }}
+                . ./${{ env.SET_ENV_PATH }} '${{ toJSON(secrets) }}'
 
-        npm run test:up
-    - name: Test
-      run: npm run prod:test
+                npm run test:up
+          - name: Test
+            run: npm run prod:test
 
-  get-environment-name:
-    name: "Extract environment name"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - id: extract
-        uses: alexey-sol/extract-environment-name@master
-        with:
-          github-ref: $GITHUB_REF
-    outputs:
-      environment: ${{ steps.extract.outputs.environment }}
+    get-env-name:
+        name: "Extract environment name"
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          - id: extract
+            uses: alexey-sol/extract-environment-name@master
+            with:
+                github-ref: $GITHUB_REF
+        outputs:
+            environment: ${{ steps.extract.outputs.environment }}
 
-  deploy:
-    name: "Deploy: ${{ needs.get-environment-name.outputs.environment }}"
-    if: ${{ needs.get-environment-name.outputs.environment }}
-    needs:
-      - test
-      - get-environment-name
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ needs.get-environment-name.outputs.environment }}
-    steps:
-    - name: Setup dependencies
-      shell: bash
-      run: |
-        echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
-        echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
-        sudo apt-get update
-        sudo apt-get install jq -y
-    - name: Deliver to remote host
-      env:
-        DEPLOY_DIRECTORY: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/environments
-        SET_ENV_URL: ${{ github.repository }}/${{ env.BRANCH_NAME }}/${{ env.SET_ENV_PATH }}
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.DEPLOY_SERVER_HOST }}
-        port: ${{ secrets.DEPLOY_SERVER_PORT }}
-        username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
-        key: ${{ secrets.DEPLOY_SSH_KEY }}
-        script: |
-          . <(curl -Ls ${{ env.GITHUB_USER_CONTENT_URL }}/${{ env.SET_ENV_URL }}) '${{ toJSON(secrets) }}'
+    deploy:
+        name: "Deploy: ${{ needs.get-env-name.outputs.environment }}"
+        if: ${{ needs.get-env-name.outputs.environment }}
+        needs:
+          - test
+          - get-env-name
+        runs-on: ubuntu-latest
+        environment:
+            name: ${{ needs.get-env-name.outputs.environment }}
+        steps:
+          - name: Setup dependencies
+            shell: bash
+            run: |
+                echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr / -)" >> $GITHUB_ENV
+                echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $1}')" >> $GITHUB_ENV
+                sudo apt-get update
+                sudo apt-get install jq -y
+          - name: Deliver to remote host
+            env:
+                DEPLOY_DIRECTORY: /home/${{secrets.DEPLOY_SERVER_USERNAME}}/${{ env.PROJECTS_DIRECTORY }}
+                REPOSITORY_NAME: ${{ github.event.repository.name }}
+                SET_ENV_FULL_PATH: ${{ github.repository }}/${{ env.BRANCH_NAME }}/${{ env.SET_ENV_PATH }}
+            uses: appleboy/ssh-action@master
+            with:
+                host: ${{ secrets.DEPLOY_SERVER_HOST }}
+                port: ${{ secrets.DEPLOY_SERVER_PORT }}
+                username: ${{ secrets.DEPLOY_SERVER_USERNAME }}
+                key: ${{ secrets.DEPLOY_SSH_KEY }}
+                script: |
+                    SET_ENV_URL=${{ env.GITHUB_USER_CONTENT_URL }}/${{ env.SET_ENV_FULL_PATH }}
+                    . <(curl -Ls $SET_ENV_URL) '${{ toJSON(secrets) }}'
 
-          cd ${{ env.DEPLOY_DIRECTORY }}
+                    cd ${{ env.DEPLOY_DIRECTORY }}
 
-          if [ -d ${{ env.BRANCH_NAME }} ]; then
-            cd ${{ env.BRANCH_NAME }}/${{ github.event.repository.name }}
-            git pull
-          else
-            mkdir ${{ env.BRANCH_NAME }} && cd "$_"
-            git clone ${{ secrets.REPO_SSH_URL }}
-            cd ${{ github.event.repository.name }}
-          fi
+                    if [ -d ${{ env.BRANCH_NAME }} ]; then
+                      cd ${{ env.BRANCH_NAME }}/${{ env.REPOSITORY_NAME }}
+                      git pull
+                    else
+                      mkdir ${{ env.BRANCH_NAME }} && cd "$_"
+                      git clone ${{ secrets.REPO_SSH_URL }}
+                      cd ${{ env.REPOSITORY_NAME }}
+                    fi
 
-          git checkout ${{ env.BRANCH_NAME }}
+                    git checkout ${{ env.BRANCH_NAME }}
 
-          npm run prod:restart
+                    npm run prod:restart
 
 # How to run standalone shell scripts in GitHub Actions:
 # https://github.community/t/how-to-run-shell-script-which-has-functions/131280/2
