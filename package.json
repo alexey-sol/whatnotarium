@@ -9,6 +9,7 @@
     "prod:down": "docker-compose -f docker-compose.yml -f docker-compose.production.yml down",
     "dev:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up",
     "dev:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down",
+    "dev:populate": "docker exec geek-regime_server_dev npx ts-node --require module-alias/register --project tsconfig.json src/utils/scripts/populateDb.ts 500 '[0, 20]'",
     "test:up": "docker-compose -f docker-compose.yml -f docker-compose.development.yml up --build --detach",
     "test:down": "docker-compose -f docker-compose.yml -f docker-compose.development.yml down",
     "prod:test": "npm run prod:client-test && npm run prod:server-test",
