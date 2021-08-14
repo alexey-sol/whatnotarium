@@ -39,11 +39,13 @@ class CreateFullUsersView extends SchemaSqlGenerator<unknown> {
                     INTO new_user_id, new_created_at, new_updated_at;
 
                     INSERT INTO "${PROFILES}" (
+                        "birthdate",
                         "name",
                         "picture",
                         "userId"
                     )
                     VALUES (
+                        new."birthdate",
                         new."name",
                         new."picture",
                         new_user_id

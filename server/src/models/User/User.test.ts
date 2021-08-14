@@ -2,17 +2,16 @@ import chai from "chai";
 import chaiAsPromised from "chai-as-promised";
 import faker from "faker";
 
-import { INVALID_PROPS } from "#utils/const/validationErrors";
+import { FakeDataOnCreate } from "#root/src/types/test/user";
 import { HASH_OPTIONS, PROFILES, USERS } from "#utils/const/database/tableNames";
+import { INVALID_PROPS } from "#utils/const/validationErrors";
+import Attributes from "#root/src/types/user/Attributes";
+import FakeUser from "#utils/test/FakeUser";
 import User from "#models/User";
 import UserError from "#utils/errors/UserError";
-import createAndSaveFakeUser from "#utils/test/createAndSaveFakeUser";
-import generateFakeUserProps from "#utils/test/generateFakeUserProps";
 import resetSchema from "#utils/test/resetSchema";
 import resetTables from "#utils/test/resetTables";
 import tableExists from "#utils/test/tableExists";
-import Attributes from "#root/src/types/user/Attributes";
-import { FakeDataOnCreate } from "#root/src/types/test/user";
 
 chai.use(chaiAsPromised);
 const { expect } = chai;
@@ -56,14 +55,14 @@ describe("User", async () => {
 
     describe("create", () => {
         it("should add new user to DB and return User instance", async () => {
-            const props = await generateFakeUserProps({ id: 1 });
+            const props = await new FakeUser({ id: 1 }).populate();
             const user = await User.create(props);
 
             expectUserToBeOk(user, props);
         });
 
         it("should add new user to DB and return User instance with included Profile", async () => {
-            const props = await generateFakeUserProps({ id: 1 });
+            const props = await new FakeUser({ id: 1 }).populate();
             const user = await User.create(props, [includeFullProfile]);
 
             expectUserToBeOk(user, props);
@@ -77,7 +76,7 @@ describe("User", async () => {
 
         it("should add new user to DB and return User instance with included partial Profile and " +
         "full HashOptions", async () => {
-            const props = await generateFakeUserProps({ id: 1 });
+            const props = await new FakeUser({ id: 1 }).populate();
             const user = await User.create(props, [includePartialProfile, includeFullHashOptions]);
 
             expectUserToBeOk(user, props);
@@ -99,7 +98,7 @@ describe("User", async () => {
 
     describe("destroyById", () => {
         it("should delete user from DB and return ID of deleted user", async () => {
-            const props = await generateFakeUserProps();
+            const props = await new FakeUser().populate();
             const user = await User.create(props);
             const result = await User.destroyById(user.id);
 
@@ -118,9 +117,10 @@ describe("User", async () => {
 
     describe("findAll", () => {
         it("should fetch all users from DB", async () => {
-            const user1 = await createAndSaveFakeUser();
-            const user2 = await createAndSaveFakeUser();
-            const user3 = await createAndSaveFakeUser();
+            const user1 = await new FakeUser().save();
+            const user2 = await new FakeUser().save();
+            const user3 = await new FakeUser().save();
+
             const expectedUsers = [user1, user2, user3];
             const result = await User.findAll();
 
@@ -132,9 +132,10 @@ describe("User", async () => {
         });
 
         it("should fetch users from DB that match where filter", async () => {
-            const user1 = await createAndSaveFakeUser({ name: "Fagin" }, [includePartialProfile]);
-            const user2 = await createAndSaveFakeUser({ name: "Benjamin" }, [includePartialProfile]);
-            const user3 = await createAndSaveFakeUser({ name: "Benjamin" }, [includePartialProfile]);
+            const user1 = await new FakeUser({ name: "Fagin" }, [includePartialProfile]).save();
+            const user2 = await new FakeUser({ name: "Benjamin" }, [includePartialProfile]).save();
+            const user3 = await new FakeUser({ name: "Benjamin" }, [includePartialProfile]).save();
+
             const expectedUsers = [user2, user3];
 
             const result = await User.findAll({
@@ -151,9 +152,10 @@ describe("User", async () => {
         });
 
         it("should fetch all users from DB in descending order by name", async () => {
-            const user1 = await createAndSaveFakeUser({ name: "Adams" }, [includePartialProfile]);
-            const user2 = await createAndSaveFakeUser({ name: "Duff" }, [includePartialProfile]);
-            const user3 = await createAndSaveFakeUser({ name: "Barley" }, [includePartialProfile]);
+            const user1 = await new FakeUser({ name: "Adams" }, [includePartialProfile]).save();
+            const user2 = await new FakeUser({ name: "Duff" }, [includePartialProfile]).save();
+            const user3 = await new FakeUser({ name: "Barley" }, [includePartialProfile]).save();
+
             const expectedUsers = [user2, user3, user1];
 
             const result = await User.findAll({
@@ -169,9 +171,10 @@ describe("User", async () => {
         });
 
         it("should fetch first 2 users from DB", async () => {
-            const user1 = await createAndSaveFakeUser();
-            const user2 = await createAndSaveFakeUser();
-            const user3 = await createAndSaveFakeUser();
+            const user1 = await new FakeUser().save();
+            const user2 = await new FakeUser().save();
+            const user3 = await new FakeUser().save();
+
             const limit = 2;
             const expectedUsers = [user1, user2];
             const result = await User.findAll({ limit });
@@ -185,9 +188,10 @@ describe("User", async () => {
         });
 
         it("should skip 1st user and fetch rest users from DB", async () => {
-            const user1 = await createAndSaveFakeUser();
-            const user2 = await createAndSaveFakeUser();
-            const user3 = await createAndSaveFakeUser();
+            const user1 = await new FakeUser().save();
+            const user2 = await new FakeUser().save();
+            const user3 = await new FakeUser().save();
+
             const offset = 1;
             const expectedUsers = [user2, user3];
             const result = await User.findAll({ offset });
@@ -202,30 +206,30 @@ describe("User", async () => {
 
         it("should skip 1st users and fetch next 2 users (but not more) matching where filter " +
         "from DB, in descending order by ID", async () => {
-            await createAndSaveFakeUser({
+            await new FakeUser({
                 id: 1,
                 name: "Nameless Ghoul"
-            }, [includePartialProfile]);
+            }, [includePartialProfile]).save();
 
-            const user2 = await createAndSaveFakeUser({
+            const user2 = await new FakeUser({
                 id: 2,
                 name: "Nameless Ghoul"
-            }, [includePartialProfile]);
+            }, [includePartialProfile]).save();
 
-            await createAndSaveFakeUser({
+            await new FakeUser({
                 id: 3,
                 name: "Papa Nihil"
-            }, [includePartialProfile]);
+            }, [includePartialProfile]).save();
 
-            const user4 = await createAndSaveFakeUser({
+            const user4 = await new FakeUser({
                 id: 4,
                 name: "Nameless Ghoul"
-            }, [includePartialProfile]);
+            }, [includePartialProfile]).save();
 
-            await createAndSaveFakeUser({
+            await new FakeUser({
                 id: 5,
                 name: "Nameless Ghoul"
-            }, [includePartialProfile]);
+            }, [includePartialProfile]).save();
 
             const where = { name: "Nameless Ghoul" } as Attributes;
             const limit = 2;
@@ -263,7 +267,7 @@ describe("User", async () => {
 
     describe("findOne", () => {
         it("should fetch user from DB that matches where filter", async () => {
-            const props = await generateFakeUserProps({ id: 1 });
+            const props = await new FakeUser({ id: 1 }).populate();
             await User.create(props);
 
             const user = await User.findOne({
@@ -287,11 +291,11 @@ describe("User", async () => {
 
     describe("formatPropsAndInstantiate", () => {
         it("should return User instance if valid users props were given", async () => {
-            const props = await generateFakeUserProps({
+            const props = await new FakeUser({
                 createdAt: new Date(),
                 hasPassword: true,
                 updatedAt: new Date()
-            });
+            }).populate();
 
             const user = User.formatPropsAndInstantiate(props);
 
@@ -299,7 +303,7 @@ describe("User", async () => {
         });
 
         it("should throw error if invalid users props were given", async () => {
-            const propsWithoutDates = await generateFakeUserProps();
+            const propsWithoutDates = await new FakeUser().populate();
 
             return expect(() => User.formatPropsAndInstantiate(propsWithoutDates))
                 .to.throw(UserError)
@@ -323,7 +327,7 @@ describe("User", async () => {
 
     describe("updateAttributes", () => {
         it("should update properties and return updated User instance", async () => {
-            const originalProps = await generateFakeUserProps({ id: 1, name: "Pip" });
+            const originalProps = await new FakeUser({ id: 1, name: "Pip" }).populate();
             const user = await User.create(originalProps, [includePartialProfile]);
 
             const newName = "Philip Pirrip";
