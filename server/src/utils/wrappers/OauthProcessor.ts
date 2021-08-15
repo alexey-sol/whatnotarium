@@ -1,4 +1,3 @@
-import { promises as fs } from "fs";
 import status from "http-status";
 
 import {
@@ -18,15 +17,15 @@ import {
     Token as YandexToken
 } from "#types/externalApi/yandex/oauth/ResponseData";
 
+import { IMAGE_EXT } from "#utils/const/defaultValues";
 import { INVALID_REQUEST } from "#utils/const/oauthErrors";
 import DataOnCreate from "#types/user/DataOnCreate";
+import Download from "#utils/http/Download";
 import OauthError from "#utils/errors/OauthError";
 import OauthResponseFormatter from "#utils/formatters/OauthResponseFormatter";
 import UserItem from "#types/user/Item";
 import UserService from "#services/UserService/v1";
-import downloadFile from "#utils/http/downloadFile";
 import isOfType from "#utils/typeGuards/isOfType";
-import unlinkFiles from "#utils/helpers/unlinkFiles";
 
 type Token = GoogleToken | YandexToken;
 type Profile = GoogleProfile | YandexProfile;
@@ -105,7 +104,7 @@ class OauthProcessor {
         } = this.profile;
 
         if (pictureUrl) {
-            picture = await this.downloadPicture(pictureUrl);
+            picture = await new Download(pictureUrl, { fileExt: IMAGE_EXT }).getFile();
         }
 
         this.userProps = {
@@ -128,17 +127,6 @@ class OauthProcessor {
         }
 
         return this.result;
-    }
-
-    private async downloadPicture (pictureUrl: string): Promise<Buffer> | never {
-        const picturePath = await downloadFile(pictureUrl, { fileExt: "png" });
-        const picture = await fs.readFile(picturePath);
-
-        if (picture && picturePath) {
-            await unlinkFiles(picturePath);
-        }
-
-        return picture;
     }
 
     private throw (errorName = INVALID_REQUEST): never {

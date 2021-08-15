@@ -293,6 +293,7 @@ describe("User", async () => {
         it("should return User instance if valid users props were given", async () => {
             const props = await new FakeUser({
                 createdAt: new Date(),
+                id: 1,
                 hasPassword: true,
                 updatedAt: new Date()
             }).populate();

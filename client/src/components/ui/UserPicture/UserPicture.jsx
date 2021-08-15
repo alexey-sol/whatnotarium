@@ -15,15 +15,16 @@ function UserPicture ({
     picture,
     rootClassName
 }) {
-    const picDataIfAny = (picture)
+    const classNames = classnames(styles.container, rootClassName);
+    const hasValidPicture = picture?.data?.length > 0;
+
+    const picDataIfAny = (hasValidPicture)
         ? `data:image/jpeg;base64,${toBase64(picture.data)}`
         : null;
 
-    const classNames = classnames(styles.container, rootClassName);
-
     return (
         <div className={classNames}>
-            {(picture)
+            {(hasValidPicture)
                 ? <img alt={name} onClick={onClick} src={picDataIfAny} title={name} />
                 : <UserPicturePlaceholder fill="#455a64" size={50} />}
         </div>

@@ -15,24 +15,9 @@ class FakePost implements FakeModel<Post, FakeDataOnCreate> {
         this.include = include;
     }
 
-    populate (): FakeDataOnCreate {
-        const wordCount = getRandomIntFromRange([2, 10]);
-
-        const generatedOptions = {
-            body: this.options.body || this.generateBody(),
-            isApproved: this.options.isApproved ?? faker.random.boolean(),
-            isFrozen: this.options.isFrozen ?? faker.random.boolean(),
-            title: this.options.title || faker.lorem.words(wordCount),
-            userId: this.options.userId || faker.random.number({ min: 1 })
-        };
-
-        this.options = generatedOptions;
-        return generatedOptions;
-    }
-
-    generateBody (): string { // [1]
+    static generateBody (): string { // [1]
         const sentenceCount = getRandomIntFromRange([5, 20]);
-        const paragraphCount = getRandomIntFromRange([1, 8]);
+        const paragraphCount = getRandomIntFromRange([2, 10]);
         let paragraphs = "";
 
         for (let i = 0; i < paragraphCount; i += 1) {
@@ -41,6 +26,21 @@ class FakePost implements FakeModel<Post, FakeDataOnCreate> {
         }
 
         return paragraphs;
+    }
+
+    populate (): FakeDataOnCreate {
+        const wordCount = getRandomIntFromRange([2, 10]);
+
+        const generatedOptions = {
+            body: this.options.body || FakePost.generateBody(),
+            isApproved: this.options.isApproved ?? faker.random.boolean(),
+            isFrozen: this.options.isFrozen ?? faker.random.boolean(),
+            title: this.options.title || faker.lorem.words(wordCount),
+            userId: this.options.userId || faker.random.number({ min: 1 })
+        };
+
+        this.options = generatedOptions;
+        return generatedOptions;
     }
 
     async save (): Promise<Post> | never {
