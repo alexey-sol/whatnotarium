@@ -8,16 +8,53 @@ import Include from "#root/src/types/Include";
 import User from "#models/User";
 import hashPassword from "#utils/helpers/hashPassword";
 
+interface Options {
+    shouldDownloadUserPictures?: boolean;
+}
+
 class FakeUser implements FakeModel<User, FakeDataOnCreate> {
     constructor (
-        private options: FakeDataOnUpdate = {},
-        private include?: Include[]
+        private props: FakeDataOnUpdate = {},
+        private include?: Include[],
+        private options?: Options
     ) {
-        this.options = options;
+        this.props = props;
         this.include = include;
+        this.options = options;
     }
 
-    static async downloadPicture (url: string): Promise<Buffer | undefined> {
+    async populate (): Promise<FakeDataOnCreate> | never {
+        const defaultHash = await hashPassword(faker.internet.password());
+        const pictureUrl = faker.image.imageUrl(100, 100);
+
+        const generatedProps = {
+            birthdate: this.props.birthdate || faker.date.past(),
+            createdAt: this.props.createdAt,
+            digest: this.props.digest || defaultHash.digest,
+            email: this.props.email || faker.internet.email(),
+            hasPassword: this.props.hasPassword,
+            hash: this.props.hash || defaultHash.hash,
+            id: this.props.id,
+            isAdmin: this.props.isAdmin ?? faker.random.boolean(),
+            isConfirmed: this.props.isConfirmed ?? faker.random.boolean(),
+            iterations: this.props.iterations || defaultHash.iterations,
+            keyLength: this.props.keyLength || defaultHash.keyLength,
+            lastActivityDate: this.props.lastActivityDate || faker.date.recent(),
+            name: this.props.name || faker.name.findName(),
+            picture: this.props.picture || await this.downloadPicture(pictureUrl),
+            salt: this.props.salt || defaultHash.salt,
+            updatedAt: this.props.updatedAt
+        };
+
+        this.props = generatedProps;
+        return generatedProps;
+    }
+
+    async downloadPicture (url: string): Promise<Buffer | undefined> {
+        if (!this.options?.shouldDownloadUserPictures) {
+            return undefined;
+        }
+
         let picture;
 
         try {
@@ -25,33 +62,6 @@ class FakeUser implements FakeModel<User, FakeDataOnCreate> {
         } finally {
             return picture; // eslint-disable-line
         }
-    }
-
-    async populate (): Promise<FakeDataOnCreate> | never {
-        const defaultHash = await hashPassword(faker.internet.password());
-        const pictureUrl = faker.image.imageUrl(100, 100);
-
-        const generatedOptions = {
-            birthdate: this.options.birthdate || faker.date.past(),
-            createdAt: this.options.createdAt,
-            digest: this.options.digest || defaultHash.digest,
-            email: this.options.email || faker.internet.email(),
-            hasPassword: this.options.hasPassword,
-            hash: this.options.hash || defaultHash.hash,
-            id: this.options.id,
-            isAdmin: this.options.isAdmin ?? faker.random.boolean(),
-            isConfirmed: this.options.isConfirmed ?? faker.random.boolean(),
-            iterations: this.options.iterations || defaultHash.iterations,
-            keyLength: this.options.keyLength || defaultHash.keyLength,
-            lastActivityDate: this.options.lastActivityDate || faker.date.recent(),
-            name: this.options.name || faker.name.findName(),
-            picture: this.options.picture || await FakeUser.downloadPicture(pictureUrl),
-            salt: this.options.salt || defaultHash.salt,
-            updatedAt: this.options.updatedAt
-        };
-
-        this.options = generatedOptions;
-        return generatedOptions;
     }
 
     async save (): Promise<User> | never {

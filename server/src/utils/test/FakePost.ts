@@ -8,10 +8,10 @@ import getRandomIntFromRange from "../helpers/getRandomIntFromRange";
 
 class FakePost implements FakeModel<Post, FakeDataOnCreate> {
     constructor (
-        private options: FakeDataOnUpdate = {},
+        private props: FakeDataOnUpdate = {},
         private include?: Include[]
     ) {
-        this.options = options;
+        this.props = props;
         this.include = include;
     }
 
@@ -31,16 +31,16 @@ class FakePost implements FakeModel<Post, FakeDataOnCreate> {
     populate (): FakeDataOnCreate {
         const wordCount = getRandomIntFromRange([2, 10]);
 
-        const generatedOptions = {
-            body: this.options.body || FakePost.generateBody(),
-            isApproved: this.options.isApproved ?? faker.random.boolean(),
-            isFrozen: this.options.isFrozen ?? faker.random.boolean(),
-            title: this.options.title || faker.lorem.words(wordCount),
-            userId: this.options.userId || faker.random.number({ min: 1 })
+        const generatedProps = {
+            body: this.props.body || FakePost.generateBody(),
+            isApproved: this.props.isApproved ?? faker.random.boolean(),
+            isFrozen: this.props.isFrozen ?? faker.random.boolean(),
+            title: this.props.title || faker.lorem.words(wordCount),
+            userId: this.props.userId || faker.random.number({ min: 1 })
         };
 
-        this.options = generatedOptions;
-        return generatedOptions;
+        this.props = generatedProps;
+        return generatedProps;
     }
 
     async save (): Promise<Post> | never {

@@ -36,7 +36,8 @@ const generateUsers = (count: number): Promise<User[]> | never => {
     for (let i = 0; i < count; i += 1) {
         promises.push(new FakeUser(
             { isAdmin: false, isConfirmed: true },
-            [includeProfile, includeHashOptions]
+            [includeProfile, includeHashOptions],
+            { shouldDownloadUserPictures: true }
         ).save());
     }
 
