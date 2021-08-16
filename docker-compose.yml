@@ -32,6 +32,7 @@ services:
             - GOOGLE_CLIENT_SECRET
             - GOOGLE_OAUTH_REDIRECT_URI
             - NODE_ENV
+            - ORIGIN
             - PROJECT_NAME_FULL
             - PROJECT_NAME_SHORT
             - SENDER_EMAIL

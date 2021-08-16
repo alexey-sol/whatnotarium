@@ -57,6 +57,10 @@ export default Joi.object({
         .valid(DEVELOPMENT, PRODUCTION)
         .required(),
 
+    ORIGIN: Joi
+        .string()
+        .required(),
+
     PROJECT_NAME_FULL: Joi
         .string()
         .required(),

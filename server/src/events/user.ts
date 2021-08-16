@@ -12,8 +12,8 @@ const emitter = new EventEmitter();
 const { processEnv } = new ProcessManager();
 
 const { PROJECT_NAME_FULL: projectName } = processEnv;
+const { origin } = serverConfig;
 const { senderEmail } = emailTransporterConfig;
-const { url } = serverConfig;
 
 emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
     try {
@@ -23,7 +23,7 @@ emitter.on(eventNames.SEND_CONFIRM_EMAIL, async ({ email, token }) => {
             subject: `Добро пожаловать на ${projectName}! А теперь подтвердите email`,
             html: `
                 <p>Чтобы ваш аккаунт стал действительным, пожалуйста, перейдите по ссылке ниже.</p>
-                <p><a href='${url}/support/confirm/token/${token}'>Подтвердить email</a></p>
+                <p><a href='${origin}/support/confirm/token/${token}'>Подтвердить email</a></p>
             `
         });
 
@@ -44,7 +44,7 @@ emitter.on(eventNames.SEND_POST_WAITING_APPROVAL, async ({ email, postId, postTi
                 это может занять день или два. Если возникнут какие-то загвоздки, мы напишем
                 вам, и вы сможете внести в статью необходимые правки и отправить на повторную
                 проверку.</p>
-                <p><a href="${url}/post/${postId}">Перейти к статье</a></p>
+                <p><a href="${origin}/post/${postId}">Перейти к статье</a></p>
             `
         });
 
@@ -62,7 +62,7 @@ emitter.on(eventNames.SEND_POST_APPROVED, async ({ email, postId, postTitle }) =
             subject: `Ваша статья "${postTitle}" на ${projectName} опубликована`,
             html: `
                 <p>Поздравляем! Ваша статья "${postTitle}" прошла проверку и была опубликована.</p>
-                <p><a href="${url}/post/${postId}">Перейти к статье</a></p>
+                <p><a href="${origin}/post/${postId}">Перейти к статье</a></p>
             `
         });
 
@@ -88,7 +88,7 @@ emitter.on(eventNames.SEND_POST_REJECTED, async ({
                 Причина следующая:</p>
                 <p>${message}</p>
                 <p>Вы можете внести правки и отправить на проверку еще раз.</p>
-                <p><a href="${url}/post/${postId}">Перейти к статье</a></p>
+                <p><a href="${origin}/post/${postId}">Перейти к статье</a></p>
             `
         });
 
@@ -107,7 +107,7 @@ emitter.on(eventNames.SEND_RESET_PASSWORD_EMAIL, async ({ email, token }) => {
             html: `
                 <p>Чтобы восстановить пароль, пожалуйста, перейдите по ссылке ниже.
                 Если вы получили это письмо случайно, проигнорируйте его.</p>
-                <p><a href='${url}/support/reset/token/${token}'>Начать процедуру
+                <p><a href='${origin}/support/reset/token/${token}'>Начать процедуру
                 восстановления</a></p>
             `
         });

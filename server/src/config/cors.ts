@@ -4,7 +4,7 @@ import serverConfig from "#config/server";
 
 const corsOptions: CorsOptions = {
     methods: "GET,POST,PUT,DELETE,OPTIONS",
-    origin: serverConfig.url
+    origin: serverConfig.origin
 };
 
 export default corsOptions;
