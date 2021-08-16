@@ -13,6 +13,7 @@
 
     .input {
         display: block;
+        box-sizing: border-box;
         width: 100%;
         height: 100%;
         padding: 0.2rem 0.5rem;
@@ -35,5 +36,11 @@
     .resetSearchButton {
         min-width: fit-content;
         margin-left: 2rem + $search-prompt-width;
+    }
+
+    @media screen and (max-width: 500px) {
+        .searchPrompt {
+            right: 0;
+        }
     }
 }

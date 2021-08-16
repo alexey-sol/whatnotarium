@@ -41,7 +41,7 @@ function SearchUserInput ({ onSearchUsersStart, onSetCurrentPage }) {
                     maxLength={100}
                     name="searchTerm"
                     onChange={({ target }) => setSearchTerm(target.value)}
-                    placeholder={"Найти автора по имени или по полю о \"себе\""}
+                    placeholder="Найти автора по имени или по полю о себе"
                     value={searchTerm}
                 />
 
