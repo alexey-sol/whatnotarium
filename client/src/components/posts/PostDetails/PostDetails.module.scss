@@ -8,12 +8,18 @@
     width: 100%;
 
     .title {
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
         font-family: $font-family--caption;
         font-size: $font-size--large;
         font-weight: 400;
     }
 
     .body {
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
         margin: 1rem 0;
         overflow-y: hidden;
     }

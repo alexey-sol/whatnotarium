@@ -12,6 +12,10 @@
         font-weight: 400;
 
         a {
+            max-width: 100%;
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
+
             &:hover {
                 opacity: 0.7;
             }
@@ -24,8 +28,11 @@
     }
 
     .body {
+        max-width: 100%;
+        box-sizing: border-box;
         max-height: $font-size--medium * 40;
         overflow-y: hidden;
+        overflow-wrap: anywhere;
         font-family: $font-family--normal;
         font-size: $font-size--medium;
     }
