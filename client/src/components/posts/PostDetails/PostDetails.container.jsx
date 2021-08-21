@@ -11,8 +11,9 @@ import { approvePostStart, rejectPostStart } from "redux/admin/admin.actions";
 import { defaultProps, propTypes } from "./PostDetails.container.props";
 import { fetchPostStart, incrementViewCountStart } from "redux/posts/posts.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectPostById } from "redux/posts/posts.selectors";
+import { selectError, selectPostById } from "redux/posts/posts.selectors";
 import { showNotification } from "redux/ui/ui.actions";
+import handleNotFoundError from "utils/handlers/handleNotFoundError";
 import phrases from "utils/resources/text/ru/commonPhrases";
 
 const successNotification = new Notification(phrases.done, SUCCESS, DEFAULT_TIMEOUT_IN_MS);
@@ -22,6 +23,7 @@ PostDetailsContainer.propTypes = propTypes;
 
 function PostDetailsContainer ({
     currentUser,
+    error,
     history,
     match,
     onApprovePostStart,
@@ -56,6 +58,12 @@ function PostDetailsContainer ({
         }
     }, [id, onIncrementViewCountStart, shouldIncrementViewCount]);
 
+    useEffect(() => {
+        if (error) {
+            handleNotFoundError(history, error);
+        }
+    }, [error, history]);
+
     const redirectToDraft = useCallback(() => push(`/${p.POST}/${id}/${p.EDIT}`), [id, push]);
 
     const redirectToListAndShowSuccess = useCallback(() => {
@@ -76,6 +84,7 @@ function PostDetailsContainer ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
+    error: selectError,
     post: (state, ownProps) => selectPostById(state, +ownProps.match.params.id)
 });
 

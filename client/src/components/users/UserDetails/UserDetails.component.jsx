@@ -10,7 +10,8 @@ import UserPicture from "components/ui/UserPicture";
 import { defaultProps, propTypes } from "./UserDetails.props";
 import { fetchUserStart } from "redux/users/users.actions";
 import { selectCurrentUser } from "redux/session/session.selectors";
-import { selectUserById } from "redux/users/users.selectors";
+import { selectError, selectUserById } from "redux/users/users.selectors";
+import handleNotFoundError from "utils/handlers/handleNotFoundError";
 import styles from "./UserDetails.module.scss";
 
 UserDetailsComponent.defaultProps = defaultProps;
@@ -18,6 +19,7 @@ UserDetailsComponent.propTypes = propTypes;
 
 function UserDetailsComponent ({
     currentUser,
+    error,
     history,
     match,
     onFetchUserStart,
@@ -51,6 +53,12 @@ function UserDetailsComponent ({
     useEffect(() => {
         onFetchUserStart(id);
     }, [id, onFetchUserStart]);
+
+    useEffect(() => {
+        if (error) {
+            handleNotFoundError(history, error);
+        }
+    }, [error, history]);
 
     const renderProfileSection = (key, value) => (value || typeof value === "number")
         ? (
@@ -99,6 +107,7 @@ function UserDetailsComponent ({
 
 const mapStateToProps = createStructuredSelector({
     currentUser: selectCurrentUser,
+    error: selectError,
     user: (state, ownProps) => selectUserById(state, +ownProps.match.params.id)
 });
 
