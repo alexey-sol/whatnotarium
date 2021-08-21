@@ -2,14 +2,6 @@
 
 .container {
     a {
-        border-bottom: 1px solid $custom-link-border-color;
-        padding: 0 1px;
-        color: $custom-link-text-color;
-        transition: color 100ms ease;
-
-        &:hover {
-            border-bottom: 1px solid $custom-link-border-color--hover;
-            color: $custom-link-text-color--hover;
-        }
+        @include custom-link();
     }
 }

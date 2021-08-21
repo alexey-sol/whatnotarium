@@ -4,6 +4,7 @@ import { FakeDataOnCreate, FakeDataOnUpdate } from "#types/test/post";
 import FakeModel from "#types/FakeModel";
 import Include from "#root/src/types/Include";
 import Post from "#models/Post";
+import TextFormatter from "#utils/formatters/TextFormatter";
 import getRandomIntFromRange from "../helpers/getRandomIntFromRange";
 
 class FakePost implements FakeModel<Post, FakeDataOnCreate> {
@@ -28,14 +29,19 @@ class FakePost implements FakeModel<Post, FakeDataOnCreate> {
         return paragraphs;
     }
 
-    populate (): FakeDataOnCreate {
+    static generateTitle (): string {
         const wordCount = getRandomIntFromRange([2, 10]);
+        const rawTitle = faker.lorem.words(wordCount);
+        const formatter = new TextFormatter(rawTitle);
+        return formatter.capitalize();
+    }
 
+    populate (): FakeDataOnCreate {
         const generatedProps = {
             body: this.props.body || FakePost.generateBody(),
             isApproved: this.props.isApproved ?? faker.random.boolean(),
             isFrozen: this.props.isFrozen ?? faker.random.boolean(),
-            title: this.props.title || faker.lorem.words(wordCount),
+            title: this.props.title || FakePost.generateTitle(),
             userId: this.props.userId || faker.random.number({ min: 1 })
         };
 

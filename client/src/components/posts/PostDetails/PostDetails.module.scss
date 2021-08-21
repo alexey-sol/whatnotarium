@@ -19,19 +19,12 @@
     .body {
         max-width: 100%;
         box-sizing: border-box;
-        overflow-wrap: anywhere;
-        margin: 1rem 0;
-        overflow-y: hidden;
     }
 
     .warning {
         padding: 2rem 0;
         color: $color-error;
         text-align: center;
-    }
-
-    .controls {
-
     }
 
     .adminControls {

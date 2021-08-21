@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { REJECTION_REASON } from "utils/const/postData";
 import BaseButton from "components/ui/BaseButton";
 import PostAuthorInfo from "components/posts/PostAuthorInfo";
+import PostBody from "components/posts/PostBody";
 import PostRating from "components/posts/PostRating";
 import Textarea from "components/forms/Textarea";
 import ViewCount from "components/posts/ViewCount";
@@ -68,10 +69,9 @@ function PostDetails ({
                 {title}
             </header>
 
-            <section
-                className={styles.body}
-                dangerouslySetInnerHTML={bodyHTML}
-            />
+            <section className={styles.body}>
+                <PostBody htmlContent={bodyHTML} />
+            </section>
 
             <PostAuthorInfo
                 createdAt={createdAt}

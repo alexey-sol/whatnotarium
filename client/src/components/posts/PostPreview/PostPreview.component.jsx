@@ -3,6 +3,7 @@ import React from "react";
 import classnames from "classnames";
 
 import { POST } from "utils/const/pathnames";
+import PostBody from "components/posts/PostBody";
 import PostMetaData from "components/posts/PostMetaData";
 import { propTypes } from "./PostPreview.props";
 import styles from "./PostPreview.module.scss";
@@ -54,10 +55,9 @@ function PostPreview ({ currentUser, post }) {
             </header>
 
             <section className={styles.bodyContainer}>
-                <div
-                    className={styles.body}
-                    dangerouslySetInnerHTML={bodyHTML}
-                />
+                <section className={styles.body}>
+                    <PostBody htmlContent={bodyHTML} />
+                </section>
 
                 {hasMoreContent && (
                     <div className={styles.openPost}>
