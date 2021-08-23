@@ -21,7 +21,6 @@ function PostPreview ({ currentUser, post }) {
         userId
     } = post;
 
-    const bodyHTML = { __html: excerpt };
     const { isAdmin } = currentUser || {};
     const needsFix = !isAdmin && !isApproved && !isFrozen;
 
@@ -56,7 +55,7 @@ function PostPreview ({ currentUser, post }) {
 
             <section className={styles.bodyContainer}>
                 <section className={styles.body}>
-                    <PostBody htmlContent={bodyHTML} />
+                    <PostBody htmlContent={excerpt} />
                 </section>
 
                 {hasMoreContent && (

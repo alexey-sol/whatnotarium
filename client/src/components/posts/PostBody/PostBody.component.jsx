@@ -10,7 +10,7 @@ function PostBody ({ htmlContent }) {
     return (
         <section
             className={styles.container}
-            dangerouslySetInnerHTML={htmlContent}
+            dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
     );
 }

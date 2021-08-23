@@ -48,8 +48,6 @@ function PostDetails ({
     const rejectionButtonIsDisabled = whyFormShown && rejectionReason
         .length < MIN_REJECTION_REASON_LENGTH;
 
-    const bodyHTML = { __html: body };
-
     const rejectionReasonLabel = "Пожалуйста, укажите причину отказа (не менее " +
         `${MIN_REJECTION_REASON_LENGTH} символов)`;
 
@@ -70,7 +68,7 @@ function PostDetails ({
             </header>
 
             <section className={styles.body}>
-                <PostBody htmlContent={bodyHTML} />
+                <PostBody htmlContent={body} />
             </section>
 
             <PostAuthorInfo
