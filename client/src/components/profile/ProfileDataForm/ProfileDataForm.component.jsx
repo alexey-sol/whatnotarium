@@ -68,7 +68,9 @@ function ProfileDataForm ({
             const emailChanged = email !== currentUser.email;
 
             if (emailChanged) {
-                onSignOutStart(() => history.push(`/${p.SUPPORT}/${p.CONFIRM}/email/${email}`));
+                onSignOutStart(
+                    () => history.push(`/${p.SUPPORT}/${p.CONFIRM}/${p.EMAIL}/${email}`)
+                );
             }
         };
 

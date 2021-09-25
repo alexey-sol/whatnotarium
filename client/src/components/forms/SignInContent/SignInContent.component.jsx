@@ -74,9 +74,11 @@ function SignInContent ({
     };
 
     useEffect(() => {
+        if (!sessionError) return;
+
         const shouldRedirectToSupportPage = (
-            sessionError?.message === NOT_VERIFIED &&
-            sessionError?.additionalData
+            sessionError.message === NOT_VERIFIED &&
+            sessionError.additionalData
         );
 
         if (shouldRedirectToSupportPage) {

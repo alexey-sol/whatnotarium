@@ -38,5 +38,5 @@ services:
     redis:
         container_name: geek-regime_dev_redis
 
-# [1]. A trick which allows to exlude the host's node_modules from the container's app directory
+# [1]. A trick which allows to exclude the host's node_modules from the container's app directory
 # after attaching shared volume: https://stackoverflow.com/a/37898591

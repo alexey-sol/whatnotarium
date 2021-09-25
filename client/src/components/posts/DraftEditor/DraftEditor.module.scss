@@ -40,7 +40,7 @@
 
         .bodyError {
             height: auto;
-            color: red;
+            color: $color-error;
             transition: color 100ms ease;
 
             &:after {

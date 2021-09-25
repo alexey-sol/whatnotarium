@@ -11,6 +11,9 @@ import { setCurrentPage } from "redux/postsPaging/postsPaging.actions";
 import useSearch from "utils/hooks/useSearch";
 import styles from "./SearchPostInput.module.scss";
 
+const SEARCH_TEXT_SHORT = "Найти статью";
+const SEARCH_TEXT_EXPANDED = "Найти статью по названию, содержанию или имени автора";
+
 SearchPostInput.defaultProps = defaultProps;
 SearchPostInput.propTypes = propTypes;
 
@@ -25,7 +28,7 @@ function SearchPostInput ({
 }) {
     const rootRef = useRef(null);
 
-    const redirectToPostsIfNeeded = useCallback(() => {
+    const redirectToHomeIfNeeded = useCallback(() => {
         if (location.pathname !== "/") {
             history.push("/");
         }
@@ -39,26 +42,20 @@ function SearchPostInput ({
     } = useSearch({
         cbOnSubmit: (isCompactView) ? onClose : null,
         onSetCurrentPage,
-        redirectToSearchPage: redirectToPostsIfNeeded,
+        redirectToSearchPage: redirectToHomeIfNeeded,
         searchEventName: SEARCH_POSTS,
         searchRecords: onSearchPostsStart
     });
 
-    const handleClickOnPrompt = () => onSearch();
-
     useEffect(() => {
         const handleClick = ({ target }) => {
-            const isClickOutside = !rootRef.current.contains(target);
-
-            if (isClickOutside) {
-                onClose();
-            }
+            const clickedOutside = !rootRef.current.contains(target);
+            if (clickedOutside) onClose();
         };
 
         const handleKeydown = (event) => {
-            if (onClose && event.key === "Escape") {
-                onClose();
-            }
+            const pressedCancel = event.key === "Escape";
+            if (pressedCancel) onClose();
         };
 
         document.addEventListener("keydown", handleKeydown);
@@ -70,9 +67,11 @@ function SearchPostInput ({
         };
     }, [onClose]);
 
-    const placeholder = (isCompactView)
-        ? "Найти статью"
-        : "Найти статью по названию, содержанию или имени автора";
+    const inputPlaceholder = (isCompactView)
+        ? SEARCH_TEXT_SHORT
+        : SEARCH_TEXT_EXPANDED;
+
+    const shouldRenderSearchButton = hasNewSearchTerm && !isCompactView;
 
     return (
         <div className={classnames(styles.container, rootClassName)} ref={rootRef}>
@@ -83,13 +82,16 @@ function SearchPostInput ({
                 maxLength={100}
                 name="searchTerm"
                 onChange={({ target }) => setSearchTerm(target.value)}
-                placeholder={placeholder}
+                placeholder={inputPlaceholder}
                 value={searchTerm}
             />
 
-            {hasNewSearchTerm && !isCompactView && (
+            {shouldRenderSearchButton && (
                 <div className={styles.searchPrompt}>
-                    <SearchPrompt onClick={handleClickOnPrompt} title="Найти статью" />
+                    <SearchPrompt
+                        onClick={() => onSearch()}
+                        title={SEARCH_TEXT_SHORT}
+                    />
                 </div>
             )}
         </div>

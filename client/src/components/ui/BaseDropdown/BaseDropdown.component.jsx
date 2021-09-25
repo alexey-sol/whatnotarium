@@ -63,16 +63,13 @@ function BaseDropdown ({
         const dropdown = dropdownRef.current;
 
         if (dropdown) {
-            const hideDropdown = ({ target }) => {
-                const isClickOutside = !dropdown.contains(target);
-
-                if (isClickOutside) {
-                    onClose();
-                }
+            const hideDropdownIfNeeded = ({ target }) => {
+                const clickedOutside = !dropdown.contains(target);
+                if (clickedOutside) onClose();
             };
 
-            document.addEventListener("click", hideDropdown);
-            return () => document.removeEventListener("click", hideDropdown);
+            document.addEventListener("click", hideDropdownIfNeeded);
+            return () => document.removeEventListener("click", hideDropdownIfNeeded);
         }
     }, [onClose]);
 
