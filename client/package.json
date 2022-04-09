@@ -16,7 +16,7 @@
     "formik": "~2.1.5",
     "http-proxy-middleware": "~0.20.0",
     "http-status": "~1.4.2",
-    "moment": "~2.26.0",
+    "moment": "~2.29.2",
     "node-sass": "~4.13.1",
     "prop-types": "~15.7.2",
     "react": "~16.14.0",
